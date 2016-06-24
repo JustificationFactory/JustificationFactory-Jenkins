@@ -1,4 +1,7 @@
-package fr.axonic.avek;
+package fr.axonic.avek.meta.evidence;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EvidenceRole {
 	private String role;
@@ -19,5 +22,13 @@ public class EvidenceRole {
 	}
 	public void setEvidence(Evidence evidence) {
 		this.evidence = evidence;
+	}
+
+	public static List<Evidence> translateToEvidence(List<EvidenceRole> evidenceRoles){
+		List<Evidence> evidences=new ArrayList<Evidence>();
+		for(EvidenceRole evidenceRole : evidenceRoles){
+			evidences.add(evidenceRole.getEvidence());
+		}
+		return evidences;
 	}
 }

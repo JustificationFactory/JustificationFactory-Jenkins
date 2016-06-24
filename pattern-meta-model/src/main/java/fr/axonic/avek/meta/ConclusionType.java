@@ -1,4 +1,7 @@
-package fr.axonic.avek;
+package fr.axonic.avek.meta;
+
+import fr.axonic.avek.meta.conclusion.Conclusion;
+import fr.axonic.avek.meta.evidence.Evidence;
 
 public class ConclusionType<T extends Conclusion> {
 
@@ -14,6 +17,10 @@ public class ConclusionType<T extends Conclusion> {
 				return  new Conclusion(o);
 		
 		return null;
+	}
+
+	public boolean isConclusionType(Conclusion conclusion){
+		return conclusion.getClass().equals(conclusionType);
 	}
 	
 	

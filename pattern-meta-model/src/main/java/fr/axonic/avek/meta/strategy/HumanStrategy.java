@@ -1,4 +1,7 @@
-package fr.axonic.avek;
+package fr.axonic.avek.meta.strategy;
+
+import fr.axonic.avek.meta.conclusion.Conclusion;
+import fr.axonic.avek.meta.evidence.Evidence;
 
 import java.util.Map;
 
