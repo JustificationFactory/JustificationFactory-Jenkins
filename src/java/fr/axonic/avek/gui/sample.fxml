@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane fx:controller="fr.axonic.avek.gui.Controller"
+            maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="5" minWidth="5"
+            prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <BorderPane style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
+         <top>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
+               <center>
+                  <FlowPane fx:id="pane_effects" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+               <top>
+                  <BorderPane BorderPane.alignment="CENTER"> <!-- maxWidth="1.7976931348623157E308" -->
+                     <right>
+                        <Button fx:id="b_addeffect" mnemonicParsing="false" onAction="#addEffect" text="+" BorderPane.alignment="CENTER" />
+                     </right>
+                     <center>
+                        <ComboBox fx:id="cb_selecteffect" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </top>
+            </BorderPane>
+         </top>
+         <center>
+            <BorderPane BorderPane.alignment="CENTER">
+               <center>
+                  <VBox fx:id="pane_data" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+               </center>
+               <bottom>
+                  <Button fx:id="b_strategy" mnemonicParsing="false" onAction="#clicOnStrategyButton" text="Strategy" BorderPane.alignment="BOTTOM_RIGHT" />
+               </bottom>
+            </BorderPane>
+         </center>
+      </BorderPane>
+   </center>
+   <left>
+      <BorderPane BorderPane.alignment="CENTER">
+         <top>
+            <Label text="Patent" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </top>
+         <center>
+            <Accordion BorderPane.alignment="CENTER">
+              <panes>
+                <TitledPane animated="false" text="Basic infos">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Pathology infos">
+                     <content>
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label text="IMC:" />
+                                    <Label text="42" />
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label text="Obesity type:" />
+                                    <Label text="Maybe" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Dynamic infos">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+         </center>
+         <bottom>
+             <!-- maxWidth="1.7976931348623157E308" -->
+            <Button fx:id="b_history" mnemonicParsing="false" onAction="#showHistory" text="History" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+   </left>
+</BorderPane>
