@@ -1,0 +1,34 @@
+.effectNode {
+    -fx-padding: 2px;
+    -fx-alignment: CENTER;
+}
+.effectNodeLabel {
+    -fx-background-color: #9a6;
+    -fx-border-color: #562;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-padding: 5px;
+    -fx-background-insets: 0;
+}
+.effectNodeCross {
+    -fx-text-fill: red;
+    -fx-background-color: #9a6;
+    -fx-border-color: #562;
+    -fx-border-width: 1 1 1 0;
+    -fx-border-radius: 0 2 2 0;
+    -fx-padding: 1px 3px;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 2 2 0;
+    -fx-alignment: CENTER;
+    -fx-content-display: CENTER;
+}
+.effectNodeLabel:hover {
+    -fx-background-color: #ab7;
+}
+.effectNode:hover > .effectNodeCross {
+    -fx-background-color: #ab7;
+ }
+
+.effectPane {
+    -fx-background-color: #cea;
+}

@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 
+<?import java.net.URL?>
 <BorderPane fx:controller="fr.axonic.avek.gui.Controller"
             maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="5" minWidth="5"
@@ -18,14 +13,14 @@
    <center>
       <BorderPane style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
          <top>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
+            <BorderPane styleClass="effectPane" BorderPane.alignment="CENTER">
                <center>
-                  <FlowPane fx:id="pane_effects" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <FlowPane fx:id="pane_effects" BorderPane.alignment="CENTER" />
                </center>
                <top>
                   <BorderPane BorderPane.alignment="CENTER"> <!-- maxWidth="1.7976931348623157E308" -->
                      <right>
-                        <Button fx:id="b_addeffect" mnemonicParsing="false" onAction="#addEffect" text="+" BorderPane.alignment="CENTER" />
+                        <Button fx:id="b_addeffect" mnemonicParsing="false" onAction="#onClicAddEffect" text="+" BorderPane.alignment="CENTER" />
                      </right>
                      <center>
                         <ComboBox fx:id="cb_selecteffect" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
@@ -40,7 +35,7 @@
                   <VBox fx:id="pane_data" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
                </center>
                <bottom>
-                  <Button fx:id="b_strategy" mnemonicParsing="false" onAction="#clicOnStrategyButton" text="Strategy" BorderPane.alignment="BOTTOM_RIGHT" />
+                  <Button fx:id="b_strategy" mnemonicParsing="false" onAction="#onClicStrategyButton" text="Strategy" BorderPane.alignment="BOTTOM_RIGHT" />
                </bottom>
             </BorderPane>
          </center>
@@ -76,7 +71,7 @@
                               <HBox>
                                  <children>
                                     <Label text="Obesity type:" />
-                                    <Label text="Maybe" />
+                                    <Label text="xxx" />
                                  </children>
                               </HBox>
                            </children>
@@ -93,7 +88,7 @@
          </center>
          <bottom>
              <!-- maxWidth="1.7976931348623157E308" -->
-            <Button fx:id="b_history" mnemonicParsing="false" onAction="#showHistory" text="History" BorderPane.alignment="CENTER" />
+            <Button fx:id="b_history" mnemonicParsing="false" onAction="#onClicShowHistory" text="History" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
    </left>
