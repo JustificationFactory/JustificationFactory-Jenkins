@@ -32,3 +32,16 @@
 .effectPane {
     -fx-background-color: #cea;
 }
+
+.selectedEffect {
+    -fx-text-fill: #ddd;
+}
+.selectedEffect:hover {
+    -fx-background-color: #f0f0f0;
+}
+.selectedEffect:selected {
+    -fx-background-color: lightblue;
+}
+.notSelectedEffect {
+    -fx-text-fill: black;
+}

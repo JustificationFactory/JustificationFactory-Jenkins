@@ -1,25 +1,22 @@
-package fr.axonic.avek.gui;
+package fr.axonic.avek.gui.view;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import fr.axonic.avek.gui.Controller;
+import fr.axonic.avek.gui.model.IEffect;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 
 /**
  * Created by Nathaël N on 28/06/16.
  */
 public class EffectNode extends HBox {
+	private IEffect value;
 
-	private String name;
-
-	public EffectNode(final Controller control, String choice) {
-		this.name = choice;
+	public EffectNode(final Controller control, IEffect value) {
+		this.value = value;
 		this.getStyleClass().add("effectNode");
 
-		Label label = new Label(choice);
+		Label label = new Label(value.getName());
 		this.getChildren().add(label);
 		label.getStyleClass().add("effectNodeLabel");
 
@@ -30,7 +27,7 @@ public class EffectNode extends HBox {
 		cross.setOnMouseClicked(t -> control.removeEffectNode(EffectNode.this));
 	}
 
-	public String getName() {
-		return name;
+	public IEffect getIEffect() {
+		return value;
 	}
 }
