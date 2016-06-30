@@ -47,15 +47,18 @@ public class Controller {
 				new StringEffect("Effect 3")
 		));
 
+
 		MonitoredSystem ms = new MonitoredSystem(42);
-		ms.addCategory("Category 1");
-		ms.addAVar("Category 1", new AVar("a string", String.class, "strval1"));
-		ms.addAVar("Category 1", new AVar("an integer", Integer.class, 123456789));
-		ms.addAVar("Category 1", new AVar("a double", Double.class, 12345.6789));
-		ms.addAVar("Category 1", new AVar("a date", Date.class, Calendar.getInstance().getTime()));
-		ms.addCategory("Category 2");
-		ms.addAVar("Category 2", new AVar("an integer", Integer.class, 987654321));
-		ms.addAVar("Category 2", new AVar("a double", Double.class, 98765.4321));
+		{ // Replace all this by a request of Subject informations
+			ms.addCategory("Category 1");
+			ms.addAVar("Category 1", new AVar("a string", String.class, "strval1"));
+			ms.addAVar("Category 1", new AVar("age", Integer.class, 123456789, "year"));
+			ms.addAVar("Category 1", new AVar("size", Double.class, 12345.6789, "mm"));
+			ms.addAVar("Category 1", new AVar("a date", Date.class, Calendar.getInstance().getTime()));
+			ms.addCategory("Category 2");
+			ms.addAVar("Category 2", new AVar("an integer", Integer.class, 987654321));
+			ms.addAVar("Category 2", new AVar("a double", Double.class, 98765.4321));
+		}
 
 		fillSubjectInfos(ms);
 	}
@@ -69,10 +72,7 @@ public class Controller {
 
 			for(AVar av : map.get(category)) {
 				HBox hb = new HBox(2);
-				hb.getChildren().add(new Label(av.getKey()));
-				hb.getChildren().add(new Label(":"));
-				hb.getChildren().add(new Label(av.getValue().toString()));
-
+				hb.getChildren().add(new Label(av.toString()));
 				vb.getChildren().add(hb);
 			}
 		}

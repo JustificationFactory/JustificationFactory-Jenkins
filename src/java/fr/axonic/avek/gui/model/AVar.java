@@ -9,13 +9,13 @@ public class AVar {
 	private final Object value;
 	private final String unit;
 
-	public AVar(String key, Class valueType, Object value) {
+	public <TT> AVar(String key, Class<TT> valueType, TT value) {
 		this(key, valueType, value, null);
 	}
-	public AVar(String key, Class valueType, Object value, String unit) {
+	public <TT> AVar(String key, Class<TT> valueType, TT value, String unit) {
 		this.key = key;
 		this.valueType = valueType.getName();
-		this.value = valueType.cast(value); // verify class validity
+		this.value = value;
 		this.unit = unit;
 	}
 
@@ -38,6 +38,6 @@ public class AVar {
 
 	@Override
 	public String toString() {
-		return value.toString()+(unit==null?"":(" "+unit));
+		return key+" : "+value.toString()+(unit==null?"":(" "+unit));
 	}
 }
