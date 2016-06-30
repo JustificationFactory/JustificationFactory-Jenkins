@@ -1,24 +1,23 @@
 package fr.axonic.avek.gui;
 
+import fr.axonic.avek.gui.model.AVar;
 import fr.axonic.avek.gui.model.IEffect;
+import fr.axonic.avek.gui.model.MonitoredSystem;
 import fr.axonic.avek.gui.model.StringEffect;
 import fr.axonic.avek.gui.view.EffectNode;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -35,6 +34,8 @@ public class Controller {
 	private Button b_history;
 	@FXML
 	private ComboBox<IEffect> cb_selecteffect;
+	@FXML
+	private Accordion accordion;
 
 	@FXML
 	protected void initialize() {
@@ -45,6 +46,36 @@ public class Controller {
 				new StringEffect("Effect 2"),
 				new StringEffect("Effect 3")
 		));
+
+		MonitoredSystem ms = new MonitoredSystem(42);
+		ms.addCategory("Category 1");
+		ms.addAVar("Category 1", new AVar("a string", String.class, "strval1"));
+		ms.addAVar("Category 1", new AVar("an integer", Integer.class, 123456789));
+		ms.addAVar("Category 1", new AVar("a double", Double.class, 12345.6789));
+		ms.addAVar("Category 1", new AVar("a date", Date.class, Calendar.getInstance().getTime()));
+		ms.addCategory("Category 2");
+		ms.addAVar("Category 2", new AVar("an integer", Integer.class, 987654321));
+		ms.addAVar("Category 2", new AVar("a double", Double.class, 98765.4321));
+
+		fillSubjectInfos(ms);
+	}
+
+	private void fillSubjectInfos(MonitoredSystem ms) {
+		Map<String, Set<AVar>> map = ms.getMap();
+		for(String category : map.keySet()) {
+
+			VBox vb = new VBox();
+			accordion.getPanes().add(new TitledPane(category, vb));
+
+			for(AVar av : map.get(category)) {
+				HBox hb = new HBox(2);
+				hb.getChildren().add(new Label(av.getKey()));
+				hb.getChildren().add(new Label(":"));
+				hb.getChildren().add(new Label(av.getValue().toString()));
+
+				vb.getChildren().add(hb);
+			}
+		}
 	}
 
 	private void updateSelectedEffect() {
