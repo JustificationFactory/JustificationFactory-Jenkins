@@ -1,9 +1,12 @@
 package fr.axonic.avek.gui;
 
-import fr.axonic.avek.gui.model.AVar;
 import fr.axonic.avek.gui.model.IEffect;
 import fr.axonic.avek.gui.model.MonitoredSystem;
 import fr.axonic.avek.gui.model.StringEffect;
+import fr.axonic.avek.gui.model.base.ADate;
+import fr.axonic.avek.gui.model.base.ANumber;
+import fr.axonic.avek.gui.model.base.AString;
+import fr.axonic.avek.gui.model.base.AVar;
 import fr.axonic.avek.gui.view.EffectNode;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -47,18 +50,16 @@ public class Controller {
 				new StringEffect("Effect 3")
 		));
 
-
 		MonitoredSystem ms = new MonitoredSystem(42);
-		{ // Replace all this by a request of Subject informations
-			ms.addCategory("Category 1");
-			ms.addAVar("Category 1", new AVar("a string", String.class, "strval1"));
-			ms.addAVar("Category 1", new AVar("age", Integer.class, 123456789, "year"));
-			ms.addAVar("Category 1", new AVar("size", Double.class, 12345.6789, "mm"));
-			ms.addAVar("Category 1", new AVar("a date", Date.class, Calendar.getInstance().getTime()));
-			ms.addCategory("Category 2");
-			ms.addAVar("Category 2", new AVar("an integer", Integer.class, 987654321));
-			ms.addAVar("Category 2", new AVar("a double", Double.class, 98765.4321));
-		}
+		ms.addCategory("Category 1");
+
+		ms.addAVar("Category 1", new AString("a string","strval1"));
+		ms.addAVar("Category 1", new ANumber("an integer",123456789));
+		ms.addAVar("Category 1", new ANumber("a double",12345.6789));
+		ms.addAVar("Category 1", new ADate("a date",Calendar.getInstance().getTime()));
+		ms.addCategory("Category 2");
+		ms.addAVar("Category 2", new ANumber("an integer",987654321));
+		ms.addAVar("Category 2", new ANumber("a double",98765.4321));
 
 		fillSubjectInfos(ms);
 	}
@@ -72,7 +73,10 @@ public class Controller {
 
 			for(AVar av : map.get(category)) {
 				HBox hb = new HBox(2);
-				hb.getChildren().add(new Label(av.toString()));
+				hb.getChildren().add(new Label(av.getLabel()));
+				hb.getChildren().add(new Label(":"));
+				hb.getChildren().add(new Label(av.getValue().toString()));
+
 				vb.getChildren().add(hb);
 			}
 		}

@@ -1,5 +1,7 @@
 package fr.axonic.avek.gui.model;
 
+import fr.axonic.avek.gui.model.base.AVar;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
