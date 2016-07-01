@@ -1,8 +1,7 @@
-package fr.axonic.avek.gui;
+package fr.axonic.avek.gui.view;
 import fr.axonic.avek.gui.model.IResultElement;
 import fr.axonic.avek.gui.model.MonitoredSystem;
 import fr.axonic.avek.gui.model.StringResultElement;
-import fr.axonic.avek.gui.view.JellyBean;
 import fr.axonic.avek.gui.model.base.ADate;
 import fr.axonic.avek.gui.model.base.ANumber;
 import fr.axonic.avek.gui.model.base.AString;
@@ -10,6 +9,8 @@ import fr.axonic.avek.gui.model.base.AVar;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
@@ -19,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -38,16 +38,20 @@ public class Controller {
 	@FXML
 	private Accordion accordion;
 
+	private HashSet<JellyBeanController> jellyBeanControllers;
+
 	@FXML
 	protected void initialize() {
+		jellyBeanControllers = new HashSet<>();
+
 		updateSelectedEffect();
 		MonitoredSystem ms = new MonitoredSystem(42);
 		ms.addCategory("Category 1");
-
 		ms.addAVar("Category 1", new AString("a string","strval1"));
 		ms.addAVar("Category 1", new ANumber("an integer",123456789));
 		ms.addAVar("Category 1", new ANumber("a double",12345.6789));
 		ms.addAVar("Category 1", new ADate("a date",Calendar.getInstance().getTime()));
+
 		ms.addCategory("Category 2");
 		ms.addAVar("Category 2", new ANumber("an integer",987654321));
 		ms.addAVar("Category 2", new ANumber("a double",98765.4321));
@@ -81,6 +85,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Set Combobox entries for already selected effects to 'selectedResult' style, and others to 'notSelectedResult'
+	 * (typically, set selected results entries in a grey color, and let the others black)
+	 */
 	private void updateSelectedEffect() {
 		cb_selectresult.setCellFactory(
 				new Callback<ListView<IResultElement>, ListCell<IResultElement>>() {
@@ -92,7 +100,7 @@ public class Controller {
 									setText(item.getName());
 									getStyleClass().remove("selectedResult");
 									getStyleClass().remove("notSelectedResult");
-									getStyleClass().add(getSelectedEffects().contains(item)?"selectedResult":"notSelectedResult");
+									getStyleClass().add(getJellyBeanControllers().contains(item)?"selectedResult":"notSelectedResult");
 								}
 							}
 						};
@@ -108,18 +116,30 @@ public class Controller {
 
 	@FXML
 	void onClicAddEffect(ActionEvent event) {
+
+		// Verify if JellyBeanController already created (this result is already selected)
 		IResultElement choice = cb_selectresult.getValue();
-		if(getSelectedEffects().contains(choice))
+		if(getJellyBeanControllers().contains(choice))
 			return;
 
-		resultsPane.getChildren().add(new JellyBean(this, choice));
-		updateSelectedEffect();
+		try {
+
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/jellyBean.fxml"));
+			resultsPane.getChildren().add(fxmlLoader.load());
+			JellyBeanController jb2 = fxmlLoader.getController();
+			//fxmlLoader.setController(jb);
+			jb2.setResultElement(choice);
+			jb2.setMainController(this);
+
+			jellyBeanControllers.add(jb2);
+			updateSelectedEffect();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private HashSet<IResultElement> getSelectedEffects() {
-		return resultsPane.getChildren().stream()
-				.map(n -> ((JellyBean) n).getIEffect())
-				.collect(Collectors.toCollection(HashSet::new));
+	private HashSet<JellyBeanController> getJellyBeanControllers() {
+		return jellyBeanControllers;
 	}
 
 	@FXML
@@ -141,8 +161,9 @@ public class Controller {
 		newStage.show();
 	}
 
-	public void removeEffectNode(JellyBean jellyBean) {
-		resultsPane.getChildren().remove(jellyBean);
+	public void removeEffectNode(JellyBeanController jbc) {
+		jellyBeanControllers.remove(jbc);
+		resultsPane.getChildren().remove(jbc.getNode());
 		updateSelectedEffect();
 	}
 }

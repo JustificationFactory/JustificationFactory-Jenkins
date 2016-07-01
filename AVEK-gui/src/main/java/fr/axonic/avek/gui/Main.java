@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/gui.fxml"));
         primaryStage.setTitle("Need a name");
         primaryStage.setScene(new Scene(root, 800, 600));
 
