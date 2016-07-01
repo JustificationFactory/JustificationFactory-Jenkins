@@ -1,2 +1,2 @@
-# AVEK-gui
+# AVEK
 AXONIC Valuable Expert Knowlegde GUI
