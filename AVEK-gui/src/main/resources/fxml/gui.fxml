@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane fx:controller="fr.axonic.avek.gui.Controller"
+<BorderPane fx:controller="fr.axonic.avek.gui.view.Controller"
             maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="5" minWidth="5"
             prefHeight="600.0" prefWidth="800.0"

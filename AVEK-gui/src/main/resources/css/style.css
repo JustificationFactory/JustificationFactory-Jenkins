@@ -9,6 +9,7 @@
     -fx-background-radius: 2;
     -fx-padding: 5px;
     -fx-background-insets: 0;
+    -fx-translate-z: 1;
 }
 .jellyBeanCross {
     -fx-text-fill: red;
@@ -21,12 +22,14 @@
     -fx-background-radius: 0 2 2 0;
     -fx-alignment: CENTER;
     -fx-content-display: CENTER;
+    -fx-opacity: 0%;
 }
 .jellyBeanLabel:hover {
     -fx-background-color: #ab7;
 }
 .jellyBean:hover > .jellyBeanCross {
     -fx-background-color: #ab7;
+    -fx-opacity: 100%;
  }
 
 .resultsPane {
