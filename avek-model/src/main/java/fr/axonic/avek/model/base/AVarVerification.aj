@@ -1,10 +1,10 @@
-package fr.axonic.util.base;
+package fr.axonic.avek.model.base;
 
-import fr.axonic.util.verification.Verify;
-import fr.axonic.util.verification.aspects.VerificationMapper;
-import fr.axonic.util.verification.exception.VerificationException;
-import fr.axonic.util.verification.verifier.ANumberVerifier;
-import fr.axonic.util.verification.verifier.AVarVerifier;
+import fr.axonic.avek.model.verification.Verify;
+import fr.axonic.avek.model.verification.aspects.VerificationMapper;
+import fr.axonic.avek.model.verification.exception.VerificationException;
+import fr.axonic.avek.model.verification.verifier.ANumberVerifier;
+import fr.axonic.avek.model.verification.verifier.AVarVerifier;
 
 public aspect AVarVerification {
 
