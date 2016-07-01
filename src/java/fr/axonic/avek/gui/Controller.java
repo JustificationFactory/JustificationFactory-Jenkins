@@ -1,10 +1,10 @@
 package fr.axonic.avek.gui;
 
 import fr.axonic.avek.gui.model.AVar;
-import fr.axonic.avek.gui.model.IEffect;
+import fr.axonic.avek.gui.model.IResultElement;
 import fr.axonic.avek.gui.model.MonitoredSystem;
-import fr.axonic.avek.gui.model.StringEffect;
-import fr.axonic.avek.gui.view.EffectNode;
+import fr.axonic.avek.gui.model.StringResultElement;
+import fr.axonic.avek.gui.view.JellyBean;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -27,13 +26,13 @@ public class Controller {
 	@FXML
 	private VBox pane_data;
 	@FXML
-	private Button b_addeffect;
+	private Button b_addResult;
 	@FXML
-	private FlowPane pane_effects;
+	private FlowPane pane_selectedResult;
 	@FXML
 	private Button b_history;
 	@FXML
-	private ComboBox<IEffect> cb_selecteffect;
+	private ComboBox<IResultElement> cb_selecteffect;
 	@FXML
 	private Accordion accordion;
 
@@ -42,9 +41,9 @@ public class Controller {
 		updateSelectedEffect();
 
 		cb_selecteffect.setItems(FXCollections.observableArrayList(
-				new StringEffect("Effect 1"),
-				new StringEffect("Effect 2"),
-				new StringEffect("Effect 3")
+				new StringResultElement("Effect 1"),
+				new StringResultElement("Effect 2"),
+				new StringResultElement("Effect 3")
 		));
 
 
@@ -80,10 +79,10 @@ public class Controller {
 
 	private void updateSelectedEffect() {
 		cb_selecteffect.setCellFactory(
-				new Callback<ListView<IEffect>, ListCell<IEffect>>() {
-					@Override public ListCell<IEffect> call(ListView<IEffect> param) {
-						final ListCell<IEffect> cell = new ListCell<IEffect>() {
-							@Override public void updateItem(IEffect item, boolean empty) {
+				new Callback<ListView<IResultElement>, ListCell<IResultElement>>() {
+					@Override public ListCell<IResultElement> call(ListView<IResultElement> param) {
+						final ListCell<IResultElement> cell = new ListCell<IResultElement>() {
+							@Override public void updateItem(IResultElement item, boolean empty) {
 								super.updateItem(item, empty);
 								if(item != null) {
 									setText(item.getName());
@@ -105,17 +104,17 @@ public class Controller {
 
 	@FXML
 	void onClicAddEffect(ActionEvent event) {
-		IEffect choice = cb_selecteffect.getValue();
+		IResultElement choice = cb_selecteffect.getValue();
 		if(getSelectedEffects().contains(choice))
 			return;
 
-		pane_effects.getChildren().add(new EffectNode(this, choice));
+		pane_selectedResult.getChildren().add(new JellyBean(this, choice));
 		updateSelectedEffect();
 	}
 
-	private HashSet<IEffect> getSelectedEffects() {
-		return pane_effects.getChildren().stream()
-				.map(n -> ((EffectNode) n).getIEffect())
+	private HashSet<IResultElement> getSelectedEffects() {
+		return pane_selectedResult.getChildren().stream()
+				.map(n -> ((JellyBean) n).getIEffect())
 				.collect(Collectors.toCollection(HashSet::new));
 	}
 
@@ -138,8 +137,8 @@ public class Controller {
 		newStage.show();
 	}
 
-	public void removeEffectNode(EffectNode effectNode) {
-		pane_effects.getChildren().remove(effectNode);
+	public void removeEffectNode(JellyBean jellyBean) {
+		pane_selectedResult.getChildren().remove(jellyBean);
 		updateSelectedEffect();
 	}
 }

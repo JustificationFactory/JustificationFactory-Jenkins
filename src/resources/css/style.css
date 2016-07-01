@@ -1,8 +1,8 @@
-.effectNode {
+.jellyBean {
     -fx-padding: 2px;
     -fx-alignment: CENTER;
 }
-.effectNodeLabel {
+.jellyBeanLabel {
     -fx-background-color: #9a6;
     -fx-border-color: #562;
     -fx-border-radius: 2;
@@ -10,7 +10,7 @@
     -fx-padding: 5px;
     -fx-background-insets: 0;
 }
-.effectNodeCross {
+.jellyBeanCross {
     -fx-text-fill: red;
     -fx-background-color: #9a6;
     -fx-border-color: #562;
@@ -22,10 +22,10 @@
     -fx-alignment: CENTER;
     -fx-content-display: CENTER;
 }
-.effectNodeLabel:hover {
+.jellyBeanLabel:hover {
     -fx-background-color: #ab7;
 }
-.effectNode:hover > .effectNodeCross {
+.jellyBean:hover > .jellyBeanCross {
     -fx-background-color: #ab7;
  }
 
@@ -33,15 +33,15 @@
     -fx-background-color: #cea;
 }
 
-.selectedEffect {
+.selectedResult {
     -fx-text-fill: #ddd;
 }
-.selectedEffect:hover {
+.selectedResult:hover {
     -fx-background-color: #f0f0f0;
 }
-.selectedEffect:selected {
+.selectedResult:selected {
     -fx-background-color: lightblue;
 }
-.notSelectedEffect {
+.notselectedResult {
     -fx-text-fill: black;
 }

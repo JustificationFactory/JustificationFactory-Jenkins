@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.Controller;
-import fr.axonic.avek.gui.model.IEffect;
+import fr.axonic.avek.gui.model.IResultElement;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -9,12 +9,12 @@ import javafx.scene.layout.HBox;
 /**
  * Created by Nathaël N on 28/06/16.
  */
-public class EffectNode extends HBox {
-	private IEffect value;
+public class JellyBean extends HBox {
+	private IResultElement value;
 
-	public EffectNode(final Controller control, IEffect value) {
+	public JellyBean(final Controller control, IResultElement value) {
 		this.value = value;
-		this.getStyleClass().add("effectNode");
+		this.getStyleClass().add("jellyBean");
 
 		Label label = new Label(value.getName());
 		this.getChildren().add(label);
@@ -24,10 +24,10 @@ public class EffectNode extends HBox {
 		this.getChildren().add(cross);
 		cross.getStyleClass().add("effectNodeCross");
 
-		cross.setOnMouseClicked(t -> control.removeEffectNode(EffectNode.this));
+		cross.setOnMouseClicked(t -> control.removeEffectNode(JellyBean.this));
 	}
 
-	public IEffect getIEffect() {
+	public IResultElement getIEffect() {
 		return value;
 	}
 }

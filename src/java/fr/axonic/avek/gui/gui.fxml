@@ -11,14 +11,14 @@
    <center>
       <BorderPane style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
          <top>
-            <BorderPane styleClass="effectPane" BorderPane.alignment="CENTER">
+            <BorderPane styleClass="selectedResultPane" BorderPane.alignment="CENTER">
                <center>
-                  <FlowPane fx:id="pane_effects" BorderPane.alignment="CENTER" />
+                  <FlowPane fx:id="pane_selectedResult" BorderPane.alignment="CENTER" />
                </center>
                <top>
                   <BorderPane BorderPane.alignment="CENTER"> <!-- maxWidth="1.7976931348623157E308" -->
                      <right>
-                        <Button fx:id="b_addeffect" mnemonicParsing="false" onAction="#onClicAddEffect" text="+" BorderPane.alignment="CENTER" />
+                        <Button fx:id="b_addResult" mnemonicParsing="false" onAction="#onClicAddEffect" text="+" BorderPane.alignment="CENTER" />
                      </right>
                      <center>
                         <ComboBox fx:id="cb_selecteffect" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
