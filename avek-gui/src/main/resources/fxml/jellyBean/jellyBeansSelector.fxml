@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml" >
+    <VBox>
+        <children>
+            <HBox>
+                <children>
+                    <ComboBox fx:id="comboBoxJellyBean" maxWidth="1.7976931348623157E308" minWidth="300" />
+                    <Button fx:id="addJellyBeanButton" mnemonicParsing="false" onAction="#onAddJellyBeanClicked" text="+"  />
+                </children>
+            </HBox>
+            <FlowPane styleClass="jellyBeansPane"  fx:id="jellyBeansPane" />
+        </children>
+    </VBox>
+</fx:root>

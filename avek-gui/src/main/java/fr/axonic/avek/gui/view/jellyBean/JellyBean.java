@@ -1,30 +1,42 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.view.jellyBean;
 
 import fr.axonic.avek.gui.model.IResultElement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+
+import java.io.IOException;
 
 /**
  * Created by Nathaël N on 28/06/16.
  */
-public class JellyBeanController {
-	@FXML
-	private HBox jellyBean;
+public class JellyBean extends HBox{
 
 	@FXML
 	private Button jbLabel;
 
-	private Controller mainController;
+	private JellyBeansSelector mainController;
 	private IResultElement resultElement;
+
+	public JellyBean(){
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/jellyBean/jellyBean.fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		try {
+			fxmlLoader.load();
+		} catch (IOException exception) {
+			throw new RuntimeException(exception);
+		}
+	}
 
 	@FXML
 	protected void initialize() {}
 
 	@FXML
 	public void onClickOnCross(ActionEvent actionEvent) {
-		mainController.removeEffectNode(this);
+		mainController.removeJellyBean(this);
 	}
 
 	@FXML
@@ -38,7 +50,7 @@ public class JellyBeanController {
 	}
 
 
-	public void setMainController(Controller mainController) {
+	public void setMainController(JellyBeansSelector mainController) {
 		this.mainController = mainController;
 	}
 
@@ -46,9 +58,5 @@ public class JellyBeanController {
 		this.resultElement = resultElement;
 		System.out.println(jbLabel);
 		jbLabel.setText(resultElement.getName());
-	}
-
-	public HBox getNode() {
-		return jellyBean;
 	}
 }
