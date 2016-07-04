@@ -70,4 +70,9 @@ public class JellyBean extends HBox {
 	public void setMainController(JellyBeansSelector mainController) {
 		this.mainController = mainController;
 	}
+
+	@Override
+	public String toString() {
+		return "JellyBean=" + getExpEffect();
+	}
 }

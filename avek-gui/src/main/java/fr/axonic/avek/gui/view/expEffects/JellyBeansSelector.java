@@ -101,7 +101,7 @@ public class JellyBeansSelector extends HBox {
 	}
 
 	public void removeJellyBean(JellyBean jbc) {
-		addedEffects.remove(jbc);
+		addedEffects.remove(jbc.getExpEffect());
 		jellyBeansPane.getChildren().remove(jbc);
 		updateJellyBeanChoice();
 	}

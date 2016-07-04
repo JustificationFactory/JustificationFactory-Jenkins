@@ -40,7 +40,7 @@ public class TestJellyBeans1 extends /*GuiTest*/ ApplicationTest {
 	}
 
 	@Test
-	public void selectItem() {
+	public void testSelectItem() {
 		verifyThat("#jellyBeansPane", hasChildren(0));
 
 		// Move to 'Effect 5'
