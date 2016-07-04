@@ -3,10 +3,10 @@ package fr.axonic.avek.gui.model;
 /**
  * Created by Nathaël N on 29/06/16.
  */
-public class StringResultElement implements IResultElement {
+public class StringExpEffect implements IExpEffect {
 	private final String name;
 
-	public StringResultElement(String effectName) {
+	public StringExpEffect(String effectName) {
 		this.name = effectName;
 	}
 

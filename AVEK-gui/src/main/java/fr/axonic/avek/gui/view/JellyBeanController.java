@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.model.IResultElement;
+import fr.axonic.avek.gui.model.IExpEffect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,8 +16,8 @@ public class JellyBeanController {
 	@FXML
 	private Button jbLabel;
 
-	private Controller mainController;
-	private IResultElement resultElement;
+	private MainController mainController;
+	private IExpEffect expEffect;
 
 	@FXML
 	protected void initialize() {}
@@ -33,19 +33,18 @@ public class JellyBeanController {
 	}
 
 
-	public IResultElement getIEffect() {
-		return resultElement;
+	public IExpEffect getExpEffect() {
+		return expEffect;
 	}
 
 
-	public void setMainController(Controller mainController) {
+	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
 
-	public void setResultElement(IResultElement resultElement) {
-		this.resultElement = resultElement;
-		System.out.println(jbLabel);
-		jbLabel.setText(resultElement.getName());
+	public void setExpEffect(IExpEffect expEffect) {
+		this.expEffect = expEffect;
+		jbLabel.setText(expEffect.getName());
 	}
 
 	public HBox getNode() {

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane fx:controller="fr.axonic.avek.gui.view.Controller"
+<BorderPane fx:controller="fr.axonic.avek.gui.view.MainController"
             maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="5" minWidth="5"
             prefHeight="600.0" prefWidth="800.0"
@@ -13,15 +13,15 @@
          <top>
             <BorderPane styleClass="resultsPane" BorderPane.alignment="CENTER">
                <center>
-                  <FlowPane fx:id="resultsPane" BorderPane.alignment="CENTER" />
+                  <FlowPane fx:id="paneExpEffects" BorderPane.alignment="CENTER" />
                </center>
                <top>
                   <BorderPane BorderPane.alignment="CENTER"> <!-- maxWidth="1.7976931348623157E308" -->
                      <right>
-                        <Button fx:id="b_addResult" mnemonicParsing="false" onAction="#onClicAddEffect" text="+" BorderPane.alignment="CENTER" />
+                        <Button fx:id="btnAddExpEffect" mnemonicParsing="false" onAction="#onClicAddEffect" text="+" BorderPane.alignment="CENTER" />
                      </right>
                      <center>
-                        <ComboBox fx:id="cb_selectresult" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+                        <ComboBox fx:id="cbboxExpEffectList" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </top>
@@ -30,10 +30,10 @@
          <center>
             <BorderPane BorderPane.alignment="CENTER">
                <center>
-                  <VBox fx:id="pane_data" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                  <VBox fx:id="paneExpParameters" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
                </center>
                <bottom>
-                  <Button fx:id="b_strategy" mnemonicParsing="false" onAction="#onClicStrategyButton" text="Strategy" BorderPane.alignment="BOTTOM_RIGHT" />
+                  <Button fx:id="btnStrategy" mnemonicParsing="false" onAction="#onClicStrategyButton" text="Strategy" BorderPane.alignment="BOTTOM_RIGHT" />
                </bottom>
             </BorderPane>
          </center>
@@ -49,11 +49,11 @@
             </Label>
          </top>
          <center>
-            <Accordion fx:id="accordion" BorderPane.alignment="CENTER" />
+            <Accordion fx:id="acrdnExpSubject" BorderPane.alignment="CENTER" />
          </center>
          <bottom>
              <!-- maxWidth="1.7976931348623157E308" -->
-            <Button fx:id="b_history" styleClass="bHistory" mnemonicParsing="false" onAction="#onClicShowHistory" text="History" BorderPane.alignment="CENTER" />
+            <Button fx:id="btnHistory" styleClass="bHistory" mnemonicParsing="false" onAction="#onClicShowHistory" text="History" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
    </left>

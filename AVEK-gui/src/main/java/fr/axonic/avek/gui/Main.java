@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/gui.fxml"));
-        primaryStage.setTitle("Need a name");
+        primaryStage.setTitle("GUI");
         primaryStage.setScene(new Scene(root, 800, 600));
 
 	    primaryStage.getScene().getStylesheets().add("css/style.css");

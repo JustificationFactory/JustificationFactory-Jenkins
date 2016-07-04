@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view;
-import fr.axonic.avek.gui.model.IResultElement;
+import fr.axonic.avek.gui.model.IExpEffect;
 import fr.axonic.avek.gui.model.MonitoredSystem;
-import fr.axonic.avek.gui.model.StringResultElement;
+import fr.axonic.avek.gui.model.StringExpEffect;
 import fr.axonic.avek.gui.model.base.ADate;
 import fr.axonic.avek.gui.model.base.ANumber;
 import fr.axonic.avek.gui.model.base.AString;
@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
@@ -21,23 +20,25 @@ import javafx.util.Callback;
 
 import java.util.*;
 
-public class Controller {
+public class MainController {
 
 	@FXML
-	private Button b_strategy;
+	private Button btnStrategy;
 	@FXML
-	private VBox pane_data;
+	private VBox paneExpParameters;
 	@FXML
-	private Button b_addResult;
+	private Button btnAddExpEffect;
 	@FXML
-	private FlowPane resultsPane;
+	private FlowPane paneExpEffects;
 	@FXML
-	private Button b_history;
+	private Button btnHistory;
 	@FXML
-	private ComboBox<IResultElement> cb_selectresult;
+	private ComboBox<IExpEffect> cbboxExpEffectList;
 	@FXML
-	private Accordion accordion;
+	private Accordion acrdnExpSubject;
 
+	// All ExpEffect JellyBean's controllers
+	// Used to know what effect is selected
 	private HashSet<JellyBeanController> jellyBeanControllers;
 
 	@FXML
@@ -56,32 +57,25 @@ public class Controller {
 		ms.addAVar("Category 2", new ANumber("an integer",987654321));
 		ms.addAVar("Category 2", new ANumber("a double",98765.4321));
 
-		List<IResultElement> lre = new ArrayList<>();
+		List<IExpEffect> lre = new ArrayList<>();
 		for(int i=1; i<=30; i++)
-			lre.add(new StringResultElement("Effect "+i));
+			lre.add(new StringExpEffect("Effect "+i));
 
-		fillSubjectInfos(ms);
-		fillEffects(lre);
+		fillExpSubjectInfos(ms);
+		fillExpEffectList(lre);
 	}
 
-	private void fillEffects(List<IResultElement> lre) {
-		cb_selectresult.setItems(FXCollections.observableArrayList(lre));
+	private void fillExpEffectList(List<IExpEffect> expEffects) {
+		cbboxExpEffectList.setItems(FXCollections.observableArrayList(expEffects));
 	}
-	private void fillSubjectInfos(MonitoredSystem ms) {
+	private void fillExpSubjectInfos(MonitoredSystem ms) {
 		Map<String, Set<AVar>> map = ms.getMap();
 		for(String category : map.keySet()) {
-
 			VBox vb = new VBox();
-			accordion.getPanes().add(new TitledPane(category, vb));
+			acrdnExpSubject.getPanes().add(new TitledPane(category, vb));
 
-			for(AVar av : map.get(category)) {
-				HBox hb = new HBox(2);
-				hb.getChildren().add(new Label(av.getLabel()));
-				hb.getChildren().add(new Label(":"));
-				hb.getChildren().add(new Label(av.getValue().toString()));
-
-				vb.getChildren().add(hb);
-			}
+			for(AVar av : map.get(category))
+				vb.getChildren().add(new Label(av.getLabel() + " : " + new Label(av.getValue().toString())));
 		}
 	}
 
@@ -90,11 +84,11 @@ public class Controller {
 	 * (typically, set selected results entries in a grey color, and let the others black)
 	 */
 	private void updateSelectedEffect() {
-		cb_selectresult.setCellFactory(
-				new Callback<ListView<IResultElement>, ListCell<IResultElement>>() {
-					@Override public ListCell<IResultElement> call(ListView<IResultElement> param) {
-						final ListCell<IResultElement> cell = new ListCell<IResultElement>() {
-							@Override public void updateItem(IResultElement item, boolean empty) {
+		cbboxExpEffectList.setCellFactory(
+				new Callback<ListView<IExpEffect>, ListCell<IExpEffect>>() {
+					@Override public ListCell<IExpEffect> call(ListView<IExpEffect> param) {
+						final ListCell<IExpEffect> cell = new ListCell<IExpEffect>() {
+							@Override public void updateItem(IExpEffect item, boolean empty) {
 								super.updateItem(item, empty);
 								if(item != null) {
 									setText(item.getName());
@@ -118,17 +112,17 @@ public class Controller {
 	void onClicAddEffect(ActionEvent event) {
 
 		// Verify if JellyBeanController already created (this result is already selected)
-		IResultElement choice = cb_selectresult.getValue();
+		IExpEffect choice = cbboxExpEffectList.getValue();
 		if(getJellyBeanControllers().contains(choice))
 			return;
 
 		try {
 
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/jellyBean.fxml"));
-			resultsPane.getChildren().add(fxmlLoader.load());
+			paneExpEffects.getChildren().add(fxmlLoader.load());
 			JellyBeanController jb2 = fxmlLoader.getController();
 			//fxmlLoader.setController(jb);
-			jb2.setResultElement(choice);
+			jb2.setExpEffect(choice);
 			jb2.setMainController(this);
 
 			jellyBeanControllers.add(jb2);
@@ -163,7 +157,7 @@ public class Controller {
 
 	public void removeEffectNode(JellyBeanController jbc) {
 		jellyBeanControllers.remove(jbc);
-		resultsPane.getChildren().remove(jbc.getNode());
+		paneExpEffects.getChildren().remove(jbc.getNode());
 		updateSelectedEffect();
 	}
 }
