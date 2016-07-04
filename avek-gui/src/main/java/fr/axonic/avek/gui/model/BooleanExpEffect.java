@@ -5,11 +5,13 @@ import javafx.scene.paint.Color;
 /**
  * Created by Nathaël N on 29/06/16.
  */
-public class StringExpEffect implements IExpEffect {
+public class BooleanExpEffect implements IExpEffect {
 	private final String name;
+	private boolean status;
 
-	public StringExpEffect(String effectName) {
+	public BooleanExpEffect(String effectName) {
 		this.name = effectName;
+		this.status = false;
 	}
 
 	@Override
@@ -18,11 +20,11 @@ public class StringExpEffect implements IExpEffect {
 	}
 
 	@Override
-	public void onClick() {}
+	public void onClick() { status = !status; }
 
 	@Override
 	public Color getColor() {
-		return Color.LIGHTBLUE;
+		return status?Color.LIGHTGREEN:Color.INDIANRED;
 	}
 
 	@Override

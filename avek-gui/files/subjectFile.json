@@ -1,61 +1,61 @@
 [
   {
-    "category":"Basic Informations",
+    "category": "Basic Informations",
     "values": [
       {
-        "key":"ID",
-        "type":"java.lang.Integer",
-        "value":42
+        "key": "ID",
+        "type": "java.lang.Integer",
+        "value": 42
       },
       {
-        "key":"Age",
-        "type":"java.lang.Integer",
-        "value":42
+        "key": "Age",
+        "type": "java.lang.Integer",
+        "value": 42
       },
       {
-        "key":"Sex",
-        "type":"fr.axonic.avek.ESex",
-        "value":"M"
+        "key": "Sex",
+        "type": "fr.axonic.avek.ESex",
+        "value": "M"
       }
     ]
   },
   {
-    "category":"Patology Informations",
+    "category": "Patology Informations",
     "values": [
       {
-        "key":"Obesity type",
-        "type":"fr.axonic.avek.EObesityType",
-        "value":"G"
+        "key": "Obesity type",
+        "type": "fr.axonic.avek.EObesityType",
+        "value": "G"
       },
       {
-        "key":"Genetic Origin",
-        "type":"java.lang.String",
-        "value":"..."
+        "key": "Genetic Origin",
+        "type": "java.lang.String",
+        "value": "..."
       },
       {
-        "key":"IMC",
-        "type":"java.lang.Double",
-        "value":23.45
+        "key": "IMC",
+        "type": "java.lang.Double",
+        "value": 23.45
       }
     ]
   },
   {
-    "category":"Dynamic Informations",
+    "category": "Dynamic Informations",
     "values": [
       {
-        "key":"ID",
-        "type":"Integer",
-        "value":42
+        "key": "ID",
+        "type": "Integer",
+        "value": 42
       },
       {
-        "key":"Age",
-        "type":"Integer",
-        "value":42
+        "key": "Age",
+        "type": "Integer",
+        "value": 42
       },
       {
-        "key":"Sex",
-        "type":"Enum",
-        "value":"M"
+        "key": "Sex",
+        "type": "Enum",
+        "value": "M"
       }
     ]
   }

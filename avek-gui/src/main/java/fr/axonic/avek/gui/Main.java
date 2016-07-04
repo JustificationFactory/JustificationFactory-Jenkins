@@ -8,18 +8,19 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/gui.fxml"));
-        primaryStage.setTitle("GUI");
-        primaryStage.setScene(new Scene(root, 800, 600));
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-	    primaryStage.getScene().getStylesheets().add("css/style.css");
-        primaryStage.show();
-    }
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/gui.fxml"));
+		primaryStage.setTitle("GUI");
+		primaryStage.setScene(new Scene(root, 800, 600));
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+		primaryStage.getScene().getStylesheets().add("css/expEffects/jellyBean.css");
+		primaryStage.getScene().getStylesheets().add("css/expEffects/jellyBeanSelector.css");
+		primaryStage.getScene().getStylesheets().add("css/expSubject/expSubject.css");
+		primaryStage.show();
+	}
 }
