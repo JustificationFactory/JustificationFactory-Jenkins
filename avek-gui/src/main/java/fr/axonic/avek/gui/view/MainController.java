@@ -38,16 +38,16 @@ public class MainController {
 
 	@FXML
 	protected void initialize() {
-		// TODO DEBUG ONLY ↓↓↓
+		// TODO MOCK ONLY ↓↓↓
 			MonitoredSystem ms = new MonitoredSystem(42);
 			ms.addCategory("Category 1");
 			ms.addAVar("Category 1", new AString("a string", "strval1"));
 			ms.addAVar("Category 1", new ANumber("an integer", 123456789));
-			ms.addAVar("Category 1", new ANumber("a double", 12345.6789));
+			ms.addAVar("Category 1", new ANumber("a double", -12345.6789));
 			ms.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
 
 			ms.addCategory("Category 2");
-			ms.addAVar("Category 2", new ANumber("an integer", 987654321));
+			ms.addAVar("Category 2", new ANumber("an integer", -987654321));
 			ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
 			List<IExpEffect> expEffects = new ArrayList<>();
@@ -55,7 +55,7 @@ public class MainController {
 				expEffects.add(i%3==1?
 						new StringExpEffect("SEffect " + i):
 						new BooleanExpEffect("BEffect " + i));
-		// end DEBUG ONLY ↑↑↑
+		// end MOCK ONLY ↑↑↑
 
 
 		// Fill experiment subject informations
