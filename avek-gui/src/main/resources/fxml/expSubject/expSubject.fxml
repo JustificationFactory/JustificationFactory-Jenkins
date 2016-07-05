@@ -9,17 +9,17 @@
          prefHeight="1e8" prefWidth="200" maxWidth="300"
          BorderPane.alignment="CENTER" type="javafx.scene.layout.Pane">
     <BorderPane>
-    <top>
-        <Label fx:id="title" text="Subject" BorderPane.alignment="CENTER" style="-fx-font-size: 30"/>
-    </top>
+        <top>
+            <Label fx:id="title" text="Subject" BorderPane.alignment="CENTER" style="-fx-font-size: 30"/>
+        </top>
 
-    <center>
-        <Accordion fx:id="acrdnExpSubject" BorderPane.alignment="CENTER"/>
-    </center>
+        <center>
+            <Accordion fx:id="acrdnExpSubject" BorderPane.alignment="CENTER"/>
+        </center>
 
-    <bottom>
-        <Button fx:id="btnHistory" styleClass="bHistory" mnemonicParsing="false" onAction="#onClicShowHistory"
-                text="History" BorderPane.alignment="CENTER"/>
-    </bottom>
+        <bottom>
+            <Button fx:id="btnHistory" styleClass="bHistory" mnemonicParsing="false" onAction="#onClicShowHistory"
+                    text="History" BorderPane.alignment="CENTER"/>
+        </bottom>
     </BorderPane>
 </fx:root>

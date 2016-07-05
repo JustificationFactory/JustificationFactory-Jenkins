@@ -19,7 +19,8 @@ public class StringExpEffect implements IExpEffect {
 	}
 
 	@Override
-	public void onClick() {}
+	public void onClick() {
+	}
 
 	@Override
 	public Color getColor() {

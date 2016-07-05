@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
  */
 public interface IExpEffect {
 	String getName();
+
 	void onClick();
+
 	Color getColor();
 }

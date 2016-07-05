@@ -21,11 +21,13 @@ public class BooleanExpEffect implements IExpEffect {
 	}
 
 	@Override
-	public void onClick() { status = !status; }
+	public void onClick() {
+		status = !status;
+	}
 
 	@Override
 	public Color getColor() {
-		return status?Color.LIGHTGREEN:Color.INDIANRED;
+		return status ? Color.LIGHTGREEN : Color.INDIANRED;
 	}
 
 	@Override

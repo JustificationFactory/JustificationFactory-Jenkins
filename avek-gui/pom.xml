@@ -22,16 +22,49 @@
         </repository>
     </repositories>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.5.0</version>
+                <configuration>
+                    <mainClass>fr.axonic.avek.gui.Main</mainClass>
+                    <verbose>true</verbose>
+                    <appName>AVEK</appName>
+                    <bundleArguments>
+                        <!-- to include "dtjava.js" and other related files, set this to TRUE -->
+                        <jnlp.includeDT>true</jnlp.includeDT>
+
+                        <!-- the JNLP-bundler needs this, they don't use "appName" for the filename ... you have to set this, otherwise it doesn't build -->
+                        <!-- for details of that JNLP-bundler, please have a look at the source -->
+                        <!-- https://github.com/Debian/openjfx/blob/e32fd960e20c58c9b7db27e426b4bca6d52add2f/modules/fxpackager/src/main/java/com/oracle/tools/packager/jnlp/JNLPBundler.java#L84 -->
+                        <jnlp.outfile>AVEK</jnlp.outfile>
+                    </bundleArguments>
+                    <bundler>jnlp</bundler>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>fr.axonic.avek</groupId>
             <artifactId>avek-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
-            <groupId>org.loadui</groupId>
-            <artifactId>testFx</artifactId>
-            <version>3.1.0</version>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>4.0.1-alpha</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit</artifactId>
+            <version>4.0.1-alpha</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

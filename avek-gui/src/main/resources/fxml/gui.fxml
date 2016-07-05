@@ -29,6 +29,6 @@
         </BorderPane>
     </center>
     <left>
-        <ExpSubject fx:id="expSubject" />
+        <ExpSubject fx:id="expSubject"/>
     </left>
 </BorderPane>

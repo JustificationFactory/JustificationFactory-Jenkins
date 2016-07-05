@@ -26,7 +26,7 @@ public class EnumExpEffect implements IExpEffect {
 	@Override
 	public void onClick() {
 		List<TestEnum> values = new ArrayList<>();
-		for(TestEnum t : TestEnum.values())
+		for (TestEnum t : TestEnum.values())
 			values.add(t);
 		values.add(TestEnum.values()[0]); // Avoid loop problem
 
