@@ -16,11 +16,12 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/gui.fxml"));
 		primaryStage.setTitle("GUI");
-		primaryStage.setScene(new Scene(root, 800, 600));
+		Scene s = new Scene(root, 800, 600);
+		primaryStage.setScene(s);
 
-		primaryStage.getScene().getStylesheets().add("css/expEffects/jellyBean.css");
-		primaryStage.getScene().getStylesheets().add("css/expEffects/jellyBeanSelector.css");
-		primaryStage.getScene().getStylesheets().add("css/expSubject/expSubject.css");
+		s.getStylesheets().add("css/expEffects/jellyBean.css");
+		s.getStylesheets().add("css/expEffects/jellyBeanSelector.css");
+		s.getStylesheets().add("css/expSubject/expSubject.css");
 		primaryStage.show();
 	}
 }
