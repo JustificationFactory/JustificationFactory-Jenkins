@@ -11,6 +11,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.Set;
 /**
  * Created by cduffau on 02/07/16.
  */
-public class JellyBeansSelector extends HBox {
+public class JellyBeansSelector extends VBox {
 
 	@FXML
 	private Button addJellyBeanButton;

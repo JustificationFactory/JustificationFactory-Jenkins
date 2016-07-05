@@ -5,17 +5,11 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.HBox">
-    <VBox>
-        <children>
-            <HBox>
-                <children>
-                    <ComboBox fx:id="comboBoxJellyBean" minWidth="100" prefWidth="1e8"/>
-                    <Button fx:id="addJellyBeanButton" onAction="#onAddJellyBeanClicked" minWidth="45" text="add"/>
-                    <Button fx:id="newExpEffectButton" onAction="#onNewExpEffectClicked" minWidth="60" text="new..."/>
-                </children>
-            </HBox>
-            <FlowPane styleClass="jellyBeansPane" fx:id="jellyBeansPane"/>
-        </children>
-    </VBox>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox">
+    <HBox>
+        <ComboBox fx:id="comboBoxJellyBean" minWidth="100" prefWidth="1e8"/>
+        <Button fx:id="addJellyBeanButton" onAction="#onAddJellyBeanClicked" minWidth="45" text="add"/>
+        <Button fx:id="newExpEffectButton" onAction="#onNewExpEffectClicked" minWidth="60" text="new..."/>
+    </HBox>
+    <FlowPane styleClass="jellyBeansPane" fx:id="jellyBeansPane"/>
 </fx:root>

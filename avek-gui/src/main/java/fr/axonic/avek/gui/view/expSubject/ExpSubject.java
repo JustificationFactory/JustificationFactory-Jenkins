@@ -9,6 +9,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -19,7 +20,7 @@ import java.util.Set;
 /**
  * Created by Nathaël N on 04/07/16.
  */
-public class ExpSubject extends HBox {
+public class ExpSubject extends BorderPane {
 
 	@FXML
 	private Label title;
