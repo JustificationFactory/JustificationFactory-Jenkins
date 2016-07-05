@@ -1,5 +1,6 @@
-package fr.axonic.avek.gui.model;
+package fr.axonic.avek.gui.model.expEffects;
 
+import fr.axonic.avek.gui.model.IExpEffect;
 import javafx.scene.paint.Color;
 
 /**

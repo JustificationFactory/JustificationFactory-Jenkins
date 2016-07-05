@@ -1,9 +1,9 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.model.BooleanExpEffect;
+import fr.axonic.avek.gui.model.expEffects.BooleanExpEffect;
 import fr.axonic.avek.gui.model.IExpEffect;
-import fr.axonic.avek.gui.model.StringExpEffect;
-import fr.axonic.avek.gui.view.expEffects.JellyBean;
+import fr.axonic.avek.gui.model.expEffects.EnumExpEffect;
+import fr.axonic.avek.gui.model.expEffects.StringExpEffect;
 import fr.axonic.avek.gui.view.expEffects.JellyBeansSelector;
 import fr.axonic.avek.gui.view.expParameters.ExpParameters;
 import fr.axonic.avek.gui.view.expSubject.ExpSubject;
@@ -11,17 +11,10 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.AString;
-import fr.axonic.avek.model.base.AVar;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -52,9 +45,9 @@ public class MainController {
 
 			List<IExpEffect> expEffects = new ArrayList<>();
 			for (int i = 1; i <= 30; i++)
-				expEffects.add(i%3==1?
-						new StringExpEffect("SEffect " + i):
-						new BooleanExpEffect("BEffect " + i));
+				expEffects.add(i%3==0?new StringExpEffect("SEffect " + i):
+								i%3==1?new BooleanExpEffect("BEffect " + i):
+										new EnumExpEffect("EEffect " + i));
 		// end MOCK ONLY ↑↑↑
 
 

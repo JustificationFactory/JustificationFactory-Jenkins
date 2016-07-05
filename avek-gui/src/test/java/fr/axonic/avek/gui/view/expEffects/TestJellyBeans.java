@@ -1,13 +1,13 @@
 package fr.axonic.avek.gui.view.expEffects;
 
-import fr.axonic.avek.gui.model.BooleanExpEffect;
+import fr.axonic.avek.gui.model.expEffects.BooleanExpEffect;
 import fr.axonic.avek.gui.model.IExpEffect;
-import fr.axonic.avek.gui.model.StringExpEffect;
+import fr.axonic.avek.gui.model.expEffects.EnumExpEffect;
+import fr.axonic.avek.gui.model.expEffects.StringExpEffect;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -21,15 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.base.ParentMatchers.hasChildren;
 
 /**
  * Created by Nathaël N on 04/07/16.
  */
-public class TestJellyBeans2 extends GuiTest {
-	/* Using org.loadui.testfx */
-
+public class TestJellyBeans extends GuiTest {
 
 	@Override
 	protected Parent getRootNode() {
@@ -54,9 +50,9 @@ public class TestJellyBeans2 extends GuiTest {
 
 		List<IExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 30; i++)
-			expEffects.add(i%3==1?
-					new StringExpEffect("SEffect " + i):
-					new BooleanExpEffect("BEffect " + i));
+			expEffects.add(i%3==0?new StringExpEffect("SEffect " + i):
+					i%3==1?new BooleanExpEffect("BEffect " + i):
+							new EnumExpEffect("EEffect " + i));
 
 		// Fill experiment effects list
 		jbs.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
@@ -66,7 +62,7 @@ public class TestJellyBeans2 extends GuiTest {
 	public void testSelectItem() {
 		FlowPane jellyBeanPane = find("#jellyBeansPane");
 
-		verifyThat("#jellyBeansPane", hasChildren(0));
+		assertEquals(0, jellyBeanPane.getChildren().size());
 
 		// Move to 'Effect 5'
 		click("#comboBoxJellyBean")
@@ -80,13 +76,13 @@ public class TestJellyBeans2 extends GuiTest {
 
 		// Add 'Effect 5'
 		click("#addJellyBeanButton");
-		verifyThat("#jellyBeansPane", hasChildren(1));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
+		assertEquals(1, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
 
 		// Add 'Effect 5' (should do nothing)
 		click("#addJellyBeanButton");
-		verifyThat("#jellyBeansPane", hasChildren(1));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
+		assertEquals(1, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
 
 		// Move to 'Effect 7'
 		click("#comboBoxJellyBean")
@@ -96,9 +92,9 @@ public class TestJellyBeans2 extends GuiTest {
 
 		// Add 'Effect 7'
 		click("#addJellyBeanButton");
-		verifyThat("#jellyBeansPane", hasChildren(2));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 7");
+		assertEquals(2, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 7");
 
 		// Move to 'Effect 5'
 		click("#comboBoxJellyBean")
@@ -108,9 +104,9 @@ public class TestJellyBeans2 extends GuiTest {
 
 		// Add 'Effect 5' (should do nothing)
 		click("#addJellyBeanButton");
-		verifyThat("#jellyBeansPane", hasChildren(2));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 7");
+		assertEquals(2, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 7");
 
 		// Move to 'Effect 3'
 		click("#comboBoxJellyBean")
@@ -120,14 +116,16 @@ public class TestJellyBeans2 extends GuiTest {
 
 		// Add 'Effect 3'
 		click("#addJellyBeanButton");
-		verifyThat("#jellyBeansPane", hasChildren(3));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 7");
-		verifyGoodJellyBean(jellyBeanPane, 2, "BEffect 3");
+		assertEquals(3, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 7");
+		verifyGoodJellyBean(jellyBeanPane, 2, "SEffect 3");
 	}
 
 	@Test
 	public void testRemoveBean() {
+		Pane jellyBeanPane = find("#jellyBeansPane");
+
 		// add 'Effect 5'
 		click("#comboBoxJellyBean")
 				.push(KeyCode.DOWN)
@@ -153,17 +151,16 @@ public class TestJellyBeans2 extends GuiTest {
 				.push(KeyCode.UP)
 				.push(KeyCode.ENTER)
 				.click("#addJellyBeanButton");
-		verifyThat("#jellyBeansPane", hasChildren(3));
+		assertEquals(3, jellyBeanPane.getChildren().size());
 
 		// Remove 'Effect 7'
-		Pane jellyBeanPane = find("#jellyBeansPane");
 		JellyBean jb = (JellyBean) jellyBeanPane.getChildren().get(1);
-		move(jb).move((Node)find(".jellyBeanCross", jb))
+		move(jb).move(find(".jellyBeanCross", jb))
 				.click((Node)find(".jellyBeanCross", jb));
 
-		verifyThat("#jellyBeansPane", hasChildren(2));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 3");
+		assertEquals(2, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 3");
 
 		// Re-add 'Effect 7'
 		click("#comboBoxJellyBean")
@@ -176,12 +173,10 @@ public class TestJellyBeans2 extends GuiTest {
 
 		click("#addJellyBeanButton");
 
-		sleep(1000);
-		System.out.println(jellyBeanPane.getChildren());
-		verifyThat("#jellyBeansPane", hasChildren(3));
-		verifyGoodJellyBean(jellyBeanPane, 0, "BEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 3");
-		verifyGoodJellyBean(jellyBeanPane, 2, "SEffect 7");
+		assertEquals(3, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 3");
+		verifyGoodJellyBean(jellyBeanPane, 2, "BEffect 7");
 	}
 
 
