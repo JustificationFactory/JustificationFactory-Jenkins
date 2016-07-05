@@ -12,6 +12,19 @@
         <module>avek-gui</module>
         <module>avek-model</module>
     </modules>
+
+    <properties>
+        <scmUrl>https://github.com/AVEK-project/AVEK.git</scmUrl>
+        <scmConnection>scm:git:https://github.com/AVEK-project/AVEK.git</scmConnection>
+    </properties>
+
+    <scm>
+        <url>${scmUrl}</url>
+        <connection>${scmConnection}</connection>
+        <developerConnection>${scmConnection}</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
