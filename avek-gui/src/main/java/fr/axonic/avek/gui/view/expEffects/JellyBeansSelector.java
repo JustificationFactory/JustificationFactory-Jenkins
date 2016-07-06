@@ -26,6 +26,8 @@ public class JellyBeansSelector extends VBox {
 	@FXML
 	private Button addJellyBeanButton;
 	@FXML
+	private Button newExpEffectButton;
+	@FXML
 	private FlowPane jellyBeansPane;
 	@FXML
 	private ComboBox<IExpEffect> comboBoxJellyBean;
@@ -72,7 +74,7 @@ public class JellyBeansSelector extends VBox {
 
 	@FXML
 	void onNewExpEffectClicked(ActionEvent event) {
-		addJellyBeanButton.setDisable(true);
+		newExpEffectButton.setDisable(true);
 	}
 
 	/**

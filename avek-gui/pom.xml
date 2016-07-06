@@ -76,10 +76,13 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <keystore>files/keystore/keystore.jks</keystore>
+                    <keystore>${project.basedir}/files/keystore/keystore.jks</keystore>
                     <alias>AVEK</alias>
                     <storepass>AVEK.AXONIC.fr</storepass>
                     <keypass>AVEK.AXONIC.fr</keypass>
+
+                    <verbose>true</verbose>
+                    <certs>true</certs>
                 </configuration>
             </plugin>
         </plugins>
