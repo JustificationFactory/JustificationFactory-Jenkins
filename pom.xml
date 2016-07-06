@@ -16,6 +16,7 @@
     <properties>
         <scmUrl>https://github.com/AVEK-project/AVEK.git</scmUrl>
         <scmConnection>scm:git:https://github.com/AVEK-project/AVEK.git</scmConnection>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <scm>

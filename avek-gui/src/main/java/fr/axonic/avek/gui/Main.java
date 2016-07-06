@@ -24,7 +24,7 @@ public class Main extends Application {
 		Parent root = null;
 		try {
 			List l = new ArrayList();
-			String str = "fxml/";
+			String str = ".";
 			Enumeration e = getClass().getClassLoader().getResources(str);
 			while(e.hasMoreElements())
 				l.add(e.nextElement());

@@ -7,11 +7,11 @@ rm -rf */target
 echo " done"
 
 echo "mvn clean ..."
-mvn clean
+# mvn clean
 echo "mvn clean done"
 
-echo "mvn install ..."
-mvn install
+echo "mvn package ..."
+mvn clean package
 echo "mvn install done"
 
 execTime=$(( ($(date +%s%N) - $start_time) / 1000000))

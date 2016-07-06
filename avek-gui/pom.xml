@@ -23,6 +23,17 @@
     </repositories>
 
     <build>
+        <!-- Include FXML resources -->
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>com.zenjava</groupId>
@@ -53,15 +64,14 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>create-web</id>
+                        <id>create-native</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>build-web</goal>
+                            <goal>build-native</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -76,7 +86,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <keystore>${project.basedir}/files/keystore/keystore.jks</keystore>
+                    <keystore>${project.basedir}/files/keystore/keystore.p12</keystore>
                     <alias>AVEK</alias>
                     <storepass>AVEK.AXONIC.fr</storepass>
                     <keypass>AVEK.AXONIC.fr</keypass>
