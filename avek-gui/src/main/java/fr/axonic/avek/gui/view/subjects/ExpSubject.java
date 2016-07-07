@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.view.expSubject;
+package fr.axonic.avek.gui.view.subjects;
 
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.AVar;
@@ -9,11 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.Map;
@@ -32,7 +29,7 @@ public class ExpSubject extends BorderPane {
 	private Button btnHistory;
 
 	public ExpSubject() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/expSubject/expSubject.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/subjects/subject.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		try {

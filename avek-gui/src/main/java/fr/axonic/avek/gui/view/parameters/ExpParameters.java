@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.view.expParameters;
+package fr.axonic.avek.gui.view.parameters;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ExpParameters extends VBox {
 
 	public ExpParameters() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/expParameters/expParameters.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/parameters/parameter.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		try {

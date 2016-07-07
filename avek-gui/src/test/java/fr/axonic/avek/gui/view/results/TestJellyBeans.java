@@ -1,16 +1,13 @@
-package fr.axonic.avek.gui.view.expEffects;
+package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.IExpEffect;
-import fr.axonic.avek.gui.model.expEffects.BooleanExpEffect;
-import fr.axonic.avek.gui.model.expEffects.EnumExpEffect;
-import fr.axonic.avek.gui.model.expEffects.StringExpEffect;
+import fr.axonic.avek.gui.model.results.ExempleState;
+import fr.axonic.avek.gui.model.results.ExempleStateBool;
+import fr.axonic.avek.gui.model.results.ExpEffect;
 import javafx.collections.FXCollections;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -46,13 +43,14 @@ public class TestJellyBeans extends ApplicationTest {
 		stage.setScene(scene);
 		stage.show();
 
-		List<IExpEffect> expEffects = new ArrayList<>();
-		for (int i = 1; i <= 30; i++)
-			expEffects.add(i % 3 == 0 ? new StringExpEffect("SEffect " + i) :
-					i % 3 == 1 ? new BooleanExpEffect("BEffect " + i) :
-							new EnumExpEffect("EEffect " + i));
+		List<ExpEffect> expEffects = new ArrayList<>();
+		for (int i = 1; i <= 9; i++) {
+			expEffects.add(new ExpEffect(ExempleState.class, "ES1-"+i));
+			expEffects.add(new ExpEffect(ExempleStateBool.class, "ESB-"+i));
+			expEffects.add(new ExpEffect(ExempleState.class, "ES2-"+i));
+		}
 
-		// Fill experiment effects list
+		// Fill experiment results list
 		jbs.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
 	}
 
@@ -76,13 +74,13 @@ public class TestJellyBeans extends ApplicationTest {
 		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(1));
 		assertEquals(1, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
 
 		// Add 'Effect 5' (should do nothing)
 		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(1));
 		assertEquals(1, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
 
 
 		// Move to 'Effect 7'
@@ -95,8 +93,8 @@ public class TestJellyBeans extends ApplicationTest {
 		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(2));
 		assertEquals(2, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 7");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
+		verifyGoodJellyBean(jellyBeanPane, 1, "ES1-3");
 
 		// Move to 'Effect 5'
 		clickOn("#comboBoxJellyBean")
@@ -108,8 +106,8 @@ public class TestJellyBeans extends ApplicationTest {
 		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(2));
 		assertEquals(2, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 7");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
+		verifyGoodJellyBean(jellyBeanPane, 1, "ES1-3");
 
 		// Move to 'Effect 3'
 		clickOn("#comboBoxJellyBean")
@@ -121,9 +119,9 @@ public class TestJellyBeans extends ApplicationTest {
 		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(3));
 		assertEquals(3, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "BEffect 7");
-		verifyGoodJellyBean(jellyBeanPane, 2, "SEffect 3");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
+		verifyGoodJellyBean(jellyBeanPane, 1, "ES1-3");
+		verifyGoodJellyBean(jellyBeanPane, 2, "ES2-1");
 	}
 
 	@Test
@@ -156,6 +154,9 @@ public class TestJellyBeans extends ApplicationTest {
 				.push(KeyCode.ENTER)
 				.clickOn("#addJellyBeanButton");
 		assertEquals(3, jellyBeanPane.getChildren().size());
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
+		verifyGoodJellyBean(jellyBeanPane, 1, "ES1-3");
+		verifyGoodJellyBean(jellyBeanPane, 2, "ES2-1");
 
 		// Remove 'Effect 7'
 		JellyBean jb = (JellyBean) jellyBeanPane.getChildren().get(1);
@@ -163,8 +164,8 @@ public class TestJellyBeans extends ApplicationTest {
 		clickOn(jb.getChildren().get(1));
 
 		assertEquals(2, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 3");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
+		verifyGoodJellyBean(jellyBeanPane, 1, "ES2-1");
 
 		// Re-add 'Effect 7'
 		clickOn("#comboBoxJellyBean")
@@ -175,17 +176,15 @@ public class TestJellyBeans extends ApplicationTest {
 				.push(KeyCode.ENTER)
 				.clickOn("#addJellyBeanButton");
 
-		clickOn("#addJellyBeanButton");
-
 		assertEquals(3, jellyBeanPane.getChildren().size());
-		verifyGoodJellyBean(jellyBeanPane, 0, "EEffect 5");
-		verifyGoodJellyBean(jellyBeanPane, 1, "SEffect 3");
-		verifyGoodJellyBean(jellyBeanPane, 2, "BEffect 7");
+		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
+		verifyGoodJellyBean(jellyBeanPane, 1, "ES2-1");
+		verifyGoodJellyBean(jellyBeanPane, 2, "ES1-3");
 	}
 
 	private void verifyGoodJellyBean(Pane jellyBeanPane, int i, String name) {
 		assertTrue(jellyBeanPane.getChildren().get(i) instanceof JellyBean);
 		JellyBean jb = (JellyBean) jellyBeanPane.getChildren().get(i);
-		assertEquals(name, jb.getExpEffect().getName());
+		assertEquals(name, jb.getText());
 	}
 }

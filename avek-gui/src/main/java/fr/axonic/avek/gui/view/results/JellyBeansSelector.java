@@ -1,6 +1,6 @@
-package fr.axonic.avek.gui.view.expEffects;
+package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.IExpEffect;
+import fr.axonic.avek.gui.model.results.ExpEffect;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +10,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -30,19 +29,17 @@ public class JellyBeansSelector extends VBox {
 	@FXML
 	private FlowPane jellyBeansPane;
 	@FXML
-	private ComboBox<IExpEffect> comboBoxJellyBean;
+	private ComboBox<ExpEffect> comboBoxJellyBean;
 
-	private Set<IExpEffect> addedEffects;
+	private Set<String> addedEffects;
 
 	public JellyBeansSelector() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/expEffects/jellyBeansSelector.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		try {
 			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
+		} catch (IOException exception) {}
 	}
 
 	@FXML
@@ -55,21 +52,17 @@ public class JellyBeansSelector extends VBox {
 	void onAddJellyBeanClicked(ActionEvent event) {
 
 		// Verify if JellyBean already created (this result is already selected)
-		IExpEffect choice = comboBoxJellyBean.getValue();
-		if (addedEffects.contains(choice))
+		ExpEffect choice = comboBoxJellyBean.getValue();
+		if (addedEffects.contains(choice.getName()))
 			return;
 
-		try {
-
-			JellyBean jb2 = new JellyBean();
-			jb2.setExpEffect(choice);
-			jb2.setMainController(this);
-			jellyBeansPane.getChildren().add(jb2);
-			addedEffects.add(jb2.getExpEffect());
-			updateJellyBeanChoice();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		JellyBean jb2 = new JellyBean();
+		jb2.setStateType(choice.getStateClass());
+		jb2.setText(choice.getName());
+		jb2.setMainController(this);
+		jellyBeansPane.getChildren().add(jb2);
+		addedEffects.add(choice.getName());
+		updateJellyBeanChoice();
 	}
 
 	@FXML
@@ -78,17 +71,17 @@ public class JellyBeansSelector extends VBox {
 	}
 
 	/**
-	 * Set Combobox entries for already selected effects to 'selectedResult' style, and others to 'notSelectedResult'
+	 * Set Combobox entries for already selected results to 'selectedResult' style, and others to 'notSelectedResult'
 	 * (typically, set selected results entries in a grey color, and let the others black)
 	 */
 	private void updateJellyBeanChoice() {
 		comboBoxJellyBean.setCellFactory(
-				new Callback<ListView<IExpEffect>, ListCell<IExpEffect>>() {
+				new Callback<ListView<ExpEffect>, ListCell<ExpEffect>>() {
 					@Override
-					public ListCell<IExpEffect> call(ListView<IExpEffect> param) {
-						final ListCell<IExpEffect> cell = new ListCell<IExpEffect>() {
+					public ListCell<ExpEffect> call(ListView<ExpEffect> param) {
+						final ListCell<ExpEffect> cell = new ListCell<ExpEffect>() {
 							@Override
-							public void updateItem(IExpEffect item, boolean empty) {
+							public void updateItem(ExpEffect item, boolean empty) {
 								super.updateItem(item, empty);
 								if (item != null) {
 									setText(item.getName());
@@ -104,12 +97,12 @@ public class JellyBeansSelector extends VBox {
 	}
 
 	public void removeJellyBean(JellyBean jbc) {
-		addedEffects.remove(jbc.getExpEffect());
+		addedEffects.remove(jbc.getText());
 		jellyBeansPane.getChildren().remove(jbc);
 		updateJellyBeanChoice();
 	}
 
-	public void setJellyBeansChoice(ObservableList<IExpEffect> items) {
+	public void setJellyBeansChoice(ObservableList<ExpEffect> items) {
 		this.comboBoxJellyBean.setItems(items);
 	}
 }

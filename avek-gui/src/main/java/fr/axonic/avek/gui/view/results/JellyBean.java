@@ -1,6 +1,6 @@
-package fr.axonic.avek.gui.view.expEffects;
+package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.IExpEffect;
+import fr.axonic.avek.gui.model.results.IColorState;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Nathaël N on 28/06/16.
@@ -20,18 +22,17 @@ public class JellyBean extends HBox {
 	@FXML
 	private Button jbCross;
 
-	private IExpEffect expEffect;
+	private Class<? extends IColorState> enumType;
+	private IColorState expEffect;
 	private JellyBeansSelector mainController;
 
 	public JellyBean() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/expEffects/jellyBean.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/results/jellyBean.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		try {
 			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
+		} catch (IOException exception) {}
 	}
 
 	@FXML
@@ -41,7 +42,14 @@ public class JellyBean extends HBox {
 
 	@FXML
 	public void onClickOnLabel(ActionEvent actionEvent) {
-		expEffect.onClick();
+		IColorState[] constants = enumType.getEnumConstants();
+
+		ArrayList<IColorState> list = new ArrayList<>();
+		Collections.addAll(list, constants);
+
+		int nextIndex = ( list.indexOf(expEffect) + 1 )%list.size();
+		expEffect = list.get(nextIndex);
+
 		refreshColor();
 	}
 
@@ -60,14 +68,18 @@ public class JellyBean extends HBox {
 	}
 
 
-	public IExpEffect getExpEffect() {
+	public IColorState getState() {
 		return expEffect;
 	}
 
-	public void setExpEffect(IExpEffect expEffect) {
-		this.expEffect = expEffect;
-		jbLabel.setText(expEffect.getName());
+	public void setStateType(Class<? extends IColorState> stateType) {
+		enumType = stateType;
+		expEffect = enumType.getEnumConstants()[0];
 	}
+	public void setText(String text) {
+		jbLabel.setText(text);
+	}
+	public String getText() { return jbLabel.getText(); }
 
 	public void setMainController(JellyBeansSelector mainController) {
 		this.mainController = mainController;
@@ -75,6 +87,6 @@ public class JellyBean extends HBox {
 
 	@Override
 	public String toString() {
-		return "JellyBean=" + getExpEffect();
+		return "JellyBean=" + getState();
 	}
 }
