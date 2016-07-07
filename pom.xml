@@ -15,7 +15,7 @@
 
     <properties>
         <scmUrl>https://github.com/AVEK-project/AVEK.git</scmUrl>
-        <scmConnection>scm:git:https://github.com/AVEK-project/AVEK.git</scmConnection>
+        <scmConnection>scm:git:ssh://git@github.com:AVEK-project/AVEK.git</scmConnection>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -23,7 +23,6 @@
         <url>${scmUrl}</url>
         <connection>${scmConnection}</connection>
         <developerConnection>${scmConnection}</developerConnection>
-        <tag>HEAD</tag>
     </scm>
 
     <dependencies>
