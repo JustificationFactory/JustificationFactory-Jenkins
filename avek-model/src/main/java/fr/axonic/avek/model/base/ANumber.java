@@ -109,7 +109,7 @@ public class ANumber extends AVar implements Verifiable {
             }
                 break;
             case DEFAULT_VALUE: {
-                max = (Number) newPropertyValue;
+                defaultValue = (Number) newPropertyValue;
             }
                 break;
             default: {
