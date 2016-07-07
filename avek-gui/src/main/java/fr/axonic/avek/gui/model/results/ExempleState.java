@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
  * Created by Nathaël N on 07/07/16.
  */
 public enum ExempleState implements IColorState {
-	VERRY_LOW(Color.RED),
+	VERY_LOW(Color.RED),
 	LOW(Color.ORANGE),
 	MEDIUM(Color.YELLOW),
 	HIGH(Color.BROWN),
