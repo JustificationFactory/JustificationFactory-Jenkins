@@ -130,6 +130,10 @@ public class ANumber extends AVar implements Verifiable {
                 result = max;
             }
                 break;
+            case DEFAULT_VALUE: {
+                result  =defaultValue;
+                break;
+            }
             default: {
                 result = super.getPropertyValue(propertyName);
             }
@@ -174,6 +178,9 @@ public class ANumber extends AVar implements Verifiable {
 
     public void setDefaultValue(Number defaultValue) throws VerificationException {
         setProperty(AVarProperty.DEFAULT_VALUE.name(), defaultValue);
+        if(getPropertyValue(AVarProperty.VALUE.name())==null){
+            setProperty(AVarProperty.VALUE.name(), defaultValue);
+        }
     }
 
     @Override
