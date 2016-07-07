@@ -86,7 +86,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <keystore>${project.basedir}/files/keystore/keystore.p12</keystore>
+                    <keystore>${project.basedir}/keystore/keystore.p12</keystore>
                     <alias>AVEK</alias>
                     <storepass>AVEK.AXONIC.fr</storepass>
                     <keypass>AVEK.AXONIC.fr</keypass>

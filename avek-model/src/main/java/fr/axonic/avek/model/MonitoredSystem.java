@@ -1,5 +1,6 @@
 package fr.axonic.avek.model;
 
+import com.google.gson.Gson;
 import fr.axonic.avek.model.base.AVar;
 
 import java.util.LinkedHashMap;
@@ -19,11 +20,6 @@ public class MonitoredSystem {
 		this.categories = new LinkedHashMap<>();
 	}
 
-	@Override
-	public String toString() {
-		return "MonitoredSystem= "+this.id+", "+this.categories +"}";
-	}
-
 	public void addCategory(String s) {
 		categories.put(s, new LinkedHashSet<>());
 	}
@@ -35,4 +31,18 @@ public class MonitoredSystem {
 	public Map<String, Set<AVar>> getMap() {
 		return categories;
 	}
+
+	public String toJson() {
+		return new Gson().toJson(this);
+	}
+	public static MonitoredSystem fromJson(String json) {
+		return new Gson().fromJson(json, MonitoredSystem.class);
+	}
+
+
+	@Override
+	public String toString() {
+		return "MonitoredSystem= "+this.id+", "+this.categories +"}";
+	}
+
 }

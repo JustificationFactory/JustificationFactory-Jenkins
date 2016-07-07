@@ -1,1 +1,0 @@
-http://blog.jrebirth.org/javafx/tutorials/how-to-build-and-package-javafx-2-application-with-maven/

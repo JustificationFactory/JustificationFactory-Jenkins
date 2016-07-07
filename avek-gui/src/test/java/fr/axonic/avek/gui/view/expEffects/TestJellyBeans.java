@@ -56,7 +56,6 @@ public class TestJellyBeans extends ApplicationTest {
 		jbs.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
 	}
 
-	@Ignore
 	@Test
 	public void testSelectItem() {
 		Pane jellyBeanPane = (Pane) jbs.getChildren().get(1); // JellyBeansPane
@@ -127,7 +126,6 @@ public class TestJellyBeans extends ApplicationTest {
 		verifyGoodJellyBean(jellyBeanPane, 2, "SEffect 3");
 	}
 
-	@Ignore
 	@Test
 	public void testRemoveBean() {
 		Pane jellyBeanPane = (Pane) jbs.getChildren().get(1); // JellyBeansPane

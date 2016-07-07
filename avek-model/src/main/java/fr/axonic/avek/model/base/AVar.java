@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 
 /**
@@ -24,7 +25,7 @@ import java.beans.PropertyChangeSupport;
 // properties
 @XmlRootElement
 @XmlSeeAlso({ ANumber.class, ABoolean.class, ADate.class, AString.class })
-public abstract class AVar implements Comparable<AVar>, Cloneable, Verifiable {
+public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiable, Serializable {
 
 	private Object value;
 

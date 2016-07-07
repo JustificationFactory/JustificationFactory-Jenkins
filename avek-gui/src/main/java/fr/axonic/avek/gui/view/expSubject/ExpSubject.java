@@ -5,13 +5,15 @@ import fr.axonic.avek.model.base.AVar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Accordion;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.Map;
@@ -52,11 +54,13 @@ public class ExpSubject extends BorderPane {
 	public void setData(MonitoredSystem ms) {
 		Map<String, Set<AVar>> map = ms.getMap();
 		for (String category : map.keySet()) {
+			ScrollPane sp = new ScrollPane();
 			VBox vb = new VBox();
-			acrdnExpSubject.getPanes().add(new TitledPane(category, vb));
+			acrdnExpSubject.getPanes().add(new TitledPane(category, sp));
+			sp.setContent(vb);
 
 			for (AVar av : map.get(category))
-				vb.getChildren().add(new Label(av.getLabel() + " : " + new Label(av.getValue().toString())));
+				vb.getChildren().add(new Label(av.getLabel() + " : " + av.getValue().toString()));
 		}
 	}
 
