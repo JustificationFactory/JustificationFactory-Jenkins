@@ -65,6 +65,10 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 				result = new AString();
 			}
 			break;
+			case ENUM: {
+				result = new AEnum<>();
+			}
+			break;
 			default: {
 				throw new IllegalArgumentException("Variable cannot be initialized. Unknown format.");
 			}

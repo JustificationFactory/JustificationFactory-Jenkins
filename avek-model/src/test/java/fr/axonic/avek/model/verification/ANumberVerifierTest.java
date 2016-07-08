@@ -14,7 +14,7 @@ import static org.junit.Assert.fail;
 /**
  * Created by cduffau on 05/07/16.
  */
-public class AVarVerifierTest {
+public class ANumberVerifierTest {
 
     @Test
     public void testGoodRangeVerifier() throws VerificationException {

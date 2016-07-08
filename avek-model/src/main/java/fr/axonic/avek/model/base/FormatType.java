@@ -5,5 +5,6 @@ public enum FormatType {
     STRING,
     NUMBER,
     DATE,
-    BOOLEAN
+    BOOLEAN,
+    ENUM
 }
