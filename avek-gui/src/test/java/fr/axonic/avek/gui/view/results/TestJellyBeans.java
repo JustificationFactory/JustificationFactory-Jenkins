@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -27,7 +29,11 @@ public class TestJellyBeans extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		this.jb = new JellyBean();
+		try {
+			this.jb = new JellyBean();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		Scene scene = new Scene(jb, 200, 200);
 		stage.setScene(scene);

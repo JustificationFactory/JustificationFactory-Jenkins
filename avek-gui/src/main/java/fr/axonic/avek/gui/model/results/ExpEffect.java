@@ -18,4 +18,9 @@ public class ExpEffect {
 	public Class<? extends IColorState> getStateClass() {
 		return stateClass;
 	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

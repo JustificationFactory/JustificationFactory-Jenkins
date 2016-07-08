@@ -54,7 +54,7 @@ public class MainController {
 
 
 		// Fill experiment subject informations
-		expSubject.setData(MonitoredSystem.fromJson(monitoredSystemJson));
+		expSubject.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
 
 		// Fill experiment results list
 		jellyBeansSelector.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));

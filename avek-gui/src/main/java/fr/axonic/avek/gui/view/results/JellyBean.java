@@ -26,13 +26,11 @@ public class JellyBean extends HBox {
 	private IColorState expEffect;
 	private JellyBeansSelector mainController;
 
-	public JellyBean() {
+	public JellyBean() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/results/jellyBean.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {}
+		fxmlLoader.load();
 	}
 
 	@FXML

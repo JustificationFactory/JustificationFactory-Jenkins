@@ -2,6 +2,7 @@ package fr.axonic.avek.gui.view.subjects;
 
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.AVar;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,15 +26,11 @@ public class ExpSubject extends BorderPane {
 	@FXML
 	private Button btnHistory;
 
-	public ExpSubject() {
+	public ExpSubject() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/subjects/subject.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
+		fxmlLoader.load();
 	}
 
 	@FXML
@@ -45,17 +42,23 @@ public class ExpSubject extends BorderPane {
 		this.title.setText(title);
 	}
 
-	public void setData(MonitoredSystem ms) {
-		Map<String, Set<AVar>> map = ms.getMap();
-		for (String category : map.keySet()) {
-			ScrollPane sp = new ScrollPane();
-			VBox vb = new VBox();
-			acrdnExpSubject.getPanes().add(new TitledPane(category, sp));
-			sp.setContent(vb);
+	public void setMonitoredSystem(MonitoredSystem ms) {
+		Platform.runLater(() -> {
+			acrdnExpSubject.getPanes().clear();
 
-			for (AVar av : map.get(category))
-				vb.getChildren().add(new Label(av.getLabel() + " : " + av.getValue().toString()));
-		}
+			Map<String, Set<AVar>> map = ms.getMap();
+			for (String category : map.keySet()) {
+				ScrollPane sp = new ScrollPane();
+				VBox vb = new VBox();
+
+				acrdnExpSubject.getPanes().add(new TitledPane(category, sp));
+
+				sp.setContent(vb);
+
+				for (AVar av : map.get(category))
+					vb.getChildren().add(new Label(av.getLabel() + " : " + av.getValue().toString()));
+			}
+		});
 	}
 
 }

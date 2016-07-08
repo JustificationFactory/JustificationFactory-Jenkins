@@ -3,6 +3,7 @@ package fr.axonic.avek.gui.view.results;
 import fr.axonic.avek.gui.model.results.ExpEffect;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -23,8 +24,6 @@ import java.util.Set;
 public class JellyBeansSelector extends VBox {
 
 	@FXML
-	private Button addJellyBeanButton;
-	@FXML
 	private Button newExpEffectButton;
 	@FXML
 	private FlowPane jellyBeansPane;
@@ -33,13 +32,11 @@ public class JellyBeansSelector extends VBox {
 
 	private Set<String> addedEffects;
 
-	public JellyBeansSelector() {
+	public JellyBeansSelector() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {}
+		fxmlLoader.load();
 	}
 
 	@FXML
@@ -49,20 +46,8 @@ public class JellyBeansSelector extends VBox {
 	}
 
 	@FXML
-	void onAddJellyBeanClicked(ActionEvent event) {
-
-		// Verify if JellyBean already created (this result is already selected)
-		ExpEffect choice = comboBoxJellyBean.getValue();
-		if (addedEffects.contains(choice.getName()))
-			return;
-
-		JellyBean jb2 = new JellyBean();
-		jb2.setStateType(choice.getStateClass());
-		jb2.setText(choice.getName());
-		jb2.setMainController(this);
-		jellyBeansPane.getChildren().add(jb2);
-		addedEffects.add(choice.getName());
-		updateJellyBeanChoice();
+	void onSelectorHidding(Event event) throws IOException {
+		addJellyBean();
 	}
 
 	@FXML
@@ -87,13 +72,28 @@ public class JellyBeansSelector extends VBox {
 									setText(item.getName());
 									getStyleClass().remove("selectedResult");
 									getStyleClass().remove("notSelectedResult");
-									getStyleClass().add(addedEffects.contains(item) ? "selectedResult" : "notSelectedResult");
+									getStyleClass().add(addedEffects.contains(item.getName()) ? "selectedResult" : "notSelectedResult");
 								}
 							}
 						};
 						return cell;
 					}
 				});
+	}
+
+	private void addJellyBean() throws IOException {
+		// Verify if JellyBean already created (this result is already selected)
+		ExpEffect choice = comboBoxJellyBean.getValue();
+		if (addedEffects.contains(choice.getName()))
+			return;
+
+		JellyBean jb2 = new JellyBean();
+		jb2.setStateType(choice.getStateClass());
+		jb2.setText(choice.getName());
+		jb2.setMainController(this);
+		jellyBeansPane.getChildren().add(jb2);
+		addedEffects.add(choice.getName());
+		updateJellyBeanChoice();
 	}
 
 	public void removeJellyBean(JellyBean jbc) {

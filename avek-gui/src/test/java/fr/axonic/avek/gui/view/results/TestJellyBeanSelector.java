@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import static org.testfx.matcher.base.ParentMatchers.hasChildren;
  * Created by Nathaël N on 04/07/16.
  */
 public class TestJellyBeanSelector extends ApplicationTest {
-
 	static {
 	  	System.setProperty("testfx.robot", "glass");
 		System.setProperty("testfx.headless", "true");
@@ -33,12 +33,16 @@ public class TestJellyBeanSelector extends ApplicationTest {
 	}
 
 	private JellyBeansSelector jbs;
-
+	private Pane jellyBeanPane;
 
 
 	@Override
 	public void start(Stage stage) {
-		this.jbs = new JellyBeansSelector();
+		try {
+			this.jbs = new JellyBeansSelector();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Scene scene = new Scene(jbs, 200, 200);
 		stage.setScene(scene);
 		stage.show();
@@ -52,12 +56,11 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
 		// Fill experiment results list
 		jbs.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
+		jellyBeanPane = (Pane) jbs.getChildren().get(1);
 	}
 
 	@Test
 	public void testSelectItem() {
-		Pane jellyBeanPane = (Pane) jbs.getChildren().get(1); // JellyBeansPane
-
 		verifyThat("#jellyBeansPane", hasChildren(0));
 		assertEquals(0, jellyBeanPane.getChildren().size());
 
@@ -71,13 +74,11 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 5'
-		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(1));
 		assertEquals(1, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
 
 		// Add 'Effect 5' (should do nothing)
-		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(1));
 		assertEquals(1, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
@@ -90,7 +91,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 7'
-		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(2));
 		assertEquals(2, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
@@ -103,7 +103,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 5' (should do nothing)
-		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(2));
 		assertEquals(2, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
@@ -116,7 +115,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 3'
-		clickOn("#addJellyBeanButton");
 		verifyThat("#jellyBeansPane", hasChildren(3));
 		assertEquals(3, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
@@ -126,8 +124,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
 	@Test
 	public void testRemoveBean() {
-		Pane jellyBeanPane = (Pane) jbs.getChildren().get(1); // JellyBeansPane
-
 		// add 'Effect 5'
 		clickOn("#comboBoxJellyBean")
 				.push(KeyCode.DOWN)
@@ -135,15 +131,13 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.DOWN)
 				.push(KeyCode.DOWN)
 				.push(KeyCode.DOWN)
-				.push(KeyCode.ENTER)
-				.clickOn("#addJellyBeanButton");
+				.push(KeyCode.ENTER);
 
 		// Add 'Effect 7'
 		clickOn("#comboBoxJellyBean")
 				.push(KeyCode.DOWN)
 				.push(KeyCode.DOWN)
-				.push(KeyCode.ENTER)
-				.clickOn("#addJellyBeanButton");
+				.push(KeyCode.ENTER);
 
 		// Add 'Effect 3'
 		clickOn("#comboBoxJellyBean")
@@ -151,8 +145,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.UP)
 				.push(KeyCode.UP)
 				.push(KeyCode.UP)
-				.push(KeyCode.ENTER)
-				.clickOn("#addJellyBeanButton");
+				.push(KeyCode.ENTER);
 		assertEquals(3, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
 		verifyGoodJellyBean(jellyBeanPane, 1, "ES1-3");
@@ -173,8 +166,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.DOWN)
 				.push(KeyCode.DOWN)
 				.push(KeyCode.DOWN)
-				.push(KeyCode.ENTER)
-				.clickOn("#addJellyBeanButton");
+				.push(KeyCode.ENTER);
 
 		assertEquals(3, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "ESB-2");
