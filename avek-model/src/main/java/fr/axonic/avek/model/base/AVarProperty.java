@@ -11,6 +11,7 @@ public enum AVarProperty {
     LABEL,
     MIN,
     MAX,
+    RANGE,
     DEFAULT_VALUE;
 
 }

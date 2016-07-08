@@ -4,6 +4,7 @@ import fr.axonic.avek.model.verification.Verify;
 import fr.axonic.avek.model.verification.aspects.VerificationMapper;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import fr.axonic.avek.model.verification.verifier.ANumberVerifier;
+import fr.axonic.avek.model.verification.verifier.AEnumVerifier;
 import fr.axonic.avek.model.verification.verifier.AVarVerifier;
 
 public aspect AVarVerification {
@@ -19,5 +20,9 @@ public aspect AVarVerification {
                   execution(@Verify * AVar.verify(boolean)) && args(verifyConsistency) {
         VerificationMapper.verifyObject(verifyConsistency, new AVarVerifier(), aVar);
     }
+    void around(AEnum aEnum, boolean verifyConsistency) throws VerificationException : target(aEnum) &&
+                      execution(@Verify * AEnum.verify(boolean)) && args(verifyConsistency) {
+            VerificationMapper.verifyObject(verifyConsistency, new AEnumVerifier(), aEnum);
+        }
 
 }
