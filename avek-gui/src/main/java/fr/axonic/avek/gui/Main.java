@@ -24,13 +24,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		Parent root = null;
 		try {
-			List l = new ArrayList();
 			String path = ".";
-			Enumeration e = getClass().getClassLoader().getResources(path);
-			while(e.hasMoreElements())
-				l.add(e.nextElement());
-
-			System.err.println("Resources under '"+ path + "': " + l);
 
 			List<File> lf = new ArrayList<>();
 			List<File> lfTotal = new ArrayList<>();
