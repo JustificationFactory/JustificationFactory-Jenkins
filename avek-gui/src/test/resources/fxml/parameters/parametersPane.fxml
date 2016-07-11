@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.GridPane"
+         hgap="10" vgap="10">
+    <Label GridPane.columnIndex="0"
+            GridPane.rowIndex="0">
+        Util?
+    </Label>
+
+    <Label GridPane.columnIndex="1"
+           GridPane.rowIndex="0">
+        Parameter :</Label>
+    <Label GridPane.columnIndex="2"
+           GridPane.rowIndex="0">
+        Value Unity</Label>
+
+    <Label GridPane.columnIndex="3"
+           GridPane.rowIndex="0">
+        Min equivalent value</Label>
+    <Label GridPane.columnIndex="4"
+           GridPane.rowIndex="0">
+        Max equivalent value</Label>
+</fx:root>
