@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,14 +27,14 @@ public class MainController {
 	@FXML
 	private Button btnStrategy;
 	@FXML
-	private ExpParameters paneExpParameters;
+	private VBox paneExpParameters;
 	@FXML
 	private ExpSubject expSubject;
 	@FXML
 	private JellyBeansSelector jellyBeansSelector;
 
 	@FXML
-	protected void initialize() throws VerificationException {
+	protected void initialize() throws VerificationException, IOException {
 		String monitoredSystemJson = "";
 		try {
 			File f = new File(getClass().getClassLoader()
@@ -67,11 +68,23 @@ public class MainController {
 
 		// Fill experiment results list
 		jellyBeansSelector.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
+
+		addParameter();
+		addParameter();
 	}
 
 	@FXML
 	void onClicStrategyButton(ActionEvent event) {
 		btnStrategy.setDisable(true);
+	}
+
+
+	private void addParameter() throws IOException {
+		ExpParameters expp = new ExpParameters();
+		expp.setParamName("Frequency");
+		expp.setParamUnit("GHz");
+		expp.setParamValue("42");
+		paneExpParameters.getChildren().add(expp);
 	}
 }
 

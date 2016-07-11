@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view.results;
 
 import fr.axonic.avek.model.base.AEnum;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,10 +54,12 @@ public class JellyBean extends HBox {
 	}
 
 	private void refreshColor(String before, String after) {
-		jbLabel.getStyleClass().remove(before);
-		jbCross.getStyleClass().remove(before);
-		jbLabel.getStyleClass().add(after);
-		jbCross.getStyleClass().add(after);
+		Platform.runLater(() -> {
+			jbLabel.getStyleClass().remove(before);
+			jbCross.getStyleClass().remove(before);
+			jbLabel.getStyleClass().add(after);
+			jbCross.getStyleClass().add(after);
+		});
 	}
 
 
