@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view;
 
 import com.google.gson.Gson;
-import fr.axonic.avek.gui.model.results.ExempleState;
+import fr.axonic.avek.gui.model.results.ExampleState;
 import fr.axonic.avek.gui.model.results.ExpEffect;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
 import fr.axonic.avek.gui.view.results.JellyBeansSelector;
@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainController {
 
@@ -35,7 +36,7 @@ public class MainController {
 	private JellyBeansSelector jellyBeansSelector;
 
 	@FXML
-	protected void initialize() throws VerificationException, IOException {
+	protected void initialize() throws VerificationException, IOException, ExecutionException, InterruptedException {
 		String monitoredSystemJson = "";
 		try {
 			File f = new File(getClass().getClassLoader()
@@ -50,10 +51,10 @@ public class MainController {
 		for (int i = 1; i <= 9; i++) {
 			String s = "";
 			{
-				ExempleState val = ExempleState.values()[0];
-				AEnum<ExempleState> aEnum = new AEnum(val);
-				aEnum.setEnumsRange(ExempleState.values());
-				//aEnum.setDefaultValue(ExempleState.MEDIUM);
+				ExampleState val = ExampleState.values()[0];
+				AEnum<ExampleState> aEnum = new AEnum(val);
+				aEnum.setEnumsRange(ExampleState.values());
+				//aEnum.setDefaultValue(ExampleState.MEDIUM);
 				s = new Gson().toJson(aEnum);
 			}
 			AEnum ae = new Gson().fromJson(s, AEnum.class);
