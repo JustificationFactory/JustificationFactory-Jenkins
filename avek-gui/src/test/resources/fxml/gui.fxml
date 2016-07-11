@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fr.axonic.avek.gui.view.parameters.ExpParameters?>
+<?import fr.axonic.avek.gui.view.parameters.ExpParameter?>
 <?import fr.axonic.avek.gui.view.results.JellyBeansSelector?>
 <?import fr.axonic.avek.gui.view.subjects.ExpSubject?>
 <?import javafx.scene.control.Button?>
@@ -18,7 +18,7 @@
             <center>
                 <BorderPane BorderPane.alignment="CENTER">
                     <center>
-                        <ExpParameters fx:id="paneExpParameters"/>
+                        <ExpParameter fx:id="paneExpParameters"/>
                     </center>
                     <bottom>
                         <Button fx:id="btnStrategy" mnemonicParsing="false" onAction="#onClicStrategyButton"

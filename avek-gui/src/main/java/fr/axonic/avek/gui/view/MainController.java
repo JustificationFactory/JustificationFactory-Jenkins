@@ -3,17 +3,18 @@ package fr.axonic.avek.gui.view;
 import com.google.gson.Gson;
 import fr.axonic.avek.gui.model.results.ExempleState;
 import fr.axonic.avek.gui.model.results.ExpEffect;
-import fr.axonic.avek.gui.view.parameters.ExpParameters;
+import fr.axonic.avek.gui.view.parameters.ParametersPane;
 import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.AEnum;
+import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class MainController {
 	@FXML
 	private Button btnStrategy;
 	@FXML
-	private VBox paneExpParameters;
+	private ParametersPane paneExpParameters;
 	@FXML
 	private ExpSubject expSubject;
 	@FXML
@@ -60,7 +61,10 @@ public class MainController {
 			expEffects.add(new ExpEffect(ae, "AE"+i));
 		}
 
-		// end MOCK ONLY ↑↑↑
+		paneExpParameters.addParameter(new ANumber("Frequency", 42.0));
+		paneExpParameters.addParameter(new ABoolean("Bool?", true));
+		paneExpParameters.addParameter(new ANumber("Times redo", 12));
+		// TODO MOCK ONLY ↑↑↑
 
 
 		// Fill experiment subject informations
@@ -68,23 +72,11 @@ public class MainController {
 
 		// Fill experiment results list
 		jellyBeansSelector.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
-
-		addParameter();
-		addParameter();
 	}
 
 	@FXML
 	void onClicStrategyButton(ActionEvent event) {
 		btnStrategy.setDisable(true);
-	}
-
-
-	private void addParameter() throws IOException {
-		ExpParameters expp = new ExpParameters();
-		expp.setParamName("Frequency");
-		expp.setParamUnit("GHz");
-		expp.setParamValue("42");
-		paneExpParameters.getChildren().add(expp);
 	}
 }
 

@@ -6,6 +6,9 @@ public class ABoolean extends AVar {
         this(null);
     }
 
+    public ABoolean(String label, boolean value) {
+        super(label, new Format(FormatType.BOOLEAN),value);
+    }
     public ABoolean(Object value) {
         super(new Format(FormatType.BOOLEAN),value);
     }
