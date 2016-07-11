@@ -4,14 +4,12 @@ import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 

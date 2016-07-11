@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.results.IColorState;
+import fr.axonic.avek.model.base.AEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Nathaël N on 28/06/16.
@@ -22,8 +21,8 @@ public class JellyBean extends HBox {
 	@FXML
 	private Button jbCross;
 
-	private Class<? extends IColorState> enumType;
-	private IColorState expEffect;
+	private AEnum enumType;
+	private Object expEffect;
 	private JellyBeansSelector mainController;
 
 	public JellyBean() throws IOException {
@@ -40,10 +39,7 @@ public class JellyBean extends HBox {
 
 	@FXML
 	public void onClickOnLabel(ActionEvent actionEvent) {
-		IColorState[] constants = enumType.getEnumConstants();
-
-		ArrayList<IColorState> list = new ArrayList<>();
-		Collections.addAll(list, constants);
+		List list = enumType.getEnumsRange();
 
 		int nextIndex = ( list.indexOf(expEffect) + 1 )%list.size();
 		expEffect = list.get(nextIndex);
@@ -59,20 +55,28 @@ public class JellyBean extends HBox {
 	}
 
 	private void refreshColor() {
-		jbLabel.setStyle("-fx-background-color: " + getColorString(expEffect.getColor())
-				+ "; -fx-border-color: " + getColorString(expEffect.getColor().darker()));
-		jbCross.setStyle("-fx-background-color: " + getColorString(expEffect.getColor())
-				+ "; -fx-border-color: " + getColorString(expEffect.getColor().darker()));
+		List enumRange = enumType.getEnumsRange();
+		double pct = ((double)enumRange.indexOf(expEffect))/enumRange.size();
+
+		Color cc = Color.ALICEBLUE;
+
+		if(pct >= 0)
+			cc = Color.RED.interpolate(Color.GREEN, pct);
+
+		jbLabel.setStyle("-fx-background-color: " + getColorString(cc)
+				+ "; -fx-border-color: " + getColorString(cc.darker()));
+		jbCross.setStyle("-fx-background-color: " + getColorString(cc)
+				+ "; -fx-border-color: " + getColorString(cc.darker()));
 	}
 
 
-	public IColorState getState() {
+	public Object getState() {
 		return expEffect;
 	}
 
-	public void setStateType(Class<? extends IColorState> stateType) {
+	public void setStateType(AEnum stateType) {
 		enumType = stateType;
-		expEffect = enumType.getEnumConstants()[0];
+		expEffect = stateType.getValue();
 	}
 	public void setText(String text) {
 		jbLabel.setText(text);

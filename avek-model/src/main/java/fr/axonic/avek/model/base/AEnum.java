@@ -5,6 +5,8 @@ import fr.axonic.avek.model.verification.Verify;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -28,6 +30,11 @@ public class AEnum<T extends Enum<T>> extends AVar implements Verifiable {
         return enumsRange;
     }
 
+    public void setEnumsRange(T ... enums) throws VerificationException {
+        List<T> l = new ArrayList<T>();
+        Collections.addAll(l, enums);
+        setEnumsRange(l);
+    }
     public void setEnumsRange(List<T> enums) throws VerificationException {
         setProperty(AVarProperty.RANGE.name(), enums);
     }

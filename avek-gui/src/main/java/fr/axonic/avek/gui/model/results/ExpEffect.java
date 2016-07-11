@@ -1,22 +1,24 @@
 package fr.axonic.avek.gui.model.results;
 
+import fr.axonic.avek.model.base.AEnum;
+
 /**
  * Created by Nathaël N on 07/07/16.
  */
 public class ExpEffect {
-	private Class<? extends IColorState> stateClass;
-	private String name;
+	private final AEnum states;
+	private final String name;
 
-	public ExpEffect(Class<? extends IColorState> stateClass, String name) {
-		this.stateClass = stateClass;
+	public ExpEffect(AEnum aEnum, String name) {
+		this.states = aEnum;
 		this.name = name;
 	}
 
 	public String getName() {
 		return name;
 	}
-	public Class<? extends IColorState> getStateClass() {
-		return stateClass;
+	public AEnum getStateClass() {
+		return states;
 	}
 
 	@Override

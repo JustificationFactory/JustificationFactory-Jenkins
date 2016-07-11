@@ -1,16 +1,17 @@
 package fr.axonic.avek.gui.view.results;
 
 import fr.axonic.avek.gui.model.results.ExempleState;
+import fr.axonic.avek.model.base.AEnum;
+import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Nathaël N on 07/07/16.
@@ -49,8 +50,11 @@ public class TestJellyBeans extends ApplicationTest {
 	}
 
 	@Test
-	public void testStateChange() {
-		this.jb.setStateType(ExempleState.class);
+	public void testStateChange() throws VerificationException {
+		AEnum<ExempleState> aEnum = new AEnum<>(ExempleState.VERY_LOW);
+		aEnum.setEnumsRange(ExempleState.values());
+		this.jb.setStateType(aEnum);
+
 		assertEquals(ExempleState.VERY_LOW, jb.getState());
 
 		clickOn(jbText);

@@ -1,28 +1,20 @@
 package fr.axonic.avek.gui.view.subjects;
 
-import fr.axonic.avek.gui.model.results.ExempleState;
-import fr.axonic.avek.gui.model.results.ExempleStateBool;
-import fr.axonic.avek.gui.model.results.ExpEffect;
-import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.AString;
-import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
