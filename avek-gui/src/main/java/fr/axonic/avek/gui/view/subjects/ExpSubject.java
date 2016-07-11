@@ -31,6 +31,8 @@ public class ExpSubject extends BorderPane {
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		fxmlLoader.load();
+
+		this.getStylesheets().add("css/subjects/subjects.css");
 	}
 
 	@FXML

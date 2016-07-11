@@ -51,9 +51,6 @@ public class Main extends Application {
 		Scene s = new Scene(root, 800, 600);
 		primaryStage.setScene(s);
 
-		s.getStylesheets().add("css/results/jellyBean.css");
-		s.getStylesheets().add("css/results/jellyBeanSelector.css");
-		s.getStylesheets().add("css/subjects/subjects.css");
 		primaryStage.show();
 	}
 }

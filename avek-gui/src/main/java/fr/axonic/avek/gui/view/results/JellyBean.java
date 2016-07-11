@@ -30,6 +30,9 @@ public class JellyBean extends HBox {
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		fxmlLoader.load();
+
+		this.getStylesheets().add("css/results/jellyBean.css");
+		this.getStylesheets().add("css/results/personalized.css");
 	}
 
 	@FXML
@@ -39,34 +42,21 @@ public class JellyBean extends HBox {
 
 	@FXML
 	public void onClickOnLabel(ActionEvent actionEvent) {
+		Object beforeEffect = expEffect;
+
 		List list = enumType.getEnumsRange();
 
 		int nextIndex = ( list.indexOf(expEffect) + 1 )%list.size();
 		expEffect = list.get(nextIndex);
 
-		refreshColor();
+		refreshColor(beforeEffect.toString(), expEffect.toString());
 	}
 
-	private String getColorString(Color c) {
-		return String.format("#%02X%02X%02X",
-				(int) (c.getRed() * 255),
-				(int) (c.getGreen() * 255),
-				(int) (c.getBlue() * 255));
-	}
-
-	private void refreshColor() {
-		List enumRange = enumType.getEnumsRange();
-		double pct = ((double)enumRange.indexOf(expEffect))/enumRange.size();
-
-		Color cc = Color.ALICEBLUE;
-
-		if(pct >= 0)
-			cc = Color.RED.interpolate(Color.GREEN, pct);
-
-		jbLabel.setStyle("-fx-background-color: " + getColorString(cc)
-				+ "; -fx-border-color: " + getColorString(cc.darker()));
-		jbCross.setStyle("-fx-background-color: " + getColorString(cc)
-				+ "; -fx-border-color: " + getColorString(cc.darker()));
+	private void refreshColor(String before, String after) {
+		jbLabel.getStyleClass().remove(before);
+		jbCross.getStyleClass().remove(before);
+		jbLabel.getStyleClass().add(after);
+		jbCross.getStyleClass().add(after);
 	}
 
 
@@ -77,6 +67,7 @@ public class JellyBean extends HBox {
 	public void setStateType(AEnum stateType) {
 		enumType = stateType;
 		expEffect = stateType.getValue();
+		refreshColor("", expEffect.toString());
 	}
 	public void setText(String text) {
 		jbLabel.setText(text);

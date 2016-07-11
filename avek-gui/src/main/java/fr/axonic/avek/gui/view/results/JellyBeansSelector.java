@@ -37,6 +37,8 @@ public class JellyBeansSelector extends VBox {
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		fxmlLoader.load();
+
+		this.getStylesheets().add("css/results/jellyBeanSelector.css");
 	}
 
 	@FXML
