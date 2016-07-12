@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.results.AState;
-import fr.axonic.avek.model.base.ARangedEnum;
+import fr.axonic.avek.gui.model.structure.AState;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,21 +1,12 @@
 package fr.axonic.avek.gui.view.results;
 
 
-import fr.axonic.avek.gui.model.results.AState;
-import fr.axonic.avek.gui.model.results.ExampleState;
-import fr.axonic.avek.model.base.AEnum;
-import fr.axonic.avek.model.base.ARangedEnum;
-import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.Arrays;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Nathaël N on 07/07/16.

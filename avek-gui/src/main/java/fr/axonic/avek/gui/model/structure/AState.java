@@ -1,6 +1,5 @@
-package fr.axonic.avek.gui.model.results;
+package fr.axonic.avek.gui.model.structure;
 
-import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ARangedEnum;
 
 import javax.xml.bind.annotation.XmlRootElement;

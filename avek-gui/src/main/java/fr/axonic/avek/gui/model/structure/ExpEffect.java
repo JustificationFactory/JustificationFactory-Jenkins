@@ -1,7 +1,4 @@
-package fr.axonic.avek.gui.model.results;
-
-import fr.axonic.avek.model.base.AEnum;
-import fr.axonic.avek.model.base.ARangedEnum;
+package fr.axonic.avek.gui.model.structure;
 
 /**
  * Created by Nathaël N on 07/07/16.

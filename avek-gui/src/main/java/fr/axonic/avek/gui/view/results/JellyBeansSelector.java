@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.results.ExpEffect;
+import fr.axonic.avek.gui.model.structure.ExpEffect;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -59,8 +59,8 @@ public class JellyBeansSelector extends VBox {
 	}
 
 	/**
-	 * Set Combobox entries for already selected results to 'selectedResult' style, and others to 'notSelectedResult'
-	 * (typically, set selected results entries in a grey color, and let the others black)
+	 * Set Combobox entries for already selected sample to 'selectedResult' style, and others to 'notSelectedResult'
+	 * (typically, set selected sample entries in a grey color, and let the others black)
 	 */
 	private void updateJellyBeanChoice() {
 		comboBoxJellyBean.setCellFactory(
@@ -87,7 +87,7 @@ public class JellyBeansSelector extends VBox {
 	private void addJellyBean() throws IOException {
 		// Verify if JellyBean already created (this result is already selected)
 		ExpEffect choice = comboBoxJellyBean.getValue();
-		if (addedEffects.contains(choice.getName()))
+		if (choice == null || addedEffects.contains(choice.getName()))
 			return;
 
 		JellyBean jb2 = new JellyBean();

@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.model.results;
+package fr.axonic.avek.gui.model.sample;
 
 /**
  * Created by Nathaël N on 07/07/16.

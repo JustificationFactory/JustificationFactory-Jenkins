@@ -1,20 +1,14 @@
 package fr.axonic.avek.gui.view;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import fr.axonic.avek.gui.model.results.AState;
-import fr.axonic.avek.gui.model.results.ExampleState;
-import fr.axonic.avek.gui.model.results.ExpEffect;
-import fr.axonic.avek.gui.model.results.State;
+import fr.axonic.avek.gui.model.json.Jsonifier;
+import fr.axonic.avek.gui.model.structure.AState;
+import fr.axonic.avek.gui.model.structure.ExpEffect;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
 import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
-import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ANumber;
-import fr.axonic.avek.model.base.ARangedEnum;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +22,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
@@ -60,8 +53,7 @@ public class MainController {
 		List<ExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 9; i++) {
 			String aRangedEnumJson = getFileContent("files/resultEnum1.json");
-			GsonBuilder gsonBuilder=new GsonBuilder().registerTypeAdapter(State.class,new EnumAdapter<>(State.class));
-			AState be = gsonBuilder.create().fromJson(aRangedEnumJson, AState.class);
+			AState be = Jsonifier.fromJson(aRangedEnumJson, AState.class);
 			expEffects.add(new ExpEffect(be, "AE"+i));
 		}
 
@@ -74,7 +66,7 @@ public class MainController {
 		// Fill experiment subject informations
 		expSubject.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
 
-		// Fill experiment results list
+		// Fill experiment sample list
 		jellyBeansSelector.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
 	}
 

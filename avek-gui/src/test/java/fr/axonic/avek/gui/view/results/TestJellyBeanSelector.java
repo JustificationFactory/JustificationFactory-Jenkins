@@ -1,10 +1,9 @@
 package fr.axonic.avek.gui.view.results;
 
 import com.google.gson.Gson;
-import fr.axonic.avek.gui.model.results.AState;
-import fr.axonic.avek.gui.model.results.ExampleState;
-import fr.axonic.avek.gui.model.results.ExpEffect;
-import fr.axonic.avek.model.base.AEnum;
+import fr.axonic.avek.gui.model.sample.ExampleState;
+import fr.axonic.avek.gui.model.structure.AState;
+import fr.axonic.avek.gui.model.structure.ExpEffect;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.collections.FXCollections;
@@ -63,7 +62,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 			expEffects.add(new ExpEffect(be, "AE"+i));
 		}
 
-		// Fill experiment results list
+		// Fill experiment sample list
 		jbs.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
 		jellyBeanPane = (Pane) jbs.getChildren().get(1);
 	}

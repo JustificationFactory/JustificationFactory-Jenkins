@@ -12,8 +12,8 @@ import java.util.List;
  * Created by cduffau on 11/07/16.
  */
 @XmlRootElement
-public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretAVar<Enum<T>> {
-    List<Enum<T>> range;
+public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretAVar<T> {
+    List<T> range;
 
     public ARangedEnum(T value) {
         super(value);
@@ -23,12 +23,12 @@ public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretA
     }
 
     @Override
-    public List<Enum<T>> getRange() {
+    public List<T> getRange() {
         return range;
     }
 
     @Override
-    public void setRange(List<Enum<T>> range) throws VerificationException {
+    public void setRange(List<T> range) throws VerificationException {
         setProperty(AVarProperty.RANGE.name(), range);
     }
     @Override
@@ -61,7 +61,7 @@ public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretA
     protected void setPropertyValue(String propertyName, Object newPropertyValue) {
         switch (AVarProperty.valueOf(propertyName)) {
             case RANGE: {
-                range = (List<Enum<T>>) newPropertyValue;
+                range = (List<T>) newPropertyValue;
             }
             break;
             default: {
