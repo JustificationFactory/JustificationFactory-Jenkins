@@ -1,14 +1,18 @@
 package fr.axonic.avek.gui.view;
 
 import com.google.gson.Gson;
-import fr.axonic.avek.gui.model.json.BEnum;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import fr.axonic.avek.gui.model.results.AState;
 import fr.axonic.avek.gui.model.results.ExampleState;
 import fr.axonic.avek.gui.model.results.ExpEffect;
+import fr.axonic.avek.gui.model.results.State;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
 import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
+import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.ARangedEnum;
 import javafx.collections.FXCollections;
@@ -56,7 +60,8 @@ public class MainController {
 		List<ExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 9; i++) {
 			String aRangedEnumJson = getFileContent("files/resultEnum1.json");
-			BEnum be = new Gson().fromJson(aRangedEnumJson, BEnum.class);
+			GsonBuilder gsonBuilder=new GsonBuilder().registerTypeAdapter(State.class,new EnumAdapter<>(State.class));
+			AState be = gsonBuilder.create().fromJson(aRangedEnumJson, AState.class);
 			expEffects.add(new ExpEffect(be, "AE"+i));
 		}
 

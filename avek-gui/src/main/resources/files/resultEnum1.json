@@ -21,7 +21,9 @@
       "ordinal": 4
     }
   ],
-  "value": "VERY_LOW",
+  "value": {
+    "name": "VERY_LOW"
+  },
   "format": {
     "formatType": "ENUM"
   },

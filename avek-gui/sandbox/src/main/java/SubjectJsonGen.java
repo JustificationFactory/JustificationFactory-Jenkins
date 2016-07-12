@@ -1,8 +1,9 @@
-package main.java;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.axonic.avek.gui.model.results.ExampleState;
+import fr.axonic.avek.gui.model.results.State;
+import fr.axonic.avek.gui.view.EnumAdapter;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
@@ -67,7 +68,7 @@ public class SubjectJsonGen {
 		aEnum.setRange(Arrays.asList(ExampleState.values()));
 		//aEnum.setDefaultValue(ExampleState.MEDIUM);
 
-		return new GsonBuilder().setPrettyPrinting().create().toJson(aEnum);
+		return new GsonBuilder().registerTypeAdapter(ExampleState.class,new EnumAdapter<>(ExampleState.class)).setPrettyPrinting().create().toJson(aEnum);
 	}
 
 }
