@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import fr.axonic.avek.gui.model.results.ExampleState;
 import fr.axonic.avek.gui.model.results.ExpEffect;
 import fr.axonic.avek.model.base.AEnum;
+import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -50,12 +52,12 @@ public class TestJellyBeanSelector extends ApplicationTest {
 			String s;
 			{
 				ExampleState val = ExampleState.values()[0];
-				AEnum<ExampleState> aEnum = new AEnum(val);
+				ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
 				//aEnum.setDefaultValue(ExampleState.MEDIUM);
-				aEnum.setEnumsRange(ExampleState.values());
+				aEnum.setRange(Arrays.asList(ExampleState.values()));
 				s = new Gson().toJson(aEnum);
 			}
-			AEnum ae = new Gson().fromJson(s, AEnum.class);
+			ARangedEnum ae = new Gson().fromJson(s, ARangedEnum.class);
 
 			expEffects.add(new ExpEffect(ae, "AE"+i));
 		}

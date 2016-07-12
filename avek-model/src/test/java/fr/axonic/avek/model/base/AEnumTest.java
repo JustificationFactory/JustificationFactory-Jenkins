@@ -20,12 +20,12 @@ public class AEnumTest {
     public void testValue() throws VerificationException {
         AEnum<TestEnum> aNumber= (AEnum<TestEnum>) AVar.create(new Format(FormatType.ENUM));
         aNumber.setValue(TestEnum.A);
-        assertEquals(aNumber.enumValue(),TestEnum.A);
+        assertEquals(aNumber.getValue(),TestEnum.A);
     }
 
     @Test
     public void testVerifiableProperties() throws VerificationException {
-        AEnum<TestEnum> aNumber= (AEnum<TestEnum>) AVar.create(new Format(FormatType.ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
         aNumber.setValue(TestEnum.A);
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.RANGE.name()));
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.DEFAULT_VALUE.name()));

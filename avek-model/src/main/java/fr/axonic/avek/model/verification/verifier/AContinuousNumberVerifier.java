@@ -1,7 +1,7 @@
 package fr.axonic.avek.model.verification.verifier;
 
 
-import fr.axonic.avek.model.base.ANumber;
+import fr.axonic.avek.model.base.AContinuousNumber;
 import fr.axonic.avek.model.verification.Verifier;
 import fr.axonic.avek.model.verification.exception.*;
 import javafx.util.Pair;
@@ -9,14 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by lbrouchet on 22/07/2015.
+ * Created by cduffau on 09/07/2016.
  */
-public class ANumberVerifier implements Verifier<ANumber> {
+public class AContinuousNumberVerifier implements Verifier<AContinuousNumber> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ANumberVerifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AContinuousNumberVerifier.class);
 
     @Override
-    public void verify(ANumber aNumber) throws VerificationException {
+    public void verify(AContinuousNumber aNumber) throws VerificationException {
         LOGGER.trace("start verify");
         VerifiableError verifError = new VerifiableError();
         if (aNumber != null) {
@@ -24,13 +24,13 @@ public class ANumberVerifier implements Verifier<ANumber> {
                 if (aNumber.getMin() == null) {
                     LOGGER.trace("min null");
                     verifError.addSingleObjectError(new Pair<>(TechnicalErrorCategory.NULL_PARAMETER, aNumber));
-                } else if (aNumber.getMin().doubleValue() > aNumber.doubleValue()) {
+                } else if (aNumber.getMin().doubleValue() > aNumber.getValue().doubleValue()) {
                     verifError.addSingleObjectError(new Pair<>(ANumberErrorCategory.MIN_NOT_RESPECTED, aNumber));
                 }
                 if (aNumber.getMax() == null) {
                     LOGGER.trace("max null");
                     verifError.addSingleObjectError(new Pair<>(TechnicalErrorCategory.NULL_PARAMETER, aNumber));
-                } else if (aNumber.getMax().doubleValue() < aNumber.doubleValue()) {
+                } else if (aNumber.getMax().doubleValue() < aNumber.getValue().doubleValue()) {
                     verifError.addSingleObjectError(new Pair<>(ANumberErrorCategory.MAX_NOT_RESPECTED, aNumber));
                 }
             } else {
@@ -51,19 +51,19 @@ public class ANumberVerifier implements Verifier<ANumber> {
     }
 
     @Override
-    public void verifyUnit(ANumber aNumber) throws VerificationException {
+    public void verifyUnit(AContinuousNumber aNumber) throws VerificationException {
         LOGGER.trace("start verifyUnit");
         VerifiableError verifError = new VerifiableError();
         if (aNumber != null) {
             if (aNumber.getValue() != null) {
-                if (aNumber.getMin() == null) {} else if (aNumber.getMin().doubleValue() > aNumber.doubleValue()) {
+                if (aNumber.getMin() == null) {} else if (aNumber.getMin().doubleValue() > aNumber.getValue().doubleValue()) {
                     LOGGER.trace("- aNumber.getMin().doubleValue() : " + aNumber.getMin().doubleValue());
-                    LOGGER.trace("- aNumber.doubleValue() : " + aNumber.doubleValue());
+                    LOGGER.trace("- aNumber.doubleValue() : " + aNumber.getValue().doubleValue());
                     verifError.addSingleObjectError(new Pair<>(ANumberErrorCategory.MIN_NOT_RESPECTED, aNumber));
                 }
-                if (aNumber.getMax() == null) {} else if (aNumber.getMax().doubleValue() < aNumber.doubleValue()) {
+                if (aNumber.getMax() == null) {} else if (aNumber.getMax().doubleValue() < aNumber.getValue().doubleValue()) {
                     LOGGER.trace("- aNumber.getMax().doubleValue() : " + aNumber.getMax().doubleValue());
-                    LOGGER.trace("- aNumber.doubleValue() : " + aNumber.doubleValue());
+                    LOGGER.trace("- aNumber.doubleValue() : " + aNumber.getValue().doubleValue());
                     verifError.addSingleObjectError(new Pair<>(ANumberErrorCategory.MAX_NOT_RESPECTED, aNumber));
                 }
             }

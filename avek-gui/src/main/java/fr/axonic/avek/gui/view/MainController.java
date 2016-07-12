@@ -8,8 +8,8 @@ import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
-import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ANumber;
+import fr.axonic.avek.model.base.ARangedEnum;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
@@ -49,15 +50,15 @@ public class MainController {
 		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
 		List<ExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 9; i++) {
-			String s = "";
+			String s;
 			{
 				ExampleState val = ExampleState.values()[0];
-				AEnum<ExampleState> aEnum = new AEnum(val);
-				aEnum.setEnumsRange(ExampleState.values());
+				ARangedEnum<ExampleState> aEnum = new ARangedEnum(val);
+				aEnum.setRange(Arrays.asList(ExampleState.values()));
 				//aEnum.setDefaultValue(ExampleState.MEDIUM);
 				s = new Gson().toJson(aEnum);
 			}
-			AEnum ae = new Gson().fromJson(s, AEnum.class);
+			ARangedEnum ae = new Gson().fromJson(s, ARangedEnum.class);
 
 			expEffects.add(new ExpEffect(ae, "AE"+i));
 		}

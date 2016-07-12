@@ -18,7 +18,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		Parent root = MainController.getRoot();
 
-		primaryStage.setTitle("GUI");
+		primaryStage.setTitle("#AVEK analyzer");
 		Scene s = new Scene(root, 800, 600);
 		primaryStage.setScene(s);
 

@@ -1,6 +1,7 @@
 package fr.axonic.avek.model.verification.verifier;
 
 import fr.axonic.avek.model.base.AEnum;
+import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.Verifier;
 import fr.axonic.avek.model.verification.exception.*;
 import javafx.util.Pair;
@@ -10,20 +11,20 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by cduffau on 08/07/16.
  */
-public class AEnumVerifier implements Verifier<AEnum>{
+public class ARangedEnumVerifier implements Verifier<ARangedEnum>{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AEnumVerifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ARangedEnumVerifier.class);
 
     @Override
-    public void verify(AEnum aEnum) throws VerificationException {
+    public void verify(ARangedEnum aEnum) throws VerificationException {
         LOGGER.trace("start verify");
         VerifiableError verifError = new VerifiableError();
         if (aEnum != null) {
             if (aEnum.getValue() != null) {
-                if (aEnum.getEnumsRange() == null) {
+                if (aEnum.getValue() == null) {
                     LOGGER.trace("range null");
                     verifError.addSingleObjectError(new Pair<>(TechnicalErrorCategory.NULL_PARAMETER, aEnum));
-                } else if (!aEnum.getEnumsRange().contains(aEnum.enumValue())) {
+                } else if (!aEnum.getRange().contains(aEnum.getValue())) {
                     verifError.addSingleObjectError(new Pair<>(AEnumErrorCategory.RANGE_NOT_RESPECTED, aEnum));
                 }
             } else {
@@ -44,14 +45,14 @@ public class AEnumVerifier implements Verifier<AEnum>{
     }
 
     @Override
-    public void verifyUnit(AEnum aEnum) throws VerificationException {
+    public void verifyUnit(ARangedEnum aEnum) throws VerificationException {
         LOGGER.trace("start verifyUnit");
         VerifiableError verifError = new VerifiableError();
         if (aEnum != null) {
             if (aEnum.getValue() != null) {
-                if (aEnum.getEnumsRange() == null) {} else if (!aEnum.getEnumsRange().contains(aEnum.enumValue())) {
-                    LOGGER.trace("- aEnum.getEnumsRange() : " + aEnum.getEnumsRange());
-                    LOGGER.trace("- aEnum.enumValue() : " + aEnum.enumValue());
+                if (aEnum.getRange() == null) {} else if (!aEnum.getRange().contains(aEnum.getValue())) {
+                    LOGGER.trace("- aEnum.getEnumsRange() : " + aEnum.getRange());
+                    LOGGER.trace("- aEnum.enumValue() : " + aEnum.getValue());
                     verifError.addSingleObjectError(new Pair<>(AEnumErrorCategory.RANGE_NOT_RESPECTED, aEnum));
                 }
             }

@@ -1,9 +1,6 @@
 package fr.axonic.avek.model.verification;
 
-import fr.axonic.avek.model.base.ANumber;
-import fr.axonic.avek.model.base.AVar;
-import fr.axonic.avek.model.base.Format;
-import fr.axonic.avek.model.base.FormatType;
+import fr.axonic.avek.model.base.*;
 import fr.axonic.avek.model.verification.exception.ErrorVerifyException;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import org.junit.Test;
@@ -18,7 +15,7 @@ public class ANumberVerifierTest {
 
     @Test
     public void testGoodRangeVerifier() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setMax(10);
         aNumber.setMin(1);
 
@@ -27,14 +24,14 @@ public class ANumberVerifierTest {
 
     @Test(expected = ErrorVerifyException.class)
     public void testWrongRangeVerifier() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setMax(10);
         aNumber.setMin(1);
         aNumber.setValue(0);
     }
     @Test
     public void testGoodVerifier() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setMax(10);
         aNumber.setMin(1);
 
@@ -44,7 +41,7 @@ public class ANumberVerifierTest {
 
     @Test(expected = ErrorVerifyException.class)
     public void testWrongVerifier() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         try {
             aNumber.setMax(10);
             aNumber.setMin(1);
@@ -56,29 +53,29 @@ public class ANumberVerifierTest {
 
     @Test
     public void testGoodVerifier2() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setCode("test");
         aNumber.setPath("test.test");
         aNumber.setMax(10);
         aNumber.setMin(1);
         aNumber.setDefaultValue(2);
-        assertEquals(aNumber.intValue(),2);
+        assertEquals(aNumber.getValue().intValue(),2);
         aNumber.setValue(5);
-        assertEquals(aNumber.intValue(),5);
+        assertEquals(aNumber.getValue().intValue(),5);
         aNumber.verify(true);
     }
 
     @Test
     public void testGoodVerifier3() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setCode("test");
         aNumber.setPath("test.test");
         aNumber.setMax(10);
         aNumber.setMin(1);
         aNumber.setValue(5);
-        assertEquals(aNumber.intValue(),5);
+        assertEquals(aNumber.getValue().intValue(),5);
         aNumber.setDefaultValue(2);
-        assertEquals(aNumber.intValue(),5);
+        assertEquals(aNumber.getValue().intValue(),5);
         aNumber.verify(true);
     }
 }

@@ -2,6 +2,7 @@ package fr.axonic.avek.gui.view.results;
 
 import fr.axonic.avek.gui.model.results.ExampleState;
 import fr.axonic.avek.model.base.AEnum;
+import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -47,8 +49,8 @@ public class TestJellyBeans extends ApplicationTest {
 
 	@Test
 	public void testStateChange() throws VerificationException {
-		AEnum<ExampleState> aEnum = new AEnum<>(ExampleState.VERY_LOW);
-		aEnum.setEnumsRange(ExampleState.values());
+		ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
+		aEnum.setRange(Arrays.asList(ExampleState.values()));
 		this.jb.setStateType(aEnum);
 
 		assertEquals(ExampleState.VERY_LOW, jb.getState());
