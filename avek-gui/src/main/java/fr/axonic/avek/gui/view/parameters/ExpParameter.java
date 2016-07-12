@@ -30,8 +30,8 @@ public class ExpParameter {
 		markedUtil = new CheckBox();
 		markedUtil.setSelected(true);
 
-		this.paramName = new Label(paramValue.getLabel()+" : ");
-		this.paramValue = new Label(paramValue.getValue().toString());
+		this.paramName = new Label(paramValue.getLabel());
+		this.paramValue = new Label(" : "+paramValue.getValue().toString());
 		if(paramValue.getFormat().getType() == FormatType.NUMBER) {
 			minEquivRange = new TextField(paramValue.getValue().toString());
 			maxEquivRange = new TextField(paramValue.getValue().toString());

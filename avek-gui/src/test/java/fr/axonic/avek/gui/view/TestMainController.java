@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +28,7 @@ public class TestMainController extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/gui.fxml"));
+		root = MainController.getRoot();
 		Scene scene = new Scene(root, 200, 200);
 		stage.setScene(scene);
 		stage.show();

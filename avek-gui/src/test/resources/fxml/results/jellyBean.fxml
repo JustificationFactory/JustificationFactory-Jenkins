@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.HBox?>
-<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.HBox"
-         styleClass="jellyBean">
-    <Button fx:id="jbLabel" styleClass="jellyBeanLabel" onAction="#onClickOnLabel">null</Button>
-    <Button fx:id="jbCross" styleClass="jellyBeanCross" onAction="#onClickOnCross">x</Button>
-</fx:root>

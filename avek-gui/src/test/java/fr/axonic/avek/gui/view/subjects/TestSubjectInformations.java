@@ -4,6 +4,7 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.AString;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
@@ -15,6 +16,8 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,12 +38,8 @@ public class TestSubjectInformations extends ApplicationTest {
 	private Accordion acc;
 
 	@Override
-	public void start(Stage stage) {
-		try {
-			this.subject = new ExpSubject();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void start(Stage stage) throws IOException {
+		this.subject = new ExpSubject();
 		Scene scene = new Scene(subject, 200, 200);
 		stage.setScene(scene);
 		stage.show();
@@ -49,7 +48,7 @@ public class TestSubjectInformations extends ApplicationTest {
 	}
 
 	@Test
-	public void testMonitoredSystem1() {
+	public void testMonitoredSystem() throws ExecutionException, InterruptedException {
 		MonitoredSystem ms = new MonitoredSystem(42);
 		ms.addCategory("Category 1");
 		ms.addAVar("Category 1", new AString("a string","strval1"));
@@ -61,9 +60,10 @@ public class TestSubjectInformations extends ApplicationTest {
 		ms.addAVar("Category 2", new ANumber("an integer",987654321));
 		ms.addAVar("Category 2", new ANumber("a double",98765.4321));
 
-		subject.setMonitoredSystem(ms);
-		sleep(500); // Because setMonitoredSystem is parallelled
-
+		final MonitoredSystem fms1 = ms;
+		FutureTask ft = new FutureTask<>(() -> subject.setMonitoredSystem(fms1));
+		Platform.runLater(ft);
+		ft.get();
 		assertEquals(2, acc.getPanes().size());
 
 		TitledPane tp = acc.getPanes().get(0);
@@ -89,9 +89,10 @@ public class TestSubjectInformations extends ApplicationTest {
 
 		ms.addCategory("Category 3");
 
-		subject.setMonitoredSystem(ms);
-		sleep(500); // Because setMonitoredSystem is parallelled
-
+		final MonitoredSystem fms2 = ms;
+		ft = new FutureTask<>(() -> subject.setMonitoredSystem(fms2));
+		Platform.runLater(ft);
+		ft.get();
 		assertEquals(3, acc.getPanes().size());
 
 		tp = acc.getPanes().get(0);

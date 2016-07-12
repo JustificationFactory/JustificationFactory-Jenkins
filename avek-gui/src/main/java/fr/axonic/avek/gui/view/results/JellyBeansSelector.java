@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,23 +23,23 @@ import java.util.Set;
  * Created by cduffau on 02/07/16.
  */
 public class JellyBeansSelector extends VBox {
+	public static final URL JBSELECTOR_FXML
+			= JellyBeansSelector.class.getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml");
+	public static final String JBSELECTOR_CSS = "css/results/jellyBeanSelector.css";
 
-	@FXML
-	private Button newExpEffectButton;
-	@FXML
-	private FlowPane jellyBeansPane;
-	@FXML
-	private ComboBox<ExpEffect> comboBoxJellyBean;
+	@FXML private Button newExpEffectButton;
+	@FXML private FlowPane jellyBeansPane;
+	@FXML private ComboBox<ExpEffect> comboBoxJellyBean;
 
 	private Set<String> addedEffects;
 
 	public JellyBeansSelector() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(JBSELECTOR_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		fxmlLoader.load();
 
-		this.getStylesheets().add("css/results/jellyBeanSelector.css");
+		this.getStylesheets().add(JBSELECTOR_CSS);
 	}
 
 	@FXML

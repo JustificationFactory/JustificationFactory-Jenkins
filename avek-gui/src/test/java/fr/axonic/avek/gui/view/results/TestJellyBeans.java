@@ -29,12 +29,8 @@ public class TestJellyBeans extends ApplicationTest {
 	private Button jbText, jbCross;
 
 	@Override
-	public void start(Stage stage) {
-		try {
-			this.jb = new JellyBean();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void start(Stage stage) throws IOException {
+		this.jb = new JellyBean();
 
 		Scene scene = new Scene(jb, 200, 200);
 		stage.setScene(scene);

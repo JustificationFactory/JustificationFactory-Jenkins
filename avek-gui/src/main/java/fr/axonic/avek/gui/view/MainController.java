@@ -10,33 +10,33 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ANumber;
-import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MainController {
+	private final static URL GUI_FXML
+			= MainController.class.getClassLoader().getResource("fxml/gui.fxml");
+	private static Parent root;
+
+	@FXML private Button btnStrategy;
+	@FXML private ParametersPane paneExpParameters;
+	@FXML private ExpSubject expSubject;
+	@FXML private JellyBeansSelector jellyBeansSelector;
 
 	@FXML
-	private Button btnStrategy;
-	@FXML
-	private ParametersPane paneExpParameters;
-	@FXML
-	private ExpSubject expSubject;
-	@FXML
-	private JellyBeansSelector jellyBeansSelector;
-
-	@FXML
-	protected void initialize() throws VerificationException, IOException, ExecutionException, InterruptedException {
+	protected void initialize() throws Exception {
 		String monitoredSystemJson = "";
 		try {
 			File f = new File(getClass().getClassLoader()
@@ -46,7 +46,7 @@ public class MainController {
 				monitoredSystemJson += s;
 		} catch (IOException | URISyntaxException e) {}
 
-		// TODO MOCK ONLY ↓↓↓
+		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
 		List<ExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 9; i++) {
 			String s = "";
@@ -65,7 +65,7 @@ public class MainController {
 		paneExpParameters.addParameter(new ANumber("Frequency", 42.0));
 		paneExpParameters.addParameter(new ABoolean("Bool?", true));
 		paneExpParameters.addParameter(new ANumber("Times redo", 12));
-		// TODO MOCK ONLY ↑↑↑
+		// TODO MOCK ONLY ↑↑↑ ////////////////////////////////////////////////
 
 
 		// Fill experiment subject informations
@@ -78,6 +78,13 @@ public class MainController {
 	@FXML
 	void onClicStrategyButton(ActionEvent event) {
 		btnStrategy.setDisable(true);
+	}
+
+
+	public static Parent getRoot() throws IOException {
+		if(root == null)
+			root = FXMLLoader.load(GUI_FXML);
+		return root;
 	}
 }
 

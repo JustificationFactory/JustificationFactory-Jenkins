@@ -1,29 +1,25 @@
 package fr.axonic.avek.gui.view.parameters;
 
 import fr.axonic.avek.model.base.AVar;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Control;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 /**
  * Created by Nathaël N on 04/07/16.
  */
 public class ParametersPane extends GridPane {
+	public static final URL PARAMETERSPANE_FXML = ParametersPane.class.getClassLoader().getResource("fxml/parameters/parametersPane.fxml");
 
 	private List<ExpParameter> expParameters;
 
 	public ParametersPane() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/parameters/parametersPane.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(PARAMETERSPANE_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		fxmlLoader.load();
@@ -32,32 +28,20 @@ public class ParametersPane extends GridPane {
 		expParameters.add(null);
 	}
 
-	public void addParameter(AVar value) throws ExecutionException, InterruptedException {
+	public boolean addParameter(AVar value) {
 		int i = expParameters.size();
 
 		ExpParameter epm = new ExpParameter(value);
 
-		final Set<FutureTask> tasks = new HashSet<>();
-
 		for(Control c : epm.getElements()) {
 			GridPane.setRowIndex(c, i);
-
-			FutureTask ft = new FutureTask(() ->
-					ParametersPane.this.getChildren().add(c));
-			Platform.runLater(ft);
-			tasks.add(ft);
+			this.getChildren().add(c);
 		}
 
-		expParameters.add(epm);
-
-		// Wait for tasks
-		/*for(FutureTask ft : tasks)
-			ft.get();*/
+		return expParameters.add(epm);
 	}
 
-	public synchronized void rmParameter(String name) throws ExecutionException, InterruptedException {
-		final Set<FutureTask> tasks = new HashSet<>();
-
+	public synchronized ExpParameter rmParameter(String name) {
 		// searching parameter index
 		int i = -1;
 
@@ -68,14 +52,13 @@ public class ParametersPane extends GridPane {
 				break;
 			}
 
+		if(i==-1)
+			return null;
+
 		// Removing parameter from view
 		for(Control c : expParameters.get(i).getElements()) {
 			c.setDisable(true);
-
-			FutureTask ft = new FutureTask(() ->
-					this.getChildren().remove(c));
-			Platform.runLater(ft);
-			tasks.add(ft);
+			this.getChildren().remove(c);
 		}
 
 		// Decal following parameters
@@ -84,10 +67,6 @@ public class ParametersPane extends GridPane {
 				GridPane.setRowIndex(c, j-1);
 
 		// Removing parameter from list
-		expParameters.remove(i);
-
-		// Wait for tasks
-		/*for(FutureTask ft : tasks)
-			ft.get();*/
+		return expParameters.remove(i);
 	}
 }

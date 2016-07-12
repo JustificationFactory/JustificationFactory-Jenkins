@@ -9,29 +9,31 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 /**
  * Created by Nathaël N on 28/06/16.
  */
 public class JellyBean extends HBox {
+	public static final URL JELLYBEAN_FXML
+			= JellyBean.class.getClassLoader().getResource("fxml/results/jellyBean.fxml");
+	public static final String JELLYBEAN_CSS = "css/results/jellyBean.css";
 
-	@FXML
-	private Button jbLabel;
-	@FXML
-	private Button jbCross;
+	@FXML private Button jbLabel;
+	@FXML private Button jbCross;
 
 	private AEnum enumType;
 	private Object expEffect;
 	private JellyBeansSelector mainController;
 
 	public JellyBean() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/results/jellyBean.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(JELLYBEAN_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		fxmlLoader.load();
 
-		this.getStylesheets().add("css/results/jellyBean.css");
+		this.getStylesheets().add(JELLYBEAN_CSS);
 		this.getStylesheets().add("css/results/personalized.css");
 	}
 

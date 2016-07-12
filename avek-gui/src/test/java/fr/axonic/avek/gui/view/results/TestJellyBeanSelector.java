@@ -39,19 +39,15 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
 
 	@Override
-	public void start(Stage stage) throws VerificationException {
-		try {
-			this.jbs = new JellyBeansSelector();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void start(Stage stage) throws VerificationException, IOException {
+		this.jbs = new JellyBeansSelector();
 		Scene scene = new Scene(jbs, 200, 200);
 		stage.setScene(scene);
 		stage.show();
 
 		List<ExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 30; i++) {
-			String s = "";
+			String s;
 			{
 				ExampleState val = ExampleState.values()[0];
 				AEnum<ExampleState> aEnum = new AEnum(val);
