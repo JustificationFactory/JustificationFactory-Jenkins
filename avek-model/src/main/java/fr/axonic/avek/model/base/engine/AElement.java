@@ -1,10 +1,12 @@
-package fr.axonic.avek.model.base;
+package fr.axonic.avek.model.base.engine;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Created by cduffau on 11/07/16.
  */
+@XmlRootElement
 public abstract class AElement extends AEntity{
 
     protected boolean editable, mandatory;

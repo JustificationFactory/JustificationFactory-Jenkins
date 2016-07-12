@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view.parameters;
 
-import fr.axonic.avek.model.base.AVar;
-import fr.axonic.avek.model.base.FormatType;
+import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.avek.model.base.engine.FormatType;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;

@@ -1,7 +1,7 @@
 package fr.axonic.avek.model.verification.verifier;
 
 
-import fr.axonic.avek.model.base.AVar;
+import fr.axonic.avek.model.base.engine.AVar;
 import fr.axonic.avek.model.verification.Verifier;
 import fr.axonic.avek.model.verification.exception.*;
 import javafx.util.Pair;

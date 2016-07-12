@@ -1,4 +1,4 @@
-package fr.axonic.avek.model.base;
+package fr.axonic.avek.model.base.engine;
 
 public enum FormatType {
     UNKNOWN,

@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.parameters;
 
-import fr.axonic.avek.model.base.AVar;
+import fr.axonic.avek.model.base.engine.AVar;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Control;
 import javafx.scene.layout.GridPane;

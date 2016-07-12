@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view.subjects;
 
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.AVar;
+import fr.axonic.avek.model.base.engine.AVar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,13 +1,17 @@
 package fr.axonic.avek.model.base;
 
+import fr.axonic.avek.model.base.engine.AVarProperty;
+import fr.axonic.avek.model.base.engine.ContinuousAVar;
 import fr.axonic.avek.model.verification.Verify;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Created by cduffau on 11/07/16.
  */
+@XmlRootElement
 public class AContinuousNumber extends ANumber implements ContinuousAVar<Number> {
 
     private Number min;
@@ -70,7 +74,7 @@ public class AContinuousNumber extends ANumber implements ContinuousAVar<Number>
     }
 
     @Override
-    public ANumber clone() throws CloneNotSupportedException {
+    public AContinuousNumber clone() throws CloneNotSupportedException {
         AContinuousNumber result = (AContinuousNumber) super.clone();
 
         result.min = min;

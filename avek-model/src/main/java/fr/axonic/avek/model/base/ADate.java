@@ -1,12 +1,15 @@
 package fr.axonic.avek.model.base;
 
 
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.avek.model.base.engine.Format;
+import fr.axonic.avek.model.base.engine.FormatType;
 
-public class ADate extends AVar<Date>{
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
+
+@XmlRootElement
+public class ADate extends AVar<Date> {
 
     public ADate() {
         this(null);
