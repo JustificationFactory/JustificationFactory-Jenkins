@@ -1,13 +1,18 @@
 package fr.axonic.avek.model.base;
 
+import fr.axonic.avek.model.base.engine.AVarProperty;
+import fr.axonic.avek.model.base.engine.DiscretAVar;
 import fr.axonic.avek.model.verification.Verify;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 /**
  * Created by cduffau on 11/07/16.
  */
+@XmlRootElement
 public class ARangedString extends AString implements DiscretAVar<String> {
 
 
@@ -16,6 +21,8 @@ public class ARangedString extends AString implements DiscretAVar<String> {
     public void setRange(List<String> range) throws VerificationException {
         setProperty(AVarProperty.RANGE.name(), range);
     }
+
+    @XmlTransient
     @Override
     public List<String> getRange(){
         return range;

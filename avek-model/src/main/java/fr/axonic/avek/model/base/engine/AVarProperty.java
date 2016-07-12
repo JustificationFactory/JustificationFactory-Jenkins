@@ -1,4 +1,4 @@
-package fr.axonic.avek.model.base;
+package fr.axonic.avek.model.base.engine;
 
 public enum AVarProperty {
 
@@ -12,6 +12,7 @@ public enum AVarProperty {
     MIN,
     MAX,
     RANGE,
-    DEFAULT_VALUE;
+    DEFAULT_VALUE,
+    UNIT;
 
 }

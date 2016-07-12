@@ -1,14 +1,18 @@
 package fr.axonic.avek.model.base;
 
+import fr.axonic.avek.model.base.engine.AVarProperty;
+import fr.axonic.avek.model.base.engine.DiscretAVar;
 import fr.axonic.avek.model.verification.Verify;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
  * Created by cduffau on 11/07/16.
  */
-public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretAVar<Enum<T>>{
+@XmlRootElement
+public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretAVar<Enum<T>> {
     List<Enum<T>> range;
 
     public ARangedEnum(T value) {

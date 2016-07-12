@@ -1,5 +1,6 @@
-package fr.axonic.avek.model.base;
+package fr.axonic.avek.model.base.engine;
 
+import fr.axonic.avek.model.base.*;
 import fr.axonic.avek.model.verification.Verifiable;
 import fr.axonic.avek.model.verification.Verify;
 import fr.axonic.avek.model.verification.exception.VerificationException;
@@ -8,8 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 

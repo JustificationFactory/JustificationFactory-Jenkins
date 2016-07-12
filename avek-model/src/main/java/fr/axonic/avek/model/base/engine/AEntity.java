@@ -1,6 +1,7 @@
-package fr.axonic.avek.model.base;
+package fr.axonic.avek.model.base.engine;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -8,6 +9,7 @@ import java.beans.PropertyChangeSupport;
 /**
  * Created by cduffau on 11/07/16.
  */
+@XmlRootElement
 public abstract class AEntity{
 
     protected String path, code, label;
@@ -98,6 +100,7 @@ public abstract class AEntity{
         }
 
     }
+
 
     public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
         if (listener == null)

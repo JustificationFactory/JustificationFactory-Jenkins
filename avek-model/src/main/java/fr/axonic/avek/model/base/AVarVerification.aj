@@ -7,6 +7,7 @@ import fr.axonic.avek.model.verification.verifier.AContinuousNumberVerifier;
 import fr.axonic.avek.model.verification.verifier.ARangedEnumVerifier;
 import fr.axonic.avek.model.verification.verifier.AVarVerifier;
 import fr.axonic.avek.model.verification.verifier.AStringVerifier;
+import fr.axonic.avek.model.base.engine.AVar;
 
 public aspect AVarVerification {
 

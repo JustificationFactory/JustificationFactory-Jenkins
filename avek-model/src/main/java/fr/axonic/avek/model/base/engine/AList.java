@@ -1,11 +1,14 @@
-package fr.axonic.avek.model.base;
+package fr.axonic.avek.model.base.engine;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by cduffau on 11/07/16.
  */
+@XmlRootElement
 public class AList<T extends AEntity> extends AEntity {
 
     private List<T> entities;
@@ -18,6 +21,7 @@ public class AList<T extends AEntity> extends AEntity {
         this.entities = new ArrayList<>();
     }
 
+    @XmlElement
     public List<T> getEntities() {
         return entities;
     }

@@ -1,5 +1,9 @@
 package fr.axonic.avek.model.base;
 
+import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.avek.model.base.engine.AVarProperty;
+import fr.axonic.avek.model.base.engine.Format;
+import fr.axonic.avek.model.base.engine.FormatType;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import org.junit.Test;
 
@@ -22,7 +26,7 @@ public class ANumberTest {
 
     @Test
     public void testVerifiableProperties() throws VerificationException {
-        AVar aNumber= AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setValue(1.0);
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.MIN.name()));
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.MAX.name()));

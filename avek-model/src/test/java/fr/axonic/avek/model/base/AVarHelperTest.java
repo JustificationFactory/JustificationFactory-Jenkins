@@ -1,5 +1,6 @@
 package fr.axonic.avek.model.base;
 
+import fr.axonic.avek.model.base.engine.AVarHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
