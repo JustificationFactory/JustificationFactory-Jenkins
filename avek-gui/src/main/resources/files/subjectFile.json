@@ -1,91 +1,91 @@
 {
-  "id":42,
-  "categories":{
-    "Static":[
+  "id": 42,
+  "categories": {
+    "Static": [
       {
-        "value":42,
-        "editable":false,
-        "format":{
-          "formatType":"NUMBER"
+        "value": 42,
+        "format": {
+          "formatType": "NUMBER"
         },
-        "mandatory":false,
-        "label":"Id"
+        "editable": false,
+        "mandatory": false,
+        "label": "Id"
       },
       {
-        "value":25,
-        "editable":true,
-        "format":{
-          "formatType":"NUMBER"
+        "value": 25,
+        "format": {
+          "formatType": "NUMBER"
         },
-        "mandatory":false,
-        "label":"Age"
+        "editable": false,
+        "mandatory": false,
+        "label": "Age"
       },
       {
-        "value":1,
-        "editable":false,
-        "format":{
-          "formatType":"NUMBER"
+        "value": 1,
+        "format": {
+          "formatType": "NUMBER"
         },
-        "mandatory":false,
-        "label":"Sex"
+        "editable": false,
+        "mandatory": false,
+        "label": "Sex"
       }
     ],
-    "Pathologic":[
+    "Pathologic": [
       {
-        "value":"OVERWEIGHT",
-        "editable":true,
-        "format":{
-          "formatType":"STRING"
+        "value": "OVERWEIGHT",
+        "format": {
+          "formatType": "STRING"
         },
-        "mandatory":false,
-        "label":"Pathology"
+        "editable": false,
+        "mandatory": false,
+        "label": "Pathology"
       },
       {
-        "value":"Jul 7, 2016 7:55:57 AM",
-        "editable":false,
-        "format":{
-          "formatType":"DATE"
+        "value": "Jul 12, 2016 1:35:49 PM",
+        "format": {
+          "formatType": "DATE"
         },
-        "mandatory":false,
-        "label":"Beginning"
+        "editable": false,
+        "mandatory": false,
+        "label": "Beginning"
       },
       {
-        "value":"Gynoid",
-        "editable":true,
-        "format":{
-          "formatType":"STRING"
+        "value": "Gynoid",
+        "format": {
+          "formatType": "STRING"
         },
-        "mandatory":false,
-        "label":"Type"
+        "editable": false,
+        "mandatory": false,
+        "label": "Type"
       }
     ],
-    "Dynamic":[
+    "Dynamic": [
       {
-        "value":123.45,
-        "editable":true,
-        "format":{
-          "formatType":"NUMBER"
+        "value": 123.45,
+        "format": {
+          "formatType": "NUMBER"
         },
-        "mandatory":false,
-        "label":"Size"
+        "editable": false,
+        "mandatory": false,
+        "label": "Size"
       },
       {
-        "value":67,
-        "editable":true,
-        "format":{
-          "formatType":"NUMBER"
+        "value": 67,
+        "format": {
+          "formatType": "NUMBER"
         },
-        "mandatory":false,
-        "label":"Weight"
+        "editable": false,
+        "mandatory": false,
+        "label": "Weight"
       },
       {
-        "value":43.96353585595447,
-        "editable":true,
-        "format":{
-          "formatType":"NUMBER"
+        "value": 43.96353585595447,
+        "format": {
+          "formatType": "NUMBER"
         },
-        "mandatory":false,
-        "label":"IMC"
+        "editable": false,
+        "mandatory": false,
+        "label": "IMC"
       }
     ]
   }

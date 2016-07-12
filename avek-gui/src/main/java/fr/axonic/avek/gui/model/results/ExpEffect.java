@@ -1,15 +1,16 @@
 package fr.axonic.avek.gui.model.results;
 
+import fr.axonic.avek.gui.model.json.BEnum;
 import fr.axonic.avek.model.base.ARangedEnum;
 
 /**
  * Created by Nathaël N on 07/07/16.
  */
 public class ExpEffect {
-	private final ARangedEnum states;
+	private final BEnum states;
 	private final String name;
 
-	public ExpEffect(ARangedEnum aEnum, String name) {
+	public ExpEffect(BEnum aEnum, String name) {
 		this.states = aEnum;
 		this.name = name;
 	}
@@ -17,7 +18,7 @@ public class ExpEffect {
 	public String getName() {
 		return name;
 	}
-	public ARangedEnum getStateClass() {
+	public BEnum getStateClass() {
 		return states;
 	}
 

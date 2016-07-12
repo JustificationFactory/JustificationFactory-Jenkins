@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view;
 
 import com.google.gson.Gson;
+import fr.axonic.avek.gui.model.json.BEnum;
 import fr.axonic.avek.gui.model.results.ExampleState;
 import fr.axonic.avek.gui.model.results.ExpEffect;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
@@ -36,31 +37,27 @@ public class MainController {
 	@FXML private ExpSubject expSubject;
 	@FXML private JellyBeansSelector jellyBeansSelector;
 
+	private String getFileContent(String path) throws IOException, URISyntaxException {
+		String res = "";
+		File f = new File(getClass().getClassLoader()
+				.getResource(path).toURI());
+		List<String> ls = Files.readAllLines(f.toPath());
+		for(String s : ls)
+			res += s;
+
+		return res;
+	}
+
 	@FXML
 	protected void initialize() throws Exception {
-		String monitoredSystemJson = "";
-		try {
-			File f = new File(getClass().getClassLoader()
-					.getResource("files/subjectFile.json").toURI());
-			List<String> ls = Files.readAllLines(f.toPath());
-			for(String s : ls)
-				monitoredSystemJson += s;
-		} catch (IOException | URISyntaxException e) {}
-
 		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
+		String monitoredSystemJson = getFileContent("files/subjectFile.json");
+
 		List<ExpEffect> expEffects = new ArrayList<>();
 		for (int i = 1; i <= 9; i++) {
-			String s;
-			{
-				ExampleState val = ExampleState.values()[0];
-				ARangedEnum<ExampleState> aEnum = new ARangedEnum(val);
-				aEnum.setRange(Arrays.asList(ExampleState.values()));
-				//aEnum.setDefaultValue(ExampleState.MEDIUM);
-				s = new Gson().toJson(aEnum);
-			}
-			ARangedEnum ae = new Gson().fromJson(s, ARangedEnum.class);
-
-			expEffects.add(new ExpEffect(ae, "AE"+i));
+			String aRangedEnumJson = getFileContent("files/resultEnum1.json");
+			BEnum be = new Gson().fromJson(aRangedEnumJson, BEnum.class);
+			expEffects.add(new ExpEffect(be, "AE"+i));
 		}
 
 		paneExpParameters.addParameter(new ANumber("Frequency", 42.0));

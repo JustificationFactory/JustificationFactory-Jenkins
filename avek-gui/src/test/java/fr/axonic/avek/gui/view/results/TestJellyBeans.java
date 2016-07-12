@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
+import fr.axonic.avek.gui.model.json.BEnum;
 import fr.axonic.avek.gui.model.results.ExampleState;
 import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ARangedEnum;
@@ -49,24 +50,26 @@ public class TestJellyBeans extends ApplicationTest {
 
 	@Test
 	public void testStateChange() throws VerificationException {
-		ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
-		aEnum.setRange(Arrays.asList(ExampleState.values()));
-		this.jb.setStateType(aEnum);
+		BEnum bEnum = new BEnum();
+		bEnum.setRange((Object[]) ExampleState.values());
+		bEnum.setValue(ExampleState.VERY_LOW.toString());
 
-		assertEquals(ExampleState.VERY_LOW, jb.getState());
+		this.jb.setStateType(bEnum);
+
+		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
 
 		clickOn(jbText);
-		assertEquals(ExampleState.LOW, jb.getState());
+		assertEquals(ExampleState.LOW.toString(), jb.getState());
 
 
 		clickOn(jbText); // Medium
 		clickOn(jbText);
-		assertEquals(ExampleState.HIGH, jb.getState());
+		assertEquals(ExampleState.HIGH.toString(), jb.getState());
 
 		clickOn(jbText); // Very high
 		clickOn(jbText); // Very Low
 		clickOn(jbText); // low
 		clickOn(jbText);
-		assertEquals(ExampleState.MEDIUM, jb.getState());
+		assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
 	}
 }

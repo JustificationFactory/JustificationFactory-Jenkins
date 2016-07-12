@@ -1,0 +1,30 @@
+{
+  "range": [
+    {
+      "name": "VERY_LOW",
+      "ordinal": 0
+    },
+    {
+      "name": "LOW",
+      "ordinal": 1
+    },
+    {
+      "name": "MEDIUM",
+      "ordinal": 2
+    },
+    {
+      "name": "HIGH",
+      "ordinal": 3
+    },
+    {
+      "name": "VERY_HIGH",
+      "ordinal": 4
+    }
+  ],
+  "value": "VERY_LOW",
+  "format": {
+    "formatType": "ENUM"
+  },
+  "editable": false,
+  "mandatory": false
+}
