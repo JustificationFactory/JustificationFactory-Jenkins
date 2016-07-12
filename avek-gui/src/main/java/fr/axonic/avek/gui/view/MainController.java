@@ -1,14 +1,15 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.gui.model.structure.AState;
 import fr.axonic.avek.gui.model.structure.ExpEffect;
+import fr.axonic.avek.gui.model.structure.ExperimentationResults;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
 import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.ANumber;
+import fr.axonic.avek.model.base.ARangedEnum;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,12 +51,8 @@ public class MainController {
 		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
 		String monitoredSystemJson = getFileContent("files/subjectFile.json");
 
-		List<ExpEffect> expEffects = new ArrayList<>();
-		for (int i = 1; i <= 9; i++) {
-			String aRangedEnumJson = getFileContent("files/resultEnum1.json");
-			AState be = Jsonifier.fromJson(aRangedEnumJson, AState.class);
-			expEffects.add(new ExpEffect(be, "AE"+i));
-		}
+		String results = getFileContent("files/resultEnum1.json");
+		ExperimentationResults expr = Jsonifier.fromJson(results, ExperimentationResults.class);
 
 		paneExpParameters.addParameter(new ANumber("Frequency", 42.0));
 		paneExpParameters.addParameter(new ABoolean("Bool?", true));
@@ -67,7 +64,7 @@ public class MainController {
 		expSubject.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
 
 		// Fill experiment sample list
-		jellyBeansSelector.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
+		jellyBeansSelector.setJellyBeansChoice(FXCollections.observableArrayList(expr.getList()));
 	}
 
 	@FXML

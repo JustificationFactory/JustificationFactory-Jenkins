@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
-import fr.axonic.avek.gui.model.structure.AState;
+import fr.axonic.avek.model.base.ARangedEnum;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +23,7 @@ public class JellyBean extends HBox {
 	@FXML private Button jbLabel;
 	@FXML private Button jbCross;
 
-	private AState enumType;
+	private ARangedEnum enumType;
 	private Object expEffect;
 	private JellyBeansSelector mainController;
 
@@ -68,10 +68,12 @@ public class JellyBean extends HBox {
 		return expEffect;
 	}
 
-	public void setStateType(AState stateType) {
+	public void setStateType(ARangedEnum stateType) {
 		enumType = stateType;
+
+		refreshColor(expEffect==null?"":expEffect.toString(), stateType.getValue().toString());
+
 		expEffect = stateType.getValue();
-		refreshColor("", expEffect.toString());
 	}
 	public void setText(String text) {
 		jbLabel.setText(text);

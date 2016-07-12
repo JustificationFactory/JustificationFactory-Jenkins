@@ -2,7 +2,6 @@ package fr.axonic.avek.gui.view.results;
 
 import com.google.gson.Gson;
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.structure.AState;
 import fr.axonic.avek.gui.model.structure.ExpEffect;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
@@ -57,7 +56,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				aEnum.setRange(Arrays.asList(ExampleState.values()));
 				s = new Gson().toJson(aEnum);
 			}
-			AState be = new Gson().fromJson(s, AState.class);
+			ARangedEnum be = new Gson().fromJson(s, ARangedEnum.class);
 
 			expEffects.add(new ExpEffect(be, "AE"+i));
 		}

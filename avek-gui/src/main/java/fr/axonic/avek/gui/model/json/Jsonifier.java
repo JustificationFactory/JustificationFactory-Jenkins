@@ -7,15 +7,17 @@ import com.google.gson.GsonBuilder;
  */
 public class Jsonifier {
 	public static String toJson(Object o) {
-		return new GsonBuilder()
+		String s = new GsonBuilder()
 				.setPrettyPrinting()
 				.create()
 				.toJson(o);
+		return s;
 	}
 
 	public static <T> T fromJson(String s, Class<T> c) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 
-		return gsonBuilder.create().fromJson(s, c);
+		T t = gsonBuilder.create().fromJson(s, c);
+		return t;
 	}
 }
