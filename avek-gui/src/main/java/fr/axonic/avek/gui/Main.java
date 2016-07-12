@@ -47,7 +47,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 
-		primaryStage.setTitle("GUI");
+		primaryStage.setTitle("#AVEK analyzer");
 		Scene s = new Scene(root, 800, 600);
 		primaryStage.setScene(s);
 

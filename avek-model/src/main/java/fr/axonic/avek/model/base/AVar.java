@@ -24,25 +24,16 @@ import java.io.Serializable;
 // TODO cursor, binding, format, multi-thread, describe the procedure to add
 // properties
 @XmlRootElement
-@XmlSeeAlso({ ANumber.class, ABoolean.class, ADate.class, AString.class })
-public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiable, Serializable {
+@XmlSeeAlso({ ANumber.class, ABoolean.class, ADate.class, AString.class, AEnum.class, ARangedString.class, ARangedEnum.class, AContinuousNumber.class})
+public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, Cloneable, Verifiable, Serializable {
 
-	private Object value;
-
-	private String code;
-
-	private String path;
-
-	private boolean editable = true;
+	private T value, defaultValue;
 
 	// TODO
 	private Format format;
 
-	private boolean mandatory = false;
 
-	private String label;
 
-	private transient PropertyChangeSupport changeSupport;
 
 	public static AVar create(Format format) {
 
@@ -61,12 +52,20 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 				result = new ANumber();
 			}
 			break;
+			case RANGED_NUMBER: {
+				result = new AContinuousNumber();
+			}
+			break;
 			case STRING: {
 				result = new AString();
 			}
 			break;
 			case ENUM: {
 				result = new AEnum<>();
+			}
+			break;
+			case RANGED_ENUM: {
+				result = new ARangedEnum<>();
 			}
 			break;
 			default: {
@@ -87,51 +86,25 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 		this(format, null);
 	}
 
-	protected AVar(Format format, Object value) {
+	protected AVar(Format format, T value) {
 		this.format = format;
 		this.value = value;
 	}
-	protected AVar(String label, Format format, Object value) {
+	protected AVar(String label, Format format, T value) {
 		this.format = format;
 		this.value = value;
 		this.label=label;
 	}
 
 	@XmlElement
-	public Object getValue() {
+	public T getValue() {
 		return value;
 	}
 
-	public void setValue(Object value) throws VerificationException {
+	public void setValue(T value) throws VerificationException {
 		setProperty(AVarProperty.VALUE.name(), value);
 	}
 
-	@XmlElement
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		setUnverifiableProperty(AVarProperty.CODE.name(), code);
-	}
-
-	@XmlElement
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		setUnverifiableProperty(AVarProperty.PATH.name(), path);
-	}
-
-	@XmlTransient
-	public boolean isEditable() {
-		return editable;
-	}
-
-	public void setEditable(boolean editable) {
-		setUnverifiableProperty(AVarProperty.EDITABLE.name(), editable);
-	}
 
 	@XmlTransient
 	public Format getFormat() {
@@ -142,23 +115,6 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 		setUnverifiableProperty(AVarProperty.FORMAT.name(), format);
 	}
 
-	@XmlTransient
-	public boolean isMandatory() {
-		return mandatory;
-	}
-
-	public void setMandatory(boolean mandatory) {
-		setUnverifiableProperty(AVarProperty.MANDATORY.name(), mandatory);
-	}
-
-	@XmlTransient
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		setUnverifiableProperty(AVarProperty.LABEL.name(), label);
-	}
 
 	@XmlTransient
 	public FormatType getType() {
@@ -223,108 +179,43 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 		return this.value.toString();
 	}
 
-	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (listener == null)
-			return;
-		if (changeSupport == null)
-			changeSupport = new PropertyChangeSupport(this);
-		changeSupport.addPropertyChangeListener(listener);
-	}
-
-	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-		if (listener == null || changeSupport == null)
-			return;
-		changeSupport.removePropertyChangeListener(listener);
-	}
-
-	public synchronized PropertyChangeListener[] getPropertyChangeListeners() {
-		if (changeSupport == null)
-			return new PropertyChangeListener[0];
-		return changeSupport.getPropertyChangeListeners();
-	}
-
-	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (listener == null)
-			return;
-		if (changeSupport == null)
-			changeSupport = new PropertyChangeSupport(this);
-		changeSupport.addPropertyChangeListener(propertyName, listener);
-	}
-
-	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (listener == null || changeSupport == null)
-			return;
-		changeSupport.removePropertyChangeListener(propertyName, listener);
-	}
-
-	protected void firePropertyChange(Enum<?> propertyEnum, Object oldValue, Object newValue) {
-		firePropertyChange(propertyEnum.name(), oldValue, newValue);
-	}
-
-	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-
-		if (oldValue != null && newValue != null && oldValue.equals(newValue)) {
-			return;
-		}
-
-		PropertyChangeSupport changeSupport = this.changeSupport;
-		if (changeSupport == null) {
-			return;
-		}
-		changeSupport.firePropertyChange(propertyName, oldValue, newValue);
-	}
 
 	@Override
 	public AVar clone() throws CloneNotSupportedException {
 		AVar result = AVar.create(format);
 
-		result.setCode(code);
-		result.setEditable(editable);
+		result.code=code;
+		result.editable=editable;
 
 		// TODO clone format
-		result.setFormat(format);
-		result.setLabel(label);
-		result.setMandatory(mandatory);
-		result.setPath(path);
+		result.format=format;
+		result.label=label;
+		result.mandatory=mandatory;
+		result.path=path;
 
 		// TODO clone value
 		result.value = value;
+		result.defaultValue = defaultValue;
 
 		return result;
 	}
 
 	protected void setPropertyValue(String propertyName, Object newPropertyValue) {
 		switch (AVarProperty.valueOf(propertyName)) {
-			case CODE: {
-				code = (String) newPropertyValue;
-			}
-			break;
-			case EDITABLE: {
-				editable = (boolean) newPropertyValue;
-			}
-			break;
 			case FORMAT: {
 				format = (Format) newPropertyValue;
 			}
 			break;
-			case LABEL: {
-				label = (String) newPropertyValue;
-			}
-			break;
-			case MANDATORY: {
-				mandatory = (boolean) newPropertyValue;
-			}
-			break;
-			case PATH: {
-				path = (String) newPropertyValue;
-			}
-			break;
+			case DEFAULT_VALUE:
+				defaultValue = (T) newPropertyValue;
+				break;
 			case VALUE: {
-				value = newPropertyValue;
+				value = (T) newPropertyValue;
 			}
 			break;
+
 			default: {
-				throw new UnknownPropertyException();
+				super.setPropertyValue(propertyName,newPropertyValue);
 			}
 		}
 
@@ -333,36 +224,20 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 	protected Object getPropertyValue(String propertyName) {
 		Object result;
 		switch (AVarProperty.valueOf(propertyName)) {
-			case CODE: {
-				result = code;
-			}
-			break;
-			case EDITABLE: {
-				result = editable;
-			}
-			break;
 			case FORMAT: {
 				result = format;
-			}
-			break;
-			case LABEL: {
-				result = label;
-			}
-			break;
-			case MANDATORY: {
-				result = mandatory;
-			}
-			break;
-			case PATH: {
-				result = path;
 			}
 			break;
 			case VALUE: {
 				result = value;
 			}
 			break;
+			case DEFAULT_VALUE: {
+				result  =defaultValue;
+				break;
+			}
 			default: {
-				throw new UnknownPropertyException();
+				result = super.getPropertyValue(propertyName);
 			}
 
 		}
@@ -372,12 +247,13 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 	protected boolean isPropertyVerifiable(String propertyName) {
 		boolean result;
 		switch (AVarProperty.valueOf(propertyName)) {
+			case DEFAULT_VALUE:
 			case VALUE: {
 				result = true;
 			}
 			break;
 			default: {
-				result = false;
+				result = super.isPropertyVerifiable(propertyName);
 			}
 		}
 		return result;
@@ -427,18 +303,7 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 		}
 	}
 
-	public void setUnverifiableProperty(String propertyName, Object newValue) {
 
-		if (isPropertyVerifiable(propertyName)) {
-			throw new IllegalArgumentException("The property " + propertyName + " is verifiable");
-		}
-
-		Object oldValue = getPropertyValue(propertyName);
-
-		setPropertyValue(propertyName, newValue);
-
-		this.firePropertyChange(propertyName, oldValue, newValue);
-	}
 
 	@Override
 	@Verify
@@ -450,5 +315,17 @@ public /*abstract*/ class AVar implements Comparable<AVar>, Cloneable, Verifiabl
 	@Override
 	public String toString() {
 		return "AVar{" + "value=" + value + ", code='" + code + '\'' + ", path='" + path + '\'' + '}';
+	}
+
+	@XmlTransient
+	public T getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(T defaultValue) throws VerificationException {
+		setProperty(AVarProperty.DEFAULT_VALUE.name(), defaultValue);
+		if(getPropertyValue(AVarProperty.VALUE.name())==null){
+			setProperty(AVarProperty.VALUE.name(), defaultValue);
+		}
 	}
 }

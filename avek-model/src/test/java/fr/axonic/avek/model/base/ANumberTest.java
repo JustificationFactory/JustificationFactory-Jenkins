@@ -14,15 +14,15 @@ public class ANumberTest {
     public void testValue() throws VerificationException {
         ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
         aNumber.setValue(1.0);
-        assertEquals(aNumber.intValue(),1);
-        assertEquals(aNumber.floatValue(),1.0f,0);
-        assertEquals(aNumber.doubleValue(),1.0d,0);
-        assertEquals(aNumber.longValue(),1L);
+        assertEquals(aNumber.getValue().intValue(),1);
+        assertEquals(aNumber.getValue().floatValue(),1.0f,0);
+        assertEquals(aNumber.getValue().doubleValue(),1.0d,0);
+        assertEquals(aNumber.getValue().longValue(),1L);
     }
 
     @Test
     public void testVerifiableProperties() throws VerificationException {
-        AVar aNumber= AVar.create(new Format(FormatType.NUMBER));
+        AVar aNumber= AVar.create(new Format(FormatType.RANGED_NUMBER));
         aNumber.setValue(1.0);
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.MIN.name()));
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.MAX.name()));

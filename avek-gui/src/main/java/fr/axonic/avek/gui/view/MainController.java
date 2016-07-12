@@ -10,21 +10,26 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.AEnum;
 import fr.axonic.avek.model.base.ANumber;
+import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainController {
+
+	private Pane root;
 
 	@FXML
 	private Button btnStrategy;
@@ -52,12 +57,12 @@ public class MainController {
 			String s = "";
 			{
 				ExampleState val = ExampleState.values()[0];
-				AEnum<ExampleState> aEnum = new AEnum(val);
-				aEnum.setEnumsRange(ExampleState.values());
+				ARangedEnum<ExampleState> aEnum = new ARangedEnum(val);
+				aEnum.setRange(Arrays.asList(ExampleState.values()));
 				//aEnum.setDefaultValue(ExampleState.MEDIUM);
 				s = new Gson().toJson(aEnum);
 			}
-			AEnum ae = new Gson().fromJson(s, AEnum.class);
+			ARangedEnum ae = new Gson().fromJson(s, ARangedEnum.class);
 
 			expEffects.add(new ExpEffect(ae, "AE"+i));
 		}
