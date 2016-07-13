@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,9 +33,11 @@ public class MainController {
 	private static Parent root;
 
 	@FXML private Button btnStrategy;
-	@FXML private ParametersPane paneExpParameters;
+	@FXML private ScrollPane paneParameters;
 	@FXML private ExpSubject expSubject;
 	@FXML private JellyBeansSelector jellyBeansSelector;
+
+	private ParametersPane paneExpParameters;
 
 	private String getFileContent(String path) throws IOException, URISyntaxException {
 		String res = "";
@@ -49,6 +52,10 @@ public class MainController {
 
 	@FXML
 	protected void initialize() throws Exception {
+		paneExpParameters = new ParametersPane();
+		paneParameters.setContent(paneExpParameters);
+
+
 		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
 		String monitoredSystemJson = getFileContent("files/subjectFile.json");
 

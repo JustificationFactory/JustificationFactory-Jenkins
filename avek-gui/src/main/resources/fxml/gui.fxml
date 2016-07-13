@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fr.axonic.avek.gui.view.parameters.ParametersPane?>
 <?import fr.axonic.avek.gui.view.results.JellyBeansSelector?>
 <?import fr.axonic.avek.gui.view.subjects.ExpSubject?>
 <?import javafx.scene.control.Button?>
@@ -19,9 +18,7 @@
             <center>
                 <BorderPane BorderPane.alignment="CENTER">
                     <center>
-                        <ScrollPane>
-                            <ParametersPane fx:id="paneExpParameters" />
-                        </ScrollPane>
+                        <ScrollPane fx:id="paneParameters" />
                     </center>
                     <bottom>
                         <Button fx:id="btnStrategy" mnemonicParsing="false" onAction="#onClicStrategyButton"
