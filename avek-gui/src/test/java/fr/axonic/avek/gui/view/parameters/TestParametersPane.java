@@ -44,17 +44,17 @@ public class TestParametersPane extends ApplicationTest {
 	public void testAddRemoveParameters() throws ExecutionException, InterruptedException {
 		assertEquals(5, pp.getChildren().size());
 
-		FutureTask ft = new FutureTask<>(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
+		FutureTask ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("LabelText", 42.31)));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(10, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> pp.addParameter(new ANumber("2ndLabelText", 12.34)));
+		ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("2ndLabelText", 12.34)));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(15, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> pp.addParameter(new ANumber("3rdLabelText", 42)));
+		ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("3rdLabelText", 42)));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(20, pp.getChildren().size());
@@ -67,22 +67,22 @@ public class TestParametersPane extends ApplicationTest {
 
 	@Test
 	public void testDifferentParametersTypes() throws ExecutionException, InterruptedException {
-		FutureTask ft = new FutureTask<>(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
+		FutureTask ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("LabelText", 42.31)));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(10, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> pp.addParameter(new ABoolean("Boolbool", true)));
+		ft = new FutureTask<>(() -> pp.addExpParameter(new ABoolean("Boolbool", true)));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(13, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> pp.addParameter(new ADate("Datedate", new Date())));
+		ft = new FutureTask<>(() -> pp.addExpParameter(new ADate("Datedate", new Date())));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(16, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> pp.addParameter(new AString("Strstr", "LaString")));
+		ft = new FutureTask<>(() -> pp.addExpParameter(new AString("Strstr", "LaString")));
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(19, pp.getChildren().size());

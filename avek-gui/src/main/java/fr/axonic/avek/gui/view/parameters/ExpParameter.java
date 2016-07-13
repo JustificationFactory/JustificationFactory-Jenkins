@@ -11,17 +11,17 @@ import javafx.scene.layout.GridPane;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Created by Nathaël N on 04/07/16.
  */
-public class ExpParameter {
+class ExpParameter implements IExpParameter {
 
+	// GUI Component
 	private CheckBox markedUtil;
-
 	private Label paramName;
 	private Label paramValue;
-
 	private TextField minEquivRange;
 	private TextField maxEquivRange;
 
@@ -46,7 +46,6 @@ public class ExpParameter {
 		if(maxEquivRange != null)
 			GridPane.setColumnIndex(maxEquivRange, 4);
 
-
 		// Linking action listeners
 		markedUtil.setOnAction(this::onClickMarkedUtil);
 	}
@@ -63,13 +62,18 @@ public class ExpParameter {
 		return !markedUtil.isIndeterminate() && markedUtil.isSelected();
 	}
 
-	protected void onClickMarkedUtil(ActionEvent event) {
-		boolean b = !markedUtil.isSelected();
-		paramName.setDisable(b);
-		paramValue.setDisable(b);
+	private void onClickMarkedUtil(ActionEvent event) {
+		boolean b = markedUtil.isSelected();
+
+		paramName.setDisable(!b);
+		paramValue.setDisable(!b);
+		if(minEquivRange != null)
+			minEquivRange.setDisable(!b);
+		if(maxEquivRange != null)
+			maxEquivRange.setDisable(!b);
 	}
 
-
+	@Override
 	public Set<Control> getElements() {
 		Set<Control> elts = new HashSet<>();
 		elts.add(paramName);
