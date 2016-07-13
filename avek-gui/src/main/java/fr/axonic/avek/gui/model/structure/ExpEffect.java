@@ -9,7 +9,7 @@ public class ExpEffect {
 	private final ARangedEnum states;
 	private final String name;
 
-	public ExpEffect(ARangedEnum aEnum, String name) {
+	public ExpEffect(String name, ARangedEnum aEnum) {
 		this.states = aEnum;
 		this.name = name;
 	}

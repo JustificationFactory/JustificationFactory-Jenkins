@@ -58,7 +58,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 			}
 			ARangedEnum be = new Gson().fromJson(s, ARangedEnum.class);
 
-			expEffects.add(new ExpEffect(be, "AE"+i));
+			expEffects.add(new ExpEffect("AE"+i, be));
 		}
 
 		// Fill experiment sample list

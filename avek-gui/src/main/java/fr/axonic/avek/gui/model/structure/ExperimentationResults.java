@@ -2,9 +2,8 @@ package fr.axonic.avek.gui.model.structure;
 
 import fr.axonic.avek.model.base.ARangedEnum;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 12/07/16.
@@ -19,7 +18,9 @@ public class ExperimentationResults {
 		results.put(ae1, aEnum);
 	}
 
-	public Collection getList() {
-		return results.values();
+	public List<ExpEffect> getList() {
+		return results.keySet().stream()
+				.map(s -> new ExpEffect(s, results.get(s)))
+				.collect(Collectors.toList());
 	}
 }

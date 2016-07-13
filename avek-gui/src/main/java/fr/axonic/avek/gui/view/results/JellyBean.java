@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -34,7 +36,8 @@ public class JellyBean extends HBox {
 		fxmlLoader.load();
 
 		this.getStylesheets().add(JELLYBEAN_CSS);
-		this.getStylesheets().add("css/results/personalized.css");
+		this.getStylesheets().add("css/results/personalized/levels.css");
+		this.getStylesheets().add("css/results/personalized/boolean.css");
 	}
 
 	@FXML
@@ -51,10 +54,13 @@ public class JellyBean extends HBox {
 		int nextIndex = ( list.indexOf(expEffect) + 1 )%list.size();
 		expEffect = list.get(nextIndex);
 
-		refreshColor(beforeEffect.toString(), expEffect.toString());
+		refreshColor(beforeEffect, expEffect);
 	}
 
-	private void refreshColor(String before, String after) {
+	private void refreshColor(Object bef, Object aft) {
+		String before = bef.toString().toLowerCase();
+		String after = aft.toString().toLowerCase();
+
 		Platform.runLater(() -> {
 			jbLabel.getStyleClass().remove(before);
 			jbCross.getStyleClass().remove(before);
@@ -71,7 +77,7 @@ public class JellyBean extends HBox {
 	public void setStateType(ARangedEnum stateType) {
 		enumType = stateType;
 
-		refreshColor(expEffect==null?"":expEffect.toString(), stateType.getValue().toString());
+		refreshColor(expEffect==null?"":expEffect, stateType.getValue());
 
 		expEffect = stateType.getValue();
 	}

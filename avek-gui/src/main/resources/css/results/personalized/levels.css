@@ -1,25 +1,25 @@
-.VERY_LOW {
+.very_low {
     -fx-background-color: red;
     -fx-border-color: darkred;
     -fx-text-fill: white;
 }
 
-.LOW {
+.low {
     -fx-background-color: orange;
-    -fx-border-color: darkorange;
+    -fx-border-color: orangered;
 }
 
-.MEDIUM {
-    -fx-background-color: white;
-    -fx-border-color: lightgray;
+.medium {
+    -fx-background-color: gold;
+    -fx-border-color: darkgoldenrod;
 }
 
-.HIGH {
+.high {
     -fx-background-color: greenyellow;
     -fx-border-color: limegreen;
 }
 
-.VERY_HIGH {
+.very_high {
     -fx-background-color: green;
     -fx-border-color: darkgreen;
 }
