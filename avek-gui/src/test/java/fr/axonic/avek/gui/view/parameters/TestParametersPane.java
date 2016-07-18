@@ -42,27 +42,27 @@ public class TestParametersPane extends ApplicationTest {
 
 	@Test
 	public void testAddRemoveParameters() throws ExecutionException, InterruptedException {
-		assertEquals(5, pp.getChildren().size());
+		assertEquals(3, pp.getChildren().size());
 
 		FutureTask ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("LabelText", 42.31)));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(10, pp.getChildren().size());
+		assertEquals(3+6, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("2ndLabelText", 12.34)));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(15, pp.getChildren().size());
+		assertEquals(9+6, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("3rdLabelText", 42)));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(20, pp.getChildren().size());
+		assertEquals(15+6, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.rmParameter("2ndLabelText"));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(15, pp.getChildren().size());
+		assertEquals(21-6, pp.getChildren().size());
 	}
 
 	@Test
@@ -70,21 +70,21 @@ public class TestParametersPane extends ApplicationTest {
 		FutureTask ft = new FutureTask<>(() -> pp.addExpParameter(new ANumber("LabelText", 42.31)));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(10, pp.getChildren().size());
+		assertEquals(3+6, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.addExpParameter(new ABoolean("Boolbool", true)));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(13, pp.getChildren().size());
+		assertEquals(9+4, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.addExpParameter(new ADate("Datedate", new Date())));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(16, pp.getChildren().size());
+		assertEquals(13+4, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.addExpParameter(new AString("Strstr", "LaString")));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(19, pp.getChildren().size());
+		assertEquals(17+4, pp.getChildren().size());
 	}
 }
