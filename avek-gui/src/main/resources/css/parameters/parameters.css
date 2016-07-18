@@ -1,0 +1,15 @@
+.category_title {
+    -fx-font-weight: bold;
+}
+
+.levelmark_transparent {
+    -fx-background-color: #fff0;
+}
+
+.levelmark_line {
+    -fx-background-color: #2f25;
+}
+
+.levelmark_arrow {
+    -fx-background-color: #2fa5;
+}

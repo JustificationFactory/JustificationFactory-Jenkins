@@ -1,27 +1,25 @@
-package fr.axonic.avek.gui.view.parameters;
+package fr.axonic.avek.gui.view.parameters.list;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.text.Text;
 
 /**
  * Created by Nathaël N on 13/07/16.
  */
 public class LevelMark extends HBox {
-	private final String TRANSPARENT = "-fx-background-color: #fff0";
-	private final String BLUE = "-fx-background-color: #2f25";
-	private final String ARROW = "-fx-background-color: #2fa5";
+	private final String TRANSPARENT = "levelmark_transparent";
+	private final String LINE = "levelmark_line";
+	private final String ARROW = "levelmark_arrow";
 
-	public LevelMark(int level) {
+	LevelMark(int level) {
 		this(level, false);
 	}
-	public LevelMark(int level, boolean withArrow) {
+	LevelMark(int level, boolean withArrow) {
 		for(int i=0; i<level; i++) {
 			this.getChildren().add(new OneLevelMark(TRANSPARENT));
-			this.getChildren().add(new OneLevelMark(BLUE));
+			this.getChildren().add(new OneLevelMark(LINE));
 			this.getChildren().add(new OneLevelMark(TRANSPARENT));
 		}
 		if(withArrow) {
@@ -35,7 +33,7 @@ public class LevelMark extends HBox {
 
 	private class OneLevelMark extends Pane {
 		OneLevelMark(String c, int s) {
-			this.setStyle(c);
+			this.getStyleClass().add(c);
 			this.setMinWidth(s);
 			this.setPrefWidth(s);
 			this.setMaxWidth(s);

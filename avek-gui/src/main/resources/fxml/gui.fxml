@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.axonic.avek.gui.view.parameters.ParametersPane?>
 <?import fr.axonic.avek.gui.view.results.JellyBeansSelector?>
 <?import fr.axonic.avek.gui.view.subjects.ExpSubject?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.axonic.avek.gui.view.MainController" maxHeight="-Infinity"
@@ -18,7 +18,7 @@
             <center>
                 <BorderPane BorderPane.alignment="CENTER">
                     <center>
-                        <ScrollPane fx:id="paneParameters" />
+                        <ParametersPane fx:id="paneParameters" />
                     </center>
                     <bottom>
                         <Button fx:id="btnStrategy" mnemonicParsing="false" onAction="#onClicStrategyButton"

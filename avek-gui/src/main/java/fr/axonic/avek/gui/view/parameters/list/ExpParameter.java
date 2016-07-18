@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.view.parameters;
+package fr.axonic.avek.gui.view.parameters.list;
 
 import fr.axonic.avek.model.base.engine.AVar;
 import fr.axonic.avek.model.base.engine.FormatType;

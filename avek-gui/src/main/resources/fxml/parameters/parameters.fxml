@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fr.axonic.avek.gui.view.parameters.list.ParametersCategory?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.SplitPane?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
+    <SplitPane orientation="HORIZONTAL">
+        <ScrollPane>
+            <ParametersCategory fx:id="paneParameters"/>
+        </ScrollPane>
+
+        <ScrollPane fx:id="uploadedFiles"/>
+    </SplitPane>
+
+    <TextArea fx:id="textfieldComplements"/>
+</fx:root>

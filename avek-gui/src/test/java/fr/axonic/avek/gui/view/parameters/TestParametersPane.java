@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.parameters;
 
+import fr.axonic.avek.gui.view.parameters.list.ParametersCategory;
 import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
@@ -29,11 +30,11 @@ public class TestParametersPane extends ApplicationTest {
 		System.setProperty("prism.text", "t2k");
 	}
 
-	private ParametersPane pp;
+	private ParametersCategory pp;
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		this.pp = new ParametersPane();
+		this.pp = new ParametersCategory();
 
 		Scene scene = new Scene(pp, 500, 300);
 		stage.setScene(scene);

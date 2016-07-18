@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +32,9 @@ public class MainController {
 	private static Parent root;
 
 	@FXML private Button btnStrategy;
-	@FXML private ScrollPane paneParameters;
+	@FXML private ParametersPane paneParameters;
 	@FXML private ExpSubject expSubject;
 	@FXML private JellyBeansSelector jellyBeansSelector;
-
-	private ParametersPane paneExpParameters;
 
 	private String getFileContent(String path) throws IOException, URISyntaxException {
 		String res = "";
@@ -52,26 +49,23 @@ public class MainController {
 
 	@FXML
 	protected void initialize() throws Exception {
-		paneExpParameters = new ParametersPane();
-		paneParameters.setContent(paneExpParameters);
-
-
 		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
 		String monitoredSystemJson = getFileContent("files/subjectFile.json");
 
 		String results = getFileContent("files/resultEnum1.json");
 		ExperimentationResults expr = Jsonifier.fromJson(results, ExperimentationResults.class);
 
-		paneExpParameters.addExpParameter(new ANumber("Frequency", 42.0));
-		paneExpParameters.addExpParameter(new ABoolean("Bool?", true));
+		paneParameters.addExpParameter(new ANumber("Frequency", 42.0));
+		paneParameters.addExpParameter(new ABoolean("Bool?", true));
 
 		AList<AVar> list = new AList<>();
 		list.addEntity(new ANumber("SubNumber", 12.34));
 		list.addEntity(new ADate("SubDate", new Date()));
 		list.addEntity(new ABoolean("SubBool", false));
 		list.setLabel("SubCategory");
-		paneExpParameters.addExpParameter(list);
-		paneExpParameters.addExpParameter(new ANumber("Times redo", 12));
+		paneParameters.addParamCategory(list);
+
+		paneParameters.addExpParameter(new ANumber("Times redo", 12));
 
 		// TODO MOCK ONLY ↑↑↑ ////////////////////////////////////////////////
 
