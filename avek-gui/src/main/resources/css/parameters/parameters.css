@@ -13,3 +13,7 @@
 .levelmark_arrow {
     -fx-background-color: #2fa5;
 }
+
+.dragdroppane {
+    -fx-background-color: #fff;
+}

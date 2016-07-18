@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.BorderPane?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.StackPane"
+         onDragEntered="#onDragEntered"
+         onDragDropped="#onDragDropped"
+         onDragExited="#onDragExited"
+         onDragOver="#onDragOver">
+    <ListView fx:id="fileList" />
+    <Label fx:id="dragDropPane"
+      alignment="CENTER"
+      styleClass="dragdroppane">
+        +
+    </Label>
+    <BorderPane fx:id="progressIndicPane">
+        <center>
+            <ProgressIndicator fx:id="progressIndic"/>
+        </center>
+    </BorderPane>
+</fx:root>

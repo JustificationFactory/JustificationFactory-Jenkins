@@ -16,11 +16,11 @@ import java.net.URL;
  * Created by Nathaël N on 18/07/16.
  */
 public class ParametersPane extends SplitPane {
-	public static final URL PARAMPANE_FXML
+	private static final URL PARAMPANE_FXML
 			= ParametersPane.class.getClassLoader().getResource("fxml/parameters/parameters.fxml");
 
 	@FXML private TextArea textfieldComplements;
-	@FXML private ScrollPane uploadedFiles;
+	@FXML private FileListView uploadedFiles;
 	@FXML private ParametersCategory paneParameters;
 
 	public ParametersPane() throws IOException {
