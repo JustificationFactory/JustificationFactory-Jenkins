@@ -1,7 +1,10 @@
-package fr.axonic.avek.gui.view.parameters.list;
+package fr.axonic.avek.gui.view.parameters;
 
+import fr.axonic.avek.gui.model.structure.UploadedFile;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -9,38 +12,22 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
  * Created by Nathaël N on 19/07/16.
  */
-public class FileListCell extends ListCell<File> {
+class FileListCell extends ListCell<UploadedFile> {
 	private static final HashMap<String, Image> mapOfFileExtToSmallIcon = new HashMap<>();
+	private ProgressIndicator progressIndicator;
 
-	private static Image getFileIcon(File file) {
-		final String ext = getFileExt(file);
+
+	private static Image getFileIcon(UploadedFile uploadedFile) {
+		final String ext = getFileExt(uploadedFile.getOriginal());
 
 		Image fileIcon = mapOfFileExtToSmallIcon.get(ext);
 		if (fileIcon == null) {
-
-			Icon jswingIcon = null;
-
-			if (file.exists())
-				jswingIcon = getJSwingIconFromFileSystem(file);
-			else {
-				File tempFile = null;
-				try {
-					tempFile = File.createTempFile("icon", ext);
-					jswingIcon = getJSwingIconFromFileSystem(tempFile);
-				}
-				catch (IOException ignored) {
-					// Cannot create temporary file.
-				}
-				finally {
-					if (tempFile != null) tempFile.delete();
-				}
-			}
+			Icon jswingIcon = getJSwingIconFromFileSystem(uploadedFile.getOriginal());
 
 			if (jswingIcon != null) {
 				fileIcon = jswingIconToImage(jswingIcon);
@@ -74,17 +61,41 @@ public class FileListCell extends ListCell<File> {
 
 
 	@Override
-	public void updateItem(File item, boolean empty) {
+	public void updateItem(UploadedFile item, boolean empty) {
+		if(getItem() != null)
+			getItem().removeListener();
+
 		super.updateItem(item, empty);
+
 		if (empty) {
 			setGraphic(null);
 			setText(null);
 		}
 		else {
+			item.setUpdateListener(this::updateGraphics);
+			setText(item.getOriginal().getName());
+		}
+	}
+
+	private void updateGraphics() {
+		UploadedFile item = FileListCell.this.getItem();
+
+		if(item == null)
+			return;
+
+		if (item.getPct() == 1) {
 			Image fxImage = getFileIcon(item);
 			ImageView imageView = new ImageView(fxImage);
+
 			setGraphic(imageView);
-			setText(item.getName());
+			progressIndicator = null; // throw the progress indicator (now unused)
+		} else {
+			if (progressIndicator == null) {
+				progressIndicator = new ProgressIndicator();
+				setGraphic(progressIndicator);
+			}
+
+			progressIndicator.setProgress(item.getPct());
 		}
 	}
 }

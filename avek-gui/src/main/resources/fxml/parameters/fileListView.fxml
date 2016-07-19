@@ -16,9 +16,4 @@
       styleClass="dragdroppane">
         +
     </Label>
-    <BorderPane fx:id="progressIndicPane">
-        <center>
-            <ProgressIndicator fx:id="progressIndic"/>
-        </center>
-    </BorderPane>
 </fx:root>
