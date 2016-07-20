@@ -16,4 +16,5 @@
 
 .dragdroppane {
     -fx-background-color: #fff;
+    -fx-opacity: 50%;
 }

@@ -1,12 +1,12 @@
 package fr.axonic.avek.gui.view.parameters;
 
 import fr.axonic.avek.gui.model.structure.UploadedFile;
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -18,6 +18,8 @@ import java.util.HashMap;
  * Created by Nathaël N on 19/07/16.
  */
 class FileListCell extends ListCell<UploadedFile> {
+	private final static Logger logger = Logger.getLogger(FileListCell.class);
+
 	private static final HashMap<String, Image> mapOfFileExtToSmallIcon = new HashMap<>();
 	private ProgressIndicator progressIndicator;
 
@@ -48,6 +50,7 @@ class FileListCell extends ListCell<UploadedFile> {
 	}
 
 	private static Icon getJSwingIconFromFileSystem(File file) {
+		logger.info("Obtaining file icon for "+file.getName());
 		return FileSystemView.getFileSystemView().getSystemIcon(file);
 	}
 

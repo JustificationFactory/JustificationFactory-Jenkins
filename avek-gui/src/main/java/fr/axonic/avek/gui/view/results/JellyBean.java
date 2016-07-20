@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,10 +16,11 @@ import java.util.List;
 /**
  * Created by Nathaël N on 28/06/16.
  */
-public class JellyBean extends HBox {
-	public static final URL JELLYBEAN_FXML
+class JellyBean extends HBox {
+	private final static Logger logger = Logger.getLogger(JellyBean.class);
+	private final static URL JELLYBEAN_FXML
 			= JellyBean.class.getClassLoader().getResource("fxml/results/jellyBean.fxml");
-	public static final String JELLYBEAN_CSS = "css/results/jellyBean.css";
+	private final static String JELLYBEAN_CSS = "css/results/jellyBean.css";
 
 	@FXML private Button jbLabel;
 	@FXML private Button jbCross;
@@ -27,13 +29,17 @@ public class JellyBean extends HBox {
 	private Object expEffect;
 	private JellyBeansSelector mainController;
 
-	public JellyBean() throws IOException {
+	JellyBean() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(JELLYBEAN_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
+
+		logger.info("Loading jellyBean.fxml");
 		fxmlLoader.load();
 
+		logger.info("Adding jellybean.css");
 		this.getStylesheets().add(JELLYBEAN_CSS);
+		logger.info("Adding jellybeans personalized status css");
 		this.getStylesheets().add("css/results/personalized/levels.css");
 		this.getStylesheets().add("css/results/personalized/boolean.css");
 	}
@@ -68,11 +74,11 @@ public class JellyBean extends HBox {
 	}
 
 
-	public Object getState() {
+	private Object getState() {
 		return expEffect;
 	}
 
-	public void setStateType(ARangedEnum stateType) {
+	void setStateType(ARangedEnum stateType) {
 		enumType = stateType;
 
 		refreshColor(expEffect==null?"":expEffect, stateType.getValue());
@@ -84,7 +90,7 @@ public class JellyBean extends HBox {
 	}
 	public String getText() { return jbLabel.getText(); }
 
-	public void setMainController(JellyBeansSelector mainController) {
+	void setMainController(JellyBeansSelector mainController) {
 		this.mainController = mainController;
 	}
 

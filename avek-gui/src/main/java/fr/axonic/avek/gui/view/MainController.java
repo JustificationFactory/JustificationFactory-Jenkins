@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MainController {
+	private final static Logger logger = Logger.getLogger(MainController.class);
 	private final static URL GUI_FXML
 			= MainController.class.getClassLoader().getResource("fxml/gui.fxml");
 	private static Parent root;
@@ -84,8 +86,10 @@ public class MainController {
 
 
 	public static Parent getRoot() throws IOException {
-		if(root == null)
+		if(root == null) {
+			logger.debug("Loading gui.fxml");
 			root = FXMLLoader.load(GUI_FXML);
+		}
 		return root;
 	}
 }

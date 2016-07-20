@@ -7,13 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +25,8 @@ import java.util.List;
  * Created by Nathaël N on 18/07/16.
  */
 public class FileListView extends StackPane {
+	private final static Logger logger = Logger.getLogger(FileListView.class);
+
 	private static final URL FILELISTWIEW_FXML
 		= ParametersPane.class.getClassLoader().getResource("fxml/parameters/fileListView.fxml");
 
@@ -36,6 +37,8 @@ public class FileListView extends StackPane {
 		FXMLLoader fxmlLoader = new FXMLLoader(FILELISTWIEW_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
+
+		logger.info("Loading fileListView.fxml");
 		fxmlLoader.load();
 	}
 
@@ -60,9 +63,9 @@ public class FileListView extends StackPane {
 				Platform.runLater(() -> fileList.getItems().add(uf));
 				uf.doUpload();
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				logger.error("File not found: "+f, e);
 			} catch (FileAlreadyExistsException e) {
-				System.err.println(e.getMessage());
+				logger.warn("File already added: "+f.getName(), e);
 			}
 		}
 	}

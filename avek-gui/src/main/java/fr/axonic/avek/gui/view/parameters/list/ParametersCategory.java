@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
  * Created by Nathaël N on 13/07/16.
  */
 public class ParametersCategory extends GridPane implements IExpParameter {
-	public static final String PARAMETERS_CSS = "css/parameters/parameters.css";
+	private final static Logger logger = Logger.getLogger(ParametersCategory.class);
+	private final static String PARAMETERS_CSS = "css/parameters/parameters.css";
 
 	private final CheckBox markedUtil;
 	private final Label label;
@@ -66,9 +68,9 @@ public class ParametersCategory extends GridPane implements IExpParameter {
 
 		this.setVgap(2);
 
+		logger.info("Adding parameters.css");
 		this.getStylesheets().add(PARAMETERS_CSS);
 	}
-
 
 	/**
 	 * Define a ParametersCategory as Root

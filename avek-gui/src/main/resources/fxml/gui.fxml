@@ -11,7 +11,7 @@
             minWidth="5" prefHeight="600.0"
             prefWidth="800.0" xmlns="http://javafx.com/javafx/8">
     <center>
-        <BorderPane fx:id="topPane" style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
+        <BorderPane style="-fx-border-color: #000;" BorderPane.alignment="CENTER">
             <top>
                 <JellyBeansSelector fx:id="jellyBeansSelector"/>
             </top>

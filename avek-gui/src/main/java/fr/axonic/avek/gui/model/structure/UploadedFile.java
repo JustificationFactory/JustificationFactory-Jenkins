@@ -1,24 +1,27 @@
 package fr.axonic.avek.gui.model.structure;
 
 import javafx.application.Platform;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
-import java.util.function.Consumer;
+import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.Stack;
 
 /**
  * Created by Nathaël N on 18/07/16.
  */
 public class UploadedFile {
+	private final static Logger logger = Logger.getLogger(UploadedFile.class);
+
 	private static final File uploadedFolder;
 	static {
 		uploadedFolder = new File("./temp/uploaded/"+ Calendar.getInstance().getTimeInMillis());
 
 		uploadedFolder.mkdirs();
 		uploadedFolder.deleteOnExit();
+		logger.debug("Temp folder created: " + uploadedFolder);
 	}
 
 	private final File origin;
@@ -37,12 +40,11 @@ public class UploadedFile {
 		File uploaded = null;
 
 		// Checking if already uploade
-		for(File f : uploadedFolder.listFiles()) {
+		for(File f : uploadedFolder.listFiles())
 			if(f.equals(origin)) {
 				uploaded = f;
 				break;
 			}
-		}
 
 		this.uploaded = uploaded==null ?
 				  new File(uploadedFolder.getPath() + "/" + origin.getName())
@@ -80,13 +82,13 @@ public class UploadedFile {
 			} while(!stack.isEmpty());
 
 			if(uploaded.isDirectory())
-				System.out.println("All files treated : "+uploaded+"\n");
+				logger.info("All files treated for "+uploaded);
 
 			uploadedBytes = getSize();
 			if (listener != null)
 				Platform.runLater(() -> listener.run());
 		});
-		t.setName("[" + t.getName() + ": " + origin + " upload to " + uploaded + "]");
+		t.setName(t.getName() + ":" + origin.getName());
 		t.start();
 	}
 
@@ -111,19 +113,19 @@ public class UploadedFile {
 
 				if (listener != null)
 					Platform.runLater(() -> listener.run());
-
-				Thread.sleep(1);
 			}
-			System.out.println("Files uploaded : "+newFile);
+
+			logger.info("File uploaded: "+pop+" to "+newFile);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Upload of a file failed: "+newFile,e);
 		} finally {
 			try {
 				if (input != null)
 					input.close();
 				if (output != null)
 					output.close();
-			} catch (IOException ignored) {
+			} catch (IOException e) {
+				logger.error("Impossible to close input/output stream: "+newFile, e);
 			}
 		}
 	}
@@ -150,6 +152,8 @@ public class UploadedFile {
 				size+=pop.length();
 		} while(!stack.isEmpty());
 
+		logger.debug("Size calculated: "+ NumberFormat.getInstance().format(size)+" bytes for "+origin.getName());
+
 		return size;
 	}
 	public double getPct() {
@@ -174,6 +178,6 @@ public class UploadedFile {
 	public void setUpdateListener(Runnable listener) {
 		this.listener = listener;
 
-		Platform.runLater(() -> listener.run());
+		Platform.runLater(listener);
 	}
 }

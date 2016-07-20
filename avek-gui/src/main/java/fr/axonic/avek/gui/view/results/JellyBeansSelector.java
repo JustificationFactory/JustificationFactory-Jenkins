@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,28 +24,33 @@ import java.util.Set;
  * Created by cduffau on 02/07/16.
  */
 public class JellyBeansSelector extends VBox {
-	public static final URL JBSELECTOR_FXML
+	private static final Logger logger = Logger.getLogger(JellyBeansSelector.class);
+	private static final URL JBSELECTOR_FXML
 			= JellyBeansSelector.class.getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml");
-	public static final String JBSELECTOR_CSS = "css/results/jellyBeanSelector.css";
+	private static final String JBSELECTOR_CSS = "css/results/jellyBeanSelector.css";
 
 	@FXML private Button newExpEffectButton;
 	@FXML private FlowPane jellyBeansPane;
 	@FXML private ComboBox<ExpEffect> comboBoxJellyBean;
 
-	private Set<String> addedEffects;
+	private final Set<String> addedEffects;
 
 	public JellyBeansSelector() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(JBSELECTOR_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
+
+		logger.info("Loading jellyBeanSelector.fxml");
 		fxmlLoader.load();
 
+		logger.info("Adding jellyBeanSelector.css");
 		this.getStylesheets().add(JBSELECTOR_CSS);
+
+		addedEffects = new HashSet<>();
 	}
 
 	@FXML
 	protected void initialize() {
-		addedEffects = new HashSet<>();
 		updateJellyBeanChoice();
 	}
 
@@ -67,7 +73,7 @@ public class JellyBeansSelector extends VBox {
 				new Callback<ListView<ExpEffect>, ListCell<ExpEffect>>() {
 					@Override
 					public ListCell<ExpEffect> call(ListView<ExpEffect> param) {
-						final ListCell<ExpEffect> cell = new ListCell<ExpEffect>() {
+						return new ListCell<ExpEffect>() {
 							@Override
 							public void updateItem(ExpEffect item, boolean empty) {
 								super.updateItem(item, empty);
@@ -79,7 +85,6 @@ public class JellyBeansSelector extends VBox {
 								}
 							}
 						};
-						return cell;
 					}
 				});
 	}
@@ -87,8 +92,13 @@ public class JellyBeansSelector extends VBox {
 	private void addJellyBean() throws IOException {
 		// Verify if JellyBean already created (this result is already selected)
 		ExpEffect choice = comboBoxJellyBean.getValue();
-		if (choice == null || addedEffects.contains(choice.getName()))
+		if (choice == null) {
+			logger.warn("Choice is null");
 			return;
+		} else if (addedEffects.contains(choice.getName())) {
+			logger.warn("Already selected: "+choice);
+			return;
+		}
 
 		JellyBean jb2 = new JellyBean();
 		jb2.setStateType(choice.getStateClass());
@@ -99,7 +109,7 @@ public class JellyBeansSelector extends VBox {
 		updateJellyBeanChoice();
 	}
 
-	public void removeJellyBean(JellyBean jbc) {
+	void removeJellyBean(JellyBean jbc) {
 		addedEffects.remove(jbc.getText());
 		jellyBeansPane.getChildren().remove(jbc);
 		updateJellyBeanChoice();
