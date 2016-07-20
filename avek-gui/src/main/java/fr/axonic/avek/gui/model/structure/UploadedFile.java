@@ -15,7 +15,7 @@ import java.util.Stack;
 public class UploadedFile {
 	private final static Logger logger = Logger.getLogger(UploadedFile.class);
 
-	private static final File uploadedFolder;
+	public static final File uploadedFolder;
 	static {
 		uploadedFolder = new File("./temp/uploaded/"+ Calendar.getInstance().getTimeInMillis());
 
@@ -86,7 +86,7 @@ public class UploadedFile {
 
 			uploadedBytes = getSize();
 			if (listener != null)
-				Platform.runLater(() -> listener.run());
+				Platform.runLater(listener::run);
 		});
 		t.setName(t.getName() + ":" + origin.getName());
 		t.start();
@@ -112,7 +112,7 @@ public class UploadedFile {
 				uploadedBytes += bytesRead;
 
 				if (listener != null)
-					Platform.runLater(() -> listener.run());
+					Platform.runLater(listener::run);
 			}
 
 			logger.info("File uploaded: "+pop+" to "+newFile);

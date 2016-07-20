@@ -86,10 +86,8 @@ public class MainController {
 
 
 	public static Parent getRoot() throws IOException {
-		if(root == null) {
-			logger.debug("Loading gui.fxml");
-			root = FXMLLoader.load(GUI_FXML);
-		}
+		logger.debug("Loading gui.fxml");
+		root = FXMLLoader.load(GUI_FXML);
 		return root;
 	}
 }
