@@ -23,3 +23,5 @@ target/
 
 # Generated files
 */logs/
+
+avek-gui/temp

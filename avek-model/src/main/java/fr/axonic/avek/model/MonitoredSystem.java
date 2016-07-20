@@ -25,6 +25,9 @@ public class MonitoredSystem {
 	}
 
 	public void addAVar(String s, AVar aVar) {
+		if(!categories.containsKey(s))
+			throw new NullPointerException("Category "+s+" not found");
+
 		categories.get(s).add(aVar);
 	}
 
@@ -45,4 +48,11 @@ public class MonitoredSystem {
 		return "MonitoredSystem= "+this.id+", "+this.categories +"}";
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof MonitoredSystem)
+			return categories.equals(((MonitoredSystem)obj).categories);
+		return super.equals(obj);
+	}
 }

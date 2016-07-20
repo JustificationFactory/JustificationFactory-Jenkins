@@ -55,7 +55,7 @@ public class FileListView extends StackPane {
 	}
 
 	private void onAddFiles(List<File> list) {
-		for(final File f : list) {
+		for(final File f : list)
 			try {
 				UploadedFile uf = new UploadedFile(f);
 
@@ -67,7 +67,6 @@ public class FileListView extends StackPane {
 			} catch (FileAlreadyExistsException e) {
 				logger.warn("File already added: "+f.getName(), e);
 			}
-		}
 	}
 
 	@FXML

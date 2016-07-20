@@ -1,12 +1,22 @@
 package fr.axonic.avek.gui.view.results;
 
 
+import com.sun.rmi.rmid.ExecPermission;
+import fr.axonic.avek.gui.model.sample.ExampleState;
+import fr.axonic.avek.model.base.ARangedEnum;
+import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Nathaël N on 07/07/16.
@@ -40,28 +50,29 @@ public class TestJellyBeans extends ApplicationTest {
 		this.jb.setText("The Text");
 	}
 
-	/**@Test
+	@Test
 	public void testStateChange() throws VerificationException {
-		AState bEnum = new AState();
-		bEnum.setRange(ExampleState.values());
-		bEnum.setValue(ExampleState.VERY_LOW.toString());
+		ARangedEnum<ExampleState> are = new ARangedEnum<>(ExampleState.VERY_LOW);
+		List<ExampleState> l = new ArrayList<>();
+		Collections.addAll(l, ExampleState.values());
+		are.setRange(l);
 
-		this.jb.setStateType(bEnum);
+		this.jb.setStateType(are);
 
-		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+		assertEquals(ExampleState.VERY_LOW, jb.getState());
 
 		clickOn(jbText);
-		assertEquals(ExampleState.LOW.toString(), jb.getState());
+		assertEquals(ExampleState.LOW, jb.getState());
 
 
 		clickOn(jbText); // Medium
 		clickOn(jbText);
-		assertEquals(ExampleState.HIGH.toString(), jb.getState());
+		assertEquals(ExampleState.HIGH, jb.getState());
 
 		clickOn(jbText); // Very high
 		clickOn(jbText); // Very Low
 		clickOn(jbText); // low
 		clickOn(jbText);
-		assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
-	}*/
+		assertEquals(ExampleState.MEDIUM, jb.getState());
+	}
 }

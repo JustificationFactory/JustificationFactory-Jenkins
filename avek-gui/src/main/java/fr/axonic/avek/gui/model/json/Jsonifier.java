@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 /**
  * Created by Nathaël N on 12/07/16.
  */
-public class Jsonifier {
+public abstract class Jsonifier {
 	private static final Logger logger = Logger.getLogger(Jsonifier.class);
 
 	public static String toJson(Object o) {

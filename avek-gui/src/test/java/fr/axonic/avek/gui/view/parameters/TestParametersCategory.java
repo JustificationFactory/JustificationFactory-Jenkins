@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Nathaël N on 11/07/16.
  */
-public class TestParametersPane extends ApplicationTest {
+public class TestParametersCategory extends ApplicationTest {
 	static {
 		System.setProperty("testfx.robot", "glass");
 		System.setProperty("prism.order", "sw");

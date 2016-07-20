@@ -8,7 +8,7 @@ import javafx.scene.layout.Priority;
 /**
  * Created by Nathaël N on 13/07/16.
  */
-public class LevelMark extends HBox {
+class LevelMark extends HBox {
 	private final String TRANSPARENT = "levelmark_transparent";
 	private final String LINE = "levelmark_line";
 	private final String ARROW = "levelmark_arrow";

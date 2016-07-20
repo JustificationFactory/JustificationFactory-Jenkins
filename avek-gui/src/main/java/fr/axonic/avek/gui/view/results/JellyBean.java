@@ -74,7 +74,7 @@ class JellyBean extends HBox {
 	}
 
 
-	private Object getState() {
+	Object getState() {
 		return expEffect;
 	}
 

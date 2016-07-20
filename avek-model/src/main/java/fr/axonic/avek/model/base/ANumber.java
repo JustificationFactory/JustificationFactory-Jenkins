@@ -37,7 +37,7 @@ public class ANumber extends AVar<Number> implements Verifiable {
     @Override
     public String toString() {
         return "ANumber{" +
-                "value=" + getValue() + '\'' +
+                "value=" + getValue() +
                 ", code='" + getCode() + '\'' +
                 ", path='" + getPath() + '\'' +
                 '}';
@@ -100,5 +100,4 @@ public class ANumber extends AVar<Number> implements Verifiable {
 
         return result;
     }
-
 }
