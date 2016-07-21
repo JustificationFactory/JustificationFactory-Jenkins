@@ -1,7 +1,5 @@
 package fr.axonic.avek.gui.view.results;
 
-
-import com.sun.rmi.rmid.ExecPermission;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;

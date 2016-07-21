@@ -9,7 +9,7 @@ import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.base.AString;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 

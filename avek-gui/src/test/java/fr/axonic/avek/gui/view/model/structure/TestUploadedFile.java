@@ -10,7 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -24,23 +27,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Nathaël N on 20/07/16.
  */
-public class TestUploadedFile extends ApplicationTest {
-	static {
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("prism.text", "t2k");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("java.awt.headless", "true");
-	}
-
-	@Override
-	public void start(Stage stage) throws Exception {
-		Parent root = MainController.getRoot();
-		Scene scene = new Scene(root, 200, 200);
-		stage.setScene(scene);
-		stage.show();
-	}
-
+public class TestUploadedFile {
 	@Before
 	public void before() throws IOException {
 		File f = new File("./temp/test.txt"); // 31 bytes
