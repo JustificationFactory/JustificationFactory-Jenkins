@@ -65,7 +65,7 @@ public class MainController {
 		list.addEntity(new ADate("SubDate", new Date()));
 		list.addEntity(new ABoolean("SubBool", false));
 		list.setLabel("SubCategory");
-		paneParameters.addParamCategory(list);
+		paneParameters.addExpParameter(list);
 
 		paneParameters.addExpParameter(new ANumber("Times redo", 12));
 

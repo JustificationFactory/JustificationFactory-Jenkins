@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fr.axonic.avek.gui.view.parameters.FileListView?>
-<?import fr.axonic.avek.gui.view.parameters.list.ParametersCategory?>
+<?import fr.axonic.avek.gui.view.parameters.list.ParametersRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
     <SplitPane orientation="HORIZONTAL">
         <ScrollPane>
-            <ParametersCategory fx:id="paneParameters"/>
+            <ParametersRoot fx:id="paneParameters"/>
         </ScrollPane>
 
         <FileListView fx:id="uploadedFiles"/>

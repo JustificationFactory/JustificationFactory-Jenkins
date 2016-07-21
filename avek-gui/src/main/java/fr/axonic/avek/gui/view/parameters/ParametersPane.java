@@ -1,8 +1,7 @@
 package fr.axonic.avek.gui.view.parameters;
 
-import fr.axonic.avek.gui.view.parameters.list.ParametersCategory;
-import fr.axonic.avek.model.base.engine.AList;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.avek.gui.view.parameters.list.ParametersGroup;
+import fr.axonic.avek.model.base.engine.AEntity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.SplitPane;
@@ -23,7 +22,7 @@ public class ParametersPane extends SplitPane {
 
 	@FXML private TextArea textfieldComplements;
 	@FXML private FileListView uploadedFiles;
-	@FXML private ParametersCategory paneParameters;
+	@FXML private ParametersGroup paneParameters;
 
 	public ParametersPane() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(PARAMPANE_FXML);
@@ -34,10 +33,7 @@ public class ParametersPane extends SplitPane {
 		fxmlLoader.load();
 	}
 
-	public void addParamCategory(AList list) {
-		paneParameters.addParamCategory(list);
-	}
-	public void addExpParameter(AVar value) {
-		paneParameters.addExpParameter(value);
+	public void addExpParameter(AEntity value) {
+		paneParameters.addParameter(value);
 	}
 }

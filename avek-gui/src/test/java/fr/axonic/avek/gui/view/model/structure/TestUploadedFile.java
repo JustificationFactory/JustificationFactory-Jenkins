@@ -1,14 +1,9 @@
 package fr.axonic.avek.gui.view.model.structure;
 
 import fr.axonic.avek.gui.model.structure.UploadedFile;
-import fr.axonic.avek.gui.view.MainController;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
