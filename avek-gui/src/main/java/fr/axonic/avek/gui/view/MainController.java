@@ -55,7 +55,7 @@ public class MainController {
 		String monitoredSystemJson = getFileContent("files/subjectFile.json");
 
 		String results = getFileContent("files/resultEnum1.json");
-		ExperimentationResults expr = Jsonifier.fromJson(results, ExperimentationResults.class);
+		ExperimentationResults expr = new Jsonifier<>(ExperimentationResults.class).fromJson(results);
 
 		paneParameters.addExpParameter(new ANumber("Frequency", 42.0));
 		paneParameters.addExpParameter(new ABoolean("Bool?", true));

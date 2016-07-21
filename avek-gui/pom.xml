@@ -33,8 +33,8 @@
                     <appName>#AVEK</appName>
                     <vendor>AXONIC</vendor>
                     <mainClass>fr.axonic.avek.gui.Main</mainClass>
-                    <keyStoreAlias>myalias</keyStoreAlias>
-                    <keyStorePassword>password</keyStorePassword>
+                    <keyStoreAlias>AVEK</keyStoreAlias>
+                    <keyStorePassword>AVEK.AXONIC.fr</keyStorePassword>
                     <allPermissions>true</allPermissions>
                     <skipSigningJarFilesJNLP185>true</skipSigningJarFilesJNLP185>
                 </configuration>
@@ -55,6 +55,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.5.0</version>
+                <configuration>
+                    <certDomain>fr.axonic</certDomain>
+                    <certOrgUnit>axonic</certOrgUnit>
+                    <certOrg>AXONIC</certOrg>
+                    <certState>PACA</certState>
+                    <certCountry>FR</certCountry>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -23,11 +23,7 @@ public class Jsonifier <T> {
 	}
 
 	public T fromJson(String s) {
-		return fromJson(s, tClass);
-	}
-
-	public static <TT> TT fromJson(String s, Class<TT> c) {
-		logger.info("Creating new "+c.getName()+" from Json");
-		return new GsonBuilder().create().fromJson(s, c);
+		logger.info("Creating new "+tClass.getName()+" from Json");
+		return new GsonBuilder().create().fromJson(s, tClass);
 	}
 }

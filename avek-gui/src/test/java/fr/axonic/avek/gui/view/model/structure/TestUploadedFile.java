@@ -43,7 +43,7 @@ public class TestUploadedFile extends ApplicationTest {
 
 	@Before
 	public void before() throws IOException {
-		File f = new File("./temp/yolo.txt"); // 31 bytes
+		File f = new File("./temp/test.txt"); // 31 bytes
 		f.createNewFile();
 
 		PrintWriter writer = new PrintWriter(f, "UTF-8");
@@ -69,10 +69,10 @@ public class TestUploadedFile extends ApplicationTest {
 	}
 
 	@Test
-	public void uploadedFileTest() throws FileNotFoundException, FileAlreadyExistsException, InterruptedException {
-		UploadedFile uf = new UploadedFile(new File("./temp/yolo.txt"));
+	public void testUploadedFile() throws IOException {
+		UploadedFile uf = new UploadedFile(new File("./temp/test.txt"));
 
-		assertEquals(new File("./temp/yolo.txt"), uf.getOriginal());
+		assertEquals(new File("./temp/test.txt"), uf.getOriginal());
 		assertEquals(31, uf.getSize());
 
 		if(!waitingForUpload(uf)) {
@@ -88,13 +88,13 @@ public class TestUploadedFile extends ApplicationTest {
 
 		assertEquals(1, fileList.size());
 		File f = fileList.get(0);
-		assertEquals("yolo.txt", f.getName());
+		assertEquals("test.txt", f.getName());
 		assertEquals(31, f.length());
 		assertTrue(f.isFile());
 	}
 
 	@Test
-	public void uploadedFolderTest() throws FileNotFoundException, FileAlreadyExistsException, InterruptedException {
+	public void testUploadedFolder() throws IOException {
 		UploadedFile uf = new UploadedFile(new File("./temp/toto/"));
 
 		assertEquals(new File("./temp/toto"), uf.getOriginal());
@@ -141,9 +141,9 @@ public class TestUploadedFile extends ApplicationTest {
 	}
 
 	@Test
-	public void alreadyUploadedTest() throws FileNotFoundException, InterruptedException {
-		UploadedFile uf1 = new UploadedFile(new File("./temp/yolo.txt"));
-		UploadedFile uf2 = new UploadedFile(new File("./temp/yolo.txt"));
+	public void testAlreadyUploaded() throws FileNotFoundException {
+		UploadedFile uf1 = new UploadedFile(new File("./temp/test.txt"));
+		UploadedFile uf2 = new UploadedFile(new File("./temp/test.txt"));
 		try {
 			if(!waitingForUpload(uf1)) {
 				uf1.removeListener();
@@ -174,7 +174,7 @@ public class TestUploadedFile extends ApplicationTest {
 
 		assertEquals(1, fileList.size());
 		File f = fileList.get(0);
-		assertEquals("yolo.txt", f.getName());
+		assertEquals("test.txt", f.getName());
 		assertEquals(31, f.length());
 		assertTrue(f.isFile());
 	}
@@ -189,9 +189,9 @@ public class TestUploadedFile extends ApplicationTest {
 		});
 		uf1.doUpload();
 
-		long timeStamp = Calendar.getInstance().getTimeInMillis();
+		long timeStamp = Calendar.getInstance().getTimeInMillis()+30_000;
 		while(!pass) {
-			if(timeStamp+30_000 < Calendar.getInstance().getTimeInMillis())
+			if(timeStamp < Calendar.getInstance().getTimeInMillis())
 				return false;
 			try {
 				Thread.sleep(1);
@@ -205,16 +205,18 @@ public class TestUploadedFile extends ApplicationTest {
 	}
 
 
-	@After public void after() throws IOException {
-		File f = new File("./temp/yolo.txt");
-		delete(f);
-		f = new File("./temp/toto");
-		delete(f);
-		for(File ff : UploadedFile.uploadedFolder.listFiles())
-			delete(ff);
+	@After public void after() {
+		try {
+			File f = new File("./temp/test.txt");
+			delete(f);
+			f = new File("./temp/toto");
+			delete(f);
+			for(File ff : UploadedFile.uploadedFolder.listFiles())
+				delete(ff);
+		} catch (FileNotFoundException ignored) {}
 	}
 
-	private static void delete(File f) throws IOException {
+	private static void delete(File f) throws FileNotFoundException {
 		if (f.isDirectory()) {
 			for (File c : f.listFiles())
 				delete(c);

@@ -20,14 +20,14 @@ public class TestJsonifier {
 
 
 
-	@Test public void primitiveTest() {
+	@Test public void testPrimitives() {
 		test("Totoo", String.class);
 		test(42, Integer.class);
 		test(49.3, Double.class);
 		test(98765432123456789L, Long.class);
 	}
 
-	@Test public void objectTest() {
+	@Test public void testObjects() {
 		// Array with unknown element number
 		ArrayList<String> ls = new ArrayList<>();
 		for(int i=(int)(100*Math.random()); i>0; i--) {
@@ -36,8 +36,10 @@ public class TestJsonifier {
 
 		test(ls, ArrayList.class);
 
+		Jsonifier<ARangedEnum> jsonifier = new Jsonifier<>(ARangedEnum.class);
+
 		ARangedEnum<ExampleState> arees = new ARangedEnum<>(ExampleState.MEDIUM);
-		ARangedEnum o2 = Jsonifier.fromJson(Jsonifier.toJson(arees), ARangedEnum.class);
+		ARangedEnum o2 = jsonifier.fromJson(Jsonifier.toJson(arees));
 		assertEquals(arees.getValue().toString(), o2.getValue().toString());
 		assertEquals(arees.getRange(), o2.getRange());
 		test2(arees, ARangedEnum.class);
@@ -49,7 +51,7 @@ public class TestJsonifier {
 		ms.addAVar("Cat2", new ANumber(49.3));
 
 		ARangedEnum<ExampleStateBool> areesb = new ARangedEnum<>(ExampleStateBool.FALSE);
-		o2 = Jsonifier.fromJson(Jsonifier.toJson(areesb), ARangedEnum.class);
+		o2 = jsonifier.fromJson(Jsonifier.toJson(areesb));
 		assertEquals(areesb.getValue().toString(), o2.getValue().toString());
 		assertEquals(areesb.getRange(), o2.getRange());
 		ms.addAVar("Cat2", areesb);
@@ -60,7 +62,7 @@ public class TestJsonifier {
 	}
 
 	private <T> void test(T o, Class<T> tClass) {
-		T o2 = Jsonifier.fromJson(Jsonifier.toJson(o), tClass);
+		T o2 = new Jsonifier<>(tClass).fromJson(Jsonifier.toJson(o));
 		assertEquals(o, o2);
 	}
 	private <T> void test2(T o, Class<T> tClass) {

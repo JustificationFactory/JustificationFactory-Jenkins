@@ -5,7 +5,7 @@
     <appender name="sout" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %-5p %c{1}:%L - %m    [%t]%n"/>
+            <param name="ConversionPattern" value="[%p] %d{HH:mm:ss,SSS} %c{1}:%L - %m    [%t]%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <param name="levelMax" value="INFO" />
@@ -16,7 +16,7 @@
     <appender name="serr" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.err"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %-5p %c{1}:%L - %m    [%t]%n"/>
+            <param name="ConversionPattern" value="[%p] %d{HH:mm:ss,SSS} %c{1}:%L - %m    [%t]%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <param name="levelMax" value="FATAL" />
@@ -30,7 +30,7 @@
         <!-- Keep one backup file -->
         <param name="MaxBackupIndex" value="1"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}:%L - %m    [%t]%n"/>
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p] %c{1}:%L - %m    [%t]%n"/>
         </layout>
     </appender>
 
@@ -40,7 +40,7 @@
         <!-- Keep one backup file -->
         <param name="MaxBackupIndex" value="1"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p - %m%n"/>
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] - %m%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <param name="levelMax" value="INFO" />
