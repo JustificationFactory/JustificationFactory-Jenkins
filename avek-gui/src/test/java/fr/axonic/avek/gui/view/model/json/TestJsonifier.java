@@ -64,8 +64,9 @@ public class TestJsonifier {
 		assertEquals(o, o2);
 	}
 	private <T> void test2(T o, Class<T> tClass) {
+		Jsonifier<T> js = new Jsonifier<>(tClass);
 		String oJson = Jsonifier.toJson(o);
-		String o2Json = Jsonifier.toJson(Jsonifier.fromJson(oJson, tClass));
+		String o2Json = Jsonifier.toJson(js.fromJson(oJson));
 		assertEquals(oJson, o2Json);
 	}
 

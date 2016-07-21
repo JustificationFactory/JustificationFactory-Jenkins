@@ -30,31 +30,18 @@ public class UploadedFile {
 	private long uploadedBytes;
 	private Runnable listener;
 
-	public UploadedFile(File origin) throws FileNotFoundException, FileAlreadyExistsException {
-		if(!origin.exists())
-			throw new FileNotFoundException(origin.getAbsolutePath());
-
+	public UploadedFile(File origin) {
 		this.origin = origin;
-		this.uploadedBytes = -1;
-
-		File uploaded = null;
-
-		// Checking if already uploade
-		for(File f : uploadedFolder.listFiles())
-			if(f.equals(origin)) {
-				uploaded = f;
-				break;
-			}
-
-		this.uploaded = uploaded==null ?
-				  new File(uploadedFolder.getPath() + "/" + origin.getName())
-				: uploaded;
-
-		if(this.uploaded.exists())
-			throw new FileAlreadyExistsException(this.uploaded.getPath());
+		this.uploadedBytes = 0;
+		this.uploaded = new File(uploadedFolder.getPath() + "/" + origin.getName());
 	}
 
-	public void doUpload() {
+	public void doUpload() throws FileAlreadyExistsException, FileNotFoundException {
+		if(!origin.exists())
+			throw new FileNotFoundException(origin.getAbsolutePath());
+		if(this.uploaded.exists())
+			throw new FileAlreadyExistsException(this.uploaded.getPath());
+
 		Thread t = new Thread(() -> {
 			long calc = getSize() / 100L + 1L;
 			if (calc > 1024L * 1024L) // 1Mb max
@@ -134,7 +121,7 @@ public class UploadedFile {
 		return origin;
 	}
 
-	private long size = -1;
+	private long size = 0;
 	public long getSize() {
 		if(size > 0)
 			return size;
@@ -159,8 +146,6 @@ public class UploadedFile {
 	public double getPct() {
 		return (double)uploadedBytes / (double)getSize();
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {

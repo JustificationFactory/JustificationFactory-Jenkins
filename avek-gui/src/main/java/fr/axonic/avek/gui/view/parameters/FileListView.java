@@ -55,18 +55,18 @@ public class FileListView extends StackPane {
 	}
 
 	private void onAddFiles(List<File> list) {
-		for(final File f : list)
+		for(final File f : list) {
+			UploadedFile uf = new UploadedFile(f);
 			try {
-				UploadedFile uf = new UploadedFile(f);
-
 				// Adding to the list on GUI
-				Platform.runLater(() -> fileList.getItems().add(uf));
 				uf.doUpload();
+				Platform.runLater(() -> fileList.getItems().add(uf));
 			} catch (FileNotFoundException e) {
-				logger.error("File not found: "+f, e);
+				logger.error("File not found: " + f, e);
 			} catch (FileAlreadyExistsException e) {
-				logger.warn("File already added: "+f.getName(), e);
+				logger.warn("File already added: " + f.getName(), e);
 			}
+		}
 	}
 
 	@FXML

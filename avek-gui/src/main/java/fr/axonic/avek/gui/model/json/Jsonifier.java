@@ -6,8 +6,13 @@ import org.apache.log4j.Logger;
 /**
  * Created by Nathaël N on 12/07/16.
  */
-public abstract class Jsonifier {
+public class Jsonifier <T> {
 	private static final Logger logger = Logger.getLogger(Jsonifier.class);
+	private final Class<T> tClass;
+
+	public Jsonifier(Class<T> c) {
+		this.tClass = c;
+	}
 
 	public static String toJson(Object o) {
 		logger.info("Object to JSON:"+ o);
@@ -17,7 +22,11 @@ public abstract class Jsonifier {
 				.toJson(o);
 	}
 
-	public static <T> T fromJson(String s, Class<T> c) {
+	public T fromJson(String s) {
+		return fromJson(s, tClass);
+	}
+
+	public static <TT> TT fromJson(String s, Class<TT> c) {
 		logger.info("Creating new "+c.getName()+" from Json");
 		return new GsonBuilder().create().fromJson(s, c);
 	}

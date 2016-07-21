@@ -14,6 +14,7 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,11 +33,9 @@ public class TestUploadedFile extends ApplicationTest {
 		System.setProperty("java.awt.headless", "true");
 	}
 
-	private Parent root;
-
 	@Override
 	public void start(Stage stage) throws Exception {
-		root = MainController.getRoot();
+		Parent root = MainController.getRoot();
 		Scene scene = new Scene(root, 200, 200);
 		stage.setScene(scene);
 		stage.show();
@@ -69,20 +68,18 @@ public class TestUploadedFile extends ApplicationTest {
 		writer.close();
 	}
 
-	UploadedFile uf;
 	@Test
-	public void uploadedFileTest() throws FileNotFoundException, FileAlreadyExistsException {
-		uf = new UploadedFile(new File("./temp/yolo.txt"));
+	public void uploadedFileTest() throws FileNotFoundException, FileAlreadyExistsException, InterruptedException {
+		UploadedFile uf = new UploadedFile(new File("./temp/yolo.txt"));
 
 		assertEquals(new File("./temp/yolo.txt"), uf.getOriginal());
-		assertEquals(31, uf.getSize(), 1);
-		uf.setUpdateListener(this::uploadedFileTest2);
-		uf.doUpload();
-	}
+		assertEquals(31, uf.getSize());
 
-	private void uploadedFileTest2() {
-		if(uf.getPct() < 1)
+		if(!waitingForUpload(uf)) {
+			uf.removeListener();
+			assertTrue("Waiting for more than 30s", false);
 			return;
+		}
 
 		uf.removeListener();
 
@@ -92,23 +89,23 @@ public class TestUploadedFile extends ApplicationTest {
 		assertEquals(1, fileList.size());
 		File f = fileList.get(0);
 		assertEquals("yolo.txt", f.getName());
-		assertEquals(31, f.length(), 1);
+		assertEquals(31, f.length());
 		assertTrue(f.isFile());
 	}
 
 	@Test
-	public void uploadedFolderTest() throws FileNotFoundException, FileAlreadyExistsException {
-		uf = new UploadedFile(new File("./temp/toto/"));
+	public void uploadedFolderTest() throws FileNotFoundException, FileAlreadyExistsException, InterruptedException {
+		UploadedFile uf = new UploadedFile(new File("./temp/toto/"));
 
 		assertEquals(new File("./temp/toto"), uf.getOriginal());
-		assertEquals(25+49, uf.getSize(), 1);
-		uf.setUpdateListener(this::uploadedFolderTest2);
-		uf.doUpload();
-	}
+		assertEquals(25 + 49, uf.getSize());
 
-	private void uploadedFolderTest2() {
-		if(uf.getPct() < 1)
+
+		if(!waitingForUpload(uf)) {
+			uf.removeListener();
+			assertTrue("Waiting for more than 30s", false);
 			return;
+		}
 
 		uf.removeListener();
 
@@ -118,14 +115,13 @@ public class TestUploadedFile extends ApplicationTest {
 		assertEquals(1, fileList.size());
 		File f = fileList.get(0);
 		assertEquals("toto", f.getName());
-		assertEquals(31, f.length(), 1);
 		assertTrue(f.isDirectory());
 
 		assertEquals(2, f.listFiles().length);
-		File titi = f.listFiles()[0];
-		File tonton = f.listFiles()[1];
-		assertEquals("titi", titi.getName());
-		assertEquals("tonton", tonton.getName());
+		File titi = f.listFiles()[1];
+		File tonton = f.listFiles()[0];
+		assertEquals("titi.txt", titi.getName());
+		assertEquals("tonton.txt", tonton.getName());
 		assertTrue(titi.isFile());
 		assertTrue(tonton.isFile());
 
@@ -144,14 +140,81 @@ public class TestUploadedFile extends ApplicationTest {
 		}
 	}
 
+	@Test
+	public void alreadyUploadedTest() throws FileNotFoundException, InterruptedException {
+		UploadedFile uf1 = new UploadedFile(new File("./temp/yolo.txt"));
+		UploadedFile uf2 = new UploadedFile(new File("./temp/yolo.txt"));
+		try {
+			if(!waitingForUpload(uf1)) {
+				uf1.removeListener();
+				assertTrue("Waiting for more than 30s", false);
+				return;
+			}
+		} catch (FileAlreadyExistsException e) {
+			e.printStackTrace();
+		}
+
+		uf1.removeListener();
+
+		try {
+			if(!waitingForUpload(uf2)) {
+				uf2.removeListener();
+				assertTrue("Waiting for more than 30s", false);
+				return;
+			}
+			assertTrue("Not thrown: FileAlreadyExistsException", false);
+		} catch (FileAlreadyExistsException e) {
+			assertTrue(true);
+		}
+
+		uf2.removeListener();
+
+		List<File> fileList = new ArrayList<>();
+		Collections.addAll(fileList, UploadedFile.uploadedFolder.listFiles());
+
+		assertEquals(1, fileList.size());
+		File f = fileList.get(0);
+		assertEquals("yolo.txt", f.getName());
+		assertEquals(31, f.length());
+		assertTrue(f.isFile());
+	}
+
+	private volatile boolean pass;
+	private boolean waitingForUpload(UploadedFile uf1) throws FileAlreadyExistsException, FileNotFoundException {
+		pass = false;
+
+		uf1.setUpdateListener(() -> {
+			if(uf1.getPct() == 1)
+				pass = true;
+		});
+		uf1.doUpload();
+
+		long timeStamp = Calendar.getInstance().getTimeInMillis();
+		while(!pass) {
+			if(timeStamp+30_000 < Calendar.getInstance().getTimeInMillis())
+				return false;
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
 	@After public void after() throws IOException {
 		File f = new File("./temp/yolo.txt");
 		delete(f);
 		f = new File("./temp/toto");
 		delete(f);
+		for(File ff : UploadedFile.uploadedFolder.listFiles())
+			delete(ff);
 	}
 
-	void delete(File f) throws IOException {
+	private static void delete(File f) throws IOException {
 		if (f.isDirectory()) {
 			for (File c : f.listFiles())
 				delete(c);
