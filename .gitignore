@@ -27,3 +27,6 @@ target/
 */temp/
 */target/
 /temp/
+/avek-gui/src/main/deploy/
+*.jks
+*.p12
