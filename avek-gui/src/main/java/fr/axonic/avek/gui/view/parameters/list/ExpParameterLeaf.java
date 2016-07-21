@@ -13,14 +13,11 @@ import java.util.Set;
  */
 abstract class ExpParameterLeaf implements IExpParameter {
 	// GUI Component
-	LevelMark levelMark;
 	Label paramTitle;
 	Label paramValue;
 
-	ExpParameterLeaf(int level, AVar paramValue) {
+	ExpParameterLeaf(AVar paramValue) {
 		// Init elements
-		levelMark = new LevelMark(level);
-
 		this.paramTitle = new Label(paramValue.getLabel());
 		this.paramValue = new Label();
 
@@ -34,7 +31,6 @@ abstract class ExpParameterLeaf implements IExpParameter {
 		Set<Node> elts = new HashSet<>();
 
 		elts.add(paramTitle);
-		elts.add(levelMark);
 		elts.add(paramValue);
 
 		return elts;

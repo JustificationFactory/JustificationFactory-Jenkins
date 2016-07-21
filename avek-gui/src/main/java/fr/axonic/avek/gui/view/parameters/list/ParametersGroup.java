@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public abstract class ParametersGroup extends GridPane implements IExpParameter {
 	private final int level;
-	private volatile List<IExpParameter> subElements;
+	private final List<IExpParameter> subElements;
 
 	/**
 	 * @param level Deep level of this parameter grid (= his parent level+1)
