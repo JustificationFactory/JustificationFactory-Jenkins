@@ -136,6 +136,7 @@
                     <certOrg>AXONIC</certOrg>
                     <certState>PACA</certState>
                     <certCountry>FR</certCountry>
+                    <overwriteKeyStore>true</overwriteKeyStore>
                 </configuration>
             </plugin>
         </plugins>
