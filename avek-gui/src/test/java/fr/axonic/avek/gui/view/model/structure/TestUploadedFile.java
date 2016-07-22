@@ -32,7 +32,7 @@ public class TestUploadedFile {
 		System.setProperty("prism.order", "sw");
 		System.setProperty("java.awt.headless", "true");
 	}
-	
+
 	@Before
 	public void before() throws IOException {
 

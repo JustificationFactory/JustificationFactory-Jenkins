@@ -5,18 +5,56 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
-    <SplitPane orientation="HORIZONTAL">
-        <ScrollPane>
-            <ParametersRoot fx:id="paneParameters"/>
-        </ScrollPane>
+    <SplitPane fx:id="horizontalSplit">
+        <BorderPane>
+            <top>
+                <Label>
+                    Experimentation parameters
+                </Label>
+            </top>
+                <center>
+                    <BorderPane>
+                        <center>
+                            <ScrollPane>
+                                <ParametersRoot fx:id="paneParameters"/>
+                            </ScrollPane>
+                        </center>
+                        <bottom>
+                            <BorderPane>
+                                <left>
+                                    <Button styleClass="hide_button"
+                                            onMouseClicked="#onHideAdditionalInfo">
+                                        ⥯
+                                    </Button>
+                                </left>
+                                <right>
+                                    <Button styleClass="hide_button"
+                                            onMouseClicked="#onHideComplementaryFiles">
+                                        ⇌
+                                    </Button>
+                                </right>
+                            </BorderPane>
+                        </bottom>
+                    </BorderPane>
+                </center>
+        </BorderPane>
 
-        <FileListView fx:id="uploadedFiles"/>
+        <BorderPane fx:id="complementaryFilePane">
+            <top>
+                <Label>
+                    Complementary files
+                </Label>
+            </top>
+            <center>
+                <FileListView fx:id="uploadedFiles"/>
+            </center>
+        </BorderPane>
     </SplitPane>
 
-    <BorderPane>
+    <BorderPane fx:id="additionalInfoPane">
         <top>
             <Label>
-                Complements
+                Additional information
             </Label>
         </top>
         <center>

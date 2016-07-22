@@ -10,11 +10,15 @@
     -fx-background-color: #2f25;
 }
 
-.levelmark_arrow {
-    -fx-background-color: #2fa5;
+.levelmark_arrow * {
+    -fx-text-fill: #4cf;
 }
 
 .dragdroppane {
     -fx-background-color: #fff;
     -fx-opacity: 50%;
+}
+
+.hide_button {
+    -fx-background-color: #0001;
 }

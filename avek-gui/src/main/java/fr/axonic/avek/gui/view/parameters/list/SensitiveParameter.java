@@ -4,6 +4,7 @@ import fr.axonic.avek.model.base.engine.AVar;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -112,6 +113,7 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 				this.getChildren().add(new SingleLevelMark(TRANSPARENT));
 
 				SingleLevelMark arrow = new SingleLevelMark(ARROW);
+				arrow.getChildren().add(new Label("◣")); // ⊗
 				this.getChildren().add(arrow);
 				this.getChildren().add(new SingleLevelMark(TRANSPARENT));
 
