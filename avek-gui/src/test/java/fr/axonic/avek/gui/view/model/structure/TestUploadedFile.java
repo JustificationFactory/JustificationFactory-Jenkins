@@ -24,9 +24,17 @@ import static org.junit.Assert.assertTrue;
  * Created by Nathaël N on 20/07/16.
  */
 public class TestUploadedFile {
+	static {
+		PlatformImpl.startup(() ->{});
+		System.setProperty("testfx.headless", "true");
+		System.setProperty("prism.text", "t2k");
+		System.setProperty("testfx.robot", "glass");
+		System.setProperty("prism.order", "sw");
+		System.setProperty("java.awt.headless", "true");
+	}
+	
 	@Before
 	public void before() throws IOException {
-		PlatformImpl.startup(() ->{});
 
 		File f = new File("./temp/test.txt"); // 31 bytes
 		f.createNewFile();
@@ -61,12 +69,9 @@ public class TestUploadedFile {
 		assertEquals(31, uf.getSize());
 
 		if(!waitingForUpload(uf)) {
-			uf.removeListener();
 			assertTrue("Waiting for more than 30s", false);
 			return;
 		}
-
-		uf.removeListener();
 
 		List<File> fileList = new ArrayList<>();
 		Collections.addAll(fileList, UploadedFile.uploadedFolder.listFiles());
@@ -87,12 +92,9 @@ public class TestUploadedFile {
 
 
 		if(!waitingForUpload(uf)) {
-			uf.removeListener();
 			assertTrue("Waiting for more than 30s", false);
 			return;
 		}
-
-		uf.removeListener();
 
 		List<File> fileList = new ArrayList<>();
 		Collections.addAll(fileList, UploadedFile.uploadedFolder.listFiles());
@@ -131,7 +133,6 @@ public class TestUploadedFile {
 		UploadedFile uf2 = new UploadedFile(new File("./temp/test.txt"));
 		try {
 			if(!waitingForUpload(uf1)) {
-				uf1.removeListener();
 				assertTrue("Waiting for more than 30s", false);
 				return;
 			}
@@ -139,11 +140,8 @@ public class TestUploadedFile {
 			e.printStackTrace();
 		}
 
-		uf1.removeListener();
-
 		try {
 			if(!waitingForUpload(uf2)) {
-				uf2.removeListener();
 				assertTrue("Waiting for more than 30s", false);
 				return;
 			}
@@ -151,8 +149,6 @@ public class TestUploadedFile {
 		} catch (FileAlreadyExistsException e) {
 			assertTrue(true);
 		}
-
-		uf2.removeListener();
 
 		List<File> fileList = new ArrayList<>();
 		Collections.addAll(fileList, UploadedFile.uploadedFolder.listFiles());
@@ -185,6 +181,7 @@ public class TestUploadedFile {
 				return false;
 			}
 		}
+		uf1.removeListener();
 
 		return true;
 	}
