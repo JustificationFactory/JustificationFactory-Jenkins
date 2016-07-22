@@ -41,6 +41,7 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 
 		paramTitle.setDisable(!b);
 		paramValue.setDisable(!b);
+		levelMark.setDisable(!b);
 	}
 
 	protected boolean isMarkedUtil() {
@@ -90,7 +91,8 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 		}
 
 		private void expand(MouseEvent mouseEvent) {
-			setExpanded(!expanded);
+			if(!this.isDisable())
+				setExpanded(!expanded);
 		}
 		private void setExpanded(boolean expanded) {
 			this.expanded = expanded;

@@ -13,8 +13,8 @@ import java.util.Set;
  * Created by Nathaël N on 21/07/16.
  */
 public class BoundedParameter extends SensitiveParameter {
-	private TextField minEquivRange;
-	private TextField maxEquivRange;
+	private final TextField minEquivRange;
+	private final TextField maxEquivRange;
 
 	public BoundedParameter(int level, AVar paramValue) {
 		super(level, paramValue);
@@ -34,19 +34,15 @@ public class BoundedParameter extends SensitiveParameter {
 		super.onClickMarkedUtil(event);
 
 		boolean b = markedUtil.isSelected();
-		if(minEquivRange != null)
-			minEquivRange.setDisable(!b);
-		if(maxEquivRange != null)
-			maxEquivRange.setDisable(!b);
+		minEquivRange.setDisable(!b);
+		maxEquivRange.setDisable(!b);
 	}
 
 	@Override
 	public Set<Node> getElements() {
 		Set<Node> elts = super.getElements();
-		if(minEquivRange != null)
-			elts.add(minEquivRange);
-		if(maxEquivRange != null)
-			elts.add(maxEquivRange);
+		elts.add(minEquivRange);
+		elts.add(maxEquivRange);
 
 		return elts;
 	}

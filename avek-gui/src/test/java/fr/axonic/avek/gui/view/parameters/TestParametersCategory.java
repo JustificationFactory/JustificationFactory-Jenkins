@@ -15,6 +15,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import static org.junit.Assert.assertEquals;
 
@@ -43,33 +44,49 @@ public class TestParametersCategory extends ApplicationTest {
 
 	@Test
 	public void testAddRemoveParameters() throws ExecutionException, InterruptedException {
-		assertEquals(3, pp.getChildren().size());
+		assertEquals(0, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
-		assertEquals(3+6, pp.getChildren().size());
+		FutureTask ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("LabelText", 42.31)); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(6, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.addParameter(new ANumber("2ndLabelText", 12.34)));
-		assertEquals(9+6, pp.getChildren().size());
+		ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("2ndLabelText", 12.34)); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(6+6, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.addParameter(new ANumber("3rdLabelText", 42)));
-		assertEquals(15+6, pp.getChildren().size());
+		ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("3rdLabelText", 42)); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(12+6, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.rmParameter("2ndLabelText"));
-		assertEquals(21-6, pp.getChildren().size());
+		ft = new FutureTask<>(() -> pp.rmParameter("2ndLabelText"));
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(18-6, pp.getChildren().size());
 	}
 
 	@Test
 	public void testDifferentParametersTypes() throws ExecutionException, InterruptedException {
-		Platform.runLater(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
-		assertEquals(3+6, pp.getChildren().size());
+		FutureTask ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("LabelText", 42.31)); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(6, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.addParameter(new ABoolean("Boolbool", true)));
-		assertEquals(9+4, pp.getChildren().size());
+		ft = new FutureTask<>(() -> { pp.addParameter(new ABoolean("Boolbool", true)); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(10, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.addParameter(new ADate("Datedate", new Date())));
-		assertEquals(13+6, pp.getChildren().size());
+		ft = new FutureTask<>(() -> { pp.addParameter(new ADate("Datedate", new Date())); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(16, pp.getChildren().size());
 
-		Platform.runLater(() -> pp.addParameter(new AString("Strstr", "LaString")));
-		assertEquals(17+4, pp.getChildren().size());
+		ft = new FutureTask<>(() -> { pp.addParameter(new AString("Strstr", "LaString")); return true; });
+		Platform.runLater(ft);
+		ft.get();
+		assertEquals(20, pp.getChildren().size());
 	}
 }

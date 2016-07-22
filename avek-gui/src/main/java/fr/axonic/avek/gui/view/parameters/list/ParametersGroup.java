@@ -86,17 +86,16 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 			case UNKNOWN:
 			default:
 				subLeaf = new SimpleParameter(level + 1, aVar);
-				break;
 		}
 
 		addExpParameter(subLeaf);
 	}
 	void addExpParameter(IExpParameter subParam) {
-		int i = subElements.size()+1; // +1 because of title line
+		int rowIndex= subElements.size();
 
 		// Adding graphical elements to the GUI
 		for (Node n : subParam.getElements()) {
-			GridPane.setRowIndex(n, i);
+			GridPane.setRowIndex(n, rowIndex);
 			this.getChildren().add(n);
 		}
 

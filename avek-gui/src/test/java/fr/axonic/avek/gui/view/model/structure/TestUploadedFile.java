@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.model.structure;
 
+import com.sun.javafx.application.PlatformImpl;
 import fr.axonic.avek.gui.model.structure.UploadedFile;
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 public class TestUploadedFile {
 	@Before
 	public void before() throws IOException {
+		PlatformImpl.startup(() ->{});
+
 		File f = new File("./temp/test.txt"); // 31 bytes
 		f.createNewFile();
 
