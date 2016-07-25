@@ -41,7 +41,7 @@ public class SubjectJsonGen {
 				enums1Json.getBytes());
 	}
 
-	public static String generateSubject() {
+	private static String generateSubject() {
 		MonitoredSystem ms = new MonitoredSystem(42);
 		ms.addCategory("Static");
 
@@ -59,7 +59,7 @@ public class SubjectJsonGen {
 		ms.addAVar("Dynamic", new ANumber("Weight", 67));
 		ms.addAVar("Dynamic", new ANumber("IMC", 67d/(1.2345*1.2345)));
 
-		return new GsonBuilder().setPrettyPrinting().create().toJson(ms);
+		return Jsonifier.toJson(ms);
 	}
 
 	public static String generateParameters() throws VerificationException {

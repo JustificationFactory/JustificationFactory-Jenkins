@@ -71,7 +71,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 	private void addLeaf(AVar aVar) {
 		ExpParameterLeaf subLeaf;
 
-		switch(aVar.getFormat().getType()) {
+		switch(aVar.getType()) {
 			case RANGED_NUMBER:
 			case NUMBER:
 			case DATE:

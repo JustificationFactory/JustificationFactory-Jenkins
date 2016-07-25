@@ -1,0 +1,95 @@
+{
+  "entities": [
+    {
+      "value": 42.0,
+      "format": {
+        "formatType": "NUMBER"
+      },
+      "editable": false,
+      "mandatory": false,
+      "label": "Frequency"
+    },
+    {
+      "value": true,
+      "format": {
+        "formatType": "BOOLEAN"
+      },
+      "editable": false,
+      "mandatory": false,
+      "label": "Bool?"
+    },
+    {
+      "entities": [
+        {
+          "value": 12.34,
+          "format": {
+            "formatType": "NUMBER"
+          },
+          "editable": false,
+          "mandatory": false,
+          "label": "SubNumber"
+        },
+        {
+          "value": "Jul 25, 2016 9:50:31 AM",
+          "format": {
+            "formatType": "DATE"
+          },
+          "editable": false,
+          "mandatory": false,
+          "label": "SubDate"
+        },
+        {
+          "entities": [
+            {
+              "value": 42,
+              "format": {
+                "formatType": "NUMBER"
+              },
+              "editable": false,
+              "mandatory": false,
+              "label": "SubSubInteger"
+            },
+            {
+              "value": "TheSubSubStringValue",
+              "format": {
+                "formatType": "STRING"
+              },
+              "editable": false,
+              "mandatory": false,
+              "label": "SubSubString"
+            },
+            {
+              "value": 49.3,
+              "format": {
+                "formatType": "NUMBER"
+              },
+              "editable": false,
+              "mandatory": false,
+              "label": "SubSubDouble"
+            }
+          ],
+          "label": "SubList"
+        },
+        {
+          "value": false,
+          "format": {
+            "formatType": "BOOLEAN"
+          },
+          "editable": false,
+          "mandatory": false,
+          "label": "SubBool"
+        }
+      ],
+      "label": "SubCategory"
+    },
+    {
+      "value": 12,
+      "format": {
+        "formatType": "NUMBER"
+      },
+      "editable": false,
+      "mandatory": false,
+      "label": "Times redo"
+    }
+  ]
+}

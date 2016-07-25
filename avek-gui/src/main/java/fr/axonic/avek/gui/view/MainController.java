@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import com.google.gson.internal.LinkedTreeMap;
 import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.structure.ExperimentationResults;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
@@ -9,6 +10,7 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
+import fr.axonic.avek.model.base.engine.AEntity;
 import fr.axonic.avek.model.base.engine.AList;
 import fr.axonic.avek.model.base.engine.AVar;
 import javafx.collections.FXCollections;
@@ -53,24 +55,15 @@ public class MainController {
 	protected void initialize() throws Exception {
 		// TODO MOCK ONLY ↓↓↓  ////////////////////////////////////////////////
 		String monitoredSystemJson = getFileContent("files/subjectFile.json");
-
 		String results = getFileContent("files/resultEnum1.json");
-		ExperimentationResults expr = new Jsonifier<>(ExperimentationResults.class).fromJson(results);
-
-		paneParameters.addExpParameter(new ANumber("Frequency", 42.0));
-		paneParameters.addExpParameter(new ABoolean("Bool?", true));
-
-		AList<AVar> list = new AList<>();
-		list.addEntity(new ANumber("SubNumber", 12.34));
-		list.addEntity(new ADate("SubDate", new Date()));
-		list.addEntity(new ABoolean("SubBool", false));
-		list.setLabel("SubCategory");
-		paneParameters.addExpParameter(list);
-
-		paneParameters.addExpParameter(new ANumber("Times redo", 12));
-
+		String expParameters = getFileContent("files/parametersFile.json");
 		// TODO MOCK ONLY ↑↑↑ ////////////////////////////////////////////////
 
+		ExperimentationResults expr = new Jsonifier<>(ExperimentationResults.class).fromJson(results);
+		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(expParameters);
+
+		for(AEntity ae : list.getEntities())
+			paneParameters.addExpParameter(ae);
 
 		// Fill experiment subject informations
 		expSubject.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
@@ -84,10 +77,11 @@ public class MainController {
 		btnStrategy.setDisable(true);
 	}
 
-
 	public static Parent getRoot() throws IOException {
-		logger.debug("Loading gui.fxml");
-		root = FXMLLoader.load(GUI_FXML);
+		if(root == null) {
+			logger.debug("Loading gui.fxml");
+			root = FXMLLoader.load(GUI_FXML);
+		}
 		return root;
 	}
 }
