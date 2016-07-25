@@ -6,13 +6,10 @@ import fr.axonic.avek.model.base.engine.AList;
 import fr.axonic.avek.model.base.engine.AVar;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Nathaël N on 12/07/16.
  */
-public class Jsonifier <T> {
+public class Jsonifier<T> {
 	private static final Logger logger = Logger.getLogger(Jsonifier.class);
 	private final Class<T> tClass;
 
@@ -21,7 +18,7 @@ public class Jsonifier <T> {
 	}
 
 	public static String toJson(Object o) {
-		logger.debug("Object to JSON:"+ o);
+		logger.debug("Object to JSON:" + o);
 		return new GsonBuilder()
 				.setPrettyPrinting()
 				.create()
@@ -29,7 +26,7 @@ public class Jsonifier <T> {
 	}
 
 	public T fromJson(String s) {
-		logger.debug("Creating new "+tClass.getName()+" from Json");
+		logger.debug("Creating new " + tClass.getName() + " from Json");
 		return new GsonBuilder().create().fromJson(s, tClass);
 	}
 
@@ -37,20 +34,20 @@ public class Jsonifier <T> {
 		AList<AEntity> alAE = new AList<>();
 		AList<AEntity> al = new Jsonifier<>(AList.class).fromJson(src);
 
-		for(Object o : al.getEntities()) {
+		for (Object o : al.getEntities()) {
 			String s = Jsonifier.toJson(o);
 
 			try {
 				AVar av = new Jsonifier<>(AVar.class).fromJson(s);
-				if(av.getFormat() == null)
-					throw new ClassCastException("Cannot cast "+s+" to AVar");
+				if (av.getFormat() == null)
+					throw new ClassCastException("Cannot cast " + s + " to AVar");
 
 				alAE.addEntity(av);
-			} catch(ClassCastException cce) {
+			} catch (ClassCastException cce) {
 				try {
 					AList<AEntity> av = toAListofAListAndAVar(s);
 					alAE.addEntity(av);
-				} catch(ClassCastException cce2) {
+				} catch (ClassCastException cce2) {
 					logger.error("Impossible to load AVar", cce);
 					logger.fatal("Impossible to load AList", cce2);
 				}

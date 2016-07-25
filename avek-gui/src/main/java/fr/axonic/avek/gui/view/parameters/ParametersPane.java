@@ -22,13 +22,20 @@ public class ParametersPane extends SplitPane {
 	private static final URL PARAMPANE_FXML
 			= ParametersPane.class.getClassLoader().getResource("fxml/parameters/parameters.fxml");
 
-	@FXML private TextArea textfieldComplements;
-	@FXML private FileListView uploadedFiles;
-	@FXML private ParametersGroup paneParameters;
-	@FXML private BorderPane complementaryFilePane;
-	@FXML private BorderPane additionalInfoPane;
-	@FXML private SplitPane horizontalSplit;
+	@FXML
+	private TextArea textfieldComplements;
+	@FXML
+	private FileListView uploadedFiles;
+	@FXML
+	private ParametersGroup paneParameters;
+	@FXML
+	private BorderPane complementaryFilePane;
+	@FXML
+	private BorderPane additionalInfoPane;
+	@FXML
+	private SplitPane horizontalSplit;
 
+	// should be public
 	public ParametersPane() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(PARAMPANE_FXML);
 		fxmlLoader.setRoot(this);
@@ -39,11 +46,11 @@ public class ParametersPane extends SplitPane {
 	}
 
 	@FXML
-	public void onHideComplementaryFiles(MouseEvent event) {
+	void onHideComplementaryFiles(MouseEvent event) {
 		boolean b = complementaryFilePane.isVisible();
 		complementaryFilePane.setVisible(!b);
 		complementaryFilePane.setManaged(!b);
-		if(b) {
+		if (b) {
 			horizontalSplit.getItems().remove(complementaryFilePane);
 			complementaryFilePane.setVisible(false);
 			complementaryFilePane.setManaged(false);
@@ -55,10 +62,10 @@ public class ParametersPane extends SplitPane {
 	}
 
 	@FXML
-	public void onHideAdditionalInfo(MouseEvent event) {
+	void onHideAdditionalInfo(MouseEvent event) {
 		boolean b = additionalInfoPane.isVisible();
 
-		if(b) {
+		if (b) {
 			this.getItems().remove(additionalInfoPane);
 			additionalInfoPane.setVisible(false);
 			additionalInfoPane.setManaged(false);
@@ -67,6 +74,13 @@ public class ParametersPane extends SplitPane {
 			additionalInfoPane.setManaged(true);
 			this.getItems().add(additionalInfoPane);
 		}
+	}
+
+	BorderPane getComplementaryFilePane() {
+		return complementaryFilePane;
+	}
+	BorderPane getAdditionalInfoPane() {
+		return additionalInfoPane;
 	}
 
 	public void addExpParameter(AEntity value) {

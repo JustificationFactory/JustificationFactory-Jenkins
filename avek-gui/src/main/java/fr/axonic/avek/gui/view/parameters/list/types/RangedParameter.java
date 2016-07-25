@@ -9,7 +9,6 @@ import fr.axonic.avek.model.base.engine.AVar;
 public class RangedParameter extends SensitiveParameter {
 
 
-
 	public RangedParameter(int paramValue, AVar level) {
 		super(paramValue, level);
 	}

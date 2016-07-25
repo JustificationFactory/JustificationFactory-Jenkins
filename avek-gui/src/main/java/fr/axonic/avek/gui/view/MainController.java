@@ -1,18 +1,13 @@
 package fr.axonic.avek.gui.view;
 
-import com.google.gson.internal.LinkedTreeMap;
 import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.structure.ExperimentationResults;
 import fr.axonic.avek.gui.view.parameters.ParametersPane;
 import fr.axonic.avek.gui.view.results.JellyBeansSelector;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.ABoolean;
-import fr.axonic.avek.model.base.ADate;
-import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.engine.AEntity;
 import fr.axonic.avek.model.base.engine.AList;
-import fr.axonic.avek.model.base.engine.AVar;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +21,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Date;
 import java.util.List;
 
 public class MainController {
@@ -35,17 +29,21 @@ public class MainController {
 			= MainController.class.getClassLoader().getResource("fxml/gui.fxml");
 	private static Parent root;
 
-	@FXML private Button btnStrategy;
-	@FXML private ParametersPane paneParameters;
-	@FXML private ExpSubject expSubject;
-	@FXML private JellyBeansSelector jellyBeansSelector;
+	@FXML
+	private Button btnStrategy;
+	@FXML
+	private ParametersPane paneParameters;
+	@FXML
+	private ExpSubject expSubject;
+	@FXML
+	private JellyBeansSelector jellyBeansSelector;
 
 	private String getFileContent(String path) throws IOException, URISyntaxException {
 		String res = "";
 		File f = new File(getClass().getClassLoader()
 				.getResource(path).toURI());
 		List<String> ls = Files.readAllLines(f.toPath());
-		for(String s : ls)
+		for (String s : ls)
 			res += s;
 
 		return res;
@@ -62,7 +60,7 @@ public class MainController {
 		ExperimentationResults expr = new Jsonifier<>(ExperimentationResults.class).fromJson(results);
 		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(expParameters);
 
-		for(AEntity ae : list.getEntities())
+		for (AEntity ae : list.getEntities())
 			paneParameters.addExpParameter(ae);
 
 		// Fill experiment subject informations
@@ -78,7 +76,7 @@ public class MainController {
 	}
 
 	public static Parent getRoot() throws IOException {
-		if(root == null) {
+		if (root == null) {
 			logger.debug("Loading gui.fxml");
 			root = FXMLLoader.load(GUI_FXML);
 		}

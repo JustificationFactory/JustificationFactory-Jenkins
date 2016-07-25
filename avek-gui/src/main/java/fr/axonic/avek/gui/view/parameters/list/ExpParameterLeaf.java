@@ -21,9 +21,8 @@ abstract class ExpParameterLeaf implements IExpParameter {
 		this.paramTitle = new Label(paramValue.getLabel());
 		this.paramValue = new Label();
 
-		if(paramValue.getValue().toString() != "") {
-			this.paramValue.setText(" : "+paramValue.getValue().toString());
-		}
+		if (!paramValue.getValue().toString().equals(""))
+			this.paramValue.setText(" : " + paramValue.getValue().toString());
 	}
 
 	@Override

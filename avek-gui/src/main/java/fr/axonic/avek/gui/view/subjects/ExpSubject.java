@@ -24,10 +24,14 @@ public class ExpSubject extends BorderPane {
 			= ExpSubject.class.getClassLoader().getResource("fxml/subjects/subject.fxml");
 	private static final String SUBJECT_CSS = "css/subjects/subjects.css";
 
-	@FXML private Label title;
-	@FXML private Accordion acrdnExpSubject;
-	@FXML private Button btnHistory;
+	@FXML
+	private Label title;
+	@FXML
+	private Accordion acrdnExpSubject;
+	@FXML
+	private Button btnHistory;
 
+	// should be public
 	public ExpSubject() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(SUBJECT_FXML);
 		fxmlLoader.setRoot(this);

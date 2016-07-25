@@ -29,10 +29,10 @@ class FileListCell extends ListCell<UploadedFile> {
 
 		Image fileIcon = mapOfFileExtToSmallIcon.get(ext);
 		if (fileIcon == null) {
-			Icon jswingIcon = getJSwingIconFromFileSystem(uploadedFile.getOriginal());
+			Icon icon = getJSwingIconFromFileSystem(uploadedFile.getOriginal());
 
-			if (jswingIcon != null) {
-				fileIcon = jswingIconToImage(jswingIcon);
+			if (icon != null) {
+				fileIcon = iconToImage(icon);
 				mapOfFileExtToSmallIcon.put(ext, fileIcon);
 			}
 		}
@@ -50,22 +50,22 @@ class FileListCell extends ListCell<UploadedFile> {
 	}
 
 	private static Icon getJSwingIconFromFileSystem(File file) {
-		logger.info("Obtaining file icon for "+file.getName());
+		logger.info("Obtaining file icon for " + file.getName());
 		return FileSystemView.getFileSystemView().getSystemIcon(file);
 	}
 
-	private static Image jswingIconToImage(Icon jswingIcon) {
-		BufferedImage bufferedImage = new BufferedImage(jswingIcon.getIconWidth(),
-				jswingIcon.getIconHeight(),
+	private static Image iconToImage(Icon icon) {
+		BufferedImage bufferedImage = new BufferedImage(icon.getIconWidth(),
+				icon.getIconHeight(),
 				BufferedImage.TYPE_INT_ARGB);
-		jswingIcon.paintIcon(null, bufferedImage.getGraphics(), 0, 0);
+		icon.paintIcon(null, bufferedImage.getGraphics(), 0, 0);
 		return SwingFXUtils.toFXImage(bufferedImage, null);
 	}
 
 
 	@Override
 	public void updateItem(UploadedFile item, boolean empty) {
-		if(getItem() != null)
+		if (getItem() != null)
 			getItem().removeListener();
 
 		super.updateItem(item, empty);
@@ -73,8 +73,7 @@ class FileListCell extends ListCell<UploadedFile> {
 		if (empty) {
 			setGraphic(null);
 			setText(null);
-		}
-		else {
+		} else {
 			item.setUpdateListener(this::updateGraphics);
 			setText(item.getOriginal().getName());
 		}
@@ -83,7 +82,7 @@ class FileListCell extends ListCell<UploadedFile> {
 	private void updateGraphics() {
 		UploadedFile item = FileListCell.this.getItem();
 
-		if(item == null)
+		if (item == null)
 			return;
 
 		if (item.getPct() == 1) {

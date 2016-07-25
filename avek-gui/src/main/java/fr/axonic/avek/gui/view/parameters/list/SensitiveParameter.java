@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
 import java.util.Set;
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 /**
@@ -51,20 +50,21 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 
 	@Override
 	public Set<Node> getElements() {
-		Set<Node> elts = super.getElements();
-		elts.add(markedUtil);
-		elts.add(levelMark);
-		return elts;
+		Set<Node> elements = super.getElements();
+		elements.add(markedUtil);
+		elements.add(levelMark);
+		return elements;
 	}
 
 	protected void setExpandable(Consumer<Boolean> onClickExpand) {
 		levelMark.setExpandable(onClickExpand);
 	}
+
 	protected void setExpanded(boolean expanded) {
 		levelMark.setExpanded(expanded);
 	}
 
-	
+
 	private class MultiLevelMark extends HBox {
 		private final String TRANSPARENT = "levelmark_transparent";
 		private final String LINE = "levelmark_line";
@@ -80,7 +80,7 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 			this.expandable = false;
 			this.expanded = true;
 
-			recalc();
+			recalculate();
 
 			GridPane.setVgrow(this, Priority.ALWAYS);
 		}
@@ -88,28 +88,29 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 		private void setExpandable(Consumer<Boolean> onClickExpand) {
 			this.onClickExpand = onClickExpand;
 			expandable = true;
-			recalc();
+			recalculate();
 		}
 
 		private void expand(MouseEvent mouseEvent) {
-			if(!this.isDisable())
+			if (!this.isDisable())
 				setExpanded(!expanded);
 		}
+
 		private void setExpanded(boolean expanded) {
 			this.expanded = expanded;
 			onClickExpand.accept(expanded);
 		}
 
-		private void recalc() {
+		private void recalculate() {
 			this.getChildren().clear();
 
-			for(int i=0; i<level-1; i++) {
+			for (int i = 0; i < level - 1; i++) {
 				this.getChildren().add(new SingleLevelMark(TRANSPARENT));
 				this.getChildren().add(new SingleLevelMark(LINE));
 				this.getChildren().add(new SingleLevelMark(TRANSPARENT));
 			}
 
-			if(expandable) {
+			if (expandable) {
 				this.getChildren().add(new SingleLevelMark(TRANSPARENT));
 
 				SingleLevelMark arrow = new SingleLevelMark(ARROW);
@@ -129,6 +130,7 @@ public abstract class SensitiveParameter extends ExpParameterLeaf {
 			this.setPrefWidth(s);
 			this.setMaxWidth(s);
 		}
+
 		SingleLevelMark(String c) {
 			this(c, 7);
 		}

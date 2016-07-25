@@ -17,6 +17,7 @@ public class ExpEffect {
 	public String getName() {
 		return name;
 	}
+
 	public ARangedEnum getStateClass() {
 		return states;
 	}

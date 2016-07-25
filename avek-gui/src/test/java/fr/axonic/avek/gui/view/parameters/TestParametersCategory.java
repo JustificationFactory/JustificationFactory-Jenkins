@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.parameters;
 
+import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.gui.view.parameters.list.ParametersGroup;
 import fr.axonic.avek.gui.view.parameters.list.ParametersRoot;
 import fr.axonic.avek.model.base.ABoolean;
@@ -24,11 +25,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestParametersCategory extends ApplicationTest {
 	static {
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("java.awt.headless", "true");
-		System.setProperty("prism.text", "t2k");
+		Main.disableGraphics();
 	}
 
 	private ParametersGroup pp;
@@ -46,45 +43,66 @@ public class TestParametersCategory extends ApplicationTest {
 	public void testAddRemoveParameters() throws ExecutionException, InterruptedException {
 		assertEquals(0, pp.getChildren().size());
 
-		FutureTask ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("LabelText", 42.31)); return true; });
+		FutureTask ft = new FutureTask<>(() -> {
+			pp.addParameter(new ANumber("LabelText", 42.31));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("2ndLabelText", 12.34)); return true; });
+		ft = new FutureTask<>(() -> {
+			pp.addParameter(new ANumber("2ndLabelText", 12.34));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(6+6, pp.getChildren().size());
+		assertEquals(6 + 6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("3rdLabelText", 42)); return true; });
+		ft = new FutureTask<>(() -> {
+			pp.addParameter(new ANumber("3rdLabelText", 42));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(12+6, pp.getChildren().size());
+		assertEquals(12 + 6, pp.getChildren().size());
 
 		ft = new FutureTask<>(() -> pp.rmParameter("2ndLabelText"));
 		Platform.runLater(ft);
 		ft.get();
-		assertEquals(18-6, pp.getChildren().size());
+		assertEquals(18 - 6, pp.getChildren().size());
 	}
 
 	@Test
 	public void testDifferentParametersTypes() throws ExecutionException, InterruptedException {
-		FutureTask ft = new FutureTask<>(() -> { pp.addParameter(new ANumber("LabelText", 42.31)); return true; });
+		FutureTask ft = new FutureTask<>(() -> {
+			pp.addParameter(new ANumber("LabelText", 42.31));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> { pp.addParameter(new ABoolean("Boolbool", true)); return true; });
+		ft = new FutureTask<>(() -> {
+			pp.addParameter(new ABoolean("Boolbool", true));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(10, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> { pp.addParameter(new ADate("Datedate", new Date())); return true; });
+		ft = new FutureTask<>(() -> {
+			pp.addParameter(new ADate("Datedate", new Date()));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(16, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> { pp.addParameter(new AString("Strstr", "LaString")); return true; });
+		ft = new FutureTask<>(() -> {
+			pp.addParameter(new AString("Strstr", "LaString"));
+			return true;
+		});
 		Platform.runLater(ft);
 		ft.get();
 		assertEquals(20, pp.getChildren().size());

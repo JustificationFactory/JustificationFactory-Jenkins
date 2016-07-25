@@ -1,6 +1,5 @@
 package sandbox;
 
-import com.google.gson.GsonBuilder;
 import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.sample.ExampleStateBool;

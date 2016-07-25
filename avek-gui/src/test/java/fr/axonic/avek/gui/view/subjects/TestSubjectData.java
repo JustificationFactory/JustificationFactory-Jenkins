@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.subjects;
 
+import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
@@ -25,14 +26,8 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Nathaël N on 08/07/16.
  */
-public class TestSubjectInformations extends ApplicationTest {
-	static {
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("java.awt.headless", "true");
-		System.setProperty("prism.text", "t2k");
-	}
+public class TestSubjectData extends ApplicationTest {
+	static { Main.disableGraphics(); }
 
 	private ExpSubject subject;
 	private Accordion acc;
@@ -51,14 +46,14 @@ public class TestSubjectInformations extends ApplicationTest {
 	public void testMonitoredSystem() throws ExecutionException, InterruptedException {
 		MonitoredSystem ms = new MonitoredSystem(42);
 		ms.addCategory("Category 1");
-		ms.addAVar("Category 1", new AString("a string","strval1"));
-		ms.addAVar("Category 1", new ANumber("an integer",123456789));
-		ms.addAVar("Category 1", new ANumber("a double",12345.6789));
+		ms.addAVar("Category 1", new AString("a string", "strval1"));
+		ms.addAVar("Category 1", new ANumber("an integer", 123456789));
+		ms.addAVar("Category 1", new ANumber("a double", 12345.6789));
 		ms.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
 
 		ms.addCategory("Category 2");
-		ms.addAVar("Category 2", new ANumber("an integer",987654321));
-		ms.addAVar("Category 2", new ANumber("a double",98765.4321));
+		ms.addAVar("Category 2", new ANumber("an integer", 987654321));
+		ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
 		final MonitoredSystem fms1 = ms;
 		FutureTask ft = new FutureTask<>(() -> subject.setMonitoredSystem(fms1));
@@ -78,14 +73,14 @@ public class TestSubjectInformations extends ApplicationTest {
 
 		ms = new MonitoredSystem(21);
 		ms.addCategory("Category 1");
-		ms.addAVar("Category 1", new AString("a string","strval1"));
-		ms.addAVar("Category 1", new ANumber("an integer",123456789));
+		ms.addAVar("Category 1", new AString("a string", "strval1"));
+		ms.addAVar("Category 1", new ANumber("an integer", 123456789));
 		ms.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
 
 		ms.addCategory("Category 2");
-		ms.addAVar("Category 2", new ANumber("an integer",987654321));
-		ms.addAVar("Category 2", new ANumber("a double",12345.6789));
-		ms.addAVar("Category 2", new ANumber("a double",98765.4321));
+		ms.addAVar("Category 2", new ANumber("an integer", 987654321));
+		ms.addAVar("Category 2", new ANumber("a double", 12345.6789));
+		ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
 		ms.addCategory("Category 3");
 
@@ -110,7 +105,4 @@ public class TestSubjectInformations extends ApplicationTest {
 		vb = (VBox) sp.getContent();
 		assertEquals(0, vb.getChildren().size());
 	}
-
-
-
 }

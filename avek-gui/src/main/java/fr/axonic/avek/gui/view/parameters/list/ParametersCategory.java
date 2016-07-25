@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.view.parameters.list;
 
 import fr.axonic.avek.gui.view.parameters.list.types.CategoryTitle;
-import fr.axonic.avek.gui.view.parameters.list.types.SimpleParameter;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import org.apache.log4j.Logger;
@@ -9,7 +8,7 @@ import org.apache.log4j.Logger;
 /**
  * Created by Nathaël N on 21/07/16.
  */
-class ParametersCategory extends ParametersGroup {
+public class ParametersCategory extends ParametersGroup {
 	private static final Logger logger = Logger.getLogger(ParametersCategory.class);
 	private static final String PARAMETERS_CSS = "css/parameters/parameters.css";
 
@@ -31,8 +30,8 @@ class ParametersCategory extends ParametersGroup {
 	}
 
 	private void onClickExpand(boolean isExpanded) {
-		for(Node n : getChildren()) {
-			if(simpleParam.getElements().contains(n))
+		for (Node n : getChildren()) {
+			if (simpleParam.getElements().contains(n))
 				continue;
 
 			n.setVisible(isExpanded);

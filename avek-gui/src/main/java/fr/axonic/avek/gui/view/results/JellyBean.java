@@ -22,8 +22,10 @@ class JellyBean extends HBox {
 			= JellyBean.class.getClassLoader().getResource("fxml/results/jellyBean.fxml");
 	private final static String JELLYBEAN_CSS = "css/results/jellyBean.css";
 
-	@FXML private Button jbLabel;
-	@FXML private Button jbCross;
+	@FXML
+	private Button jbLabel;
+	@FXML
+	private Button jbCross;
 
 	private ARangedEnum enumType;
 	private Object expEffect;
@@ -55,7 +57,7 @@ class JellyBean extends HBox {
 
 		List list = enumType.getRange();
 
-		int nextIndex = ( list.indexOf(expEffect) + 1 )%list.size();
+		int nextIndex = (list.indexOf(expEffect) + 1) % list.size();
 		expEffect = list.get(nextIndex);
 
 		refreshColor(beforeEffect, expEffect);
@@ -81,14 +83,18 @@ class JellyBean extends HBox {
 	void setStateType(ARangedEnum stateType) {
 		enumType = stateType;
 
-		refreshColor(expEffect==null?"":expEffect, stateType.getValue());
+		refreshColor(expEffect == null ? "" : expEffect, stateType.getValue());
 
 		expEffect = stateType.getValue();
 	}
+
 	public void setText(String text) {
 		jbLabel.setText(text);
 	}
-	public String getText() { return jbLabel.getText(); }
+
+	public String getText() {
+		return jbLabel.getText();
+	}
 
 	void setMainController(JellyBeansSelector mainController) {
 		this.mainController = mainController;

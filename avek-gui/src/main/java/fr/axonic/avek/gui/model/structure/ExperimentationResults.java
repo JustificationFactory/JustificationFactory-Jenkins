@@ -16,6 +16,7 @@ public class ExperimentationResults {
 	public ExperimentationResults() {
 		results = new HashMap<>();
 	}
+
 	public void put(String ae1, ARangedEnum aEnum) {
 		results.put(ae1, aEnum);
 	}

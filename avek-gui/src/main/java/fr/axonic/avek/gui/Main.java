@@ -13,9 +13,7 @@ public class Main extends Application {
 	private final static Logger logger = Logger.getLogger(Main.class);
 
 	public static void main(String[] args) {
-		logger.debug("BEGIN");
 		launch(args);
-		logger.debug("END");
 	}
 
 	@Override
@@ -28,5 +26,13 @@ public class Main extends Application {
 
 		primaryStage.show();
 		logger.debug("Frame created");
+	}
+
+	public static void disableGraphics() {
+		System.setProperty("testfx.robot", "glass");
+		System.setProperty("prism.order", "sw");
+		System.setProperty("testfx.headless", "true");
+		System.setProperty("java.awt.headless", "true");
+		System.setProperty("prism.text", "t2k");
 	}
 }

@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.view.parameters.list.types;
 
 import fr.axonic.avek.gui.view.parameters.list.SensitiveParameter;
-import fr.axonic.avek.model.base.AString;
 import fr.axonic.avek.model.base.engine.AVar;
 
 /**

@@ -16,8 +16,9 @@ public class UploadedFile {
 	private final static Logger logger = Logger.getLogger(UploadedFile.class);
 
 	public static final File uploadedFolder;
+
 	static {
-		uploadedFolder = new File("./temp/uploaded/"+ Calendar.getInstance().getTimeInMillis());
+		uploadedFolder = new File("./temp/uploaded/" + Calendar.getInstance().getTimeInMillis());
 
 		uploadedFolder.mkdirs();
 		uploadedFolder.deleteOnExit();
@@ -37,9 +38,9 @@ public class UploadedFile {
 	}
 
 	public void doUpload() throws FileAlreadyExistsException, FileNotFoundException {
-		if(!origin.exists())
+		if (!origin.exists())
 			throw new FileNotFoundException(origin.getAbsolutePath());
-		if(this.uploaded.exists())
+		if (this.uploaded.exists())
 			throw new FileAlreadyExistsException(this.uploaded.getPath());
 
 		Thread t = new Thread(() -> {
@@ -58,18 +59,17 @@ public class UploadedFile {
 
 			do {
 				File pop = stack.pop();
-				if(pop.isDirectory()) {
-					for(File f : pop.listFiles())
+				if (pop.isDirectory()) {
+					for (File f : pop.listFiles())
 						stack.push(f);
-				}
-				else if(pop.isFile()) {
+				} else if (pop.isFile()) {
 					final String fileName = pop.getPath().replace(originPath, uploadPath);
 					doUploadOneFile(pop, new File(fileName), bufSize);
 				}
-			} while(!stack.isEmpty());
+			} while (!stack.isEmpty());
 
-			if(uploaded.isDirectory())
-				logger.info("All files treated for "+uploaded);
+			if (uploaded.isDirectory())
+				logger.info("All files treated for " + uploaded);
 
 			uploadedBytes = getSize();
 			if (listener != null)
@@ -102,9 +102,9 @@ public class UploadedFile {
 					Platform.runLater(listener::run);
 			}
 
-			logger.info("File uploaded: "+pop+" to "+newFile);
+			logger.info("File uploaded: " + pop + " to " + newFile);
 		} catch (Exception e) {
-			logger.error("Upload of a file failed: "+newFile,e);
+			logger.error("Upload of a file failed: " + newFile, e);
 		} finally {
 			try {
 				if (input != null)
@@ -112,7 +112,7 @@ public class UploadedFile {
 				if (output != null)
 					output.close();
 			} catch (IOException e) {
-				logger.error("Impossible to close input/output stream: "+newFile, e);
+				logger.error("Impossible to close input/output stream: " + newFile, e);
 			}
 		}
 	}
@@ -122,8 +122,9 @@ public class UploadedFile {
 	}
 
 	private long size = 0;
+
 	public long getSize() {
-		if(size > 0)
+		if (size > 0)
 			return size;
 
 		Stack<File> stack = new Stack<>();
@@ -132,26 +133,27 @@ public class UploadedFile {
 		do {
 			File pop = stack.pop();
 
-			if(pop.isDirectory())
-				for(File f : pop.listFiles())
+			if (pop.isDirectory())
+				for (File f : pop.listFiles())
 					stack.push(f);
-			else if(pop.isFile())
-				size+=pop.length();
-		} while(!stack.isEmpty());
+			else if (pop.isFile())
+				size += pop.length();
+		} while (!stack.isEmpty());
 
-		logger.debug("Size calculated: "+ NumberFormat.getInstance().format(size)+" bytes for "+origin.getName());
+		logger.debug("Size calculated: " + NumberFormat.getInstance().format(size) + " bytes for " + origin.getName());
 
 		return size;
 	}
+
 	public double getPct() {
-		return (double)uploadedBytes / (double)getSize();
+		return (double) uploadedBytes / (double) getSize();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof UploadedFile)
-			return origin.equals(((UploadedFile)obj).origin);
-		if(obj instanceof File)
+		if (obj instanceof UploadedFile)
+			return origin.equals(((UploadedFile) obj).origin);
+		if (obj instanceof File)
 			return origin.equals(obj) || uploaded.equals(obj);
 		return super.equals(obj);
 	}

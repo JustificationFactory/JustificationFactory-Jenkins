@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
+import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
@@ -20,16 +21,10 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 07/07/16.
  */
 public class TestJellyBeans extends ApplicationTest {
-	static {
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("java.awt.headless", "true");
-		System.setProperty("prism.text", "t2k");
-	}
+	static { Main.disableGraphics(); }
 
 	private JellyBean jb;
-	private Button jbText, jbCross;
+	private Button jbText;
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -39,11 +34,9 @@ public class TestJellyBeans extends ApplicationTest {
 		stage.setScene(scene);
 		stage.show();
 
-		jbText = (Button)(jb.getChildren().get(0));
-		jbCross = (Button)(jb.getChildren().get(1));
+		jbText = (Button) (jb.getChildren().get(0));
 		jb.setId("thejb");
 		jbText.setId("jbtext");
-		jbCross.setId("jbcross");
 
 		this.jb.setText("The Text");
 	}

@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view.results;
 
 import com.google.gson.Gson;
+import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.structure.ExpEffect;
 import fr.axonic.avek.model.base.ARangedEnum;
@@ -27,21 +28,14 @@ import static org.testfx.matcher.base.ParentMatchers.hasChildren;
  * Created by Nathaël N on 04/07/16.
  */
 public class TestJellyBeanSelector extends ApplicationTest {
-	static {
-	  	System.setProperty("testfx.robot", "glass");
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("prism.text", "t2k");
-		System.setProperty("java.awt.headless", "true");
-	}
+	static { Main.disableGraphics(); }
 
-	private JellyBeansSelector jbs;
 	private Pane jellyBeanPane;
 
 
 	@Override
 	public void start(Stage stage) throws VerificationException, IOException {
-		this.jbs = new JellyBeansSelector();
+		JellyBeansSelector jbs = new JellyBeansSelector();
 		Scene scene = new Scene(jbs, 200, 200);
 		stage.setScene(scene);
 		stage.show();
@@ -58,7 +52,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 			}
 			ARangedEnum be = new Gson().fromJson(s, ARangedEnum.class);
 
-			expEffects.add(new ExpEffect("AE"+i, be));
+			expEffects.add(new ExpEffect("AE" + i, be));
 		}
 
 		// Fill experiment sample list

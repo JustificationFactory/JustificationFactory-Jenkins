@@ -29,12 +29,16 @@ public class JellyBeansSelector extends VBox {
 			= JellyBeansSelector.class.getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml");
 	private static final String JBSELECTOR_CSS = "css/results/jellyBeanSelector.css";
 
-	@FXML private Button newExpEffectButton;
-	@FXML private FlowPane jellyBeansPane;
-	@FXML private ComboBox<ExpEffect> comboBoxJellyBean;
+	@FXML
+	private Button newExpEffectButton;
+	@FXML
+	private FlowPane jellyBeansPane;
+	@FXML
+	private ComboBox<ExpEffect> comboBoxJellyBean;
 
 	private final Set<String> addedEffects;
 
+	// should be public
 	public JellyBeansSelector() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(JBSELECTOR_FXML);
 		fxmlLoader.setRoot(this);
@@ -96,7 +100,7 @@ public class JellyBeansSelector extends VBox {
 			logger.warn("Choice is null");
 			return;
 		} else if (addedEffects.contains(choice.getName())) {
-			logger.warn("Already selected: "+choice);
+			logger.warn("Already selected: " + choice);
 			return;
 		}
 

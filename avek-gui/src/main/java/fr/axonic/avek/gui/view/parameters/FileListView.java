@@ -28,11 +28,14 @@ public class FileListView extends StackPane {
 	private final static Logger logger = Logger.getLogger(FileListView.class);
 
 	private static final URL FILELISTWIEW_FXML
-		= ParametersPane.class.getClassLoader().getResource("fxml/parameters/fileListView.fxml");
+			= ParametersPane.class.getClassLoader().getResource("fxml/parameters/fileListView.fxml");
 
-	@FXML private ListView<UploadedFile> fileList;
-	@FXML private Label dragDropPane;
+	@FXML
+	private ListView<UploadedFile> fileList;
+	@FXML
+	private Label dragDropPane;
 
+	// should be public
 	public FileListView() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(FILELISTWIEW_FXML);
 		fxmlLoader.setRoot(this);
@@ -47,26 +50,11 @@ public class FileListView extends StackPane {
 		dragDropPane.setVisible(false);
 
 		fileList.setCellFactory(new Callback<ListView<UploadedFile>, ListCell<UploadedFile>>() {
-	            @Override
-	            public FileListCell call(ListView<UploadedFile> list) {
-	                return new FileListCell();
-	            }
-	        });
-	}
-
-	private void onAddFiles(List<File> list) {
-		for(final File f : list) {
-			UploadedFile uf = new UploadedFile(f);
-			try {
-				// Adding to the list on GUI
-				uf.doUpload();
-				Platform.runLater(() -> fileList.getItems().add(uf));
-			} catch (FileNotFoundException e) {
-				logger.error("File not found: " + f, e);
-			} catch (FileAlreadyExistsException e) {
-				logger.warn("File already added: " + f.getName(), e);
+			@Override
+			public FileListCell call(ListView<UploadedFile> list) {
+				return new FileListCell();
 			}
-		}
+		});
 	}
 
 	@FXML
@@ -89,7 +77,8 @@ public class FileListView extends StackPane {
 			dragDropPane.setVisible(true);
 	}
 
-	@FXML private void onDragOver(DragEvent event) {
+	@FXML
+	private void onDragOver(DragEvent event) {
 		if (event.getDragboard().hasFiles())
 			event.acceptTransferModes(TransferMode.COPY);
 		else
@@ -101,4 +90,22 @@ public class FileListView extends StackPane {
 		dragDropPane.setVisible(false);
 	}
 
+	private void onAddFiles(List<File> list) {
+		for (final File f : list) {
+			UploadedFile uf = new UploadedFile(f);
+			try {
+				// Adding to the list on GUI
+				uf.doUpload();
+				Platform.runLater(() -> fileList.getItems().add(uf));
+			} catch (FileNotFoundException e) {
+				logger.error("File not found: " + f, e);
+			} catch (FileAlreadyExistsException e) {
+				logger.warn("File already added: " + f.getName(), e);
+			}
+		}
+	}
+
+	ListView<UploadedFile> getFileList() {
+		return fileList;
+	}
 }

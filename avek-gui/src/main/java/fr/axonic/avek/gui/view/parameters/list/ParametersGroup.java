@@ -41,9 +41,9 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 
 	/**
 	 * @param aEntity The AVar to add as a Experiment parameter,
-	 *                 or the AList to add as a Experiment parameter sub group
+	 *                or the AList to add as a Experiment parameter sub group
 	 * @throws ClassCastException is the parameter is not a AVar
-	 *                 nor a AList (of AList and AVar)
+	 *                            nor a AList (of AList and AVar)
 	 */
 	public void addParameter(AEntity aEntity) {
 		/*
@@ -53,14 +53,14 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 			addLeaf(aEntity);*/
 
 		try {
-			 addCategory((AList<AEntity>) aEntity);
-		} catch(ClassCastException cce) {
+			addCategory((AList<AEntity>) aEntity);
+		} catch (ClassCastException cce) {
 			addLeaf((AVar) aEntity); // throws ClassCastException if not a AVar
 		}
 	}
 
 	private void addCategory(AList<AEntity> aList) {
-		ParametersGroup subCategory = new ParametersCategory(level+1, aList.getLabel());
+		ParametersGroup subCategory = new ParametersCategory(level + 1, aList.getLabel());
 
 		// Adding sub elements
 		aList.getEntities().forEach(subCategory::addParameter);
@@ -68,10 +68,11 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 		// Adding to the GUI
 		addExpParameter(subCategory);
 	}
+
 	private void addLeaf(AVar aVar) {
 		ExpParameterLeaf subLeaf;
 
-		switch(aVar.getType()) {
+		switch (aVar.getType()) {
 			case RANGED_NUMBER:
 			case NUMBER:
 			case DATE:
@@ -90,8 +91,9 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 
 		addExpParameter(subLeaf);
 	}
+
 	void addExpParameter(IExpParameter subParam) {
-		int rowIndex= subElements.size();
+		int rowIndex = subElements.size();
 
 		// Adding graphical elements to the GUI
 		for (Node n : subParam.getElements()) {
@@ -114,17 +116,17 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 				break;
 			}
 
-		if(indexToRm==-1)
+		if (indexToRm == -1)
 			return null;
 
 		// Removing from view & shift view
-		for(Node n : new ArrayList<>(getChildren())) {
+		for (Node n : new ArrayList<>(getChildren())) {
 			int index = GridPane.getRowIndex(n);
 
-			if(indexToRm == index)
+			if (indexToRm == index)
 				getChildren().remove(n);
-			else if(index > indexToRm)
-				GridPane.setRowIndex(n, index-1);
+			else if (index > indexToRm)
+				GridPane.setRowIndex(n, index - 1);
 		}
 
 		// Removing parameter from list

@@ -1,7 +1,9 @@
 package fr.axonic.avek.gui.view.model.structure;
 
 import com.sun.javafx.application.PlatformImpl;
+import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.gui.model.structure.UploadedFile;
+import fr.axonic.avek.gui.view.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -25,40 +26,13 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestUploadedFile {
 	static {
-		PlatformImpl.startup(() ->{});
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("prism.text", "t2k");
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("java.awt.headless", "true");
+		PlatformImpl.startup(() -> {});
+		Main.disableGraphics();
 	}
 
 	@Before
 	public void before() throws IOException {
-
-		File f = new File("./temp/test.txt"); // 31 bytes
-		f.createNewFile();
-
-		PrintWriter writer = new PrintWriter(f, "UTF-8");
-		writer.println("The first line");
-		writer.println("The second line");
-		writer.close();
-
-		f = new File("./temp/toto/titi.txt"); // 25 bytes
-		f.getParentFile().mkdirs();
-		f.createNewFile();
-
-		writer = new PrintWriter(f, "UTF-8");
-		writer.println("TATA TATa TAta Tata tata");
-		writer.close();
-
-		f = new File("./temp/toto/tonton.txt"); // 49 bytes
-		f.createNewFile();
-
-		writer = new PrintWriter(f, "UTF-8");
-		writer.println("tonton Tonton TOnton TONton");
-		writer.println("TONTon TONTOn TONTON");
-		writer.close();
+		Utils.createFileArchi();
 	}
 
 	@Test
@@ -68,7 +42,7 @@ public class TestUploadedFile {
 		assertEquals(new File("./temp/test.txt"), uf.getOriginal());
 		assertEquals(31, uf.getSize());
 
-		if(!waitingForUpload(uf)) {
+		if (!waitingForUpload(uf)) {
 			assertTrue("Waiting for more than 30s", false);
 			return;
 		}
@@ -91,7 +65,7 @@ public class TestUploadedFile {
 		assertEquals(25 + 49, uf.getSize());
 
 
-		if(!waitingForUpload(uf)) {
+		if (!waitingForUpload(uf)) {
 			assertTrue("Waiting for more than 30s", false);
 			return;
 		}
@@ -132,7 +106,7 @@ public class TestUploadedFile {
 		UploadedFile uf1 = new UploadedFile(new File("./temp/test.txt"));
 		UploadedFile uf2 = new UploadedFile(new File("./temp/test.txt"));
 		try {
-			if(!waitingForUpload(uf1)) {
+			if (!waitingForUpload(uf1)) {
 				assertTrue("Waiting for more than 30s", false);
 				return;
 			}
@@ -141,7 +115,7 @@ public class TestUploadedFile {
 		}
 
 		try {
-			if(!waitingForUpload(uf2)) {
+			if (!waitingForUpload(uf2)) {
 				assertTrue("Waiting for more than 30s", false);
 				return;
 			}
@@ -165,14 +139,14 @@ public class TestUploadedFile {
 		pass = false;
 
 		uf1.setUpdateListener(() -> {
-			if(uf1.getPct() == 1)
+			if (uf1.getPct() == 1)
 				pass = true;
 		});
 		uf1.doUpload();
 
-		long timeStamp = Calendar.getInstance().getTimeInMillis()+30_000;
-		while(!pass) {
-			if(timeStamp < Calendar.getInstance().getTimeInMillis())
+		long timeStamp = Calendar.getInstance().getTimeInMillis() + 30_000;
+		while (!pass) {
+			if (timeStamp < Calendar.getInstance().getTimeInMillis())
 				return false;
 			try {
 				Thread.sleep(1);
@@ -187,23 +161,8 @@ public class TestUploadedFile {
 	}
 
 
-	@After public void after() {
-		try {
-			File f = new File("./temp/test.txt");
-			delete(f);
-			f = new File("./temp/toto");
-			delete(f);
-			for(File ff : UploadedFile.uploadedFolder.listFiles())
-				delete(ff);
-		} catch (FileNotFoundException ignored) {}
-	}
-
-	private static void delete(File f) throws FileNotFoundException {
-		if (f.isDirectory()) {
-			for (File c : f.listFiles())
-				delete(c);
-		}
-		if (!f.delete())
-			throw new FileNotFoundException("Failed to delete file: " + f);
+	@After
+	public void after() {
+		Utils.deleteFileArchi();
 	}
 }

@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.gui.view.subjects.ExpSubject;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,13 +17,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 08/07/16.
  */
 public class TestMainController extends ApplicationTest {
-	static {
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("prism.text", "t2k");
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("java.awt.headless", "true");
-	}
+	static { Main.disableGraphics(); }
 
 	private Parent root;
 
@@ -38,7 +33,7 @@ public class TestMainController extends ApplicationTest {
 	public void testChildren() {
 		assertEquals(2, root.getChildrenUnmodifiable().size());
 
-		assertEquals(ExpSubject.class, ((BorderPane)root).getLeft().getClass());
-		assertEquals(BorderPane.class, ((BorderPane)root).getCenter().getClass());
+		assertEquals(ExpSubject.class, ((BorderPane) root).getLeft().getClass());
+		assertEquals(BorderPane.class, ((BorderPane) root).getCenter().getClass());
 	}
 }
