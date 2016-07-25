@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.parameters.list;
 
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.view.parameters.list.types.BoundedParameter;
 import fr.axonic.avek.gui.view.parameters.list.types.RangedParameter;
 import fr.axonic.avek.gui.view.parameters.list.types.SimpleParameter;

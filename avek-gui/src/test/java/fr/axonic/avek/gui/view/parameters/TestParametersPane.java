@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view.parameters;
 
 import fr.axonic.avek.gui.Main;
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -30,22 +31,24 @@ public class TestParametersPane extends ApplicationTest {
 
 	@Test
 	public void testOnClickHide() {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		assertTrue(pp.getComplementaryFilePane().isVisible());
 		assertTrue(pp.getAdditionalInfoPane().isVisible());
 
-		pp.onHideComplementaryFiles(null);
+		ctm.runNowOnPlatform(() -> pp.onHideComplementaryFiles(null));
 		assertFalse(pp.getComplementaryFilePane().isVisible());
 		assertTrue(pp.getAdditionalInfoPane().isVisible());
 
-		pp.onHideAdditionalInfo(null);
+		ctm.runNowOnPlatform(() -> pp.onHideAdditionalInfo(null));
 		assertFalse(pp.getComplementaryFilePane().isVisible());
 		assertFalse(pp.getAdditionalInfoPane().isVisible());
 
-		pp.onHideComplementaryFiles(null);
+		ctm.runNowOnPlatform(() -> pp.onHideComplementaryFiles(null));
 		assertTrue(pp.getComplementaryFilePane().isVisible());
 		assertFalse(pp.getAdditionalInfoPane().isVisible());
 
-		pp.onHideAdditionalInfo(null);
+		ctm.runNowOnPlatform(() -> pp.onHideAdditionalInfo(null));
 		assertTrue(pp.getComplementaryFilePane().isVisible());
 		assertTrue(pp.getAdditionalInfoPane().isVisible());
 	}

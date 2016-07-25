@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fr.axonic.avek.gui.view.parameters.FileListView?>
+<?import fr.axonic.avek.gui.view.parameters.list.ParametersRoot?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.BorderPane">
+    <top>
+        <Label>
+            Experimentation parameters
+        </Label>
+    </top>
+    <center>
+        <ScrollPane>
+            <ParametersRoot fx:id="paneParameters"/>
+        </ScrollPane>
+    </center>
+</fx:root>

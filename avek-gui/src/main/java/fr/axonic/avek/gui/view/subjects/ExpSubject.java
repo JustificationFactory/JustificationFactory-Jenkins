@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.subjects;
 
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.engine.AVar;
 import javafx.event.ActionEvent;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class ExpSubject extends BorderPane {
 	private final static Logger logger = Logger.getLogger(ExpSubject.class);
 	private static final URL SUBJECT_FXML
-			= ExpSubject.class.getClassLoader().getResource("fxml/subjects/subject.fxml");
+			= ExpSubject.class.getClassLoader().getResource("fxml/subject.fxml");
 	private static final String SUBJECT_CSS = "css/subjects/subjects.css";
 
 	@FXML
@@ -49,24 +50,25 @@ public class ExpSubject extends BorderPane {
 		btnHistory.setDisable(true);
 	}
 
-	public boolean setMonitoredSystem(MonitoredSystem ms) {
+	public void setMonitoredSystem(MonitoredSystem ms) {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		logger.debug("Setting monitored system");
-		acrdnExpSubject.getPanes().clear();
+		ctm.runLaterOnPlatform(acrdnExpSubject.getPanes()::clear);
 
 		Map<String, Set<AVar>> map = ms.getMap();
 		for (String category : map.keySet()) {
 			ScrollPane sp = new ScrollPane();
 			VBox vb = new VBox();
 
-			acrdnExpSubject.getPanes().add(new TitledPane(category, sp));
-
+			ctm.runLaterOnPlatform(() -> acrdnExpSubject.getPanes().add(new TitledPane(category, sp)));
 			sp.setContent(vb);
 
 			for (AVar av : map.get(category))
 				vb.getChildren().add(new Label(av.getLabel() + " : " + av.getValue().toString()));
 		}
 
-		return true;
+		ctm.waitForTasks();
 	}
 
 }

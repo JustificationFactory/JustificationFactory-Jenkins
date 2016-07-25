@@ -1,11 +1,11 @@
 package fr.axonic.avek.gui.view.subjects;
 
 import fr.axonic.avek.gui.Main;
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.AString;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
@@ -18,7 +18,6 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,6 +43,8 @@ public class TestSubjectData extends ApplicationTest {
 
 	@Test
 	public void testMonitoredSystem() throws ExecutionException, InterruptedException {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		MonitoredSystem ms = new MonitoredSystem(42);
 		ms.addCategory("Category 1");
 		ms.addAVar("Category 1", new AString("a string", "strval1"));
@@ -55,10 +56,7 @@ public class TestSubjectData extends ApplicationTest {
 		ms.addAVar("Category 2", new ANumber("an integer", 987654321));
 		ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
-		final MonitoredSystem fms1 = ms;
-		FutureTask ft = new FutureTask<>(() -> subject.setMonitoredSystem(fms1));
-		Platform.runLater(ft);
-		ft.get();
+		subject.setMonitoredSystem(ms);
 		assertEquals(2, acc.getPanes().size());
 
 		TitledPane tp = acc.getPanes().get(0);
@@ -84,10 +82,7 @@ public class TestSubjectData extends ApplicationTest {
 
 		ms.addCategory("Category 3");
 
-		final MonitoredSystem fms2 = ms;
-		ft = new FutureTask<>(() -> subject.setMonitoredSystem(fms2));
-		Platform.runLater(ft);
-		ft.get();
+		subject.setMonitoredSystem(ms);
 		assertEquals(3, acc.getPanes().size());
 
 		tp = acc.getPanes().get(0);

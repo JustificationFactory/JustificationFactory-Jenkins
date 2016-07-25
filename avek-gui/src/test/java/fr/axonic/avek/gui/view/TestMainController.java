@@ -23,7 +23,7 @@ public class TestMainController extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		root = MainController.getRoot();
+		root = new MainPanel();
 		Scene scene = new Scene(root, 200, 200);
 		stage.setScene(scene);
 		stage.show();

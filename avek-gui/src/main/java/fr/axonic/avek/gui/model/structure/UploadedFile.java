@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.model.structure;
 
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
@@ -42,41 +43,49 @@ public class UploadedFile {
 			throw new FileNotFoundException(origin.getAbsolutePath());
 		if (this.uploaded.exists())
 			throw new FileAlreadyExistsException(this.uploaded.getPath());
+		if(uploading)
+			throw new RuntimeException("Upload already started");
 
-		Thread t = new Thread(() -> {
-			long calc = getSize() / 100L + 1L;
-			if (calc > 1024L * 1024L) // 1Mb max
-				calc = 1024L * 1024L;
-			if (calc < 1024L) // 1Kb min
-				calc = 1024;
+		new ConcurrentTaskManager().runLaterOnThread(this::doUploadMultiFiles);
+	}
 
-			final int bufSize = (int) calc;
-			final String originPath = origin.getPath();
-			final String uploadPath = uploaded.getPath();
+	private boolean uploading = false;
 
-			final Stack<File> stack = new Stack<>();
-			stack.push(origin);
+	private void doUploadMultiFiles() {
+		uploading = true;
 
-			do {
-				File pop = stack.pop();
-				if (pop.isDirectory()) {
-					for (File f : pop.listFiles())
-						stack.push(f);
-				} else if (pop.isFile()) {
-					final String fileName = pop.getPath().replace(originPath, uploadPath);
-					doUploadOneFile(pop, new File(fileName), bufSize);
-				}
-			} while (!stack.isEmpty());
+		long calc = getSize() / 100L + 1L;
+		if (calc > 1024L * 1024L) // 1Mb max
+			calc = 1024L * 1024L;
+		if (calc < 1024L) // 1Kb min
+			calc = 1024;
 
-			if (uploaded.isDirectory())
-				logger.info("All files treated for " + uploaded);
+		final int bufSize = (int) calc;
+		final String originPath = origin.getPath();
+		final String uploadPath = uploaded.getPath();
 
-			uploadedBytes = getSize();
-			if (listener != null)
-				Platform.runLater(listener::run);
-		});
-		t.setName(t.getName() + ":" + origin.getName());
-		t.start();
+		final Stack<File> stack = new Stack<>();
+		stack.push(origin);
+
+		do {
+			File pop = stack.pop();
+			if (pop.isDirectory()) {
+				for (File f : pop.listFiles())
+					stack.push(f);
+			} else if (pop.isFile()) {
+				final String fileName = pop.getPath().replace(originPath, uploadPath);
+				doUploadOneFile(pop, new File(fileName), bufSize);
+			}
+		} while (!stack.isEmpty());
+
+		if (uploaded.isDirectory())
+			logger.info("All files treated for " + uploaded);
+
+		uploadedBytes = getSize();
+		if (listener != null)
+			new ConcurrentTaskManager().runLaterOnPlatform(listener::run);
+
+		uploading = false;
 	}
 
 	private void doUploadOneFile(File pop, File newFile, int bufSize) {
@@ -163,8 +172,10 @@ public class UploadedFile {
 	}
 
 	public void setUpdateListener(Runnable listener) {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		this.listener = listener;
 
-		Platform.runLater(listener);
+		ctm.runLaterOnPlatform(listener);
 	}
 }

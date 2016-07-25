@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view.results;
 
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.model.base.ARangedEnum;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,10 +17,10 @@ import java.util.List;
 /**
  * Created by Nathaël N on 28/06/16.
  */
-class JellyBean extends HBox {
+public class JellyBean extends HBox {
 	private final static Logger logger = Logger.getLogger(JellyBean.class);
 	private final static URL JELLYBEAN_FXML
-			= JellyBean.class.getClassLoader().getResource("fxml/results/jellyBean.fxml");
+			= JellyBean.class.getClassLoader().getResource("fxml/jellyBean/jellyBean.fxml");
 	private final static String JELLYBEAN_CSS = "css/results/jellyBean.css";
 
 	@FXML
@@ -31,19 +32,20 @@ class JellyBean extends HBox {
 	private Object expEffect;
 	private JellyBeansSelector mainController;
 
-	JellyBean() throws IOException {
+	public JellyBean() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(JELLYBEAN_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 
-		logger.info("Loading jellyBean.fxml");
+		logger.debug("Loading JellyBean... (fxml)");
 		fxmlLoader.load();
 
-		logger.info("Adding jellybean.css");
 		this.getStylesheets().add(JELLYBEAN_CSS);
-		logger.info("Adding jellybeans personalized status css");
 		this.getStylesheets().add("css/results/personalized/levels.css");
 		this.getStylesheets().add("css/results/personalized/boolean.css");
+		logger.debug("Added css for JellyBean");
+
+		logger.debug("JellyBean loaded.");
 	}
 
 	@FXML
@@ -64,10 +66,12 @@ class JellyBean extends HBox {
 	}
 
 	private void refreshColor(Object bef, Object aft) {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		String before = bef.toString().toLowerCase();
 		String after = aft.toString().toLowerCase();
 
-		Platform.runLater(() -> {
+		ctm.runLaterOnPlatform(() -> {
 			jbLabel.getStyleClass().remove(before);
 			jbCross.getStyleClass().remove(before);
 			jbLabel.getStyleClass().add(after);

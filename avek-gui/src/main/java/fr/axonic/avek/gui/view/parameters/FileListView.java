@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view.parameters;
 
 import fr.axonic.avek.gui.model.structure.UploadedFile;
-import javafx.application.Platform;
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -91,18 +91,22 @@ public class FileListView extends StackPane {
 	}
 
 	private void onAddFiles(List<File> list) {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		for (final File f : list) {
 			UploadedFile uf = new UploadedFile(f);
 			try {
 				// Adding to the list on GUI
 				uf.doUpload();
-				Platform.runLater(() -> fileList.getItems().add(uf));
+				ctm.runLaterOnPlatform(() -> fileList.getItems().add(uf));
 			} catch (FileNotFoundException e) {
 				logger.error("File not found: " + f, e);
 			} catch (FileAlreadyExistsException e) {
 				logger.warn("File already added: " + f.getName(), e);
 			}
 		}
+
+		ctm.waitForTasks();
 	}
 
 	ListView<UploadedFile> getFileList() {

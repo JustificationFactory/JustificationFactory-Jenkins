@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view.parameters;
 
 import fr.axonic.avek.gui.Main;
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.view.parameters.list.ParametersGroup;
 import fr.axonic.avek.gui.view.parameters.list.ParametersRoot;
 import fr.axonic.avek.model.base.ABoolean;
@@ -24,87 +25,57 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 11/07/16.
  */
 public class TestParametersCategory extends ApplicationTest {
-	static {
-		Main.disableGraphics();
-	}
+	static { Main.disableGraphics(); }
 
 	private ParametersGroup pp;
 
 	@Override
 	public void start(Stage stage) throws IOException {
+		System.out.println("BEFORE");
 		this.pp = new ParametersRoot();
 
 		Scene scene = new Scene(pp, 500, 300);
 		stage.setScene(scene);
 		stage.show();
+		System.out.println("after BEFORE");
 	}
 
 	@Test
 	public void testAddRemoveParameters() throws ExecutionException, InterruptedException {
-		assertEquals(0, pp.getChildren().size());
+		System.out.println("CALL");
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
-		FutureTask ft = new FutureTask<>(() -> {
-			pp.addParameter(new ANumber("LabelText", 42.31));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		assertEquals(0, pp.getChildren().size());
+		System.out.println("CALL2");
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
+		System.out.println("CALL3");
 		assertEquals(6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> {
-			pp.addParameter(new ANumber("2ndLabelText", 12.34));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("2ndLabelText", 12.34)));
 		assertEquals(6 + 6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> {
-			pp.addParameter(new ANumber("3rdLabelText", 42));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("3rdLabelText", 42)));
 		assertEquals(12 + 6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> pp.rmParameter("2ndLabelText"));
-		Platform.runLater(ft);
-		ft.get();
+		ctm.runNowOnPlatform(() -> pp.rmParameter("2ndLabelText"));
 		assertEquals(18 - 6, pp.getChildren().size());
 	}
 
 	@Test
 	public void testDifferentParametersTypes() throws ExecutionException, InterruptedException {
-		FutureTask ft = new FutureTask<>(() -> {
-			pp.addParameter(new ANumber("LabelText", 42.31));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
+
 		assertEquals(6, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> {
-			pp.addParameter(new ABoolean("Boolbool", true));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ABoolean("Boolbool", true)));
 		assertEquals(10, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> {
-			pp.addParameter(new ADate("Datedate", new Date()));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ADate("Datedate", new Date())));
 		assertEquals(16, pp.getChildren().size());
 
-		ft = new FutureTask<>(() -> {
-			pp.addParameter(new AString("Strstr", "LaString"));
-			return true;
-		});
-		Platform.runLater(ft);
-		ft.get();
+		ctm.runNowOnPlatform(() -> pp.addParameter(new AString("Strstr", "LaString")));
 		assertEquals(20, pp.getChildren().size());
 	}
 }

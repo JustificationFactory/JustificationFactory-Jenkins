@@ -1,6 +1,10 @@
 package fr.axonic.avek.gui.view.results;
 
+import fr.axonic.avek.gui.Main;
+import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.structure.ExpEffect;
+import fr.axonic.avek.gui.model.structure.ExperimentationResults;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -16,6 +20,7 @@ import javafx.util.Callback;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +31,7 @@ import java.util.Set;
 public class JellyBeansSelector extends VBox {
 	private static final Logger logger = Logger.getLogger(JellyBeansSelector.class);
 	private static final URL JBSELECTOR_FXML
-			= JellyBeansSelector.class.getClassLoader().getResource("fxml/results/jellyBeansSelector.fxml");
+			= JellyBeansSelector.class.getClassLoader().getResource("fxml/jellyBean/jellyBeansSelector.fxml");
 	private static final String JBSELECTOR_CSS = "css/results/jellyBeanSelector.css";
 
 	@FXML
@@ -39,18 +44,28 @@ public class JellyBeansSelector extends VBox {
 	private final Set<String> addedEffects;
 
 	// should be public
-	public JellyBeansSelector() throws IOException {
+	public JellyBeansSelector() {
 		FXMLLoader fxmlLoader = new FXMLLoader(JBSELECTOR_FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 
-		logger.info("Loading jellyBeanSelector.fxml");
-		fxmlLoader.load();
+		logger.info("Loading JellyBeanSelector... (fxml)");
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			logger.fatal("Impossible to load FXML for JellyBeanSelector", e);
+		}
 
-		logger.info("Adding jellyBeanSelector.css");
 		this.getStylesheets().add(JBSELECTOR_CSS);
+		logger.info("Added css for jellyBeanSelector");
 
 		addedEffects = new HashSet<>();
+
+
+		// Fill experiment sample list
+		String results = Main.getFileContent("files/resultEnum1.json");
+		ExperimentationResults expr = new Jsonifier<>(ExperimentationResults.class).fromJson(results);
+		setJellyBeansChoice(FXCollections.observableArrayList(expr.getList()));
 	}
 
 	@FXML
