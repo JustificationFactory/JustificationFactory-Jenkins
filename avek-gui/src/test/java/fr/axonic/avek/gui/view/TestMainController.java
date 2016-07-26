@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.Main;
-import fr.axonic.avek.gui.view.subjects.ExpSubject;
+import fr.axonic.avek.gui.components.subjects.Subject;
+import fr.axonic.avek.gui.util.Util;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -17,13 +17,13 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 08/07/16.
  */
 public class TestMainController extends ApplicationTest {
-	static { Main.disableGraphics(); }
+	static { Util.disableGraphics(); }
 
 	private Parent root;
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		root = new MainPanel();
+		root = new GeneralizedView();
 		Scene scene = new Scene(root, 200, 200);
 		stage.setScene(scene);
 		stage.show();
@@ -33,7 +33,7 @@ public class TestMainController extends ApplicationTest {
 	public void testChildren() {
 		assertEquals(2, root.getChildrenUnmodifiable().size());
 
-		assertEquals(ExpSubject.class, ((BorderPane) root).getLeft().getClass());
+		assertEquals(Subject.class, ((BorderPane) root).getLeft().getClass());
 		assertEquals(BorderPane.class, ((BorderPane) root).getCenter().getClass());
 	}
 }

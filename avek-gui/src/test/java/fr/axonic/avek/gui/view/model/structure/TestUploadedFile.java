@@ -1,8 +1,8 @@
 package fr.axonic.avek.gui.view.model.structure;
 
 import com.sun.javafx.application.PlatformImpl;
-import fr.axonic.avek.gui.Main;
 import fr.axonic.avek.gui.model.structure.UploadedFile;
+import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.gui.view.Utils;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 public class TestUploadedFile {
 	static {
 		PlatformImpl.startup(() -> {});
-		Main.disableGraphics();
+		Util.disableGraphics();
 	}
 
 	@Before

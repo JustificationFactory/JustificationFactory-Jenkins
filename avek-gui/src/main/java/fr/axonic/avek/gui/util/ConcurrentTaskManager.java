@@ -47,7 +47,7 @@ public class ConcurrentTaskManager {
 			logger.debug("Task " + id + " finished");
 
 			Thread t = Thread.currentThread();
-			threads.put(t, threads.containsKey(t) ? 1 : threads.get(t) + 1);
+			threads.put(t, threads.containsKey(t) ? threads.get(t) + 1 : 1);
 			return ret;
 		});
 

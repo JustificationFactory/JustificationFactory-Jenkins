@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fr.axonic.avek.gui.components.parameters.list.ParametersRoot?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
+    <BorderPane>
+        <top>
+            <Label>
+                Experimentation parameters
+            </Label>
+        </top>
+        <center>
+            <ScrollPane>
+                <ParametersRoot fx:id="parametersGroup"/>
+            </ScrollPane>
+        </center>
+    </BorderPane>
+</fx:root>

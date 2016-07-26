@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fr.axonic.avek.gui.components.parameters.ParametersPane?>
+<?import fr.axonic.avek.gui.components.subjects.Subject?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+<?import fr.axonic.avek.gui.components.parameters.GeneralizedParametersPane?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="javafx.scene.layout.BorderPane">
+    <left>
+        <Subject fx:id="expSubject"/>
+    </left>
+    <center>
+        <BorderPane BorderPane.alignment="CENTER">
+            <center>
+                <GeneralizedParametersPane fx:id="paneParameters" />
+            </center>
+            <bottom>
+                <Button fx:id="btnStrategy" mnemonicParsing="false" onAction="#onClicStrategyButton"
+                        text="Strategy" BorderPane.alignment="BOTTOM_RIGHT"/>
+            </bottom>
+        </BorderPane>
+    </center>
+</fx:root>
