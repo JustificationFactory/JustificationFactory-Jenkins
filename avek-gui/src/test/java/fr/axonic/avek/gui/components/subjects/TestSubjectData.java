@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.subjects;
 
+import fr.axonic.avek.gui.components.MonitoredSystemPane;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.model.MonitoredSystem;
@@ -28,17 +29,17 @@ import static org.junit.Assert.assertEquals;
 public class TestSubjectData extends ApplicationTest {
 	static { Util.disableGraphics(); }
 
-	private Subject subject;
+	private MonitoredSystemPane monitoredSystemPane;
 	private Accordion acc;
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		this.subject = new Subject();
-		Scene scene = new Scene(subject, 200, 200);
+		this.monitoredSystemPane = new MonitoredSystemPane();
+		Scene scene = new Scene(monitoredSystemPane, 200, 200);
 		stage.setScene(scene);
 		stage.show();
 
-		acc = (Accordion) subject.getCenter();
+		acc = (Accordion) monitoredSystemPane.getCenter();
 	}
 
 	@Test
@@ -56,7 +57,7 @@ public class TestSubjectData extends ApplicationTest {
 		ms.addAVar("Category 2", new ANumber("an integer", 987654321));
 		ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
-		subject.setMonitoredSystem(ms);
+		monitoredSystemPane.setMonitoredSystem(ms);
 		assertEquals(2, acc.getPanes().size());
 
 		TitledPane tp = acc.getPanes().get(0);
@@ -82,7 +83,7 @@ public class TestSubjectData extends ApplicationTest {
 
 		ms.addCategory("Category 3");
 
-		subject.setMonitoredSystem(ms);
+		monitoredSystemPane.setMonitoredSystem(ms);
 		assertEquals(3, acc.getPanes().size());
 
 		tp = acc.getPanes().get(0);

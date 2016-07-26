@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.components.subjects.Subject;
+import fr.axonic.avek.gui.components.MonitoredSystemPane;
 import fr.axonic.avek.gui.util.Util;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,7 +33,7 @@ public class TestMainController extends ApplicationTest {
 	public void testChildren() {
 		assertEquals(2, root.getChildrenUnmodifiable().size());
 
-		assertEquals(Subject.class, ((BorderPane) root).getLeft().getClass());
+		assertEquals(MonitoredSystemPane.class, ((BorderPane) root).getLeft().getClass());
 		assertEquals(BorderPane.class, ((BorderPane) root).getCenter().getClass());
 	}
 }

@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.components.parameters;
 
-import fr.axonic.avek.gui.components.parameters.list.ParametersRoot;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.Util;
 import javafx.scene.Scene;

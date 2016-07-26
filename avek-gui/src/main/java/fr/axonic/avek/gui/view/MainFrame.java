@@ -1,65 +1,55 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.util.ConcurrentTaskManager;
-import fr.axonic.avek.gui.util.Util;
-import javafx.application.Application;
-import javafx.scene.Scene;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URL;
 
-public class MainFrame extends Application {
+/**
+ * Created by Nathaël N on 26/07/16.
+ */
+public class MainFrame extends BorderPane {
 	private final static Logger logger = Logger.getLogger(MainFrame.class);
+	private final static URL FXML = MainFrame.class.getClassLoader()
+			.getResource("fxml/views/MainFrame.fxml");
 
-	private final BorderPane frame;
+	@FXML
+	private Button btnStrategy;
+
+
+	private AbstractView view;
 
 	public MainFrame() {
-		frame = new BorderPane();
+		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
+		fxmlLoader.setController(this);
+		fxmlLoader.setRoot(this);
+
+		logger.info("Loading MainFrame... (fxml)");
+		try {
+			fxmlLoader.load();
+			logger.debug("MainFrame loaded.");
+		} catch (IOException e) {
+			logger.fatal("Impossible to load FXML for MainFrame", e);
+		}
+
+		// TODO Temporary solution
+		setView(new GeneralizedView());
 	}
+
+	@FXML
+	private void onClicStrategyButton(ActionEvent event) {
+
+	}
+
 
 	public void setView(AbstractView view) {
-		frame.getChildren().clear();
-		frame.setCenter(view);
-	}
-
-
-
-	//  //  //  //  //    Application MAIN    //  //  //  //  //
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws IOException {
-		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-
-		logger.debug("Loading Frame...");
-
-		primaryStage.setTitle("#AVEK analyzer");
-		GeneralizedView generalizedView = new GeneralizedView();
-
-		Scene s = new Scene(frame, 800, 600);
-		primaryStage.setScene(s);
-
-		primaryStage.show();
-		logger.debug("Frame created.");
-
-
-		ctm.runLaterOnThread(() -> {
-			try {
-				Thread.sleep(2000);
-				ctm.runLaterOnPlatform(() -> setView(generalizedView));
-				Thread.sleep(2000);
-				ctm.runLaterOnPlatform(() -> generalizedView.setMonitoredSystem(Util.getFileContent("files/subjectFile.json")));
-				Thread.sleep(2000);
-				ctm.runLaterOnPlatform(() -> generalizedView.setExperimentParameters(Util.getFileContent("files/parametersFile.json")));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
+		setCenter(view); // remove abstract view currently loaded
+		this.view = view;
 	}
 
 }

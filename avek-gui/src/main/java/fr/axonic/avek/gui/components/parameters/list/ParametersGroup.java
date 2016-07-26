@@ -31,7 +31,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 
 		/*
 		[ checkbox ][ Levelmark ][ Title & ...  ]
-		     []          ↓       MainFrame ParametersGrid's title
+		     []          ↓       Main ParametersGrid's title
 			 []          |↓      ParametersGrid's title
 			 []          ||      A subelement : value ...
 			 []          ||      A subelement : value ...

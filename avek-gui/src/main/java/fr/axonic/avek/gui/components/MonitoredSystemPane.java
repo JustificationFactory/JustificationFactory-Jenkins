@@ -1,6 +1,5 @@
-package fr.axonic.avek.gui.components.subjects;
+package fr.axonic.avek.gui.components;
 
-import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.engine.AVar;
 import javafx.event.ActionEvent;
@@ -19,11 +18,11 @@ import java.util.Set;
 /**
  * Created by Nathaël N on 04/07/16.
  */
-public class Subject extends BorderPane {
-	private final static Logger logger = Logger.getLogger(Subject.class);
-	private static final URL FXML
-			= Subject.class.getClassLoader().getResource("fxml/components/Subject.fxml");
-	private static final String CSS = "css/subjects/subjects.css";
+public class MonitoredSystemPane extends BorderPane {
+	private final static Logger logger = Logger.getLogger(MonitoredSystemPane.class);
+	private static final URL FXML = MonitoredSystemPane.class.getClassLoader()
+			.getResource("fxml/components/MonitoredSystem.fxml");
+	private static final String CSS = "css/MonitoredSystem.css";
 
 	@FXML
 	private Label title;
@@ -33,17 +32,17 @@ public class Subject extends BorderPane {
 	private Button btnHistory;
 
 	// should be public
-	public Subject() {
+	public MonitoredSystemPane() {
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 
-		logger.info("Loading Subject... (fxml)");
+		logger.info("Loading MonitoredSystemPane... (fxml)");
 		try {
 			fxmlLoader.load();
-			logger.debug("Subject loaded.");
+			logger.debug("MonitoredSystemPane loaded.");
 		} catch (IOException e) {
-			logger.fatal("Impossible to load FXML for Subject", e);
+			logger.fatal("Impossible to load FXML for MonitoredSystemPane", e);
 		}
 
 		logger.debug("Adding subject.css");
@@ -56,24 +55,19 @@ public class Subject extends BorderPane {
 	}
 
 	public void setMonitoredSystem(MonitoredSystem ms) {
-		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-
 		logger.debug("Setting monitored system");
-		ctm.runLaterOnPlatform(acrdnExpSubject.getPanes()::clear);
+		acrdnExpSubject.getPanes().clear();
 
 		Map<String, Set<AVar>> map = ms.getMap();
 		for (String category : map.keySet()) {
 			ScrollPane sp = new ScrollPane();
 			VBox vb = new VBox();
 
-			ctm.runLaterOnPlatform(() -> acrdnExpSubject.getPanes().add(new TitledPane(category, sp)));
+			acrdnExpSubject.getPanes().add(new TitledPane(category, sp));
 			sp.setContent(vb);
 
 			for (AVar av : map.get(category))
 				vb.getChildren().add(new Label(av.getLabel() + " : " + av.getValue().toString()));
 		}
-
-		ctm.waitForTasks();
 	}
-
 }

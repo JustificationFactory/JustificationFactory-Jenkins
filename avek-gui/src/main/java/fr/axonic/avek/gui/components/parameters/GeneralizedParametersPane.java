@@ -2,7 +2,6 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.components.filelist.FileListView;
-import fr.axonic.avek.gui.components.parameters.list.ParametersGroup;
 import fr.axonic.avek.gui.components.parameters.list.ParametersRoot;
 import fr.axonic.avek.model.base.engine.AEntity;
 import javafx.fxml.FXML;

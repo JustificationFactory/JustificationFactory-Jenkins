@@ -30,7 +30,7 @@
                 <configuration>
                     <appName>#AVEK</appName>
                     <vendor>AXONIC</vendor>
-                    <mainClass>fr.axonic.avek.gui.view.MainFrame</mainClass>
+                    <mainClass>fr.axonic.avek.gui.Main</mainClass>
                     <keyStoreAlias>AVEK</keyStoreAlias>
                     <keyStorePassword>AVEK.AXONIC.fr</keyStorePassword>
                     <allPermissions>true</allPermissions>

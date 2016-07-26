@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.components.MonitoredSystemPane;
-import fr.axonic.avek.gui.components.parameters.GeneralizedParametersPane;
+import fr.axonic.avek.gui.components.parameters.ParametersPane;
 import fr.axonic.avek.gui.components.results.JellyBeansSelector;
 import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.model.MonitoredSystem;
@@ -16,32 +16,32 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 
-public class GeneralizedView extends AbstractView {
-	private final static Logger logger = Logger.getLogger(GeneralizedView.class);
+public class EstablishEffectView extends AbstractView {
+	private final static Logger logger = Logger.getLogger(EstablishEffectView.class);
 	private final static URL FXML
-			= GeneralizedView.class.getClassLoader().getResource("fxml/views/GeneralizedView.fxml");
+			= EstablishEffectView.class.getClassLoader().getResource("fxml/views/GeneralizedView.fxml");
 
 	@FXML
 	private Button btnStrategy;
 	@FXML
-	private GeneralizedParametersPane paneParameters;
+	private ParametersPane paneParameters;
 	@FXML
 	private MonitoredSystemPane monitoredSystemPane;
 	@FXML
 	private JellyBeansSelector jellyBeansSelector;
 
 	// Should be public
-	public GeneralizedView() {
+	public EstablishEffectView() {
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
 		fxmlLoader.setController(this);
 		fxmlLoader.setRoot(this);
 
-		logger.info("Loading GeneralizedView... (fxml)");
+		logger.info("Loading EstablishEffectView... (fxml)");
 		try {
 			fxmlLoader.load();
-			logger.debug("GeneralizedView loaded.");
+			logger.debug("EstablishEffectView loaded.");
 		} catch (IOException e) {
-			logger.fatal("Impossible to load FXML for GeneralizedView", e);
+			logger.fatal("Impossible to load FXML for EstablishEffectView", e);
 		}
 	}
 
@@ -54,14 +54,11 @@ public class GeneralizedView extends AbstractView {
 	 *
 	 * @param monitoredSystemJson the MonitoredSystem as a Json String
 	 */
-	public void setMonitoredSystem(String monitoredSystemJson) {
-		MonitoredSystem ms = MonitoredSystem.fromJson(monitoredSystemJson);
-
-		monitoredSystemPane.setMonitoredSystem(ms);
+	void setMonitoredSystem(String monitoredSystemJson) {
+		monitoredSystemPane.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
 	}
 
-
-	public void setExperimentParameters(String experimentParametersJson) {
+	void setExperimentParameters(String experimentParametersJson) {
 		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(experimentParametersJson);
 
 		for (AEntity ae : list.getEntities())

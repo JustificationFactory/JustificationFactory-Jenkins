@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
  */
 public class ParametersCategory extends ParametersGroup {
 	private static final Logger logger = Logger.getLogger(ParametersCategory.class);
-	private static final String CSS = "css/parameters/parameters.css";
+	private static final String CSS = "css/Parameters.css";
 
 	private final CategoryTitle simpleParam;
 
@@ -25,7 +25,7 @@ public class ParametersCategory extends ParametersGroup {
 		this.setVgap(2);
 
 
-		logger.info("Adding parameters.css");
+		logger.info("Adding Parameters.css");
 		this.getStylesheets().add(CSS);
 	}
 

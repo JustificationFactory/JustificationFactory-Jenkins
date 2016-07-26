@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.components.filelist.FileListView;
-import fr.axonic.avek.gui.model.structure.UploadedFile;
 import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.gui.view.Utils;
 import javafx.scene.Scene;
@@ -15,12 +14,10 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Nathaël N on 25/07/16.

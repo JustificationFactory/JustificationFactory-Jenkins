@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.util;
 
-import fr.axonic.avek.gui.view.MainFrame;
+import fr.axonic.avek.gui.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public abstract class Util {
 	public static String getFileContent(String path) {
 		String res = "";
 		try {
-			File f = new File(MainFrame.class.getClassLoader()
+			File f = new File(Main.class.getClassLoader()
 					.getResource(path).toURI());
 			List<String> ls = Files.readAllLines(f.toPath());
 			for (String s : ls)

@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.components.filelist;
 
-import fr.axonic.avek.gui.components.parameters.ParametersPane;
 import fr.axonic.avek.gui.model.structure.UploadedFile;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import javafx.fxml.FXML;
@@ -29,7 +28,7 @@ public class FileListView extends StackPane {
 	private final static Logger logger = Logger.getLogger(FileListView.class);
 
 	private static final URL FXML
-			= ParametersPane.class.getClassLoader().getResource("fxml/components/FileListView.fxml");
+			= FileListView.class.getClassLoader().getResource("fxml/components/FileListView.fxml");
 
 	@FXML
 	private ListView<UploadedFile> fileList;
