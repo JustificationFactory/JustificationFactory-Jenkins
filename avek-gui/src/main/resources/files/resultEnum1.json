@@ -1,133 +1,131 @@
 {
-  "results": {
-    "AE4": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "VERY_LOW",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+  "AE4": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE5": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "VERY_LOW",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE5": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE6": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "MEDIUM",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE6": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "MEDIUM",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE7": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "VERY_LOW",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE7": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE8": {
-      "range": [
-        "TRUE",
-        "FALSE"
-      ],
-      "value": "TRUE",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE8": {
+    "range": [
+      "TRUE",
+      "FALSE"
+    ],
+    "value": "TRUE",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE9": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "VERY_LOW",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE9": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE1": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "VERY_LOW",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE1": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE2": {
-      "range": [
-        "VERY_LOW",
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "VERY_HIGH"
-      ],
-      "value": "VERY_LOW",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
+    "editable": false,
+    "mandatory": false
+  },
+  "AE2": {
+    "range": [
+      "VERY_LOW",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "VERY_HIGH"
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
     },
-    "AE3": {
-      "range": [
-        "TRUE",
-        "FALSE"
-      ],
-      "value": "FALSE",
-      "format": {
-        "formatType": "ENUM"
-      },
-      "editable": false,
-      "mandatory": false
-    }
+    "editable": false,
+    "mandatory": false
+  },
+  "AE3": {
+    "range": [
+      "TRUE",
+      "FALSE"
+    ],
+    "value": "FALSE",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
   }
 }

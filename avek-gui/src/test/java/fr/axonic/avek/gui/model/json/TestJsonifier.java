@@ -1,15 +1,16 @@
-package fr.axonic.avek.gui.view.model.json;
+package fr.axonic.avek.gui.model.json;
 
-import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.sample.ExampleStateBool;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.ANumber;
-import fr.axonic.avek.model.base.ARangedEnum;
-import fr.axonic.avek.model.base.AString;
+import fr.axonic.avek.model.base.*;
+import fr.axonic.avek.model.base.engine.AEntity;
+import fr.axonic.avek.model.base.engine.AList;
+import fr.axonic.avek.model.base.engine.AVar;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -60,6 +61,38 @@ public class TestJsonifier {
 		test2(rangedEnumBool, ARangedEnum.class);
 		test2(ms, MonitoredSystem.class);
 	}
+
+	@Test
+	public void testAListOfAEntities() {
+		AList<AEntity> aList = new AList<>();
+
+		aList.addEntity(new ANumber("Frequency", 42.0));
+		aList.addEntity(new ABoolean("Bool?", true));
+
+		AList<AEntity> list = new AList<>();
+		list.setLabel("List");
+		list.addEntity(new ANumber("SubNumber", 12.34));
+		list.addEntity(new ADate("SubDate", new Date()));
+
+		AList<AVar> subList = new AList<>();
+		subList.setLabel("SubList");
+		subList.addEntity(new ANumber("SubSubInteger", 42.0));
+		subList.addEntity(new AString("SubSubString", "TheSubSubStringValue"));
+		subList.addEntity(new ANumber("SubSubDouble", 49.3));
+
+		list.addEntity(subList);
+		list.addEntity(new ABoolean("SubBool", false));
+		list.setLabel("SubCategory");
+		aList.addEntity(list);
+
+		aList.addEntity(new ANumber("Times redo", 12.0));
+
+		String json = Jsonifier.toJson(aList);
+		AList<AEntity> regenerated = Jsonifier.toAListofAListAndAVar(json);
+
+		assertEquals(json, Jsonifier.toJson(regenerated));
+	}
+
 
 	private <T> void test(T o, Class<T> tClass) {
 		T o2 = new Jsonifier<>(tClass).fromJson(Jsonifier.toJson(o));

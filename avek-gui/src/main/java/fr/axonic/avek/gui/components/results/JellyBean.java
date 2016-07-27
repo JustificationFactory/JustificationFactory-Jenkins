@@ -31,6 +31,7 @@ public class JellyBean extends HBox {
 	private Object expEffect;
 	private JellyBeansSelector mainController;
 
+	// should be public
 	public JellyBean() {
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
 		fxmlLoader.setRoot(this);

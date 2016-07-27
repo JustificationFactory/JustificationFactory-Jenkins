@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.util;
 
 import fr.axonic.avek.gui.model.structure.UploadedFile;
 
@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 /**
  * Created by Nathaël N on 25/07/16.
  */
-public class Utils {
+public class UtilForTests {
 	private static void delete(File f) throws FileNotFoundException {
 		if (f.isDirectory())
 			for (File c : f.listFiles())
@@ -54,5 +54,13 @@ public class Utils {
 		writer.println("tonton Tonton TOnton TONton");
 		writer.println("TONTon TONTOn TONTON");
 		writer.close();
+	}
+
+	public static void disableGraphics() {
+		System.setProperty("testfx.robot", "glass");
+		System.setProperty("prism.order", "sw");
+		System.setProperty("testfx.headless", "true");
+		System.setProperty("java.awt.headless", "true");
+		System.setProperty("prism.text", "t2k");
 	}
 }

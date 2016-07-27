@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.results;
 
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.scene.Scene;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 07/07/16.
  */
 public class TestJellyBeans extends ApplicationTest {
-	static { Util.disableGraphics(); }
+	static { UtilForTests.disableGraphics(); }
 
 	private JellyBean jb;
 	private Button jbText;

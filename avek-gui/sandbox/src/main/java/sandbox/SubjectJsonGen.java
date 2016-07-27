@@ -3,7 +3,7 @@ package sandbox;
 import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.sample.ExampleStateBool;
-import fr.axonic.avek.gui.model.structure.ExperimentationResults;
+import fr.axonic.avek.gui.model.structure.ExperimentationResultsMap;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
@@ -62,7 +62,7 @@ public class SubjectJsonGen {
 	}
 
 	public static String generateParameters() throws VerificationException {
-		ExperimentationResults expRes = new ExperimentationResults();
+		ExperimentationResultsMap expRes = new ExperimentationResultsMap();
 
 		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
 			aEnum.setRange(Arrays.asList(ExampleState.values()));

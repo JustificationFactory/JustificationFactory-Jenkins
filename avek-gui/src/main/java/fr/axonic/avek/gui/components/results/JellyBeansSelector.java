@@ -1,8 +1,8 @@
 package fr.axonic.avek.gui.components.results;
 
 import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.gui.model.structure.ExpEffect;
-import fr.axonic.avek.gui.model.structure.ExperimentationResults;
+import fr.axonic.avek.gui.model.structure.ExperimentationResult;
+import fr.axonic.avek.gui.model.structure.ExperimentationResultsMap;
 import fr.axonic.avek.gui.util.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +38,7 @@ public class JellyBeansSelector extends VBox {
 	@FXML
 	private FlowPane jellyBeansPane;
 	@FXML
-	private ComboBox<ExpEffect> comboBoxJellyBean;
+	private ComboBox<ExperimentationResult> comboBoxJellyBean;
 
 	private final Set<String> addedEffects;
 
@@ -65,7 +65,7 @@ public class JellyBeansSelector extends VBox {
 
 		// Fill experiment sample list
 		String results = Util.getFileContent("files/resultEnum1.json");
-		ExperimentationResults expr = new Jsonifier<>(ExperimentationResults.class).fromJson(results);
+		ExperimentationResultsMap expr = new Jsonifier<>(ExperimentationResultsMap.class).fromJson(results);
 		setJellyBeansChoice(FXCollections.observableArrayList(expr.getList()));
 	}
 
@@ -90,12 +90,12 @@ public class JellyBeansSelector extends VBox {
 	 */
 	private void updateJellyBeanChoice() {
 		comboBoxJellyBean.setCellFactory(
-				new Callback<ListView<ExpEffect>, ListCell<ExpEffect>>() {
+				new Callback<ListView<ExperimentationResult>, ListCell<ExperimentationResult>>() {
 					@Override
-					public ListCell<ExpEffect> call(ListView<ExpEffect> param) {
-						return new ListCell<ExpEffect>() {
+					public ListCell<ExperimentationResult> call(ListView<ExperimentationResult> param) {
+						return new ListCell<ExperimentationResult>() {
 							@Override
-							public void updateItem(ExpEffect item, boolean empty) {
+							public void updateItem(ExperimentationResult item, boolean empty) {
 								super.updateItem(item, empty);
 								if (item != null) {
 									setText(item.getName());
@@ -111,7 +111,7 @@ public class JellyBeansSelector extends VBox {
 
 	private void addJellyBean() {
 		// Verify if JellyBean already created (this result is already selected)
-		ExpEffect choice = comboBoxJellyBean.getValue();
+		ExperimentationResult choice = comboBoxJellyBean.getValue();
 		if (choice == null) {
 			logger.warn("Choice is null");
 			return;
@@ -135,7 +135,7 @@ public class JellyBeansSelector extends VBox {
 		updateJellyBeanChoice();
 	}
 
-	public void setJellyBeansChoice(ObservableList<ExpEffect> items) {
+	void setJellyBeansChoice(ObservableList<ExperimentationResult> items) {
 		this.comboBoxJellyBean.setItems(items);
 	}
 }

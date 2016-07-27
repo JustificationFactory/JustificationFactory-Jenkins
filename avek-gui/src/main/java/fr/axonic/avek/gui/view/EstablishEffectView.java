@@ -41,11 +41,11 @@ public class EstablishEffectView extends AbstractView {
 	 *
 	 * @param monitoredSystemJson the MonitoredSystem as a Json String
 	 */
-	void setMonitoredSystem(String monitoredSystemJson) {
+	public void setMonitoredSystem(String monitoredSystemJson) {
 		monitoredSystemPane.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
 	}
 
-	void setExperimentParameters(String experimentParametersJson) {
+	public void setExperimentParameters(String experimentParametersJson) {
 		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(experimentParametersJson);
 
 		for (AEntity ae : list.getEntities())

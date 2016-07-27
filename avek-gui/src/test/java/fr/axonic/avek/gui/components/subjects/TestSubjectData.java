@@ -2,7 +2,7 @@ package fr.axonic.avek.gui.components.subjects;
 
 import fr.axonic.avek.gui.components.MonitoredSystemPane;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 08/07/16.
  */
 public class TestSubjectData extends ApplicationTest {
-	static { Util.disableGraphics(); }
+	static { UtilForTests.disableGraphics(); }
 
 	private MonitoredSystemPane monitoredSystemPane;
 	private Accordion acc;
@@ -45,19 +45,18 @@ public class TestSubjectData extends ApplicationTest {
 	@Test
 	public void testMonitoredSystem() throws ExecutionException, InterruptedException {
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+		MonitoredSystem ms1 = new MonitoredSystem(42);
+		ms1.addCategory("Category 1");
+		ms1.addAVar("Category 1", new AString("a string", "strval1"));
+		ms1.addAVar("Category 1", new ANumber("an integer", 123456789));
+		ms1.addAVar("Category 1", new ANumber("a double", 12345.6789));
+		ms1.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
 
-		MonitoredSystem ms = new MonitoredSystem(42);
-		ms.addCategory("Category 1");
-		ms.addAVar("Category 1", new AString("a string", "strval1"));
-		ms.addAVar("Category 1", new ANumber("an integer", 123456789));
-		ms.addAVar("Category 1", new ANumber("a double", 12345.6789));
-		ms.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
+		ms1.addCategory("Category 2");
+		ms1.addAVar("Category 2", new ANumber("an integer", 987654321));
+		ms1.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
-		ms.addCategory("Category 2");
-		ms.addAVar("Category 2", new ANumber("an integer", 987654321));
-		ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
-
-		monitoredSystemPane.setMonitoredSystem(ms);
+		ctm.runNowOnPlatform(() -> monitoredSystemPane.setMonitoredSystem(ms1));
 		assertEquals(2, acc.getPanes().size());
 
 		TitledPane tp = acc.getPanes().get(0);
@@ -70,20 +69,20 @@ public class TestSubjectData extends ApplicationTest {
 		vb = (VBox) sp.getContent();
 		assertEquals(2, vb.getChildren().size());
 
-		ms = new MonitoredSystem(21);
-		ms.addCategory("Category 1");
-		ms.addAVar("Category 1", new AString("a string", "strval1"));
-		ms.addAVar("Category 1", new ANumber("an integer", 123456789));
-		ms.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
+		MonitoredSystem ms2 = new MonitoredSystem(21);
+		ms2.addCategory("Category 1");
+		ms2.addAVar("Category 1", new AString("a string", "strval1"));
+		ms2.addAVar("Category 1", new ANumber("an integer", 123456789));
+		ms2.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
 
-		ms.addCategory("Category 2");
-		ms.addAVar("Category 2", new ANumber("an integer", 987654321));
-		ms.addAVar("Category 2", new ANumber("a double", 12345.6789));
-		ms.addAVar("Category 2", new ANumber("a double", 98765.4321));
+		ms2.addCategory("Category 2");
+		ms2.addAVar("Category 2", new ANumber("an integer", 987654321));
+		ms2.addAVar("Category 2", new ANumber("a double", 12345.6789));
+		ms2.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
-		ms.addCategory("Category 3");
+		ms2.addCategory("Category 3");
 
-		monitoredSystemPane.setMonitoredSystem(ms);
+		ctm.runNowOnPlatform(() -> monitoredSystemPane.setMonitoredSystem(ms2));
 		assertEquals(3, acc.getPanes().size());
 
 		tp = acc.getPanes().get(0);

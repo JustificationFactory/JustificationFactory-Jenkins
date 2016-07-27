@@ -1,26 +1,12 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.components.MonitoredSystemPane;
-import fr.axonic.avek.gui.components.parameters.GeneralizedParametersPane;
-import fr.axonic.avek.gui.components.results.JellyBeansSelector;
-import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.gui.model.structure.ExpEffect;
-import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;

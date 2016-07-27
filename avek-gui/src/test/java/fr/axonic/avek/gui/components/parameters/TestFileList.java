@@ -1,8 +1,7 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.components.filelist.FileListView;
-import fr.axonic.avek.gui.util.Util;
-import fr.axonic.avek.gui.view.Utils;
+import fr.axonic.avek.gui.util.UtilForTests;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
@@ -25,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 public class TestFileList extends ApplicationTest {
 	private final static Logger logger = Logger.getLogger(TestFileList.class);
 
-	static { Util.disableGraphics(); }
+	static { UtilForTests.disableGraphics(); }
 
 	private FileListView flv;
 
@@ -40,11 +39,11 @@ public class TestFileList extends ApplicationTest {
 
 	@Before
 	public void before() throws IOException {
-		Utils.createFileArchi();
+		UtilForTests.createFileArchi();
 	}
 	@After
 	public void after() {
-		Utils.deleteFileArchi();
+		UtilForTests.deleteFileArchi();
 	}
 
 	@Test

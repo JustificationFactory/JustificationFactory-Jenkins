@@ -27,12 +27,4 @@ public abstract class Util {
 		}
 		return res;
 	}
-
-	public static void disableGraphics() {
-		System.setProperty("testfx.robot", "glass");
-		System.setProperty("prism.order", "sw");
-		System.setProperty("testfx.headless", "true");
-		System.setProperty("java.awt.headless", "true");
-		System.setProperty("prism.text", "t2k");
-	}
 }

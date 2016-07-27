@@ -33,7 +33,7 @@ public class ConcurrentTaskManager {
 			try {
 				c.call();
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Exception thrown during task call", e);
 			}
 			return;
 		}

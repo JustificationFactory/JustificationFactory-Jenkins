@@ -1,9 +1,7 @@
-package fr.axonic.avek.gui.view.model.structure;
+package fr.axonic.avek.gui.model.structure;
 
 import com.sun.javafx.application.PlatformImpl;
-import fr.axonic.avek.gui.model.structure.UploadedFile;
-import fr.axonic.avek.gui.util.Util;
-import fr.axonic.avek.gui.view.Utils;
+import fr.axonic.avek.gui.util.UtilForTests;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,12 +25,12 @@ import static org.junit.Assert.assertTrue;
 public class TestUploadedFile {
 	static {
 		PlatformImpl.startup(() -> {});
-		Util.disableGraphics();
+		UtilForTests.disableGraphics();
 	}
 
 	@Before
 	public void before() throws IOException {
-		Utils.createFileArchi();
+		UtilForTests.createFileArchi();
 	}
 
 	@Test
@@ -163,6 +161,6 @@ public class TestUploadedFile {
 
 	@After
 	public void after() {
-		Utils.deleteFileArchi();
+		UtilForTests.deleteFileArchi();
 	}
 }

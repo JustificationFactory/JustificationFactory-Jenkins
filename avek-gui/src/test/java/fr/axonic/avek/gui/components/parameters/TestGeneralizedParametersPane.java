@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.util.UtilForTests;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Nathaël N on 25/07/16.
  */
 public class TestGeneralizedParametersPane extends ApplicationTest {
-	static { Util.disableGraphics(); }
+	static { UtilForTests.disableGraphics(); }
 
 	private GeneralizedParametersPane pp;
 

@@ -162,8 +162,6 @@ public class UploadedFile {
 	public boolean equals(Object obj) {
 		if (obj instanceof UploadedFile)
 			return origin.equals(((UploadedFile) obj).origin);
-		if (obj instanceof File)
-			return origin.equals(obj) || uploaded.equals(obj);
 		return super.equals(obj);
 	}
 

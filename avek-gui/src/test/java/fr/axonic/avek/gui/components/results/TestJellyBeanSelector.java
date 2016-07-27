@@ -2,8 +2,8 @@ package fr.axonic.avek.gui.components.results;
 
 import com.google.gson.Gson;
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.structure.ExpEffect;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.model.structure.ExperimentationResult;
+import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
 import javafx.collections.FXCollections;
@@ -28,7 +28,7 @@ import static org.testfx.matcher.base.ParentMatchers.hasChildren;
  * Created by Nathaël N on 04/07/16.
  */
 public class TestJellyBeanSelector extends ApplicationTest {
-	static { Util.disableGraphics(); }
+	static { UtilForTests.disableGraphics(); }
 
 	private Pane jellyBeanPane;
 
@@ -40,7 +40,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 		stage.setScene(scene);
 		stage.show();
 
-		List<ExpEffect> expEffects = new ArrayList<>();
+		List<ExperimentationResult> experimentationResults = new ArrayList<>();
 		for (int i = 1; i <= 30; i++) {
 			String s;
 			{
@@ -52,11 +52,11 @@ public class TestJellyBeanSelector extends ApplicationTest {
 			}
 			ARangedEnum be = new Gson().fromJson(s, ARangedEnum.class);
 
-			expEffects.add(new ExpEffect("AE" + i, be));
+			experimentationResults.add(new ExperimentationResult("AE" + i, be));
 		}
 
 		// Fill experiment sample list
-		jbs.setJellyBeansChoice(FXCollections.observableArrayList(expEffects));
+		jbs.setJellyBeansChoice(FXCollections.observableArrayList(experimentationResults));
 		jellyBeanPane = (Pane) jbs.getChildren().get(1);
 	}
 

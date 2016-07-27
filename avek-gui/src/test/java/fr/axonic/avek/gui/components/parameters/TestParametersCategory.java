@@ -3,7 +3,7 @@ package fr.axonic.avek.gui.components.parameters;
 import fr.axonic.avek.gui.components.parameters.list.ParametersGroup;
 import fr.axonic.avek.gui.components.parameters.list.ParametersRoot;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.base.ABoolean;
 import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 11/07/16.
  */
 public class TestParametersCategory extends ApplicationTest {
-	static { Util.disableGraphics(); }
+	static { UtilForTests.disableGraphics(); }
 
 	private ParametersGroup pp;
 
