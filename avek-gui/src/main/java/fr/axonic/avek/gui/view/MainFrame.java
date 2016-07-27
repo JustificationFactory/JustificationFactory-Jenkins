@@ -43,13 +43,25 @@ public class MainFrame extends BorderPane {
 
 	@FXML
 	private void onClicStrategyButton(ActionEvent event) {
+		AbstractView ancientview = view;
+		StrategySelectionView ssv = new StrategySelectionView();
+		setView(ssv);
 
+		ssv.setAvailableChoices(
+				ancientview instanceof TreatView?ancientview:new TreatView(),
+				ancientview instanceof EstablishEffectView?ancientview:new EstablishEffectView(),
+				ancientview instanceof GeneralizedView?ancientview:new GeneralizedView());
+		ssv.setOnCancel(ancientview);
+		ssv.onSetView(this::setView);
+
+		btnStrategy.setDisable(true);
 	}
 
 
 	public void setView(AbstractView view) {
 		setCenter(view); // remove abstract view currently loaded
 		this.view = view;
+		view.load();
+		btnStrategy.setDisable(false);
 	}
-
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="javafx.scene.layout.BorderPane">
+    <center>
+        <VBox>
+            <Label>Select a Strategy</Label>
+            <ComboBox fx:id="comboBox"/>
+            <HBox>
+                <Button fx:id="cancel" onAction="#onCancel">Cancel</Button>
+                <Button fx:id="submit" onAction="#onSubmit">Submit</Button>
+            </HBox>
+        </VBox>
+    </center>
+</fx:root>

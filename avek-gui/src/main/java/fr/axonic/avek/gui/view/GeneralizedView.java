@@ -9,17 +9,12 @@ import fr.axonic.avek.model.base.engine.AEntity;
 import fr.axonic.avek.model.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
-
 public class GeneralizedView extends AbstractView {
 	private final static Logger logger = Logger.getLogger(GeneralizedView.class);
-	private final static URL FXML
-			= GeneralizedView.class.getClassLoader().getResource("fxml/views/GeneralizedView.fxml");
+	private final static String FXML = "fxml/views/GeneralizedView.fxml";
 
 	@FXML
 	private Button btnStrategy;
@@ -30,19 +25,11 @@ public class GeneralizedView extends AbstractView {
 	@FXML
 	private JellyBeansSelector jellyBeansSelector;
 
-	// Should be public
-	public GeneralizedView() {
-		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
-		fxmlLoader.setController(this);
-		fxmlLoader.setRoot(this);
-
-		logger.info("Loading GeneralizedView... (fxml)");
-		try {
-			fxmlLoader.load();
-			logger.debug("GeneralizedView loaded.");
-		} catch (IOException e) {
-			logger.fatal("Impossible to load FXML for GeneralizedView", e);
-		}
+	@Override
+	protected void onLoad() {
+		logger.info("Loading GeneralizedView...");
+		super.load(FXML);
+		logger.debug("GeneralizedView loaded.");
 	}
 
 	@FXML
