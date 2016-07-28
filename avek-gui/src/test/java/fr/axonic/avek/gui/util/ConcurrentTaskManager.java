@@ -25,19 +25,14 @@ public class ConcurrentTaskManager {
 	private final Set<FutureTask> running = new HashSet<>();
 	private final Map<Thread,Integer> threads = new HashMap<>();
 
-	private void run(Runnable r, boolean onPlatform) {
+	private void run(Runnable r, boolean onPlatform) throws Exception {
 		this.run(() -> {r.run(); return true;},	onPlatform);
 	}
-	private <V> void run(Callable<V> c, boolean onPlatform) {
+	private <V> void run(Callable<V> c, boolean onPlatform) throws Exception {
 		if (Thread.currentThread() == platformThread && onPlatform) {
-			try {
-				c.call();
-			} catch (Exception e) {
-				logger.error("Exception thrown during task call", e);
-			}
+			c.call();
 			return;
 		}
-
 
 		final FutureTask<V> ft = new FutureTask<>(() -> {
 			int id = ++taskCount;
@@ -61,44 +56,37 @@ public class ConcurrentTaskManager {
 		running.add(ft);
 	}
 
-	public void runNowOnPlatform(Runnable r) {
-		runNowOnPlatform(() -> {r.run(); return true;});
+	public boolean runNowOnPlatform(Runnable r) throws Exception {
+		return runNowOnPlatform(() -> {r.run(); return true;});
 	}
-	public <V> V runNowOnPlatform(Callable<V> c) {
-		try {
-			if(Thread.currentThread() == platformThread)
-				c.call();
+	public <V> V runNowOnPlatform(Callable<V> c) throws Exception {
+		if(Thread.currentThread() == platformThread)
+			c.call();
 
-			FutureTask<V> ft = new FutureTask<>(c);
-			Platform.runLater(ft);
-			return ft.get();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		FutureTask<V> ft = new FutureTask<>(c);
+		Platform.runLater(ft);
+		return ft.get();
 	}
-	public void runLaterOnPlatform(Runnable r) {
+	public void runLaterOnPlatform(Runnable r) throws Exception {
 		run(r, true);
 	}
-	public <V> void runLaterOnPlatform(Callable<V> c) {
+	public <V> void runLaterOnPlatform(Callable<V> c) throws Exception {
 		run(c, true);
 	}
-	public void runLaterOnThread(Runnable r) {
+	public void runLaterOnThread(Runnable r) throws Exception {
 		run(r, false);
 	}
-	public <V> void runLaterOnThread(Callable<V> c) {
+	public <V> void runLaterOnThread(Callable<V> c) throws Exception {
 		run(c, false);
 	}
 
-	public void waitForTasks() {
-		new HashSet<>(running).forEach(this::waitForTask);
+	public void waitForTasks() throws ExecutionException, InterruptedException {
+		for(FutureTask ft : running)
+			waitForTask(ft);
 	}
-	private void waitForTask(FutureTask ft) {
-		try {
-			ft.get();
-		} catch (InterruptedException | ExecutionException e) {
-			logger.error("Future task failed", e);
-		}
+	private Object waitForTask(FutureTask ft) throws ExecutionException, InterruptedException {
+		Object value = ft.get();
 		running.remove(ft);
+		return value;
 	}
 }

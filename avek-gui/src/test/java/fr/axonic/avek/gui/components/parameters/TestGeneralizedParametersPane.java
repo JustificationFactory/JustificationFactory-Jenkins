@@ -30,7 +30,7 @@ public class TestGeneralizedParametersPane extends ApplicationTest {
 	}
 
 	@Test
-	public void testOnClickHide() {
+	public void testOnClickHide() throws Exception {
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
 		assertTrue(pp.getComplementaryFilePane().isVisible());

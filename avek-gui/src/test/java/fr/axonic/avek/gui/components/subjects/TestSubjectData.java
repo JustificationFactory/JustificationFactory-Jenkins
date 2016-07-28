@@ -18,7 +18,6 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -43,7 +42,7 @@ public class TestSubjectData extends ApplicationTest {
 	}
 
 	@Test
-	public void testMonitoredSystem() throws ExecutionException, InterruptedException {
+	public void testMonitoredSystem() throws Exception {
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 		MonitoredSystem ms1 = new MonitoredSystem(42);
 		ms1.addCategory("Category 1");

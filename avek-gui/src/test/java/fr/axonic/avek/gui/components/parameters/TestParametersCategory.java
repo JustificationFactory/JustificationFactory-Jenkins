@@ -15,7 +15,6 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,7 +38,7 @@ public class TestParametersCategory extends ApplicationTest {
 	}
 
 	@Test
-	public void testAddRemoveParameters() throws ExecutionException, InterruptedException {
+	public void testAddRemoveParameters() throws Exception {
 		System.out.println("CALL");
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
@@ -60,7 +59,7 @@ public class TestParametersCategory extends ApplicationTest {
 	}
 
 	@Test
-	public void testDifferentParametersTypes() throws ExecutionException, InterruptedException {
+	public void testDifferentParametersTypes() throws Exception {
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
 		ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));

@@ -1,10 +1,11 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.components.MonitoredSystemPane;
+import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.GeneralizedParametersPane;
-import fr.axonic.avek.gui.components.results.JellyBeansSelector;
-import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.model.structure.ExperimentResult;
+import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.model.base.engine.AEntity;
 import fr.axonic.avek.model.base.engine.AList;
 import javafx.event.ActionEvent;
@@ -23,12 +24,28 @@ public class GeneralizedView extends AbstractView {
 	@FXML
 	private MonitoredSystemPane monitoredSystemPane;
 	@FXML
-	private JellyBeansSelector jellyBeansSelector;
+	private JellyBeanPane jellyBeanPane;
 
 	@Override
 	protected void onLoad() {
 		logger.info("Loading GeneralizedView...");
 		super.load(FXML);
+
+		logger.info("Getting monitored system...");
+		monitoredSystemPane.setMonitoredSystem(DataBus.getMonitoredSystem());
+
+		logger.info("Getting experiment parameters...");
+		AList<AEntity> list = DataBus.getExperimentParameters();
+		for (AEntity ae : list.getEntities())
+			paneParameters.addExpParameter(ae);
+
+		logger.info("Getting experiment results...");
+		ExperimentResultsMap expResMap =
+				DataBus.getExperimentResults();
+
+		for(ExperimentResult expRes : expResMap.getList())
+			jellyBeanPane.addJellyBean(expRes);
+
 		logger.debug("GeneralizedView loaded.");
 	}
 
@@ -37,22 +54,5 @@ public class GeneralizedView extends AbstractView {
 		btnStrategy.setDisable(true);
 	}
 
-	/** Fill experiment monitoredSystemPane informations
-	 *
-	 * @param monitoredSystemJson the MonitoredSystem as a Json String
-	 */
-	public void setMonitoredSystem(String monitoredSystemJson) {
-		MonitoredSystem ms = MonitoredSystem.fromJson(monitoredSystemJson);
-
-		monitoredSystemPane.setMonitoredSystem(ms);
-	}
-
-
-	public void setExperimentParameters(String experimentParametersJson) {
-		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(experimentParametersJson);
-
-		for (AEntity ae : list.getEntities())
-			paneParameters.addExpParameter(ae);
-	}
 }
 

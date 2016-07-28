@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane?>
 <?import fr.axonic.avek.gui.components.MonitoredSystemPane?>
 <?import fr.axonic.avek.gui.components.parameters.GeneralizedParametersPane?>
-<?import fr.axonic.avek.gui.components.results.JellyBeansSelector?>
 <?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane">
@@ -12,7 +12,7 @@
     <center>
         <BorderPane BorderPane.alignment="CENTER">
             <top>
-                <JellyBeansSelector fx:id="jellyBeansSelector" />
+                <JellyBeanPane fx:id="jellyBeanPane" />
             </top>
             <center>
                 <GeneralizedParametersPane fx:id="paneParameters" />

@@ -5,11 +5,11 @@ import fr.axonic.avek.model.base.ARangedEnum;
 /**
  * Created by Nathaël N on 07/07/16.
  */
-public class ExperimentationResult {
+public class ExperimentResult {
 	private final ARangedEnum states;
 	private final String name;
 
-	public ExperimentationResult(String name, ARangedEnum states) {
+	public ExperimentResult(String name, ARangedEnum states) {
 		this.states = states;
 		this.name = name;
 	}

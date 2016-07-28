@@ -12,10 +12,7 @@
         <VBox>
             <Label>Select a Strategy</Label>
             <ComboBox fx:id="comboBox"/>
-            <HBox>
-                <Button fx:id="cancel" onAction="#onCancel">Cancel</Button>
-                <Button fx:id="submit" onAction="#onSubmit">Submit</Button>
-            </HBox>
+            <Button fx:id="submit" onAction="#onSubmit">Submit</Button>
         </VBox>
     </center>
 </fx:root>

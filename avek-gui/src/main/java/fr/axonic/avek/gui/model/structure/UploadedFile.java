@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.model.structure;
 
-import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
@@ -46,7 +45,7 @@ public class UploadedFile {
 		if(uploading)
 			throw new RuntimeException("Upload already started");
 
-		new ConcurrentTaskManager().runLaterOnThread(this::doUploadMultiFiles);
+		new Thread(this::doUploadMultiFiles).start();
 	}
 
 	private boolean uploading = false;
@@ -83,7 +82,7 @@ public class UploadedFile {
 
 		uploadedBytes = getSize();
 		if (listener != null)
-			new ConcurrentTaskManager().runLaterOnPlatform(listener::run);
+			Platform.runLater(listener::run);
 
 		uploading = false;
 	}
@@ -170,10 +169,7 @@ public class UploadedFile {
 	}
 
 	public void setUpdateListener(Runnable listener) {
-		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-
 		this.listener = listener;
-
-		ctm.runLaterOnPlatform(listener);
+		Platform.runLater(listener);
 	}
 }

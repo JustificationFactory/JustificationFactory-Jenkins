@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import fr.axonic.avek.gui.util.ViewOrchestrator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by Nathaël N on 26/07/16.
@@ -22,7 +24,7 @@ public class MainFrame extends BorderPane {
 	private Button btnStrategy;
 
 
-	private AbstractView view;
+	private ViewOrchestrator orchestrator;
 
 	public MainFrame() {
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
@@ -36,32 +38,36 @@ public class MainFrame extends BorderPane {
 		} catch (IOException e) {
 			logger.fatal("Impossible to load FXML for MainFrame", e);
 		}
-
-		// TODO Temporary solution
-		setView(new GeneralizedView());
 	}
 
 	@FXML
 	private void onClicStrategyButton(ActionEvent event) {
-		AbstractView ancientview = view;
-		StrategySelectionView ssv = new StrategySelectionView();
-		setView(ssv);
+		List<ViewOrchestrator> orchs = orchestrator.getFollowing();
+		if(orchs.size() == 1) {
+			setView(orchs.get(0));
+		} else {
+			StrategySelectionView ssv = new StrategySelectionView();
+			setCenter(ssv); // remove abstract view currently loaded
+			ssv.load();
 
-		ssv.setAvailableChoices(
-				ancientview instanceof TreatView?ancientview:new TreatView(),
-				ancientview instanceof EstablishEffectView?ancientview:new EstablishEffectView(),
-				ancientview instanceof GeneralizedView?ancientview:new GeneralizedView());
-		ssv.setOnCancel(ancientview);
-		ssv.onSetView(this::setView);
+			ssv.setAvailableChoices(orchestrator.getFollowing());
+			ssv.onSetView(this::setView);
 
-		btnStrategy.setDisable(true);
+			btnStrategy.setDisable(true);
+		}
 	}
 
 
-	public void setView(AbstractView view) {
-		setCenter(view); // remove abstract view currently loaded
-		this.view = view;
-		view.load();
-		btnStrategy.setDisable(false);
+	public void setView(ViewOrchestrator view) {
+		this.orchestrator = view;
+		AbstractView av = view.getView();
+		if(av == null) {
+			onClicStrategyButton(null);
+		}
+		else {
+			setCenter(view.getView()); // remove abstract view currently loaded
+			view.getView().load();
+			btnStrategy.setDisable(false);
+		}
 	}
 }

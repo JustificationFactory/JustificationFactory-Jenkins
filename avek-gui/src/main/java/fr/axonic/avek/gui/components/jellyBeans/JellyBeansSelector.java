@@ -1,11 +1,8 @@
-package fr.axonic.avek.gui.components.results;
+package fr.axonic.avek.gui.components.jellyBeans;
 
-import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.gui.model.structure.ExperimentationResult;
-import fr.axonic.avek.gui.model.structure.ExperimentationResultsMap;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.model.structure.ExperimentResult;
+import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -14,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
@@ -36,16 +32,15 @@ public class JellyBeansSelector extends VBox {
 	@FXML
 	private Button newExpEffectButton;
 	@FXML
-	private FlowPane jellyBeansPane;
+	private JellyBeanPane jellyBeanPane;
 	@FXML
-	private ComboBox<ExperimentationResult> comboBoxJellyBean;
+	private ComboBox<ExperimentResult> comboBoxJellyBean;
 
 	private final Set<String> addedEffects;
 
 	// should be public
 	public JellyBeansSelector() {
 		addedEffects = new HashSet<>();
-
 
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
 		fxmlLoader.setRoot(this);
@@ -61,16 +56,11 @@ public class JellyBeansSelector extends VBox {
 
 		this.getStylesheets().add(CSS);
 		logger.info("Added css for jellyBeanSelector");
-
-
-		// Fill experiment sample list
-		String results = Util.getFileContent("files/resultEnum1.json");
-		ExperimentationResultsMap expr = new Jsonifier<>(ExperimentationResultsMap.class).fromJson(results);
-		setJellyBeansChoice(FXCollections.observableArrayList(expr.getList()));
 	}
 
 	@FXML
 	protected void initialize() {
+		jellyBeanPane.onRemoveJellyBean(this::onRemoveJellyBean);
 		updateJellyBeanChoice();
 	}
 
@@ -84,18 +74,38 @@ public class JellyBeansSelector extends VBox {
 		newExpEffectButton.setDisable(true);
 	}
 
+	private void addJellyBean() {
+		// Verify if JellyBean already created (this result is already selected)
+		ExperimentResult choice = comboBoxJellyBean.getValue();
+		if (choice == null) {
+			logger.warn("Choice is null");
+			return;
+		}
+		if (addedEffects.contains(choice.getName())) {
+			logger.warn("Choice already added: "+choice.getName());
+			return;
+		}
+		jellyBeanPane.addJellyBean(comboBoxJellyBean.getValue());
+		updateJellyBeanChoice();
+		addedEffects.add(choice.getName());
+	}
+	private void onRemoveJellyBean(String effectName) {
+		addedEffects.remove(effectName);
+		updateJellyBeanChoice();
+	}
+
 	/**
 	 * Set Combobox entries for already selected sample to 'selectedResult' style, and others to 'notSelectedResult'
 	 * (typically, set selected sample entries in a grey color, and let the others black)
 	 */
 	private void updateJellyBeanChoice() {
 		comboBoxJellyBean.setCellFactory(
-				new Callback<ListView<ExperimentationResult>, ListCell<ExperimentationResult>>() {
+				new Callback<ListView<ExperimentResult>, ListCell<ExperimentResult>>() {
 					@Override
-					public ListCell<ExperimentationResult> call(ListView<ExperimentationResult> param) {
-						return new ListCell<ExperimentationResult>() {
+					public ListCell<ExperimentResult> call(ListView<ExperimentResult> param) {
+						return new ListCell<ExperimentResult>() {
 							@Override
-							public void updateItem(ExperimentationResult item, boolean empty) {
+							public void updateItem(ExperimentResult item, boolean empty) {
 								super.updateItem(item, empty);
 								if (item != null) {
 									setText(item.getName());
@@ -109,33 +119,12 @@ public class JellyBeansSelector extends VBox {
 				});
 	}
 
-	private void addJellyBean() {
-		// Verify if JellyBean already created (this result is already selected)
-		ExperimentationResult choice = comboBoxJellyBean.getValue();
-		if (choice == null) {
-			logger.warn("Choice is null");
-			return;
-		} else if (addedEffects.contains(choice.getName())) {
-			logger.warn("Already selected: " + choice);
-			return;
-		}
-
-		JellyBean jb2 = new JellyBean();
-		jb2.setStateType(choice.getStateClass());
-		jb2.setText(choice.getName());
-		jb2.setMainController(this);
-		jellyBeansPane.getChildren().add(jb2);
-		addedEffects.add(choice.getName());
-		updateJellyBeanChoice();
+	public void setJellyBeansChoice(ExperimentResultsMap exprMap) {
+		this.comboBoxJellyBean.setItems(
+				FXCollections.observableArrayList(exprMap.getList()));
 	}
 
-	void removeJellyBean(JellyBean jbc) {
-		addedEffects.remove(jbc.getText());
-		jellyBeansPane.getChildren().remove(jbc);
-		updateJellyBeanChoice();
-	}
-
-	void setJellyBeansChoice(ObservableList<ExperimentationResult> items) {
-		this.comboBoxJellyBean.setItems(items);
+	public JellyBeanPane getJellyBeanPane() {
+		return jellyBeanPane;
 	}
 }

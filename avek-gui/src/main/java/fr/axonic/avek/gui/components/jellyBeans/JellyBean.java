@@ -1,7 +1,7 @@
-package fr.axonic.avek.gui.components.results;
+package fr.axonic.avek.gui.components.jellyBeans;
 
-import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.model.base.ARangedEnum;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by Nathaël N on 28/06/16.
@@ -29,7 +30,7 @@ public class JellyBean extends HBox {
 
 	private ARangedEnum enumType;
 	private Object expEffect;
-	private JellyBeansSelector mainController;
+	private Consumer<JellyBean> onDelete;
 
 	// should be public
 	public JellyBean() {
@@ -52,12 +53,21 @@ public class JellyBean extends HBox {
 	}
 
 	@FXML
+	public void initialize() {
+		setOnDelete(null);
+	}
+
+	@FXML
 	public void onClickOnCross(ActionEvent actionEvent) {
-		mainController.removeJellyBean(this);
+		onDelete.accept(this);
 	}
 
 	@FXML
 	public void onClickOnLabel(ActionEvent actionEvent) {
+		// ReadOnly
+		if(onDelete == null)
+			return;
+
 		Object beforeEffect = expEffect;
 
 		List list = enumType.getRange();
@@ -69,12 +79,10 @@ public class JellyBean extends HBox {
 	}
 
 	private void refreshColor(Object bef, Object aft) {
-		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-
 		String before = bef.toString().toLowerCase();
 		String after = aft.toString().toLowerCase();
 
-		ctm.runLaterOnPlatform(() -> {
+		Platform.runLater(() -> {
 			jbLabel.getStyleClass().remove(before);
 			jbCross.getStyleClass().remove(before);
 			jbLabel.getStyleClass().add(after);
@@ -103,12 +111,14 @@ public class JellyBean extends HBox {
 		return jbLabel.getText();
 	}
 
-	void setMainController(JellyBeansSelector mainController) {
-		this.mainController = mainController;
-	}
-
 	@Override
 	public String toString() {
 		return "JellyBean=" + getState();
+	}
+
+	void setOnDelete(Consumer<JellyBean> onDelete) {
+		this.onDelete = onDelete;
+		jbCross.setVisible(onDelete != null);
+		jbCross.setManaged(onDelete != null);
 	}
 }

@@ -1,8 +1,8 @@
 package fr.axonic.avek.gui;
 
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
-import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.gui.util.UtilForTests;
+import fr.axonic.avek.gui.util.ViewOrchestrator;
 import fr.axonic.avek.gui.view.EstablishEffectView;
 import fr.axonic.avek.gui.view.GeneralizedView;
 import fr.axonic.avek.gui.view.TreatView;
@@ -27,28 +27,34 @@ public class TestMain extends ApplicationTest {
 	}
 
 	@Test
-	public void mainTest() {
+	public void mainTest() throws Exception {
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
+		ViewOrchestrator oNull = new ViewOrchestrator(null);
 		GeneralizedView gView = new GeneralizedView();
-		ctm.runLaterOnPlatform(() -> reference.getMainFrame().setView(gView));
-		ctm.runLaterOnPlatform(() -> gView.setMonitoredSystem(Util.getFileContent("files/subjectFile.json")));
-		ctm.runLaterOnPlatform(() -> gView.setExperimentParameters(Util.getFileContent("files/parametersFile.json")));
-		ctm.waitForTasks();
-		assertTrue(true);
-
+		ViewOrchestrator o3 = new ViewOrchestrator(gView);
+		o3.addFollowing(oNull);
 		EstablishEffectView eeView = new EstablishEffectView();
-		ctm.runLaterOnPlatform(() -> reference.getMainFrame().setView(eeView));
-		ctm.runLaterOnPlatform(() -> eeView.setMonitoredSystem(Util.getFileContent("files/subjectFile.json")));
-		ctm.runLaterOnPlatform(() -> eeView.setExperimentParameters(Util.getFileContent("files/parametersFile.json")));
-		ctm.waitForTasks();
+		ViewOrchestrator o2 = new ViewOrchestrator(eeView);
+		o2.addFollowing(o3);
+		TreatView tView = new TreatView();
+		ViewOrchestrator o1 = new ViewOrchestrator(tView);
+		o1.addFollowing(o2);
+
+		oNull.addFollowing(o1);
+		oNull.addFollowing(o2);
+		oNull.addFollowing(o3);
+
+		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(oNull));
 		assertTrue(true);
 
-		TreatView tView = new TreatView();
-		ctm.runLaterOnPlatform(() -> reference.getMainFrame().setView(tView));
-		ctm.runLaterOnPlatform(() -> tView.setMonitoredSystem(Util.getFileContent("files/subjectFile.json")));
-		ctm.runLaterOnPlatform(() -> tView.setExperimentParameters(Util.getFileContent("files/parametersFile.json")));
-		ctm.waitForTasks();
+		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o1));
+		assertTrue(true);
+
+		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o2));
+		assertTrue(true);
+
+		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o3));
 		assertTrue(true);
 	}
 }

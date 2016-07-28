@@ -1,12 +1,12 @@
-package fr.axonic.avek.gui.components.results;
+package fr.axonic.avek.gui.components.jellyBeans;
 
 import com.google.gson.Gson;
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.structure.ExperimentationResult;
+import fr.axonic.avek.gui.model.structure.ExperimentResult;
+import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.base.ARangedEnum;
 import fr.axonic.avek.model.verification.exception.VerificationException;
-import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -30,7 +30,7 @@ import static org.testfx.matcher.base.ParentMatchers.hasChildren;
 public class TestJellyBeanSelector extends ApplicationTest {
 	static { UtilForTests.disableGraphics(); }
 
-	private Pane jellyBeanPane;
+	private JellyBeanPane jellyBeanPane;
 
 
 	@Override
@@ -40,29 +40,28 @@ public class TestJellyBeanSelector extends ApplicationTest {
 		stage.setScene(scene);
 		stage.show();
 
-		List<ExperimentationResult> experimentationResults = new ArrayList<>();
+		ExperimentResultsMap expResMap = new ExperimentResultsMap();
 		for (int i = 1; i <= 30; i++) {
-			String s;
-			{
-				ExampleState val = ExampleState.values()[0];
-				ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
-				//aEnum.setDefaultValue(ExampleState.MEDIUM);
-				aEnum.setRange(Arrays.asList(ExampleState.values()));
-				s = new Gson().toJson(aEnum);
-			}
-			ARangedEnum be = new Gson().fromJson(s, ARangedEnum.class);
+			ExampleState val = ExampleState.values()[0];
+			ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
+			aEnum.setDefaultValue(ExampleState.MEDIUM);
+			aEnum.setRange(Arrays.asList(ExampleState.values()));
 
-			experimentationResults.add(new ExperimentationResult("AE" + i, be));
+			expResMap.put("AE" + i, aEnum);
 		}
 
 		// Fill experiment sample list
-		jbs.setJellyBeansChoice(FXCollections.observableArrayList(experimentationResults));
-		jellyBeanPane = (Pane) jbs.getChildren().get(1);
+		jbs.setJellyBeansChoice(expResMap);
+		jellyBeanPane = jbs.getJellyBeanPane();
 	}
 
 	@Test
 	public void testSelectItem() {
-		verifyThat("#jellyBeansPane", hasChildren(0));
+		assertEquals(0, jellyBeanPane.getChildren().size());
+
+		// Try to add 'null'
+		clickOn("#comboBoxJellyBean")
+				.push(KeyCode.ENTER);
 		assertEquals(0, jellyBeanPane.getChildren().size());
 
 		// Move to 'Effect 5'
@@ -75,12 +74,10 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 5'
-		verifyThat("#jellyBeansPane", hasChildren(1));
 		assertEquals(1, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "AE5");
 
 		// Add 'Effect 5' (should do nothing)
-		verifyThat("#jellyBeansPane", hasChildren(1));
 		assertEquals(1, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "AE5");
 
@@ -92,7 +89,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 7'
-		verifyThat("#jellyBeansPane", hasChildren(2));
 		assertEquals(2, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "AE5");
 		verifyGoodJellyBean(jellyBeanPane, 1, "AE7");
@@ -104,7 +100,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 5' (should do nothing)
-		verifyThat("#jellyBeansPane", hasChildren(2));
 		assertEquals(2, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "AE5");
 		verifyGoodJellyBean(jellyBeanPane, 1, "AE7");
@@ -116,7 +111,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
 				.push(KeyCode.ENTER);
 
 		// Add 'Effect 3'
-		verifyThat("#jellyBeansPane", hasChildren(3));
 		assertEquals(3, jellyBeanPane.getChildren().size());
 		verifyGoodJellyBean(jellyBeanPane, 0, "AE5");
 		verifyGoodJellyBean(jellyBeanPane, 1, "AE7");

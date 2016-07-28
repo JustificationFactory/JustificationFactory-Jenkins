@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import fr.axonic.avek.gui.util.ViewOrchestrator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -18,12 +18,9 @@ public class StrategySelectionView extends AbstractView {
 	@FXML
 	private Button submit;
 	@FXML
-	private Button cancel;
-	@FXML
-	private ComboBox<PointerOnView> comboBox;
+	private ComboBox<ViewOrchestrator> comboBox;
 
-	private AbstractView onCancelView;
-	private Consumer<AbstractView> onSetViewMethod;
+	private Consumer<ViewOrchestrator> onSetViewMethod;
 
 	@Override
 	protected void onLoad() {
@@ -34,42 +31,18 @@ public class StrategySelectionView extends AbstractView {
 
 	@FXML
 	void onSubmit(ActionEvent event) {
-		onSetView(comboBox.getValue().view);
-	}
-	@FXML
-	void onCancel(ActionEvent event) {
-		onSetView(onCancelView);
+		setView(comboBox.getValue());
 	}
 
-	void setAvailableChoices(AbstractView... views) {
-		List<PointerOnView> lpov = new ArrayList<>();
-		for(AbstractView av : views)
-			lpov.add(new PointerOnView(av));
-
-		comboBox.setItems(FXCollections.observableArrayList(lpov));
-	}
-	void setOnCancel(AbstractView view) {
-		onCancelView = view;
+	void setAvailableChoices(List<ViewOrchestrator> views) {
+		comboBox.setItems(FXCollections.observableArrayList(views));
 	}
 
-	private void onSetView(AbstractView view) {
+	private void setView(ViewOrchestrator view) {
 		onSetViewMethod.accept(view);
 	}
-	void onSetView(Consumer<AbstractView> onSetViewMethod) {
+	void onSetView(Consumer<ViewOrchestrator> onSetViewMethod) {
 		this.onSetViewMethod = onSetViewMethod;
-	}
-
-	private class PointerOnView {
-		final AbstractView view;
-
-		private PointerOnView(AbstractView view) {
-			this.view = view;
-		}
-
-		@Override
-		public String toString() {
-			return view.getClass().getSimpleName();
-		}
 	}
 }
 

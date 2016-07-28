@@ -1,10 +1,9 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.components.MonitoredSystemPane;
+import fr.axonic.avek.gui.components.jellyBeans.JellyBeansSelector;
 import fr.axonic.avek.gui.components.parameters.ParametersPane;
-import fr.axonic.avek.gui.components.results.JellyBeansSelector;
-import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.model.base.engine.AEntity;
 import fr.axonic.avek.model.base.engine.AList;
 import javafx.event.ActionEvent;
@@ -29,27 +28,24 @@ public class EstablishEffectView extends AbstractView {
 	protected void onLoad() {
 		logger.info("Loading TreatView...");
 		super.load(FXML);
+
+		logger.info("Getting monitored system...");
+		monitoredSystemPane.setMonitoredSystem(DataBus.getMonitoredSystem());
+
+		logger.info("Getting experiment parameters...");
+		AList<AEntity> list = DataBus.getExperimentParameters();
+		for (AEntity ae : list.getEntities())
+			paneParameters.addExpParameter(ae);
+
+		logger.info("Getting experiment results...");
+		jellyBeansSelector.setJellyBeansChoice(DataBus.getExperimentResults());
+
 		logger.debug("TreatView loaded.");
 	}
 
 	@FXML
 	void onClicStrategyButton(ActionEvent event) {
 		btnStrategy.setDisable(true);
-	}
-
-	/** Fill experiment monitoredSystemPane informations
-	 *
-	 * @param monitoredSystemJson the MonitoredSystem as a Json String
-	 */
-	public void setMonitoredSystem(String monitoredSystemJson) {
-		monitoredSystemPane.setMonitoredSystem(MonitoredSystem.fromJson(monitoredSystemJson));
-	}
-
-	public void setExperimentParameters(String experimentParametersJson) {
-		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(experimentParametersJson);
-
-		for (AEntity ae : list.getEntities())
-			paneParameters.addExpParameter(ae);
 	}
 }
 

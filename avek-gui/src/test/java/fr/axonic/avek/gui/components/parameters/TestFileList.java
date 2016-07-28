@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.components.filelist.FileListView;
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -47,29 +48,43 @@ public class TestFileList extends ApplicationTest {
 	}
 
 	@Test
-	public void testAddFiles() throws ReflectiveOperationException {
+	public void testAddFiles() throws Exception {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
 		// Get method FileListView.onAddFiles(File) with authorized use access
 		Method method = FileListView.class.getDeclaredMethod("onAddFiles", List.class);
 		method.setAccessible(true);
 
 		assertEquals(0, flv.getFileList().getItems().size());
 
-		method.invoke(flv, Collections.singletonList(new File("./temp/toto/titi.txt")));
+		ctm.runNowOnPlatform(() ->
+				method.invoke(flv,
+						Collections.singletonList(
+								new File("./temp/toto/titi.txt"))));
 		assertEquals(1, flv.getFileList().getItems().size());
 
-		method.invoke(flv, Collections.singletonList(new File("./temp/toto/tonton.txt")));
+		ctm.runNowOnPlatform(() ->
+				method.invoke(flv,
+						Collections.singletonList(
+								new File("./temp/toto/tonton.txt"))));
 		assertEquals(2, flv.getFileList().getItems().size());
 
 		// File already added
 		logger.warn("[NOT A WARNING] A deliberate action should show a WARN message\n" +
 				"    \"FileListView - File already added\" should following this (Tests)");
-		method.invoke(flv, Collections.singletonList(new File("./temp/toto/titi.txt")));
+		ctm.runNowOnPlatform(() ->
+				method.invoke(flv,
+						Collections.singletonList(
+								new File("./temp/toto/titi.txt"))));
 		assertEquals(2, flv.getFileList().getItems().size());
 
 		// File not found
 		logger.error("[NOT AN ERROR] A deliberate action should show a ERROR message\n" +
 				"    \"FileListView - File not found\" should following this (Tests)");
-		method.invoke(flv, Collections.singletonList(new File("./temp/toto/ThisIsNotAFile.txt")));
+		ctm.runNowOnPlatform(() ->
+				method.invoke(flv,
+						Collections.singletonList(
+								new File("./temp/toto/ThisIsNotAFile.txt"))));
 		assertEquals(2, flv.getFileList().getItems().size());
 	}
 
