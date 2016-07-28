@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.list.leaves;
 
 import fr.axonic.avek.gui.components.parameters.list.ExpParameterLeaf;
-import fr.axonic.avek.gui.util.MultiLevelMark;
 import fr.axonic.avek.model.base.engine.AVar;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -16,18 +15,16 @@ import java.util.function.Consumer;
  */
 abstract class SensitiveParameter extends ExpParameterLeaf {
 	CheckBox markedUtil;
-	private final MultiLevelMark levelMark;
+	private Consumer<Boolean> onClickMarkedUtil;
 
 	SensitiveParameter(int level, AVar paramValue) {
-		super(paramValue);
+		super(level, paramValue);
 
 		markedUtil = new CheckBox();
 		markedUtil.setSelected(true);
 		markedUtil.setOnAction(this::onClickMarkedUtil);
 
-		levelMark = new MultiLevelMark(level);
-
-		GridPane.setColumnIndex(markedUtil, 0);
+		//GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass
 		GridPane.setColumnIndex(levelMark, 1);
 		GridPane.setColumnIndex(this.paramTitle, 2);
 		GridPane.setColumnIndex(this.paramValue, 3);
@@ -39,25 +36,17 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
 		paramTitle.setDisable(!b);
 		paramValue.setDisable(!b);
 		levelMark.setDisable(!b);
+		if(onClickMarkedUtil != null)
+		onClickMarkedUtil.accept(b);
 	}
-
-	boolean isMarkedUtil() {
-		return markedUtil.isSelected();
+	public void setOnClickMarkedUtil(Consumer<Boolean> onClickMarkedUtil) {
+		this.onClickMarkedUtil = onClickMarkedUtil;
 	}
 
 	@Override
 	public Set<Node> getElements() {
 		Set<Node> elements = super.getElements();
 		elements.add(markedUtil);
-		elements.add(levelMark);
 		return elements;
-	}
-
-	void setExpandable(Consumer<Boolean> onClickExpand) {
-		levelMark.setExpandable(onClickExpand);
-	}
-
-	void setExpanded(boolean expanded) {
-		levelMark.setExpanded(expanded);
 	}
 }

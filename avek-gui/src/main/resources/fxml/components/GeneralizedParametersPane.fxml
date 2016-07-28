@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fr.axonic.avek.gui.components.filelist.FileListView?>
-<?import fr.axonic.avek.gui.components.parameters.list.ParametersRoot?>
+<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
@@ -16,7 +16,7 @@
                 <BorderPane>
                     <center>
                         <ScrollPane>
-                            <ParametersRoot fx:id="parametersRoot"/>
+                            <GeneralizedParametersRoot fx:id="parametersRoot"/>
                         </ScrollPane>
                     </center>
                     <bottom>

@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.parameters;
 
-import fr.axonic.avek.gui.components.parameters.list.ParametersGroup;
+import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot;
 import fr.axonic.avek.model.base.engine.AEntity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +17,10 @@ public class ParametersPane extends SplitPane {
 	private final static Logger logger = Logger.getLogger(ParametersPane.class);
 
 	private static final URL FXML
-			= ParametersPane.class.getClassLoader().getResource("fxml/components/Parameters.fxml");
+			= ParametersPane.class.getClassLoader().getResource("fxml/components/ParametersPane.fxml");
 
 	@FXML
-	private ParametersGroup parametersGroup;
+	private ParametersRoot parametersRoot;
 
 	// should be public
 	public ParametersPane() {
@@ -38,6 +38,6 @@ public class ParametersPane extends SplitPane {
 	}
 
 	public void addExpParameter(AEntity value) {
-		parametersGroup.addParameter(value);
+		parametersRoot.addParameter(value);
 	}
 }

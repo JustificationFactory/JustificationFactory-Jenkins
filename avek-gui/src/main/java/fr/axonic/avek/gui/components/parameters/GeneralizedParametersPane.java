@@ -2,7 +2,7 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.components.filelist.FileListView;
-import fr.axonic.avek.gui.components.parameters.list.ParametersRoot;
+import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot;
 import fr.axonic.avek.model.base.engine.AEntity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,14 +22,14 @@ public class GeneralizedParametersPane extends SplitPane {
 	private final static Logger logger = Logger.getLogger(GeneralizedParametersPane.class);
 
 	private static final URL FXML
-			= GeneralizedParametersPane.class.getClassLoader().getResource("fxml/components/GeneralizedParameters.fxml");
+			= GeneralizedParametersPane.class.getClassLoader().getResource("fxml/components/GeneralizedParametersPane.fxml");
 
 	@FXML
 	private TextArea textfieldComplements;
 	@FXML
 	private FileListView uploadedFiles;
 	@FXML
-	private ParametersRoot parametersRoot;
+	private GeneralizedParametersRoot parametersRoot;
 	@FXML
 	private BorderPane complementaryFilePane;
 	@FXML

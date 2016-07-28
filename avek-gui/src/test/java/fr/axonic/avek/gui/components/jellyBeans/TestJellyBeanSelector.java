@@ -1,8 +1,6 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
-import com.google.gson.Gson;
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.structure.ExperimentResult;
 import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.base.ARangedEnum;
@@ -15,14 +13,10 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.base.ParentMatchers.hasChildren;
 
 /**
  * Created by Nathaël N on 04/07/16.

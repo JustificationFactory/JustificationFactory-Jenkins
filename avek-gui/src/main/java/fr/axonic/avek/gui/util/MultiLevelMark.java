@@ -51,7 +51,7 @@ public class MultiLevelMark extends HBox {
 	private void recalculate() {
 		this.getChildren().clear();
 
-		for (int i = 0; i < level - 1; i++) {
+		for (int i = level -1; i > 0; i--) {
 			this.getChildren().add(new SingleLevelMark(TRANSPARENT));
 			this.getChildren().add(new SingleLevelMark(LINE));
 			this.getChildren().add(new SingleLevelMark(TRANSPARENT));

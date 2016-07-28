@@ -1,13 +1,13 @@
-package fr.axonic.avek.gui.components.parameters.list;
+package fr.axonic.avek.gui.components.parameters.list.parametersGroup;
 
-import fr.axonic.avek.gui.components.parameters.list.leaves.BoundedParameter;
-import fr.axonic.avek.gui.components.parameters.list.leaves.RangedParameter;
-import fr.axonic.avek.gui.components.parameters.list.leaves.SimpleParameter;
+import fr.axonic.avek.gui.components.parameters.list.ExpParameterLeaf;
+import fr.axonic.avek.gui.components.parameters.list.IExpParameter;
 import fr.axonic.avek.model.base.engine.AEntity;
 import fr.axonic.avek.model.base.engine.AList;
 import fr.axonic.avek.model.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,25 +18,35 @@ import java.util.Set;
  * Created by Nathaël N on 13/07/16.
  */
 public abstract class ParametersGroup extends GridPane implements IExpParameter {
-	private final int level;
+	private static final Logger logger = Logger.getLogger(ParametersGroup.class);
+	private static final String CSS = "css/Parameters.css";
+
+	protected final int level;
+	private final String title;
 	private final List<IExpParameter> subElements;
 
 	/**
 	 * @param level Deep level of this parameter grid (= his parent level+1)
 	 * @param title Title of the ParametersGrid
 	 */
-	ParametersGroup(final int level, final String title) {
+	protected ParametersGroup(final int level, final String title) {
 		subElements = new ArrayList<>();
+		this.title = title;
 		this.level = level;
 
 		/*
-		[ checkbox ][ Levelmark ][ Title & ...  ]
-		     []          ↓       Main ParametersGrid's title
-			 []          |↓      ParametersGrid's title
-			 []          ||      A subelement : value ...
-			 []          ||      A subelement : value ...
-			 []          |       Another element : value ...
+		[ Levelmark ][ Title & value            ]
+		     ↓       Main ParametersGrid's title
+			 |↓      ParametersGrid's title
+			 ||      A subelement : value
+			 ||      A subelement : value
+			 |       Another element : value
 		 */
+
+		logger.info("Adding Parameters.css");
+		this.getStylesheets().add(CSS);
+		this.setVgap(2);
+		this.setHgap(2);
 	}
 
 	/**
@@ -45,7 +55,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 	 * @throws ClassCastException is the parameter is not a AVar
 	 *                            nor a AList (of AList and AVar)
 	 */
-	public void addParameter(AEntity aEntity) {
+	public final void addParameter(AEntity aEntity) {
 		/*
 		if(aEntity instanceof AList<AEntity>)
 			addCategory(aEntity);
@@ -59,7 +69,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 		}
 	}
 
-	private void addCategory(AList<AEntity> aList) {
+	protected void addCategory(AList<AEntity> aList) {
 		ParametersGroup subCategory = new ParametersCategory(level + 1, aList.getLabel());
 
 		// Adding sub elements
@@ -69,30 +79,11 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 		addExpParameter(subCategory);
 	}
 
-	private void addLeaf(AVar aVar) {
-		ExpParameterLeaf subLeaf;
-
-		switch (aVar.getType()) {
-			case RANGED_NUMBER:
-			case NUMBER:
-			case DATE:
-				subLeaf = new BoundedParameter(level + 1, aVar);
-				break;
-			case RANGED_ENUM:
-			case BOOLEAN:
-			case ENUM:
-				subLeaf = new RangedParameter(level + 1, aVar);
-				break;
-			case STRING:
-			case UNKNOWN:
-			default:
-				subLeaf = new SimpleParameter(level + 1, aVar);
-		}
-
-		addExpParameter(subLeaf);
+	protected void addLeaf(AVar aVar) {
+		addExpParameter(new ExpParameterLeaf(level + 1, aVar));
 	}
 
-	void addExpParameter(IExpParameter subParam) {
+	protected void addExpParameter(IExpParameter subParam) {
 		int rowIndex = subElements.size();
 
 		// Adding graphical elements to the GUI
@@ -135,7 +126,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 
 	@Override
 	public String getName() {
-		return null;
+		return title;
 	}
 
 	@Override
