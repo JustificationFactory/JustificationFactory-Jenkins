@@ -29,7 +29,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 	 * @param level Deep level of this parameter grid (= his parent level+1)
 	 * @param title Title of the ParametersGrid
 	 */
-	protected ParametersGroup(final int level, final String title) {
+	ParametersGroup(final int level, final String title) {
 		subElements = new ArrayList<>();
 		this.title = title;
 		this.level = level;
