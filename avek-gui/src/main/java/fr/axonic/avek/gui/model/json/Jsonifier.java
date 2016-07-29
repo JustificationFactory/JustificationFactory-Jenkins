@@ -1,9 +1,9 @@
 package fr.axonic.avek.gui.model.json;
 
 import com.google.gson.GsonBuilder;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVar;
 import org.apache.log4j.Logger;
 
 /**
@@ -34,7 +34,7 @@ public class Jsonifier<T> {
 		AList<AEntity> alAE = new AList<>();
 		AList<AEntity> al = new Jsonifier<>(AList.class).fromJson(src);
 
-		for (Object o : al.getEntities()) {
+		for (Object o : al.getList()) {
 			String s = Jsonifier.toJson(o);
 
 			try {
@@ -42,11 +42,11 @@ public class Jsonifier<T> {
 				if (av.getFormat() == null)
 					throw new ClassCastException("Cannot cast " + s + " to AVar");
 
-				alAE.addEntity(av);
+				alAE.add(av);
 			} catch (ClassCastException cce) {
 				try {
 					AList<AEntity> av = toAListofAListAndAVar(s);
-					alAE.addEntity(av);
+					alAE.add(av);
 				} catch (ClassCastException cce2) {
 					logger.error("Impossible to load AVar", cce);
 					logger.fatal("Impossible to load AList", cce2);
@@ -54,7 +54,7 @@ public class Jsonifier<T> {
 			}
 		}
 
-		al.setEntities(alAE.getEntities());
+		al.addAll(alAE.getList());
 		return al;
 	}
 }

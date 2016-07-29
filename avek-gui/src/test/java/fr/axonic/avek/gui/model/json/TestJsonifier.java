@@ -3,14 +3,14 @@ package fr.axonic.avek.gui.model.json;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.sample.ExampleStateBool;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.*;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.*;
+import fr.axonic.base.engine.*;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 
@@ -66,26 +66,26 @@ public class TestJsonifier {
 	public void testAListOfAEntities() {
 		AList<AEntity> aList = new AList<>();
 
-		aList.addEntity(new ANumber("Frequency", 42.0));
-		aList.addEntity(new ABoolean("Bool?", true));
+		aList.add(new ANumber("Frequency", 42.0));
+		aList.add(new ABoolean("Bool?", true));
 
 		AList<AEntity> list = new AList<>();
 		list.setLabel("List");
-		list.addEntity(new ANumber("SubNumber", 12.34));
-		list.addEntity(new ADate("SubDate", new Date()));
+		list.add(new ANumber("SubNumber", 12.34));
+		list.add(new ADate("SubDate", new GregorianCalendar()));
 
 		AList<AVar> subList = new AList<>();
 		subList.setLabel("SubList");
-		subList.addEntity(new ANumber("SubSubInteger", 42.0));
-		subList.addEntity(new AString("SubSubString", "TheSubSubStringValue"));
-		subList.addEntity(new ANumber("SubSubDouble", 49.3));
+		subList.add(new ANumber("SubSubInteger", 42.0));
+		subList.add(new AString("SubSubString", "TheSubSubStringValue"));
+		subList.add(new ANumber("SubSubDouble", 49.3));
 
-		list.addEntity(subList);
-		list.addEntity(new ABoolean("SubBool", false));
+		list.add(subList);
+		list.add(new ABoolean("SubBool", false));
 		list.setLabel("SubCategory");
-		aList.addEntity(list);
+		aList.add(list);
 
-		aList.addEntity(new ANumber("Times redo", 12.0));
+		aList.add(new ANumber("Times redo", 12.0));
 
 		String json = Jsonifier.toJson(aList);
 		AList<AEntity> regenerated = Jsonifier.toAListofAListAndAVar(json);

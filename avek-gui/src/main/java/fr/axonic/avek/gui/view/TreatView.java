@@ -3,8 +3,8 @@ package fr.axonic.avek.gui.view;
 import fr.axonic.avek.gui.components.MonitoredSystemPane;
 import fr.axonic.avek.gui.components.parameters.ParametersPane;
 import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,7 +31,7 @@ public class TreatView extends AbstractView {
 
 		logger.info("Getting experiment parameters...");
 		AList<AEntity> list = DataBus.getExperimentParameters();
-		for (AEntity ae : list.getEntities())
+		for (AEntity ae : list.getList())
 			paneParameters.addExpParameter(ae);
 
 		logger.debug("TreatView loaded.");

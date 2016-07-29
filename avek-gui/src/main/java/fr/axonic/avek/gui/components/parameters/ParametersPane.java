@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot;
-import fr.axonic.avek.model.base.engine.AEntity;
+import fr.axonic.base.engine.AEntity;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.SplitPane;

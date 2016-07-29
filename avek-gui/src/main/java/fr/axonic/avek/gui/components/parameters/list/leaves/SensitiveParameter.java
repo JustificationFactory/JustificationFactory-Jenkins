@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.list.leaves;
 
 import fr.axonic.avek.gui.components.parameters.list.ExpParameterLeaf;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.engine.AVar;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;

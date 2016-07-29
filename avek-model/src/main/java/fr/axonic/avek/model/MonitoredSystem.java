@@ -1,7 +1,7 @@
 package fr.axonic.avek.model;
 
 import com.google.gson.Gson;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.engine.AVar;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;

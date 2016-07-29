@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.list.parametersGroup;
 
 import fr.axonic.avek.gui.components.parameters.list.leaves.SimpleParameter;
-import fr.axonic.avek.model.base.AString;
+import fr.axonic.base.AString;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 

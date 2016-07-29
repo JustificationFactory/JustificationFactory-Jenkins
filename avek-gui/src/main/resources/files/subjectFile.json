@@ -41,7 +41,14 @@
         "label": "Pathology"
       },
       {
-        "value": "Jul 27, 2016 11:22:00 AM",
+        "value": {
+          "year": 2016,
+          "month": 6,
+          "dayOfMonth": 29,
+          "hourOfDay": 13,
+          "minute": 23,
+          "second": 12
+        },
         "format": {
           "formatType": "DATE"
         },

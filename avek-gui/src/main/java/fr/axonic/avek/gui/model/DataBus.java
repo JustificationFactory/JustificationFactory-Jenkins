@@ -4,8 +4,8 @@ import fr.axonic.avek.gui.model.json.Jsonifier;
 import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 
 /**
  * Created by Nathaël N on 28/07/16.

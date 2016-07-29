@@ -1,6 +1,9 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
-import fr.axonic.avek.model.base.ARangedEnum;
+import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.AString;
+import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVar;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +32,7 @@ public class JellyBean extends HBox {
 	private Button jbCross;
 
 	private ARangedEnum enumType;
-	private Object expEffect;
+	private AVar expEffect;
 	private Consumer<JellyBean> onDelete;
 
 	// should be public
@@ -68,19 +71,19 @@ public class JellyBean extends HBox {
 		if(onDelete == null)
 			return;
 
-		Object beforeEffect = expEffect;
+		AVar beforeEffect = expEffect;
 
-		List list = enumType.getRange();
+		AList list = enumType.getRange();
 
 		int nextIndex = (list.indexOf(expEffect) + 1) % list.size();
-		expEffect = list.get(nextIndex);
+		expEffect = ((AVar)list.get(nextIndex));
 
 		refreshColor(beforeEffect, expEffect);
 	}
 
-	private void refreshColor(Object bef, Object aft) {
-		String before = bef.toString().toLowerCase();
-		String after = aft.toString().toLowerCase();
+	private void refreshColor(AVar bef, AVar aft) {
+		String before = bef.getValue().toString().toLowerCase();
+		String after = aft.getValue().toString().toLowerCase();
 
 		Platform.runLater(() -> {
 			jbLabel.getStyleClass().remove(before);
@@ -91,16 +94,16 @@ public class JellyBean extends HBox {
 	}
 
 
-	Object getState() {
+	AVar getState() {
 		return expEffect;
 	}
 
 	void setStateType(ARangedEnum stateType) {
 		enumType = stateType;
 
-		refreshColor(expEffect == null ? "" : expEffect, stateType.getValue());
+		refreshColor(expEffect == null ? new AString("") : expEffect, stateType);
 
-		expEffect = stateType.getValue();
+		expEffect = stateType;
 	}
 
 	public void setText(String text) {
