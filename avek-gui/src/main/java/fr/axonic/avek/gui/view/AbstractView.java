@@ -15,7 +15,7 @@ public abstract class AbstractView extends BorderPane {
 
 	private boolean loaded;
 
-	public AbstractView() {
+	AbstractView() {
 		loaded = false;
 	}
 
@@ -33,8 +33,7 @@ public abstract class AbstractView extends BorderPane {
 		if(loaded)
 			return;
 
-		URL fxml = AbstractView.class.getClassLoader()
-				.getResource(path);
+		URL fxml = getClass().getClassLoader().getResource(path);
 
 		FXMLLoader fxmlLoader = new FXMLLoader(fxml);
 		fxmlLoader.setController(this);

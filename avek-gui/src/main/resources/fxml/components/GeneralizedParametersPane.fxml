@@ -13,29 +13,9 @@
                 </Label>
             </top>
             <center>
-                <BorderPane>
-                    <center>
-                        <ScrollPane>
-                            <GeneralizedParametersRoot fx:id="parametersRoot"/>
-                        </ScrollPane>
-                    </center>
-                    <bottom>
-                        <BorderPane>
-                            <left>
-                                <Button styleClass="hide_button"
-                                        onMouseClicked="#onHideAdditionalInfo">
-                                    ⥯
-                                </Button>
-                            </left>
-                            <right>
-                                <Button styleClass="hide_button"
-                                        onMouseClicked="#onHideComplementaryFiles">
-                                    ⇌
-                                </Button>
-                            </right>
-                        </BorderPane>
-                    </bottom>
-                </BorderPane>
+                    <ScrollPane>
+                        <GeneralizedParametersRoot fx:id="parametersRoot"/>
+                    </ScrollPane>
             </center>
         </BorderPane>
 

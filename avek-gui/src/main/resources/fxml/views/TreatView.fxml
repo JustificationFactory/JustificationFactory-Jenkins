@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fr.axonic.avek.gui.components.MonitoredSystemPane?>
+<?import fr.axonic.avek.gui.components.MonitoredSystemView?>
 <?import fr.axonic.avek.gui.components.parameters.ParametersPane?>
 <?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane">
     <left>
-        <MonitoredSystemPane fx:id="monitoredSystemPane"/>
+        <MonitoredSystemView fx:id="monitoredSystemPane"/>
     </left>
     <center>
         <ParametersPane fx:id="paneParameters" />

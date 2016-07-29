@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.components.MonitoredSystemPane;
+import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.jellyBeans.JellyBeansSelector;
 import fr.axonic.avek.gui.components.parameters.ParametersPane;
 import fr.axonic.avek.gui.model.DataBus;
@@ -20,7 +20,7 @@ public class EstablishEffectView extends AbstractView {
 	@FXML
 	private ParametersPane paneParameters;
 	@FXML
-	private MonitoredSystemPane monitoredSystemPane;
+	private MonitoredSystemView monitoredSystemView;
 	@FXML
 	private JellyBeansSelector jellyBeansSelector;
 
@@ -30,7 +30,7 @@ public class EstablishEffectView extends AbstractView {
 		super.load(FXML);
 
 		logger.info("Getting monitored system...");
-		monitoredSystemPane.setMonitoredSystem(DataBus.getMonitoredSystem());
+		monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
 
 		logger.info("Getting experiment parameters...");
 		AList<AEntity> list = DataBus.getExperimentParameters();

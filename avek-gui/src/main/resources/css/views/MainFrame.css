@@ -1,0 +1,25 @@
+/*    #94BFD6; /* default pastel blue */
+/*    #949ED6; /* Darker */
+/*    #94D6CC /* Brighter */
+/*    #CC94D6 /* Tetrade ~purple */
+/*    #D6AB94 /* Tetrade ~saumon */
+/*    #9ED694 /* Tetrade ~green */
+/*    #D6949E /* Tetrade ~red */
+
+
+.mainFrame {
+    -fx-pref-width: 800;
+    -fx-pref-height: 600;
+    -fx-min-width: 20;
+    -fx-min-height: 20;
+}
+
+.frameTitle {
+	-fx-text-fill: #949ED6; /* Darker */
+	-fx-font-size: 24;
+	-fx-font-weight: bold;
+}
+
+.top, .top *{
+	-fx-background-color: #94D6CC /* Brighter */
+}

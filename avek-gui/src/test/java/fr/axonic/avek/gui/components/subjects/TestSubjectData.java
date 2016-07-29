@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.subjects;
 
-import fr.axonic.avek.gui.components.MonitoredSystemPane;
+import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.MonitoredSystem;
@@ -8,7 +8,6 @@ import fr.axonic.avek.model.base.ADate;
 import fr.axonic.avek.model.base.ANumber;
 import fr.axonic.avek.model.base.AString;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -28,17 +27,14 @@ import static org.junit.Assert.assertEquals;
 public class TestSubjectData extends ApplicationTest {
 	static { UtilForTests.disableGraphics(); }
 
-	private MonitoredSystemPane monitoredSystemPane;
-	private Accordion acc;
+	private MonitoredSystemView monitoredSystemView;
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		this.monitoredSystemPane = new MonitoredSystemPane();
-		Scene scene = new Scene(monitoredSystemPane, 200, 200);
+		this.monitoredSystemView = new MonitoredSystemView();
+		Scene scene = new Scene(monitoredSystemView, 200, 200);
 		stage.setScene(scene);
 		stage.show();
-
-		acc = (Accordion) monitoredSystemPane.getCenter();
 	}
 
 	@Test
@@ -55,15 +51,15 @@ public class TestSubjectData extends ApplicationTest {
 		ms1.addAVar("Category 2", new ANumber("an integer", 987654321));
 		ms1.addAVar("Category 2", new ANumber("a double", 98765.4321));
 
-		ctm.runNowOnPlatform(() -> monitoredSystemPane.setMonitoredSystem(ms1));
-		assertEquals(2, acc.getPanes().size());
+		ctm.runNowOnPlatform(() -> monitoredSystemView.setMonitoredSystem(ms1));
+		assertEquals(2, monitoredSystemView.getPanes().size());
 
-		TitledPane tp = acc.getPanes().get(0);
+		TitledPane tp = monitoredSystemView.getPanes().get(0);
 		ScrollPane sp = (ScrollPane) tp.getContent();
 		VBox vb = (VBox) sp.getContent();
 		assertEquals(4, vb.getChildren().size());
 
-		tp = acc.getPanes().get(1);
+		tp = monitoredSystemView.getPanes().get(1);
 		sp = (ScrollPane) tp.getContent();
 		vb = (VBox) sp.getContent();
 		assertEquals(2, vb.getChildren().size());
@@ -81,20 +77,20 @@ public class TestSubjectData extends ApplicationTest {
 
 		ms2.addCategory("Category 3");
 
-		ctm.runNowOnPlatform(() -> monitoredSystemPane.setMonitoredSystem(ms2));
-		assertEquals(3, acc.getPanes().size());
+		ctm.runNowOnPlatform(() -> monitoredSystemView.setMonitoredSystem(ms2));
+		assertEquals(3, monitoredSystemView.getPanes().size());
 
-		tp = acc.getPanes().get(0);
+		tp = monitoredSystemView.getPanes().get(0);
 		sp = (ScrollPane) tp.getContent();
 		vb = (VBox) sp.getContent();
 		assertEquals(3, vb.getChildren().size());
 
-		tp = acc.getPanes().get(1);
+		tp = monitoredSystemView.getPanes().get(1);
 		sp = (ScrollPane) tp.getContent();
 		vb = (VBox) sp.getContent();
 		assertEquals(3, vb.getChildren().size());
 
-		tp = acc.getPanes().get(2);
+		tp = monitoredSystemView.getPanes().get(2);
 		sp = (ScrollPane) tp.getContent();
 		vb = (VBox) sp.getContent();
 		assertEquals(0, vb.getChildren().size());

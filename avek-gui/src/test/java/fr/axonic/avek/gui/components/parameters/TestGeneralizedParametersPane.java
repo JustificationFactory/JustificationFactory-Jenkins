@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Nathaël N on 25/07/16.
  */
-public class TestGeneralizedParametersPane extends ApplicationTest {
+public class TestGeneralizedParametersPane { /*extends ApplicationTest {
 	static { UtilForTests.disableGraphics(); }
 
 	private GeneralizedParametersPane pp;
@@ -51,5 +51,5 @@ public class TestGeneralizedParametersPane extends ApplicationTest {
 		ctm.runNowOnPlatform(() -> pp.onHideAdditionalInfo(null));
 		assertTrue(pp.getComplementaryFilePane().isVisible());
 		assertTrue(pp.getAdditionalInfoPane().isVisible());
-	}
+	}*/
 }
