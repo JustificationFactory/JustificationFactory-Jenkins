@@ -2,8 +2,10 @@ package fr.axonic.avek.gui.components.jellyBeans;
 
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.util.UtilForTests;
-import fr.axonic.avek.model.base.ARangedEnum;
-import fr.axonic.avek.model.verification.exception.VerificationException;
+import fr.axonic.base.AEnum;
+import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.engine.AVarHelper;
+import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -20,7 +22,8 @@ import static org.junit.Assert.assertTrue;
  * Created by Nathaël N on 07/07/16.
  */
 public class TestJellyBeans extends ApplicationTest {
-	static { UtilForTests.disableGraphics(); }
+	static { UtilForTests.disableGraphics();
+		 }
 
 	private JellyBean jb;
 	private Button jbText, jbCross;
@@ -42,28 +45,26 @@ public class TestJellyBeans extends ApplicationTest {
 	@Test
 	public void testReadOnly() throws VerificationException {
 		ARangedEnum<ExampleState> are = new ARangedEnum<>(ExampleState.VERY_LOW);
-		List<ExampleState> l = new ArrayList<>();
-		Collections.addAll(l, ExampleState.values());
-		are.setRange(l);
+		are.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
 
 		this.jb.setStateType(are);
 		// ReadOnly if not 'setOnDelete'
 		//this.jb.setOnDelete(this::calledOnDelete);
 
-		assertEquals(ExampleState.VERY_LOW, jb.getState());
+		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
 
 		clickOn(jbText);
-		assertEquals(ExampleState.VERY_LOW, jb.getState());
+		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
 
 		clickOn(jbText); // Medium
 		clickOn(jbText);
-		assertEquals(ExampleState.VERY_LOW, jb.getState());
+		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
 
 		clickOn(jbText); // Very high
 		clickOn(jbText); // Very Low
 		clickOn(jbText); // low
 		clickOn(jbText);
-		assertEquals(ExampleState.VERY_LOW, jb.getState());
+		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
 
 		// try delete
 		clickOn(jbCross);
@@ -78,28 +79,26 @@ public class TestJellyBeans extends ApplicationTest {
 	@Test
 	public void testStateChange() throws VerificationException {
 		ARangedEnum<ExampleState> are = new ARangedEnum<>(ExampleState.VERY_LOW);
-		List<ExampleState> l = new ArrayList<>();
-		Collections.addAll(l, ExampleState.values());
-		are.setRange(l);
+		are.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
 
 		this.jb.setStateType(are);
 		this.jb.setOnDelete(this::calledOnDelete);
 
-		assertEquals(ExampleState.VERY_LOW, jb.getState());
+		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
 
 		clickOn(jbText);
-		assertEquals(ExampleState.LOW, jb.getState());
+		assertEquals(ExampleState.LOW, ((AEnum)jb.getState()).getValue());
 
 
 		clickOn(jbText); // Medium
 		clickOn(jbText);
-		assertEquals(ExampleState.HIGH, jb.getState());
+		assertEquals(ExampleState.HIGH, ((AEnum)jb.getState()).getValue());
 
 		clickOn(jbText); // Very high
 		clickOn(jbText); // Very Low
 		clickOn(jbText); // low
 		clickOn(jbText);
-		assertEquals(ExampleState.MEDIUM, jb.getState());
+		assertEquals(ExampleState.MEDIUM, ((AEnum)jb.getState()).getValue());
 
 		// try delete
 		clickOn(jbCross);

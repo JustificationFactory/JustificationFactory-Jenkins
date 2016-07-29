@@ -7,8 +7,8 @@ import fr.axonic.avek.gui.components.parameters.list.parametersGroup.Generalized
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.model.structure.ExperimentResult;
 import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -20,7 +20,6 @@ public class GeneralizedView extends AbstractView {
 	private final static Logger logger = Logger.getLogger(GeneralizedView.class);
 	private final static String FXML = "fxml/views/GeneralizedView.fxml";
 
-
 	@FXML private JellyBeanPane jellyBeanPane;
 	@FXML private GeneralizedParametersRoot parametersRoot;
 	@FXML private MonitoredSystemView monitoredSystemView;
@@ -28,7 +27,6 @@ public class GeneralizedView extends AbstractView {
 	@FXML public TextArea textfieldComments;
 	@FXML public Label monitoredSystemTitle;
 	@FXML public Button monitoredSystemHistory;
-
 
 	@Override
 	protected void onLoad() {
@@ -44,7 +42,7 @@ public class GeneralizedView extends AbstractView {
 
 		logger.info("Getting experiment parameters...");
 		AList<AEntity> list = DataBus.getExperimentParameters();
-		list.getEntities().forEach(parametersRoot::addParameter);
+		list.getList().forEach(parametersRoot::addParameter);
 
 		logger.info("Getting experiment results...");
 		ExperimentResultsMap expResMap = DataBus.getExperimentResults();

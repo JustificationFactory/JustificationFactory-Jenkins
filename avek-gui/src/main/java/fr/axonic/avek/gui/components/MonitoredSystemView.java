@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components;
 
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.engine.AVar;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;

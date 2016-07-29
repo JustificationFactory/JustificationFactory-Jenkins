@@ -4,8 +4,8 @@ import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.jellyBeans.JellyBeansSelector;
 import fr.axonic.avek.gui.components.parameters.ParametersPane;
 import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,7 +34,7 @@ public class EstablishEffectView extends AbstractView {
 
 		logger.info("Getting experiment parameters...");
 		AList<AEntity> list = DataBus.getExperimentParameters();
-		for (AEntity ae : list.getEntities())
+		for (AEntity ae : list.getList())
 			paneParameters.addExpParameter(ae);
 
 		logger.info("Getting experiment results...");

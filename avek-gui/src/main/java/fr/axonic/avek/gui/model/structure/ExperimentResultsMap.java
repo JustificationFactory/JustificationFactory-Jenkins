@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.model.structure;
 
-import fr.axonic.avek.model.base.ARangedEnum;
+import fr.axonic.base.ARangedEnum;
 
 import java.util.LinkedHashMap;
 import java.util.List;

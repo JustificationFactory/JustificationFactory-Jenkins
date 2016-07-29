@@ -4,9 +4,9 @@ import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.avek.model.base.ADate;
-import fr.axonic.avek.model.base.ANumber;
-import fr.axonic.avek.model.base.AString;
+import fr.axonic.base.ADate;
+import fr.axonic.base.ANumber;
+import fr.axonic.base.AString;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
@@ -17,6 +17,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,7 +46,7 @@ public class TestSubjectData extends ApplicationTest {
 		ms1.addAVar("Category 1", new AString("a string", "strval1"));
 		ms1.addAVar("Category 1", new ANumber("an integer", 123456789));
 		ms1.addAVar("Category 1", new ANumber("a double", 12345.6789));
-		ms1.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
+		ms1.addAVar("Category 1", new ADate("a date",new GregorianCalendar()));
 
 		ms1.addCategory("Category 2");
 		ms1.addAVar("Category 2", new ANumber("an integer", 987654321));
@@ -68,7 +69,7 @@ public class TestSubjectData extends ApplicationTest {
 		ms2.addCategory("Category 1");
 		ms2.addAVar("Category 1", new AString("a string", "strval1"));
 		ms2.addAVar("Category 1", new ANumber("an integer", 123456789));
-		ms2.addAVar("Category 1", new ADate("a date", Calendar.getInstance().getTime()));
+		ms2.addAVar("Category 1", new ADate("a date", new GregorianCalendar()));
 
 		ms2.addCategory("Category 2");
 		ms2.addAVar("Category 2", new ANumber("an integer", 987654321));

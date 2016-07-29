@@ -4,17 +4,17 @@ import fr.axonic.avek.gui.components.parameters.list.parametersGroup.Generalized
 import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
-import fr.axonic.avek.model.base.ABoolean;
-import fr.axonic.avek.model.base.ADate;
-import fr.axonic.avek.model.base.ANumber;
-import fr.axonic.avek.model.base.AString;
+import fr.axonic.base.ABoolean;
+import fr.axonic.base.ADate;
+import fr.axonic.base.ANumber;
+import fr.axonic.base.AString;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 
@@ -64,7 +64,7 @@ public class TestParametersCategory extends ApplicationTest {
 		ctm.runNowOnPlatform(() -> pp.addParameter(new ABoolean("Boolbool", true)));
 		assertEquals(5+4, pp.getChildren().size());
 
-		ctm.runNowOnPlatform(() -> pp.addParameter(new ADate("Datedate", new Date())));
+		ctm.runNowOnPlatform(() -> pp.addParameter(new ADate("Datedate", new GregorianCalendar())));
 		assertEquals(5+4+5, pp.getChildren().size());
 
 		ctm.runNowOnPlatform(() -> pp.addParameter(new AString("Strstr", "LaString")));

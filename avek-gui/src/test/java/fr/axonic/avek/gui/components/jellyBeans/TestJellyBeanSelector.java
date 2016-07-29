@@ -3,8 +3,9 @@ package fr.axonic.avek.gui.components.jellyBeans;
 import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.gui.util.UtilForTests;
-import fr.axonic.avek.model.base.ARangedEnum;
-import fr.axonic.avek.model.verification.exception.VerificationException;
+import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.engine.AVarHelper;
+import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -39,7 +40,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 			ExampleState val = ExampleState.values()[0];
 			ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
 			aEnum.setDefaultValue(ExampleState.MEDIUM);
-			aEnum.setRange(Arrays.asList(ExampleState.values()));
+			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
 
 			expResMap.put("AE" + i, aEnum);
 		}

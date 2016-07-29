@@ -4,9 +4,9 @@ import fr.axonic.avek.gui.components.parameters.list.ExpParameterLeaf;
 import fr.axonic.avek.gui.components.parameters.list.leaves.BoundedParameter;
 import fr.axonic.avek.gui.components.parameters.list.leaves.RangedParameter;
 import fr.axonic.avek.gui.components.parameters.list.leaves.SimpleParameter;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVar;
 
 /**
  * Created by Nathaël N on 13/07/16.
@@ -33,7 +33,7 @@ public abstract class GeneralizedParametersGroup extends ParametersGroup {
 		GeneralizedParametersGroup subCategory = new GeneralizedParametersCategory(level + 1, aList.getLabel());
 
 		// Adding sub elements
-		aList.getEntities().forEach(subCategory::addParameter);
+		aList.getList().forEach(subCategory::addParameter);
 
 		// Adding to the GUI
 		addExpParameter(subCategory);

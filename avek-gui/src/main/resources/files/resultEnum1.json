@@ -1,98 +1,46 @@
 {
-  "AE4": {
-    "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
-    ],
-    "value": "VERY_LOW",
-    "format": {
-      "formatType": "ENUM"
-    },
-    "editable": false,
-    "mandatory": false
-  },
-  "AE5": {
-    "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
-    ],
-    "value": "VERY_LOW",
-    "format": {
-      "formatType": "ENUM"
-    },
-    "editable": false,
-    "mandatory": false
-  },
-  "AE6": {
-    "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
-    ],
-    "value": "MEDIUM",
-    "format": {
-      "formatType": "ENUM"
-    },
-    "editable": false,
-    "mandatory": false
-  },
-  "AE7": {
-    "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
-    ],
-    "value": "VERY_LOW",
-    "format": {
-      "formatType": "ENUM"
-    },
-    "editable": false,
-    "mandatory": false
-  },
-  "AE8": {
-    "range": [
-      "TRUE",
-      "FALSE"
-    ],
-    "value": "TRUE",
-    "format": {
-      "formatType": "ENUM"
-    },
-    "editable": false,
-    "mandatory": false
-  },
-  "AE9": {
-    "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
-    ],
-    "value": "VERY_LOW",
-    "format": {
-      "formatType": "ENUM"
-    },
-    "editable": false,
-    "mandatory": false
-  },
   "AE1": {
     "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
     ],
     "value": "VERY_LOW",
     "format": {
@@ -103,11 +51,46 @@
   },
   "AE2": {
     "range": [
-      "VERY_LOW",
-      "LOW",
-      "MEDIUM",
-      "HIGH",
-      "VERY_HIGH"
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
     ],
     "value": "VERY_LOW",
     "format": {
@@ -118,10 +101,300 @@
   },
   "AE3": {
     "range": [
-      "TRUE",
-      "FALSE"
+      {
+        "value": "TRUE",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "FALSE",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
     ],
     "value": "FALSE",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
+  },
+  "AE4": {
+    "range": [
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
+  },
+  "AE5": {
+    "range": [
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
+  },
+  "AE6": {
+    "range": [
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
+    ],
+    "value": "MEDIUM",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
+  },
+  "AE7": {
+    "range": [
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
+    ],
+    "value": "VERY_LOW",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
+  },
+  "AE8": {
+    "range": [
+      {
+        "value": "TRUE",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "FALSE",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
+    ],
+    "value": "TRUE",
+    "format": {
+      "formatType": "ENUM"
+    },
+    "editable": false,
+    "mandatory": false
+  },
+  "AE9": {
+    "range": [
+      {
+        "value": "VERY_LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "LOW",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "MEDIUM",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      },
+      {
+        "value": "VERY_HIGH",
+        "format": {
+          "formatType": "ENUM"
+        },
+        "editable": false,
+        "mandatory": false
+      }
+    ],
+    "value": "VERY_LOW",
     "format": {
       "formatType": "ENUM"
     },

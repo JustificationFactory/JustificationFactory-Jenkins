@@ -2,9 +2,9 @@ package fr.axonic.avek.gui.components.parameters.list.parametersGroup;
 
 import fr.axonic.avek.gui.components.parameters.list.ExpParameterLeaf;
 import fr.axonic.avek.gui.components.parameters.list.IExpParameter;
-import fr.axonic.avek.model.base.engine.AEntity;
-import fr.axonic.avek.model.base.engine.AList;
-import fr.axonic.avek.model.base.engine.AVar;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import org.apache.log4j.Logger;
@@ -73,7 +73,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 		ParametersGroup subCategory = new ParametersCategory(level + 1, aList.getLabel());
 
 		// Adding sub elements
-		aList.getEntities().forEach(subCategory::addParameter);
+		aList.getList().forEach(subCategory::addParameter);
 
 		// Adding to the GUI
 		addExpParameter(subCategory);
