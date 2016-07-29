@@ -22,7 +22,7 @@
         <BorderPane fx:id="complementaryFilePane">
             <top>
                 <Label>
-                    Complementary files
+                    Complementary json
                 </Label>
             </top>
             <center>

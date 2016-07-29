@@ -27,14 +27,14 @@ public class SubjectJsonGen {
 
 	public static void main(String[] args) throws VerificationException, IOException {
 		String subjectJson = generateSubject();
-		File f = new File("./avek-gui/src/main/resources/files/subjectFile.json");
+		File f = new File("./avek-gui/src/main/resources/json/subjectFile.json");
 		f.delete();
 		f.createNewFile();
 
 		Files.write(Paths.get(f.toURI()),
 				subjectJson.getBytes());
 
-		f = new File("./avek-gui/src/main/resources/files/resultEnum1.json");
+		f = new File("./avek-gui/src/main/resources/json/resultEnum1.json");
 		f.delete();
 		f.createNewFile();
 		String enums1Json = generateParameters();

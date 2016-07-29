@@ -9,7 +9,6 @@ import fr.axonic.base.engine.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
@@ -21,10 +20,10 @@ public class TestJsonifier {
 
 	@Test
 	public void testPrimitives() {
-		test("Totoo", String.class);
-		test(42, Integer.class);
-		test(49.3, Double.class);
-		test(98765432123456789L, Long.class);
+		test("Totoo");
+		test((Integer)42);
+		test(49.3);
+		test(98765432123456789L);
 	}
 
 	@Test
@@ -35,7 +34,7 @@ public class TestJsonifier {
 			ls.add((char) ('A' + Math.random() * ('Z' - 'A')) + "_" + Math.random());
 		}
 
-		test(ls, ArrayList.class);
+		test(ls);
 
 		Jsonifier<ARangedEnum> jsonifier = new Jsonifier<>(ARangedEnum.class);
 
@@ -43,7 +42,7 @@ public class TestJsonifier {
 		ARangedEnum o2 = jsonifier.fromJson(Jsonifier.toJson(rangedEnumState));
 		assertEquals(rangedEnumState.getValue().toString(), o2.getValue().toString());
 		assertEquals(rangedEnumState.getRange(), o2.getRange());
-		test2(rangedEnumState, ARangedEnum.class);
+		test2(rangedEnumState);
 
 		MonitoredSystem ms = new MonitoredSystem(42);
 		ms.addCategory("Cat1");
@@ -58,8 +57,8 @@ public class TestJsonifier {
 		ms.addAVar("Cat2", rangedEnumBool);
 		ms.addAVar("Cat1", new AString("Some AString"));
 
-		test2(rangedEnumBool, ARangedEnum.class);
-		test2(ms, MonitoredSystem.class);
+		test2(rangedEnumBool);
+		test2(ms);
 	}
 
 	@Test
@@ -88,19 +87,19 @@ public class TestJsonifier {
 		aList.add(new ANumber("Times redo", 12.0));
 
 		String json = Jsonifier.toJson(aList);
-		AList<AEntity> regenerated = Jsonifier.toAListofAListAndAVar(json);
+		AList<AEntity> regenerated = (AList<AEntity>) Jsonifier.toAEntity(json);
 
 		assertEquals(json, Jsonifier.toJson(regenerated));
 	}
 
 
-	private <T> void test(T o, Class<T> tClass) {
-		T o2 = new Jsonifier<>(tClass).fromJson(Jsonifier.toJson(o));
+	private <T> void test(T o) {
+		T o2 = new Jsonifier<>((Class<T>)o.getClass()).fromJson(Jsonifier.toJson(o));
 		assertEquals(o, o2);
 	}
 
-	private <T> void test2(T o, Class<T> tClass) {
-		Jsonifier<T> js = new Jsonifier<>(tClass);
+	private <T> void test2(T o) {
+		Jsonifier<T> js = new Jsonifier<>((Class<T>)o.getClass());
 		String oJson = Jsonifier.toJson(o);
 		String o2Json = Jsonifier.toJson(js.fromJson(oJson));
 		assertEquals(oJson, o2Json);

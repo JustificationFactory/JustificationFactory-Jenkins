@@ -45,9 +45,9 @@
           "year": 2016,
           "month": 6,
           "dayOfMonth": 29,
-          "hourOfDay": 13,
-          "minute": 23,
-          "second": 12
+          "hourOfDay": 15,
+          "minute": 1,
+          "second": 15
         },
         "format": {
           "formatType": "DATE"

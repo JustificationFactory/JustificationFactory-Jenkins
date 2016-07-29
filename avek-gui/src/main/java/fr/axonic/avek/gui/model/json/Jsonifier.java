@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.model.json;
 
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
@@ -13,8 +13,8 @@ public class Jsonifier<T> {
 	private static final Logger logger = Logger.getLogger(Jsonifier.class);
 	private final Class<T> tClass;
 
-	public Jsonifier(Class<T> c) {
-		this.tClass = c;
+	public Jsonifier(Class<T> tClass) {
+		this.tClass = tClass;
 	}
 
 	public static String toJson(Object o) {
@@ -26,35 +26,23 @@ public class Jsonifier<T> {
 	}
 
 	public T fromJson(String s) {
-		logger.debug("Creating new " + tClass.getName() + " from Json");
+		logger.debug("Creating new " + tClass.getTypeName() + " from Json");
 		return new GsonBuilder().create().fromJson(s, tClass);
 	}
 
-	public static AList<AEntity> toAListofAListAndAVar(String src) {
-		AList<AEntity> alAE = new AList<>();
-		AList<AEntity> al = new Jsonifier<>(AList.class).fromJson(src);
+	public static AEntity toAEntity(String src) {
+		JsonElement element = new JsonParser().parse(src);
 
-		for (Object o : al.getList()) {
-			String s = Jsonifier.toJson(o);
+		if(element.isJsonArray()) {
+			JsonArray list = element.getAsJsonArray();
+			AList alAE = new AList();
 
-			try {
-				AVar av = new Jsonifier<>(AVar.class).fromJson(s);
-				if (av.getFormat() == null)
-					throw new ClassCastException("Cannot cast " + s + " to AVar");
+			for(int i=0; i<list.size(); i++)
+				alAE.add(toAEntity(list.get(i).toString()));
 
-				alAE.add(av);
-			} catch (ClassCastException cce) {
-				try {
-					AList<AEntity> av = toAListofAListAndAVar(s);
-					alAE.add(av);
-				} catch (ClassCastException cce2) {
-					logger.error("Impossible to load AVar", cce);
-					logger.fatal("Impossible to load AList", cce2);
-				}
-			}
+			return alAE;
+		} else {
+			return new Jsonifier<>(AVar.class).fromJson(src);
 		}
-
-		al.addAll(alAE.getList());
-		return al;
 	}
 }

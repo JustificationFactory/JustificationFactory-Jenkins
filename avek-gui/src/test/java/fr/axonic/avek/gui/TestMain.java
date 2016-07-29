@@ -48,12 +48,12 @@ public class TestMain extends ApplicationTest {
 		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(oNull));
 		assertTrue(true);
 
-		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o1));
+/*		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o1));
 		assertTrue(true);
 
 		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o2));
 		assertTrue(true);
-
+*/
 		ctm.runNowOnPlatform(() -> reference.getMainFrame().setView(o3));
 		assertTrue(true);
 	}

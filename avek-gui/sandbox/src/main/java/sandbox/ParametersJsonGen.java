@@ -23,8 +23,13 @@ import java.util.GregorianCalendar;
 public class ParametersJsonGen {
 
 	public static void main(String[] args) throws VerificationException, IOException {
+		// serializing
 		String parametersJson = generateExpParameters();
-		File f = new File("./avek-gui/src/main/resources/files/parametersFile.json");
+
+		// Try deserializing
+		AList aList = (AList) Jsonifier.toAEntity(parametersJson);
+
+		File f = new File("./avek-gui/src/main/resources/json/parametersFile.json");
 		f.delete();
 		f.createNewFile();
 
@@ -33,7 +38,7 @@ public class ParametersJsonGen {
 	}
 
 	private static String generateExpParameters() {
-		AList<AEntity> aList = new AList<>();
+		AList aList = new AList();
 
 		aList.add(new ANumber("Frequency", 42.0));
 		aList.add(new ABoolean("Bool?", true));

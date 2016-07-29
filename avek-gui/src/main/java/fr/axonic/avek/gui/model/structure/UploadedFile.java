@@ -78,7 +78,7 @@ public class UploadedFile {
 		} while (!stack.isEmpty());
 
 		if (uploaded.isDirectory())
-			logger.info("All files treated for " + uploaded);
+			logger.info("All json treated for " + uploaded);
 
 		uploadedBytes = getSize();
 		if (listener != null)

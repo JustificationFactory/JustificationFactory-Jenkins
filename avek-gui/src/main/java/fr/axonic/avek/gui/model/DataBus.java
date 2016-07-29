@@ -13,19 +13,19 @@ import fr.axonic.base.engine.AList;
 public class DataBus {
 
 	public static MonitoredSystem getMonitoredSystem() {
-		String monitoredSystemJson = Util.getFileContent("files/subjectFile.json");
+		String monitoredSystemJson = Util.getFileContent("json/subjectFile.json");
 		return MonitoredSystem.fromJson(monitoredSystemJson);
 	}
 
 	public static AList<AEntity> getExperimentParameters() {
-		String experimentParametersJson = Util.getFileContent("files/parametersFile.json");
-		AList<AEntity> list = Jsonifier.toAListofAListAndAVar(experimentParametersJson);
+		String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
+		AList<AEntity> list = (AList<AEntity>) Jsonifier.toAEntity(experimentParametersJson);
 
 		return list;
 	}
 
 	public static ExperimentResultsMap getExperimentResults() {
-		String experimentResultsJson = Util.getFileContent("files/resultEnum1.json");
+		String experimentResultsJson = Util.getFileContent("json/resultEnum1.json");
 
 		ExperimentResultsMap expResMap =
 				new Jsonifier<>(ExperimentResultsMap.class)
