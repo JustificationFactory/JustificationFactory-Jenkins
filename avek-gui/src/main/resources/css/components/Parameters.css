@@ -3,19 +3,19 @@
 }
 
 .levelmark_transparent {
-    -fx-background-color: #fff0;
+    -fx-background-color: transparent;
 }
 
 .levelmark_line {
-    -fx-background-color: #2f25;
+    -fx-background-color: #99CC8F; /* Tetrade3 (green) */
 }
 
 .levelmark_arrow * {
-    -fx-text-fill: #4cf;
+    -fx-text-fill: #CCA38F; /* Tetrade2 (orange) */;
 }
 
 .dragdroppane {
-    -fx-background-color: #fff;
+    -fx-background-color: white;
     -fx-opacity: 50%;
 }
 

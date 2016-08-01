@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
-         type="javafx.scene.layout.BorderPane">
+         type="javafx.scene.layout.BorderPane" styleClass="in-pane">
     <top>
-        <VBox alignment="CENTER" styleClass="pane">
+        <VBox alignment="CENTER">
             <Label>Select a Strategy</Label>
             <ComboBox fx:id="comboBox"/>
             <Button fx:id="submit" onAction="#onSubmit">Submit</Button>

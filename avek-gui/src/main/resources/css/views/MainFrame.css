@@ -1,36 +1,107 @@
-/*    #5F7C8A; /* Darker3 */
-/*    #7192A3; /* Darker2 */
-/*    #83A9BD; /* Darker1 */
+/*    #4285A6; /* Darker3 */
+/*    #5995B3; /* Darker2 */
+/*    #73A6BF; /* Darker1 */
 
-/*    #94C0D6; /* default pastel blue */
+/*    #8FB8CC; /* default pastel blue */
 
-/*    #9DCCE3 /* Brighter1 */
-/*    #A6D7F0 /* Brighter2 */
-/*    #C0E8FF /* Brighter3 */
+/*    #ADCAD9; /* Brighter1 */
+/*    #CFDEE6; /* Brighter2 */
+/*    #E6EEF2; /* Brighter3 */
 
-/*    #C28FCC /* Tetrade1 (purple) */
-/*    #CCA38F /* Tetrade2 (orange) */
-/*    #99CC8F /* Tetrade3 (green) */
+/*    #C28FCC; /* Tetrade1 (purple) */
+/*    #CCA38F; /* Tetrade2 (orange) */
+/*    #99CC8F; /* Tetrade3 (green) */
 
 
 
-.mainFrame {
+.main-frame {
     -fx-pref-width: 800;
     -fx-pref-height: 600;
     -fx-min-width: 20;
     -fx-min-height: 20;
 }
 
-.frameTitle {
-	-fx-text-fill: #5F7C8A; /* Darker3 */
+.frame-title {
+	-fx-text-fill: #106395;
 	-fx-font-size: 24;
 	-fx-font-weight: bold;
+	-fx-spacing: 2px;
+}
+
+.out-pane {
+	-fx-background-color: #8FB8CC; /* default pastel blue */
+	-fx-spacing: 2px;
 }
 
 
-.pane {
-	-fx-background-color: #C0E8FF /* Brighter3 */
+/* horizontal the two nodes are placed to the left/right of each other. */
+.split-pane-divider {
+	-fx-pref-width: 2px;
+	-fx-pref-height: 2px;
+	-fx-background-color: #4285A6; /* Darker3 */
 }
-.top, .top *{
-	-fx-background-color: #94C0D6 /* Default */
+
+.toggle-button, .button {
+	-fx-background-color: #8FB8CC; /* default pastel blue */
+	-fx-border-width: 1;
+	-fx-border-color: #73A6BF; /* Darker1 */
+}
+.toggle-button:selected {
+	-fx-background-color: #4285A6; /* Darker3 */
+}
+.toggle-button:hover, .button:hover {
+	-fx-background-color: #ADCAD9; /* Brighter1 */
+}
+.toggle-button:selected:hover {
+	-fx-background-color: #5995B3; /* Darker2 */
+}
+
+.pane-transparent, .pane-transparent:focused {
+	-fx-background-color: transparent;
+}
+
+.strategy-button {
+	-fx-background-color: #CFDEE6; /* Brighter2 */
+	-fx-border-color: #ADCAD9; /* Brighter1 */
+	-fx-border-insets: 5px;
+	-fx-background-insets: 5px;
+
+}
+.strategy-button:hover {
+	-fx-background-color: #E6EEF2; /* Brighter3 */
+}
+
+.text-area, .text-field, .combo-box {
+	-fx-border-width: 1;
+	-fx-border-color: #CFDEE6; /* Brighter2 */
+	-fx-border-radius: 0;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-border-style: none;
+	-fx-background-color: white;
+	-fx-padding: 2px;
+	-fx-spacing: 5px 2px;
+}
+.text-area .content, .text-area:focused .content {
+	-fx-background-color: white;
+}
+
+.in-pane-in .viewport {
+	-fx-background-color: white; /* Brighter2 */
+}
+
+.title-text {
+	-fx-font-size: 14;
+	-fx-text-fill: #106395;
+	-fx-spacing: 5;
+	-fx-text-alignment: center;
+	-fx-padding: 5px;
+}
+
+.in-pane {
+	-fx-background-color: #CFDEE6; /* Brighter2 */
+}
+
+.titled-pane .content .viewport {
+	-fx-background-color: white;
 }

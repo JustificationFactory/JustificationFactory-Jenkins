@@ -6,7 +6,7 @@
 .jellyBeanLabel {
     -fx-border-radius: 2;
     -fx-background-radius: 2;
-    -fx-padding: 5px;
+    -fx-padding: 3px;
     -fx-background-insets: 0;
 }
 

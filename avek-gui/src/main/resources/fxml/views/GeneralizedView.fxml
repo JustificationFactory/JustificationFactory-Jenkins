@@ -10,7 +10,7 @@
 <?import java.net.URL?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane"
-        styleClass="pane">
+        styleClass="out-pane">
     <!-- fx:controller="fr.axonic.avek.gui.view.GeneralizedView"
           -->
 
@@ -22,7 +22,7 @@
 
 
     <left>
-        <Group styleClass="pane">
+        <Group styleClass="out-pane">
             <ToggleButton fx:id="outerMonitoredSystemButton"
                           text="⬓ Monitored System" rotate="-90"
                           onAction="#onClickMonitoredSystemButton"
@@ -30,12 +30,14 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane">
-            <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="pane">
+        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="in-pane">
+            <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="in-pane">
                 <top>
-                    <BorderPane styleClass="pane">
+                    <BorderPane styleClass="pane-transparent">
                         <center>
-                            <Label fx:id="monitoredSystemTitle" text="Monitored System" />
+                            <Label fx:id="monitoredSystemTitle" styleClass="title-text">
+                                Monitored System
+                            </Label>
                         </center>
                         <right>
                             <Button fx:id="innerMonitoredSystemButton" text="◧"
@@ -47,29 +49,40 @@
                     <MonitoredSystemView fx:id="monitoredSystemView"/>
                 </center>
                 <bottom>
-                    <Button fx:id="monitoredSystemHistory" text="History" />
+                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER"/>
                 </bottom>
             </BorderPane>
 
             <!-- Here is a Split -->
 
-            <BorderPane>
+            <BorderPane styleClass="in-pane">
                 <center>
-                    <BorderPane>
+                    <BorderPane styleClass="pane-transparent">
                         <top>
-                            <JellyBeanPane fx:id="jellyBeanPane" />
+                            <BorderPane>
+                                <top>
+                                    <Label styleClass="title-text" BorderPane.alignment="CENTER">
+                                        Experiment results
+                                    </Label>
+                                </top>
+                                <center>
+                                    <HBox styleClass="jelly-bean-pane">
+                                        <JellyBeanPane fx:id="jellyBeanPane"/>
+                                    </HBox>
+                                </center>
+                            </BorderPane>
                         </top>
                         <center>
                             <SplitPane orientation="VERTICAL" fx:id="commentsSplitPane">
                                 <SplitPane fx:id="fileListSplitPane">
-                                    <BorderPane>
+                                    <BorderPane styleClass="in-pane">
                                         <top>
-                                            <Label textAlignment="CENTER" BorderPane.alignment="CENTER">
+                                            <Label textAlignment="CENTER" BorderPane.alignment="CENTER" styleClass="title-text">
                                                 Experimentation parameters
                                             </Label>
                                         </top>
                                         <center>
-                                            <ScrollPane>
+                                            <ScrollPane styleClass="in-pane-in, edge-to-edge">
                                                 <GeneralizedParametersRoot fx:id="parametersRoot"/>
                                             </ScrollPane>
                                         </center>
@@ -77,15 +90,15 @@
 
                                     <!-- Here is an Horizontal Split -->
 
-                                    <BorderPane fx:id="fileListPane" maxWidth="300">
+                                    <BorderPane fx:id="fileListPane" maxWidth="300" styleClass="in-pane">
                                         <top>
-                                            <BorderPane>
+                                            <BorderPane styleClass="pane-transparent">
                                                 <left>
                                                     <Button fx:id="innerFileListButton" text="◨"
                                                             onAction="#onClickFileListViewButton"/>
                                                 </left>
                                                 <center>
-                                                    <Label>
+                                                    <Label styleClass="title-text" BorderPane.alignment="CENTER" textAlignment="CENTER">
                                                         Complementary files
                                                     </Label>
                                                 </center>
@@ -99,15 +112,15 @@
 
                                 <!-- Here is an Horizontal Split -->
 
-                                <BorderPane fx:id="commentsPane" maxHeight="300">
+                                <BorderPane fx:id="commentsPane" maxHeight="300" styleClass="in-pane">
                                     <top>
-                                        <BorderPane>
+                                        <BorderPane styleClass="pane-transparent">
                                             <left>
                                                 <Button fx:id="innerCommentsButton" text="◨"
                                                         onAction="#onClickCommentsButton"/>
                                             </left>
                                             <center>
-                                                <Label>
+                                                <Label styleClass="title-text" BorderPane.alignment="CENTER">
                                                     Comments
                                                 </Label>
                                             </center>
@@ -122,20 +135,24 @@
                     </BorderPane>
                 </center>
                 <right>
-                    <VBox>
-                        <Group>
-                            <ToggleButton fx:id="outerFileListButton"
-                                          text="Files ⬓" rotate="90"
-                                          onAction="#onClickFileListViewButton"
-                                          selected="true"/>
-                        </Group>
-                        <Group>
-                            <ToggleButton fx:id="outerCommentsButton"
-                                          text="Comments ⬓" rotate="90"
-                                          onAction="#onClickCommentsButton"
-                                          selected="true"/>
-                        </Group>
-                    </VBox>
+                    <BorderPane styleClass="out-pane">
+                        <top>
+                            <Group styleClass="pane-transparent">
+                                 <ToggleButton fx:id="outerFileListButton"
+                                              text="Files ⬓" rotate="90"
+                                              onAction="#onClickFileListViewButton"
+                                              selected="true"/>
+                            </Group>
+                        </top>
+                        <bottom>
+                            <Group styleClass="pane-transparent">
+                                <ToggleButton fx:id="outerCommentsButton"
+                                              text="Comments ⬓" rotate="90"
+                                              onAction="#onClickCommentsButton"
+                                              selected="true"/>
+                            </Group>
+                        </bottom>
+                    </BorderPane>
                 </right>
             </BorderPane>
         </SplitPane>

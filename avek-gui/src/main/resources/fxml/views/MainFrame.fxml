@@ -7,16 +7,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane"
-         styleClass="mainFrame, pane">
+         styleClass="main-frame, out-pane">
 
     <stylesheets>
         <URL value="@../../css/views/MainFrame.css" />
     </stylesheets>
 
     <top>
-        <BorderPane styleClass="top, pane">
+        <BorderPane styleClass="top, out-pane">
             <left>
                 <ImageView fitWidth="150"
                            preserveRatio="true">
@@ -24,8 +25,8 @@
                 </ImageView>
             </left>
             <center>
-                <Label styleClass="frameTitle">
-                    AVEK Analyser
+                <Label styleClass="frame-title">
+                    #AVEK Analyser
                 </Label>
             </center>
             <right>
@@ -34,10 +35,11 @@
         </BorderPane>
     </top>
     <bottom>
-        <HBox alignment="CENTER" styleClass="pane">
+        <HBox alignment="CENTER" styleClass="out-pane">
             <Button fx:id="btnStrategy" mnemonicParsing="false"
                     onAction="#onClicStrategyButton"
-                    text="Strategy" maxWidth="Infinity"/>
+                    text="Strategy" maxWidth="Infinity"
+                    styleClass="strategy-button"/>
         </HBox>
     </bottom>
 </fx:root>

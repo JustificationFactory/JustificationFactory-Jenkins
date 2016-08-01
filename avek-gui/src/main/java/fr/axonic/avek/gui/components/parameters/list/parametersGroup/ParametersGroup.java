@@ -45,6 +45,8 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 
 		logger.info("Adding Parameters.css");
 		this.getStylesheets().add(CSS);
+
+		getStyleClass().add("pane-transparent");
 		this.setVgap(2);
 		this.setHgap(2);
 	}
