@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fr.axonic.avek.gui.components.MonitoredSystemView?>
-<?import fr.axonic.avek.gui.components.parameters.ParametersPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane">
+
+    <!-- ◧ ◨ ⬒ ⬓ -->
+
+    <stylesheets>
+        <URL value="@../../css/views/GeneralizedView.css" />
+    </stylesheets>
+
+
     <left>
-        <MonitoredSystemView fx:id="monitoredSystemPane"/>
+        <Group>
+            <ToggleButton fx:id="outerMonitoredSystemButton"
+                          text="⬓ Monitored System" rotate="-90"
+                          onAction="#onClickMonitoredSystemButton"
+                          selected="true"/>
+        </Group>
     </left>
     <center>
-        <ParametersPane fx:id="paneParameters" />
+        <SplitPane fx:id="monitoredSystemSplitPane">
+            <BorderPane fx:id="monitoredSystemPane" maxWidth="300">
+                <top>
+                    <BorderPane>
+                        <center>
+                            <Label fx:id="monitoredSystemTitle" text="Monitored System" />
+                        </center>
+                        <right>
+                            <Button fx:id="innerMonitoredSystemButton" text="◧"
+                                    onAction="#onClickMonitoredSystemButton"/>
+                        </right>
+                    </BorderPane>
+                </top>
+                <center>
+                    <MonitoredSystemView fx:id="monitoredSystemView"/>
+                </center>
+                <bottom>
+                    <Button fx:id="monitoredSystemHistory" text="History" />
+                </bottom>
+            </BorderPane>
+
+            <!-- Here is a Split -->
+
+            <BorderPane>
+                <top>
+                    <Label textAlignment="CENTER" BorderPane.alignment="CENTER">
+                        Experimentation parameters
+                    </Label>
+                </top>
+                <center>
+                    <ScrollPane>
+                        <ParametersRoot fx:id="parametersRoot"/>
+                    </ScrollPane>
+                </center>
+            </BorderPane>
+        </SplitPane>
     </center>
 </fx:root>

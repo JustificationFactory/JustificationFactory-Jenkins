@@ -59,6 +59,9 @@ public class MainFrame extends BorderPane {
 
 
 	public void setView(ViewOrchestrator view) {
+		if(view == null)
+			return;
+
 		this.orchestrator = view;
 		AbstractView av = view.getView();
 		if(av == null) {

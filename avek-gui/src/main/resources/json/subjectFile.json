@@ -43,11 +43,11 @@
       {
         "value": {
           "year": 2016,
-          "month": 6,
-          "dayOfMonth": 29,
-          "hourOfDay": 15,
-          "minute": 1,
-          "second": 15
+          "month": 7,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 22,
+          "second": 42
         },
         "format": {
           "formatType": "DATE"

@@ -35,14 +35,6 @@ public class MonitoredSystem {
 		return categories;
 	}
 
-	public String toJson() {
-		return new Gson().toJson(this);
-	}
-	public static MonitoredSystem fromJson(String json) {
-		return new Gson().fromJson(json, MonitoredSystem.class);
-	}
-
-
 	@Override
 	public String toString() {
 		return "MonitoredSystem= "+this.id+", "+this.categories +"}";

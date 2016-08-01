@@ -1,10 +1,17 @@
-/*    #94BFD6; /* default pastel blue */
-/*    #949ED6; /* Darker */
-/*    #94D6CC /* Brighter */
-/*    #CC94D6 /* Tetrade ~purple */
-/*    #D6AB94 /* Tetrade ~saumon */
-/*    #9ED694 /* Tetrade ~green */
-/*    #D6949E /* Tetrade ~red */
+/*    #5F7C8A; /* Darker3 */
+/*    #7192A3; /* Darker2 */
+/*    #83A9BD; /* Darker1 */
+
+/*    #94C0D6; /* default pastel blue */
+
+/*    #9DCCE3 /* Brighter1 */
+/*    #A6D7F0 /* Brighter2 */
+/*    #C0E8FF /* Brighter3 */
+
+/*    #C28FCC /* Tetrade1 (purple) */
+/*    #CCA38F /* Tetrade2 (orange) */
+/*    #99CC8F /* Tetrade3 (green) */
+
 
 
 .mainFrame {
@@ -15,11 +22,15 @@
 }
 
 .frameTitle {
-	-fx-text-fill: #949ED6; /* Darker */
+	-fx-text-fill: #5F7C8A; /* Darker3 */
 	-fx-font-size: 24;
 	-fx-font-weight: bold;
 }
 
+
+.pane {
+	-fx-background-color: #C0E8FF /* Brighter3 */
+}
 .top, .top *{
-	-fx-background-color: #94D6CC /* Brighter */
+	-fx-background-color: #94C0D6 /* Default */
 }

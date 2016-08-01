@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -24,7 +23,7 @@ public class JellyBean extends HBox {
 	private final static Logger logger = Logger.getLogger(JellyBean.class);
 	private final static URL FXML
 			= JellyBean.class.getClassLoader().getResource("fxml/components/JellyBean.fxml");
-	private final static String CSS = "css/results/jellyBean.css";
+	private final static String CSS = "css/components/results/jellyBean.css";
 
 	@FXML
 	private Button jbLabel;
@@ -50,8 +49,8 @@ public class JellyBean extends HBox {
 		}
 
 		this.getStylesheets().add(CSS);
-		this.getStylesheets().add("css/results/personalized/levels.css");
-		this.getStylesheets().add("css/results/personalized/boolean.css");
+		this.getStylesheets().add("css/components/results/personalized/levels.css");
+		this.getStylesheets().add("css/components/results/personalized/boolean.css");
 		logger.debug("Added css for JellyBean");
 	}
 

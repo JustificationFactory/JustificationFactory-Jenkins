@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.axonic.avek.gui.components.filelist.FileListView?>
 <?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane?>
 <?import fr.axonic.avek.gui.components.MonitoredSystemView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.Group?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import fr.axonic.avek.gui.components.filelist.FileListView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.ScrollPane?>
 <?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<?import javafx.scene.control.ToggleButton?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
-         type="javafx.scene.layout.BorderPane">
+         type="javafx.scene.layout.BorderPane"
+        styleClass="pane">
     <!-- fx:controller="fr.axonic.avek.gui.view.GeneralizedView"
           -->
 
@@ -29,7 +22,7 @@
 
 
     <left>
-        <Group>
+        <Group styleClass="pane">
             <ToggleButton fx:id="outerMonitoredSystemButton"
                           text="⬓ Monitored System" rotate="-90"
                           onAction="#onClickMonitoredSystemButton"
@@ -37,10 +30,10 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane">
-            <BorderPane fx:id="monitoredSystemPane">
+        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane">
+            <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="pane">
                 <top>
-                    <BorderPane>
+                    <BorderPane styleClass="pane">
                         <center>
                             <Label fx:id="monitoredSystemTitle" text="Monitored System" />
                         </center>
@@ -71,7 +64,7 @@
                                 <SplitPane fx:id="fileListSplitPane">
                                     <BorderPane>
                                         <top>
-                                            <Label>
+                                            <Label textAlignment="CENTER" BorderPane.alignment="CENTER">
                                                 Experimentation parameters
                                             </Label>
                                         </top>
@@ -84,15 +77,19 @@
 
                                     <!-- Here is an Horizontal Split -->
 
-                                    <BorderPane fx:id="fileListPane">
-                                        <left>
-                                            <Button fx:id="innerFileListButton" text="◨"
-                                                    onAction="#onClickFileListViewButton"/>
-                                        </left>
+                                    <BorderPane fx:id="fileListPane" maxWidth="300">
                                         <top>
-                                            <Label>
-                                                Complementary json
-                                            </Label>
+                                            <BorderPane>
+                                                <left>
+                                                    <Button fx:id="innerFileListButton" text="◨"
+                                                            onAction="#onClickFileListViewButton"/>
+                                                </left>
+                                                <center>
+                                                    <Label>
+                                                        Complementary files
+                                                    </Label>
+                                                </center>
+                                            </BorderPane>
                                         </top>
                                         <center>
                                             <FileListView fx:id="uploadedFiles"/>
@@ -102,7 +99,7 @@
 
                                 <!-- Here is an Horizontal Split -->
 
-                                <BorderPane fx:id="commentsPane">
+                                <BorderPane fx:id="commentsPane" maxHeight="300">
                                     <top>
                                         <BorderPane>
                                             <left>
@@ -111,7 +108,7 @@
                                             </left>
                                             <center>
                                                 <Label>
-                                                    Additional information
+                                                    Comments
                                                 </Label>
                                             </center>
                                         </BorderPane>

@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public abstract class ParametersGroup extends GridPane implements IExpParameter {
 	private static final Logger logger = Logger.getLogger(ParametersGroup.class);
-	private static final String CSS = "css/Parameters.css";
+	private static final String CSS = "css/components/Parameters.css";
 
 	protected final int level;
 	private final String title;
@@ -83,7 +83,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 		addExpParameter(new ExpParameterLeaf(level + 1, aVar));
 	}
 
-	protected void addExpParameter(IExpParameter subParam) {
+	void addExpParameter(IExpParameter subParam) {
 		int rowIndex = subElements.size();
 
 		// Adding graphical elements to the GUI

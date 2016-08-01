@@ -14,7 +14,7 @@ public class DataBus {
 
 	public static MonitoredSystem getMonitoredSystem() {
 		String monitoredSystemJson = Util.getFileContent("json/subjectFile.json");
-		return MonitoredSystem.fromJson(monitoredSystemJson);
+		return new Jsonifier<>(MonitoredSystem.class).fromJson(monitoredSystemJson);
 	}
 
 	public static AList<AEntity> getExperimentParameters() {

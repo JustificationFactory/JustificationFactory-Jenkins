@@ -1,15 +1,11 @@
 package fr.axonic.avek.gui.model.json;
 
 import com.google.gson.*;
-import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ANumber;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.FormatType;
 import org.apache.log4j.Logger;
-
-import java.util.Map;
 
 /**
  * Created by Nathaël N on 12/07/16.

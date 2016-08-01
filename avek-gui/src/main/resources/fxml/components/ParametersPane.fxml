@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
     <BorderPane>
         <top>

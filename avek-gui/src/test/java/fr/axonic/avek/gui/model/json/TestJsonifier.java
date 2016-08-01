@@ -4,8 +4,9 @@ import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.model.sample.ExampleStateBool;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.*;
-import fr.axonic.base.engine.*;
-
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVar;
 import org.junit.Test;
 
 import java.util.ArrayList;

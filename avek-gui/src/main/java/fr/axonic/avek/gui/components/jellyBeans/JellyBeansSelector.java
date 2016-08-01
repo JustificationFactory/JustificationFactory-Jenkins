@@ -27,7 +27,7 @@ public class JellyBeansSelector extends VBox {
 	private static final Logger logger = Logger.getLogger(JellyBeansSelector.class);
 	private static final URL FXML
 			= JellyBeansSelector.class.getClassLoader().getResource("fxml/components/JellyBeansSelector.fxml");
-	private static final String CSS = "css/results/jellyBeanSelector.css";
+	private static final String CSS = "css/components/results/jellyBeanSelector.css";
 
 	@FXML
 	private Button newExpEffectButton;

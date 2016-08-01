@@ -3,7 +3,7 @@
 <?import fr.axonic.avek.gui.components.filelist.FileListView?>
 <?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.control.SplitPane" orientation="VERTICAL">
     <SplitPane fx:id="horizontalSplit">
         <BorderPane>

@@ -1,6 +1,6 @@
 [
   {
-    "value": 42.0,
+    "value": 42,
     "format": {
       "formatType": "NUMBER"
     },
@@ -30,11 +30,11 @@
     {
       "value": {
         "year": 2016,
-        "month": 6,
-        "dayOfMonth": 29,
-        "hourOfDay": 17,
-        "minute": 18,
-        "second": 30
+        "month": 7,
+        "dayOfMonth": 1,
+        "hourOfDay": 10,
+        "minute": 22,
+        "second": 37
       },
       "format": {
         "formatType": "DATE"
