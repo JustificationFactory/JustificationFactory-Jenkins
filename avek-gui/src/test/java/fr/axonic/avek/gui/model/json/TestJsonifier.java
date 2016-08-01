@@ -21,7 +21,7 @@ public class TestJsonifier {
 	@Test
 	public void testPrimitives() {
 		test("Totoo");
-		test((Integer)42);
+		test(42.0);
 		test(49.3);
 		test(98765432123456789L);
 	}
@@ -58,7 +58,10 @@ public class TestJsonifier {
 		ms.addAVar("Cat1", new AString("Some AString"));
 
 		test2(rangedEnumBool);
-		test2(ms);
+
+		String oJson = Jsonifier.toJson(ms);
+		String o2Json = Jsonifier.toJson(new Jsonifier<>(MonitoredSystem.class).fromJson(oJson));
+		assertEquals(oJson, o2Json);
 	}
 
 	@Test
@@ -86,10 +89,11 @@ public class TestJsonifier {
 
 		aList.add(new ANumber("Times redo", 12.0));
 
-		String json = Jsonifier.toJson(aList);
-		AList<AEntity> regenerated = (AList<AEntity>) Jsonifier.toAEntity(json);
+		//String json = Jsonifier.toJson(aList);
+		//AList<AEntity> regenerated = (AList<AEntity>) Jsonifier.toAEntity(json);
 
-		assertEquals(json, Jsonifier.toJson(regenerated));
+		test2(aList);
+		//assertEquals(json, Jsonifier.toJson(regenerated));
 	}
 
 
@@ -99,9 +103,8 @@ public class TestJsonifier {
 	}
 
 	private <T> void test2(T o) {
-		Jsonifier<T> js = new Jsonifier<>((Class<T>)o.getClass());
 		String oJson = Jsonifier.toJson(o);
-		String o2Json = Jsonifier.toJson(js.fromJson(oJson));
+		String o2Json = Jsonifier.toJson(Jsonifier.toAEntity(oJson));
 		assertEquals(oJson, o2Json);
 	}
 

@@ -1,10 +1,15 @@
 package fr.axonic.avek.gui.model.json;
 
 import com.google.gson.*;
+import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.ANumber;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
+import fr.axonic.base.engine.FormatType;
 import org.apache.log4j.Logger;
+
+import java.util.Map;
 
 /**
  * Created by Nathaël N on 12/07/16.
@@ -19,10 +24,14 @@ public class Jsonifier<T> {
 
 	public static String toJson(Object o) {
 		logger.debug("Object to JSON:" + o);
-		return new GsonBuilder()
+		return correct(new GsonBuilder()
 				.setPrettyPrinting()
 				.create()
-				.toJson(o);
+				.toJson(o));
+	}
+	private static String correct(String json) {
+		String s = json.replaceAll("([0-9]*)\\.0([^0-9])", "$1$2");
+		return s;
 	}
 
 	public T fromJson(String s) {
@@ -33,7 +42,10 @@ public class Jsonifier<T> {
 	public static AEntity toAEntity(String src) {
 		JsonElement element = new JsonParser().parse(src);
 
-		if(element.isJsonArray()) {
+		if(element.isJsonPrimitive()) {
+			return new ANumber(element.getAsDouble());
+		}
+		else if(element.isJsonArray()) {
 			JsonArray list = element.getAsJsonArray();
 			AList alAE = new AList();
 
@@ -42,7 +54,24 @@ public class Jsonifier<T> {
 
 			return alAE;
 		} else {
-			return new Jsonifier<>(AVar.class).fromJson(src);
+			JsonObject object = element.getAsJsonObject();
+
+			if(object.has("format"))
+				return new Jsonifier<>(AVar.class).fromJson(src);
+			/*else {
+				if(object.get("id") != null) {
+					MonitoredSystem ms = new MonitoredSystem(object.get("id").getAsInt());
+
+					for(Map.Entry<String, JsonElement> entry: object.entrySet()) {
+						ms.addCategory(entry.getKey());
+						ms.addAVar(entry.getKey(), (AVar)toAEntity(entry.getValue().toString()));
+					}
+
+					return ms;
+				}
+			}*/
 		}
+
+		return null;
 	}
 }
