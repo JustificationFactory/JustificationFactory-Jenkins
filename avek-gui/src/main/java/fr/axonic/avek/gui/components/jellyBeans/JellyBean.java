@@ -23,7 +23,6 @@ public class JellyBean extends HBox {
 	private final static Logger logger = Logger.getLogger(JellyBean.class);
 	private final static URL FXML
 			= JellyBean.class.getClassLoader().getResource("fxml/components/JellyBean.fxml");
-	private final static String CSS = "css/components/results/jellyBean.css";
 
 	@FXML
 	private Button jbLabel;
@@ -33,6 +32,8 @@ public class JellyBean extends HBox {
 	private ARangedEnum enumType;
 	private AVar expEffect;
 	private Consumer<JellyBean> onDelete;
+
+	private boolean isRemovable, isEditable;
 
 	// should be public
 	public JellyBean() {
@@ -48,26 +49,29 @@ public class JellyBean extends HBox {
 			logger.fatal("Impossible to load FXML for JellyBean", e);
 		}
 
-		this.getStylesheets().add(CSS);
-		this.getStylesheets().add("css/components/results/personalized/levels.css");
-		this.getStylesheets().add("css/components/results/personalized/boolean.css");
+		this.getStylesheets().add("css/components/results/levels.css");
+		this.getStylesheets().add("css/components/results/boolean.css");
 		logger.debug("Added css for JellyBean");
 	}
 
 	@FXML
 	public void initialize() {
-		setOnDelete(null);
+		jbLabel.getStyleClass().remove("button");
+		jbCross.getStyleClass().remove("button");
+		setEditable(false);
+		setRemovable(false);
 	}
 
 	@FXML
 	public void onClickOnCross(ActionEvent actionEvent) {
+		if(!isRemovable)
 		onDelete.accept(this);
 	}
 
 	@FXML
 	public void onClickOnLabel(ActionEvent actionEvent) {
 		// ReadOnly
-		if(onDelete == null)
+		if(!isEditable)
 			return;
 
 		AVar beforeEffect = expEffect;
@@ -120,7 +124,20 @@ public class JellyBean extends HBox {
 
 	void setOnDelete(Consumer<JellyBean> onDelete) {
 		this.onDelete = onDelete;
-		jbCross.setVisible(onDelete != null);
-		jbCross.setManaged(onDelete != null);
+		setEditable(onDelete != null);
+		setRemovable(onDelete != null);
+	}
+
+	private void setRemovable(boolean removable) {
+		isRemovable = removable;
+		jbCross.setVisible(removable);
+		jbCross.setManaged(removable);
+	}
+	private void setEditable(boolean editable) {
+		isEditable = editable;
+
+		getStyleClass().remove("jellyBeanEditable");
+		if(editable)
+			getStyleClass().add("jellyBeanEditable");
 	}
 }

@@ -29,7 +29,7 @@ public class Main extends Application {
 		primaryStage.setTitle("#AVEK analyzer");
 
 		mainFrame = new MainFrame();
-		Scene s = new Scene(mainFrame, 800, 600);
+		Scene s = new Scene(mainFrame);
 		primaryStage.setScene(s);
 
 		primaryStage.show();

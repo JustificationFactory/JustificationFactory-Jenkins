@@ -1,4 +1,4 @@
-.category_title {
+.category-title {
     -fx-font-weight: bold;
 }
 
@@ -16,11 +16,6 @@
 	-fx-pref-width: 6px;
 }
 
-.dragdroppane {
-    -fx-background-color: white;
-    -fx-opacity: 50%;
-}
-
-.hide_button {
+.hide-button {
     -fx-background-color: #0001;
 }

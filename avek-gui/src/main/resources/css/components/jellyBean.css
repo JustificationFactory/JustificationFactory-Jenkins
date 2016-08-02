@@ -22,7 +22,7 @@
     -fx-opacity: 0%;
 }
 
-.jellyBeanLabel:hover {
+.jellyBeanEditable > .jellyBeanLabel:hover {
     -fx-opacity: 80%;
 }
 

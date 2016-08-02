@@ -2,8 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
+<?import java.net.URL?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.HBox"
          styleClass="jellyBean">
+
+    <stylesheets>
+        <URL value="@../../css/components/jellyBean.css" />
+    </stylesheets>
+
     <Button fx:id="jbLabel" styleClass="jellyBeanLabel" onAction="#onClickOnLabel">null</Button>
     <Button fx:id="jbCross" styleClass="jellyBeanCross" onAction="#onClickOnCross">x</Button>
 </fx:root>

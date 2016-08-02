@@ -1,0 +1,14 @@
+#fileList {
+	-fx-border-color: #73A6BF; /* Darker1, same as TextArea/Buttons */
+	-fx-border-width: 1px 0 0 0;
+}
+
+.drag-drop-pane {
+	-fx-background-color: #99CC8F; /* Tetrade3 (green) */
+	-fx-opacity: 50%;
+	-fx-font-size: 42;
+	-fx-text-alignment: center;
+	-fx-alignment: center;
+	-fx-max-width: 99999;
+	-fx-max-height: 99999;
+}

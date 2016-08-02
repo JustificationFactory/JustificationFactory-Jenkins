@@ -30,10 +30,10 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="in-pane">
+        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane-transparent">
             <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="in-pane">
                 <top>
-                    <BorderPane styleClass="pane-transparent">
+                    <BorderPane styleClass="title-pane">
                         <center>
                             <Label fx:id="monitoredSystemTitle" styleClass="title-text">
                                 Monitored System
@@ -55,9 +55,9 @@
 
             <!-- Here is a Split -->
 
-            <BorderPane styleClass="in-pane">
+            <BorderPane styleClass="title-pane">
                 <center>
-                    <BorderPane styleClass="pane-transparent">
+                    <BorderPane styleClass="center-pane-group">
                         <top>
                             <BorderPane fx:id="resultsPane">
                                 <top>
@@ -83,14 +83,14 @@
                         <center>
                             <SplitPane orientation="VERTICAL" fx:id="commentsSplitPane">
                                 <SplitPane fx:id="fileListSplitPane">
-                                    <BorderPane styleClass="in-pane">
+                                    <BorderPane styleClass="title-pane">
                                         <top>
                                             <Label textAlignment="CENTER" BorderPane.alignment="CENTER" styleClass="title-text">
                                                 Experimentation parameters
                                             </Label>
                                         </top>
                                         <center>
-                                            <ScrollPane styleClass="in-pane-in, edge-to-edge">
+                                            <ScrollPane styleClass="in-pane-in">
                                                 <GeneralizedParametersRoot fx:id="parametersRoot"/>
                                             </ScrollPane>
                                         </center>
@@ -98,7 +98,7 @@
 
                                     <!-- Here is a Split -->
 
-                                    <BorderPane fx:id="fileListPane" maxWidth="250" styleClass="in-pane">
+                                    <BorderPane fx:id="fileListPane" maxWidth="250" styleClass="title-pane">
                                         <top>
                                             <BorderPane styleClass="pane-transparent">
                                                 <left>
@@ -120,7 +120,7 @@
 
                                 <!-- Here is an Horizontal Split -->
 
-                                <BorderPane fx:id="commentsPane" maxHeight="200" styleClass="in-pane">
+                                <BorderPane fx:id="commentsPane" maxHeight="200" styleClass="title-pane">
                                     <top>
                                         <BorderPane styleClass="pane-transparent">
                                             <left>

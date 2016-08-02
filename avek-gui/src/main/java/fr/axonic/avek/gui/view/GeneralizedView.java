@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import com.sun.deploy.util.ArrayUtil;
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane;
@@ -15,6 +16,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GeneralizedView extends AbstractView {
 	private final static Logger logger = Logger.getLogger(GeneralizedView.class);
@@ -101,13 +106,16 @@ public class GeneralizedView extends AbstractView {
 	}
 
 
+	private final Map<SplitPane, double[]> mementos = new HashMap<>();
 	private void showPane(int index, Pane pane, SplitPane splitPane, ToggleButton button) {
 		splitPane.getItems().add(index, pane);
 		pane.setVisible(true);
 		pane.setManaged(true);
 		button.setSelected(true);
+		splitPane.setDividerPositions(mementos.get(splitPane));
 	}
 	private void hidePane(Pane pane, SplitPane splitPane, ToggleButton button) {
+		mementos.put(splitPane, splitPane.getDividerPositions());
 		splitPane.getItems().remove(pane);
 		pane.setVisible(false);
 		pane.setManaged(false);
