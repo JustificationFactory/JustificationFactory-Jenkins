@@ -53,7 +53,7 @@ public class MainFrame extends BorderPane {
 			ssv.setAvailableChoices(orchestrator.getFollowing());
 			ssv.onSetView(this::setView);
 
-			btnStrategy.setDisable(true);
+			btnStrategy.setVisible(false);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class MainFrame extends BorderPane {
 		else {
 			setCenter(view.getView()); // remove abstract view currently loaded
 			view.getView().load();
-			btnStrategy.setDisable(false);
+			btnStrategy.setVisible(true);
 		}
 	}
 }

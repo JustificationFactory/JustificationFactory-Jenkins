@@ -1,8 +1,10 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
 import fr.axonic.avek.gui.model.structure.ExperimentResult;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;
 
@@ -12,6 +14,13 @@ import java.util.function.Consumer;
 public class JellyBeanPane extends FlowPane {
 
 	private Consumer<String> onRemoveJellyBean;
+
+	public JellyBeanPane() {
+		this.getStyleClass().add("jellyBeanPane");
+		setAlignment(Pos.CENTER);
+		this.setMaxWidth(999999);
+		this.setPrefWidth(999999);
+	}
 
 	public void addJellyBean(ExperimentResult choice) {
 		JellyBean jb2 = new JellyBean();

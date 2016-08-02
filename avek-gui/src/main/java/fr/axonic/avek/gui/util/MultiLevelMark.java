@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.util;
 
 import javafx.animation.RotateTransition;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -15,9 +16,8 @@ import java.util.function.Consumer;
  * Created by Nathaël N on 26/07/16.
  */
 public class MultiLevelMark extends HBox {
-	private final String TRANSPARENT = "levelmark_transparent";
-	private final String LINE = "levelmark_line";
-	private final String ARROW = "levelmark_arrow";
+	private final String LINE = "levelmark-line";
+	private final String ARROW = "levelmark-arrow";
 
 	private Consumer<Boolean> onClickExpand;
 	private boolean expandable;
@@ -54,40 +54,27 @@ public class MultiLevelMark extends HBox {
 		this.getChildren().clear();
 
 		for (int i = level -1; i > 0; i--) {
-			this.getChildren().add(new SingleLevelMark(TRANSPARENT));
-			this.getChildren().add(new SingleLevelMark(LINE));
-			this.getChildren().add(new SingleLevelMark(TRANSPARENT));
+			Pane p = new Pane();
+			p.getStyleClass().add(LINE);
+			this.getChildren().add(p);
 		}
 
 		if (expandable) {
-			this.getChildren().add(new SingleLevelMark(TRANSPARENT));
+			Pane p = new Pane();
+			p.getStyleClass().add(ARROW);
+			this.getChildren().add(p);
 
-			SingleLevelMark arrow = new SingleLevelMark(ARROW);
+
 			Label l = new Label("▼");
-			arrow.getChildren().add(l);
-			this.getChildren().add(arrow);
-			this.getChildren().add(new SingleLevelMark(TRANSPARENT));
+			p.getChildren().add(l);
 
-			arrow.setOnMouseClicked((event) -> {
+			this.setOnMouseClicked((event) -> {
 				expand(event);
 
 				RotateTransition rt = new RotateTransition(Duration.millis(500), l);
 				rt.setByAngle((expanded?0:-90)-l.getRotate());
 				rt.play();
 			});
-		}
-	}
-
-	private class SingleLevelMark extends Pane {
-		SingleLevelMark(String c, int s) {
-			this.getStyleClass().add(c);
-			this.setMinWidth(s);
-			this.setPrefWidth(s);
-			this.setMaxWidth(s);
-		}
-
-		SingleLevelMark(String c) {
-			this(c, 7);
 		}
 	}
 }

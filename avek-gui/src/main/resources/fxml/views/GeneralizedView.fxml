@@ -40,7 +40,7 @@
                             </Label>
                         </center>
                         <right>
-                            <Button fx:id="innerMonitoredSystemButton" text="◧"
+                            <Button styleClass="inner-hide-button" text="◧"
                                     onAction="#onClickMonitoredSystemButton"/>
                         </right>
                     </BorderPane>
@@ -49,7 +49,7 @@
                     <MonitoredSystemView fx:id="monitoredSystemView"/>
                 </center>
                 <bottom>
-                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER"/>
+                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER" styleClass="b-history"/>
                 </bottom>
             </BorderPane>
 
@@ -59,11 +59,19 @@
                 <center>
                     <BorderPane styleClass="pane-transparent">
                         <top>
-                            <BorderPane>
+                            <BorderPane fx:id="resultsPane">
                                 <top>
-                                    <Label styleClass="title-text" BorderPane.alignment="CENTER">
-                                        Experiment results
-                                    </Label>
+                                    <BorderPane>
+                                        <left>
+                                            <Button styleClass="inner-hide-button" text="◨"
+                                                    onAction="#onClickResultsButton"/>
+                                        </left>
+                                        <center>
+                                            <Label styleClass="title-text" BorderPane.alignment="CENTER">
+                                                Experiment results
+                                            </Label>
+                                        </center>
+                                    </BorderPane>
                                 </top>
                                 <center>
                                     <HBox styleClass="jelly-bean-pane">
@@ -88,13 +96,13 @@
                                         </center>
                                     </BorderPane>
 
-                                    <!-- Here is an Horizontal Split -->
+                                    <!-- Here is a Split -->
 
-                                    <BorderPane fx:id="fileListPane" maxWidth="300" styleClass="in-pane">
+                                    <BorderPane fx:id="fileListPane" maxWidth="250" styleClass="in-pane">
                                         <top>
                                             <BorderPane styleClass="pane-transparent">
                                                 <left>
-                                                    <Button fx:id="innerFileListButton" text="◨"
+                                                    <Button styleClass="inner-hide-button" text="◨"
                                                             onAction="#onClickFileListViewButton"/>
                                                 </left>
                                                 <center>
@@ -112,11 +120,11 @@
 
                                 <!-- Here is an Horizontal Split -->
 
-                                <BorderPane fx:id="commentsPane" maxHeight="300" styleClass="in-pane">
+                                <BorderPane fx:id="commentsPane" maxHeight="200" styleClass="in-pane">
                                     <top>
                                         <BorderPane styleClass="pane-transparent">
                                             <left>
-                                                <Button fx:id="innerCommentsButton" text="◨"
+                                                <Button styleClass="inner-hide-button" text="◨"
                                                         onAction="#onClickCommentsButton"/>
                                             </left>
                                             <center>
@@ -137,12 +145,20 @@
                 <right>
                     <BorderPane styleClass="out-pane">
                         <top>
-                            <Group styleClass="pane-transparent">
-                                 <ToggleButton fx:id="outerFileListButton"
-                                              text="Files ⬓" rotate="90"
-                                              onAction="#onClickFileListViewButton"
-                                              selected="true"/>
-                            </Group>
+                            <VBox styleClass="pane-transparent">
+                                <Group styleClass="pane-transparent">
+                                    <ToggleButton fx:id="outerResultsButton"
+                                                  text="Results ⬓" rotate="90"
+                                                  onAction="#onClickResultsButton"
+                                                  selected="true"/>
+                                </Group>
+                                <Group styleClass="pane-transparent">
+                                    <ToggleButton fx:id="outerFileListButton"
+                                                  text="Files ⬓" rotate="90"
+                                                  onAction="#onClickFileListViewButton"
+                                                  selected="true"/>
+                                </Group>
+                            </VBox>
                         </top>
                         <bottom>
                             <Group styleClass="pane-transparent">

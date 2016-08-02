@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane"
          styleClass="main-frame, out-pane">
@@ -19,10 +20,12 @@
     <top>
         <BorderPane styleClass="top, out-pane">
             <left>
-                <ImageView fitWidth="150"
-                           preserveRatio="true">
-                    <Image url="@../../images/LogoI3S.png"/>
-                </ImageView>
+                <VBox alignment="CENTER" style="-fx-border-width: 5px; -fx-border-color: transparent">
+                    <ImageView fitHeight="45"
+                               preserveRatio="true">
+                        <Image url="@../../images/LogoI3S.png" />
+                    </ImageView>
+                </VBox>
             </left>
             <center>
                 <Label styleClass="frame-title">

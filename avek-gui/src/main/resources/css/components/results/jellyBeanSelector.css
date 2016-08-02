@@ -1,6 +1,9 @@
 .jellyBeanPane {
     -fx-background-color: white;
 }
+.jellyBeanPane * {
+	-fx-alignment: center;
+}
 
 .selectedResult {
     -fx-text-fill: #ddd;

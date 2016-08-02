@@ -91,6 +91,16 @@ public class GeneralizedView extends AbstractView {
 					monitoredSystemSplitPane, outerMonitoredSystemButton);
 	}
 
+	@FXML private BorderPane resultsPane;
+	@FXML private ToggleButton outerResultsButton;
+	@FXML public void onClickResultsButton(ActionEvent event) {
+		boolean newState = !resultsPane.isVisible();
+		resultsPane.setVisible(newState);
+		resultsPane.setManaged(newState);
+		outerResultsButton.setSelected(newState);
+	}
+
+
 	private void showPane(int index, Pane pane, SplitPane splitPane, ToggleButton button) {
 		splitPane.getItems().add(index, pane);
 		pane.setVisible(true);

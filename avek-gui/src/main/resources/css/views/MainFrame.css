@@ -30,7 +30,7 @@
 
 .out-pane {
 	-fx-background-color: #8FB8CC; /* default pastel blue */
-	-fx-spacing: 2px;
+	-fx-border-insets: 2px;
 }
 
 
@@ -62,10 +62,10 @@
 
 .strategy-button {
 	-fx-background-color: #CFDEE6; /* Brighter2 */
-	-fx-border-color: #ADCAD9; /* Brighter1 */
+	-fx-border-color: #5995B3; /* Darker2 */
 	-fx-border-insets: 5px;
 	-fx-background-insets: 5px;
-
+	-fx-pref-width: 200px;
 }
 .strategy-button:hover {
 	-fx-background-color: #E6EEF2; /* Brighter3 */
@@ -73,7 +73,7 @@
 
 .text-area, .text-field, .combo-box {
 	-fx-border-width: 1;
-	-fx-border-color: #CFDEE6; /* Brighter2 */
+	-fx-border-color: #73A6BF; /* Darker1 */
 	-fx-border-radius: 0;
 	-fx-background-radius: 0;
 	-fx-background-insets: 0;
@@ -104,4 +104,56 @@
 
 .titled-pane .content .viewport {
 	-fx-background-color: white;
+}
+
+.b-history {
+	-fx-fit-to-width: true;
+	-fx-pref-width: 99999;
+}
+
+.inner-hide-button {
+	-fx-background-color: #CFDEE6; /* Brighter2 */
+	-fx-border-width: 0;
+}
+.inner-hide-button:hover {
+	-fx-background-color: #CFDEE6; /* Brighter2 */
+	-fx-text-fill: #5995B3; /* Darker2 */
+}
+
+.check-box>.box {
+	-fx-max-width: 14px;
+	-fx-pref-width: 14px;
+	-fx-min-width: 14px;
+	-fx-max-height: 14px;
+	-fx-pref-height: 14px;
+	-fx-min-height: 14px;
+	-fx-background-radius: 0;
+	-fx-background-color: white;
+	-fx-border-color: #73A6BF; /* Darker1 */
+	-fx-border-insets: 2px;
+	-fx-background-insets: 2px;
+}
+.check-box:hover>.box>.mark {
+	-fx-background-color: #E6EEF2; /* Brighter3 */
+}
+.check-box:selected:hover>.box>.mark {
+	-fx-background-color: #73A6BF; /* Darker1 */
+}
+
+.check-box>.box>.mark {
+	-fx-background-color: transparent;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+	-fx-shape: none;
+	-fx-background-insets: 4px 4px 2px 2px;
+	-fx-border-insets: 4px 4px 2px 2px;
+}
+
+.check-box:selected>.box>.mark{
+	-fx-background-color: #73A6BF; /* Darker1 */
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+	-fx-shape: none;
+	-fx-background-insets: 4px 4px 2px 2px;
+	-fx-border-insets: 4px 4px 2px 2px;
 }

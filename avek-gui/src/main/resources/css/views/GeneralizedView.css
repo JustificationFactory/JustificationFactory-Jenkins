@@ -2,3 +2,8 @@
 	-fx-background-color: white;
 	-fx-padding: 2px
 }
+
+#resultsPane {
+	-fx-border-color: #4285A6; /* Darker3, same as Dividers */
+	-fx-border-width: 0 0 2px 0;
+}

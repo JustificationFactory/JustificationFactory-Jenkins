@@ -2,16 +2,18 @@
     -fx-font-weight: bold;
 }
 
-.levelmark_transparent {
-    -fx-background-color: transparent;
+
+.levelmark-line {
+    -fx-background-color: #8FB8CC; /* default pastel blue */
+	-fx-pref-width: 10px;
+	-fx-fit-to-height: true;
+	-fx-background-insets: 0px 4px;
+	-fx-border-insets: 0px 4px;
 }
 
-.levelmark_line {
-    -fx-background-color: #99CC8F; /* Tetrade3 (green) */
-}
-
-.levelmark_arrow * {
-    -fx-text-fill: #CCA38F; /* Tetrade2 (orange) */;
+.levelmark-arrow * {
+    -fx-text-fill: #8FB8CC; /* default pastel blue */
+	-fx-pref-width: 6px;
 }
 
 .dragdroppane {

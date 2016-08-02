@@ -5,13 +5,22 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.HBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane" styleClass="in-pane">
-    <top>
-        <VBox alignment="CENTER">
-            <Label>Select a Strategy</Label>
-            <ComboBox fx:id="comboBox"/>
-            <Button fx:id="submit" onAction="#onSubmit">Submit</Button>
-        </VBox>
-    </top>
+
+    <stylesheets>
+        <URL value="@../../css/views/StrategySelectionView.css" />
+    </stylesheets>
+
+    <center>
+        <HBox alignment="CENTER">
+            <VBox alignment="CENTER" spacing="5">
+                <Label maxWidth="9999" alignment="CENTER">Select a strategy</Label>
+                <ComboBox fx:id="comboBox"/>
+                <Button maxWidth="9999" fx:id="submit" onAction="#onSubmit">Submit</Button>
+            </VBox>
+        </HBox>
+    </center>
 </fx:root>
