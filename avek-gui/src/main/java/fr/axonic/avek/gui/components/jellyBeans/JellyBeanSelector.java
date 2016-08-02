@@ -23,10 +23,10 @@ import java.util.Set;
 /**
  * Created by cduffau on 02/07/16.
  */
-public class JellyBeansSelector extends VBox {
-	private static final Logger logger = Logger.getLogger(JellyBeansSelector.class);
+public class JellyBeanSelector extends VBox {
+	private static final Logger logger = Logger.getLogger(JellyBeanSelector.class);
 	private static final URL FXML
-			= JellyBeansSelector.class.getClassLoader().getResource("fxml/components/JellyBeansSelector.fxml");
+			= JellyBeanSelector.class.getClassLoader().getResource("fxml/components/JellyBeansSelector.fxml");
 	private static final String CSS = "css/components/jellyBeanSelector.css";
 
 	@FXML
@@ -39,7 +39,7 @@ public class JellyBeansSelector extends VBox {
 	private final Set<String> addedEffects;
 
 	// should be public
-	public JellyBeansSelector() {
+	public JellyBeanSelector() {
 		addedEffects = new HashSet<>();
 
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);

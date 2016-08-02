@@ -2,7 +2,7 @@ package fr.axonic.avek.gui;
 
 import fr.axonic.avek.gui.util.ViewOrchestrator;
 import fr.axonic.avek.gui.view.EstablishEffectView;
-import fr.axonic.avek.gui.view.GeneralizedView;
+import fr.axonic.avek.gui.view.GeneralizeView;
 import fr.axonic.avek.gui.view.MainFrame;
 import fr.axonic.avek.gui.view.TreatView;
 import javafx.application.Application;
@@ -36,7 +36,7 @@ public class Main extends Application {
 		logger.debug("MainFrame created.");
 
 		ViewOrchestrator oNull = new ViewOrchestrator(null, "Strategy chooser");
-		ViewOrchestrator o3 = new ViewOrchestrator(new GeneralizedView(), "Generalize");
+		ViewOrchestrator o3 = new ViewOrchestrator(new GeneralizeView(), "Generalize");
 		o3.addFollowing(oNull);
 		ViewOrchestrator o2 = new ViewOrchestrator(new EstablishEffectView(), "Establish effects");
 		o2.addFollowing(o3);

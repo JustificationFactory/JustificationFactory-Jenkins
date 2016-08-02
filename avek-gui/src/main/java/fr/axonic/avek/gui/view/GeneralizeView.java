@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.view;
 
-import com.sun.deploy.util.ArrayUtil;
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane;
@@ -17,12 +16,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GeneralizedView extends AbstractView {
-	private final static Logger logger = Logger.getLogger(GeneralizedView.class);
+public class GeneralizeView extends AbstractView {
+	private final static Logger logger = Logger.getLogger(GeneralizeView.class);
 	private final static String FXML = "fxml/views/GeneralizedView.fxml";
 
 	@FXML private JellyBeanPane jellyBeanPane;
@@ -35,9 +33,9 @@ public class GeneralizedView extends AbstractView {
 
 	@Override
 	protected void onLoad() {
-		logger.info("Loading GeneralizedView...");
+		logger.info("Loading GeneralizeView...");
 		super.load(FXML);
-		logger.debug("GeneralizedView loaded.");
+		logger.debug("GeneralizeView loaded.");
 	}
 
 	@FXML

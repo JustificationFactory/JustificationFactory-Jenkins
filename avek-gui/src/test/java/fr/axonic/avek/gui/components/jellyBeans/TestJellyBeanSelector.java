@@ -30,7 +30,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) throws VerificationException, IOException {
-		JellyBeansSelector jbs = new JellyBeansSelector();
+		JellyBeanSelector jbs = new JellyBeanSelector();
 		Scene scene = new Scene(jbs, 200, 200);
 		stage.setScene(scene);
 		stage.show();
