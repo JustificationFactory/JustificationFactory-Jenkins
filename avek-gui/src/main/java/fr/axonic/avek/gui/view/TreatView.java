@@ -43,19 +43,20 @@ public class TreatView extends AbstractView {
 	@FXML private SplitPane monitoredSystemSplitPane;
 	@FXML private BorderPane monitoredSystemPane;
 	@FXML private ToggleButton outerMonitoredSystemButton;
+	private double[] memento = {};
 	@FXML public void onClickMonitoredSystemButton(ActionEvent event) {
 		boolean newState = !monitoredSystemPane.isVisible();
 		if(newState) {
 			monitoredSystemSplitPane.getItems().add(0, monitoredSystemPane);
-			monitoredSystemPane.setVisible(true);
-			monitoredSystemPane.setManaged(true);
 			outerMonitoredSystemButton.setSelected(true);
+			monitoredSystemPane.setVisible(true);
+			monitoredSystemSplitPane.setDividerPositions(memento);
 		}
 		else {
+			memento = monitoredSystemSplitPane.getDividerPositions();
 			monitoredSystemSplitPane.getItems().remove(monitoredSystemPane);
-			monitoredSystemPane.setVisible(false);
-			monitoredSystemPane.setManaged(false);
 			outerMonitoredSystemButton.setSelected(false);
+			monitoredSystemPane.setVisible(false);
 		}
 	}
 

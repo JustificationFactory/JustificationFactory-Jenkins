@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.axonic.avek.gui.components.filelist.FileListView?>
+<?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane?>
 <?import fr.axonic.avek.gui.components.MonitoredSystemView?>
-<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
+<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanSelector?>
+<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
-         type="javafx.scene.layout.BorderPane">
-
-    <!-- ◧ ◨ ⬒ ⬓ -->
+         type="javafx.scene.layout.BorderPane"
+         styleClass="out-pane">
 
     <stylesheets>
-        <URL value="@../../css/views/GeneralizedView.css" />
+        <URL value="@../../css/views/TreatView.css" />
     </stylesheets>
 
-
     <left>
-        <Group>
+        <Group styleClass="out-pane">
             <ToggleButton fx:id="outerMonitoredSystemButton"
                           text="⬓ Monitored System" rotate="-90"
                           onAction="#onClickMonitoredSystemButton"
@@ -25,15 +27,17 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane">
-            <BorderPane fx:id="monitoredSystemPane" maxWidth="300">
+        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane-transparent">
+            <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="in-pane">
                 <top>
-                    <BorderPane>
+                    <BorderPane styleClass="title-pane">
                         <center>
-                            <Label fx:id="monitoredSystemTitle" text="Monitored System" />
+                            <Label fx:id="monitoredSystemTitle" styleClass="title-text">
+                                Monitored System
+                            </Label>
                         </center>
                         <right>
-                            <Button fx:id="innerMonitoredSystemButton" text="◧"
+                            <Button styleClass="inner-hide-button" text="◧"
                                     onAction="#onClickMonitoredSystemButton"/>
                         </right>
                     </BorderPane>
@@ -42,22 +46,26 @@
                     <MonitoredSystemView fx:id="monitoredSystemView"/>
                 </center>
                 <bottom>
-                    <Button fx:id="monitoredSystemHistory" text="History" />
+                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER" styleClass="b-history"/>
                 </bottom>
             </BorderPane>
 
             <!-- Here is a Split -->
 
-            <BorderPane>
-                <top>
-                    <Label textAlignment="CENTER" BorderPane.alignment="CENTER">
-                        Experimentation parameters
-                    </Label>
-                </top>
+            <BorderPane styleClass="title-pane">
                 <center>
-                    <ScrollPane>
-                        <ParametersRoot fx:id="parametersRoot"/>
-                    </ScrollPane>
+                    <BorderPane styleClass="title-pane">
+                        <top>
+                            <Label textAlignment="CENTER" BorderPane.alignment="CENTER" styleClass="title-text">
+                                Experimentation parameters
+                            </Label>
+                        </top>
+                        <center>
+                            <ScrollPane styleClass="in-pane-in">
+                                <ParametersRoot fx:id="parametersRoot"/>
+                            </ScrollPane>
+                        </center>
+                    </BorderPane>
                 </center>
             </BorderPane>
         </SplitPane>
