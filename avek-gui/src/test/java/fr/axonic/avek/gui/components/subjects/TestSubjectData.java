@@ -8,6 +8,8 @@ import fr.axonic.base.ADate;
 import fr.axonic.base.ANumber;
 import fr.axonic.base.AString;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -56,13 +58,13 @@ public class TestSubjectData extends ApplicationTest {
 
 		TitledPane tp = monitoredSystemView.getPanes().get(0);
 		ScrollPane sp = (ScrollPane) tp.getContent();
-		VBox vb = (VBox) sp.getContent();
-		assertEquals(4, vb.getChildren().size());
+		ListView<Label> vb = (ListView<Label>) sp.getContent();
+		assertEquals(4, vb.getItems().size());
 
 		tp = monitoredSystemView.getPanes().get(1);
 		sp = (ScrollPane) tp.getContent();
-		vb = (VBox) sp.getContent();
-		assertEquals(2, vb.getChildren().size());
+		vb = (ListView<Label>) sp.getContent();
+		assertEquals(2, vb.getItems().size());
 
 		MonitoredSystem ms2 = new MonitoredSystem(21);
 		ms2.addCategory("Category 1");
@@ -82,17 +84,17 @@ public class TestSubjectData extends ApplicationTest {
 
 		tp = monitoredSystemView.getPanes().get(0);
 		sp = (ScrollPane) tp.getContent();
-		vb = (VBox) sp.getContent();
-		assertEquals(3, vb.getChildren().size());
+		vb = (ListView<Label>) sp.getContent();
+		assertEquals(3, vb.getItems().size());
 
 		tp = monitoredSystemView.getPanes().get(1);
 		sp = (ScrollPane) tp.getContent();
-		vb = (VBox) sp.getContent();
-		assertEquals(3, vb.getChildren().size());
+		vb = (ListView<Label>) sp.getContent();
+		assertEquals(3, vb.getItems().size());
 
 		tp = monitoredSystemView.getPanes().get(2);
 		sp = (ScrollPane) tp.getContent();
-		vb = (VBox) sp.getContent();
-		assertEquals(0, vb.getChildren().size());
+		vb = (ListView<Label>) sp.getContent();
+		assertEquals(0, vb.getItems().size());
 	}
 }

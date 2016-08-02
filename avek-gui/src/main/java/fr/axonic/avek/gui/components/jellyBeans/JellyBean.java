@@ -64,8 +64,8 @@ public class JellyBean extends HBox {
 
 	@FXML
 	public void onClickOnCross(ActionEvent actionEvent) {
-		if(!isRemovable)
-		onDelete.accept(this);
+		if(isRemovable)
+			onDelete.accept(this);
 	}
 
 	@FXML

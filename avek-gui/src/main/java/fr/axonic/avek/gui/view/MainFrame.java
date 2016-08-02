@@ -71,6 +71,9 @@ public class MainFrame extends BorderPane {
 			setCenter(view.getView()); // remove abstract view currently loaded
 			view.getView().load();
 			btnStrategy.setVisible(true);
+
+			List<ViewOrchestrator> following = view.getFollowing();
+			btnStrategy.setText(following.size() != 1 ? "Strategy" : following.get(0).getName());
 		}
 	}
 }

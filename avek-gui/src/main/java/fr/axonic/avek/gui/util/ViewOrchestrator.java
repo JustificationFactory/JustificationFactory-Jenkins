@@ -11,10 +11,12 @@ import java.util.List;
 public class ViewOrchestrator {
 	private AbstractView currentView;
 	private List<ViewOrchestrator> following;
+	private final String name;
 
-	public ViewOrchestrator(AbstractView view) {
+	public ViewOrchestrator(/*Nullable*/ AbstractView view, String name) {
 		this.currentView = view;
 		following = new LinkedList<>();
+		this.name = name;
 	}
 
 	public void addFollowing(ViewOrchestrator follow) {
@@ -26,10 +28,14 @@ public class ViewOrchestrator {
 
 	@Override
 	public String toString() {
-		return currentView.getClass().getSimpleName();
+		return getName();
 	}
 
 	public AbstractView getView() {
 		return currentView;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

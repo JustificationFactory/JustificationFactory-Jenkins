@@ -35,12 +35,12 @@ public class Main extends Application {
 		primaryStage.show();
 		logger.debug("MainFrame created.");
 
-		ViewOrchestrator oNull = new ViewOrchestrator(null);
-		ViewOrchestrator o3 = new ViewOrchestrator(new GeneralizedView());
+		ViewOrchestrator oNull = new ViewOrchestrator(null, "Strategy chooser");
+		ViewOrchestrator o3 = new ViewOrchestrator(new GeneralizedView(), "Generalize");
 		o3.addFollowing(oNull);
-		ViewOrchestrator o2 = new ViewOrchestrator(new EstablishEffectView());
+		ViewOrchestrator o2 = new ViewOrchestrator(new EstablishEffectView(), "Establish effects");
 		o2.addFollowing(o3);
-		ViewOrchestrator o1 = new ViewOrchestrator(new TreatView());
+		ViewOrchestrator o1 = new ViewOrchestrator(new TreatView(), "Treat");
 		o1.addFollowing(o2);
 
 		oNull.addFollowing(o1);

@@ -30,15 +30,12 @@ public class TestMain extends ApplicationTest {
 	public void mainTest() throws Exception {
 		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
-		ViewOrchestrator oNull = new ViewOrchestrator(null);
-		GeneralizedView gView = new GeneralizedView();
-		ViewOrchestrator o3 = new ViewOrchestrator(gView);
+		ViewOrchestrator oNull = new ViewOrchestrator(null, "Strategy chooser");
+		ViewOrchestrator o3 = new ViewOrchestrator(new GeneralizedView(), "Generalize");
 		o3.addFollowing(oNull);
-		EstablishEffectView eeView = new EstablishEffectView();
-		ViewOrchestrator o2 = new ViewOrchestrator(eeView);
+		ViewOrchestrator o2 = new ViewOrchestrator(new EstablishEffectView(), "Establish effects");
 		o2.addFollowing(o3);
-		TreatView tView = new TreatView();
-		ViewOrchestrator o1 = new ViewOrchestrator(tView);
+		ViewOrchestrator o1 = new ViewOrchestrator(new TreatView(), "Treat");
 		o1.addFollowing(o2);
 
 		oNull.addFollowing(o1);
