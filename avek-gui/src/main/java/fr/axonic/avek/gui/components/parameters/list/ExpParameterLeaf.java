@@ -63,4 +63,8 @@ public class ExpParameterLeaf implements IExpParameter {
 	protected void setExpanded(boolean expanded) {
 		levelMark.setExpanded(expanded);
 	}
+
+	public Label getLabelTitle() {
+		return paramTitle;
+	}
 }

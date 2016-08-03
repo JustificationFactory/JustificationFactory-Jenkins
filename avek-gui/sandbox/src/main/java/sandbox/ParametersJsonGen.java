@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Nathaël N on 12/07/16.
@@ -24,6 +26,8 @@ public class ParametersJsonGen {
 	public static void main(String[] args) throws VerificationException, IOException {
 		// serializing
 		String parametersJson = generateExpParameters();
+
+		System.out.println(" > " + parametersJson);
 
 		// Try deserializing
 		AList aList = (AList) Jsonifier.toAEntity(parametersJson);
@@ -60,6 +64,7 @@ public class ParametersJsonGen {
 
 		aList.add(new ANumber("Times redo", 12));
 
-		return Jsonifier.toJson(aList);
+		Map<String, AList> expParameters = new HashMap<>();
+		return Jsonifier.fromAEntity(aList);
 	}
 }

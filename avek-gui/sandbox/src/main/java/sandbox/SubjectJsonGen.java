@@ -30,13 +30,6 @@ public class SubjectJsonGen {
 
 		Files.write(Paths.get(f.toURI()),
 				subjectJson.getBytes());
-
-		f = new File("./avek-gui/src/main/resources/json/resultEnum1.json");
-		f.delete();
-		f.createNewFile();
-		String enums1Json = generateParameters();
-		Files.write(Paths.get(f.toURI()),
-				enums1Json.getBytes());
 	}
 
 	private static String generateSubject() {
@@ -59,51 +52,4 @@ public class SubjectJsonGen {
 
 		return Jsonifier.toJson(ms);
 	}
-
-	private static String generateParameters() throws VerificationException {
-		Map<String, ARangedEnum> expRes = new LinkedHashMap<>();
-
-		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE1", aEnum);
-		}
-		{	ExampleState val = ExampleState.values()[0];
-			ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE2", aEnum);
-		}
-		{
-			ARangedEnum<BooleanState> aEnum = new ARangedEnum<>(BooleanState.FALSE);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(BooleanState.values())));
-			expRes.put("AE3", aEnum);
-		}
-		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE4", aEnum);
-		}
-		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE5", aEnum);
-		}
-		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.MEDIUM);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE6", aEnum);
-		}
-		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE7", aEnum);
-		}
-		{
-			ARangedEnum<BooleanState> aEnum = new ARangedEnum<>(BooleanState.TRUE);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(BooleanState.values())));
-			expRes.put("AE8", aEnum);
-		}
-		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
-			expRes.put("AE9", aEnum);
-		}
-
-		return Jsonifier.toJson(expRes);
-	}
-
 }

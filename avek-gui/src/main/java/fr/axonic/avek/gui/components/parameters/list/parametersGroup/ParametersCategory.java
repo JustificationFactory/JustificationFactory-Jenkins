@@ -18,6 +18,7 @@ class ParametersCategory extends ParametersGroup {
 		GridPane.setColumnSpan(this, 3);
 
 		categoryTitle = new ExpParameterLeaf(level, new AString(label,""));
+		categoryTitle.getLabelTitle().getStyleClass().add("category-title");
 		addExpParameter(categoryTitle);
 
 		categoryTitle.setExpandable(this::onClickExpand);

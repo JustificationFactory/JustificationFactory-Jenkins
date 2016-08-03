@@ -62,12 +62,12 @@ public class TestParametersCategory extends ApplicationTest {
 		assertEquals(5, pp.getChildren().size());
 
 		ctm.runNowOnPlatform(() -> pp.addParameter(new ABoolean("Boolbool", true)));
-		assertEquals(5+4, pp.getChildren().size());
+		assertEquals(5+5, pp.getChildren().size());
 
 		ctm.runNowOnPlatform(() -> pp.addParameter(new ADate("Datedate", new GregorianCalendar())));
-		assertEquals(5+4+5, pp.getChildren().size());
+		assertEquals(5+5+5, pp.getChildren().size());
 
 		ctm.runNowOnPlatform(() -> pp.addParameter(new AString("Strstr", "LaString")));
-		assertEquals(5+4+5+4, pp.getChildren().size());
+		assertEquals(5+5+5+4, pp.getChildren().size());
 	}
 }

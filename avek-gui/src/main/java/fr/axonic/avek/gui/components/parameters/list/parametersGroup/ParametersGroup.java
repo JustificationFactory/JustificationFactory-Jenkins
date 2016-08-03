@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public abstract class ParametersGroup extends GridPane implements IExpParameter {
 	private static final Logger logger = Logger.getLogger(ParametersGroup.class);
-	private static final String CSS = "css/components/Parameters.css";
+	private static final String CSS = "css/components/parameters.css";
 
 	protected final int level;
 	private final String title;
@@ -43,7 +43,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 			 |       Another element : value
 		 */
 
-		logger.info("Adding Parameters.css");
+		logger.info("Adding parameters.css");
 		this.getStylesheets().add(CSS);
 
 		getStyleClass().add("pane-transparent");

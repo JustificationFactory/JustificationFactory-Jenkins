@@ -15,6 +15,7 @@ class GeneralizedParametersCategory extends GeneralizedParametersGroup {
 		super(level, label);
 
 		categoryTitle = new SimpleParameter(level, new AString(label,""));
+		categoryTitle.getLabelTitle().getStyleClass().add("category-title");
 
 		// Generating GUI component
 		GridPane.setColumnSpan(this, 5);
