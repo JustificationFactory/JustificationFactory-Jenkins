@@ -1,24 +1,26 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
-import fr.axonic.avek.gui.components.filelist.FileListView;
-import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.jellyBeans.JellyBeanSelector;
-import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot;
 import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.gui.model.structure.ExperimentResult;
-import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
+import fr.axonic.base.AEnum;
+import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EstablishEffectView extends AbstractView {
@@ -40,15 +42,22 @@ public class EstablishEffectView extends AbstractView {
 
 	@FXML
 	private void initialize() {
-		logger.info("Getting monitored system...");
-		monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
+		new Thread(() -> { // Load asynchronously
+			Platform.runLater(() -> monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
 
-		logger.info("Getting experiment parameters...");
-		AList<AEntity> list = DataBus.getExperimentParameters();
-		list.getList().forEach(parametersRoot::addParameter);
+			Platform.runLater(() ->
+					DataBus.getExperimentParameters().forEach(parametersRoot::addParameter));
 
-		logger.info("Getting experiment results...");
-		jellyBeanSelector.setJellyBeansChoice(DataBus.getExperimentResults());
+			Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
+			Map<String, List<String>> map = new HashMap<>();
+			for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
+				List<String> ls = new ArrayList<>();
+				for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange()))
+					ls.add(ae.getValue().toString());
+				map.put(entry.getKey(), ls);
+			}
+			Platform.runLater(() -> jellyBeanSelector.setJellyBeansChoice(map));
+		}).start();
 	}
 
 	@FXML private SplitPane monitoredSystemSplitPane;

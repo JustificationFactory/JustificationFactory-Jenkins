@@ -1,9 +1,5 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
-import fr.axonic.base.ARangedEnum;
-import fr.axonic.base.AString;
-import fr.axonic.base.engine.AList;
-import fr.axonic.base.engine.AVar;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -29,8 +26,8 @@ public class JellyBean extends HBox {
 	@FXML
 	private Button jbCross;
 
-	private ARangedEnum enumType;
-	private AVar expEffect;
+	private List<String> states;
+	private int value = 0;
 	private Consumer<JellyBean> onDelete;
 
 	private boolean isRemovable, isEditable;
@@ -56,7 +53,7 @@ public class JellyBean extends HBox {
 
 	@FXML
 	public void initialize() {
-		jbLabel.getStyleClass().remove("button");
+		jbLabel.getStyleClass().remove("button"); // remove base css
 		jbCross.getStyleClass().remove("button");
 		setEditable(false);
 		setRemovable(false);
@@ -71,22 +68,16 @@ public class JellyBean extends HBox {
 	@FXML
 	public void onClickOnLabel(ActionEvent actionEvent) {
 		// ReadOnly
-		if(!isEditable)
+		if (!isEditable)
 			return;
 
-		AVar beforeEffect = expEffect;
-
-		AList list = enumType.getRange();
-
-		int nextIndex = (list.indexOf(expEffect) + 1) % list.size();
-		expEffect = ((AVar)list.get(nextIndex));
-
-		refreshColor(beforeEffect, expEffect);
+		changeState((value + 1) % states.size());
 	}
 
-	private void refreshColor(AVar bef, AVar aft) {
-		String before = bef.getValue().toString().toLowerCase();
-		String after = aft.getValue().toString().toLowerCase();
+	private void changeState(int state) {
+		String before = states.get(value).toLowerCase();
+		value = state;
+		String after = states.get(value).toLowerCase();
 
 		Platform.runLater(() -> {
 			jbLabel.getStyleClass().remove(before);
@@ -97,22 +88,21 @@ public class JellyBean extends HBox {
 	}
 
 
-	AVar getState() {
-		return expEffect;
+	String getState() {
+		return states.get(value);
 	}
 
-	void setStateType(ARangedEnum stateType) {
-		enumType = stateType;
-
-		refreshColor(expEffect == null ? new AString("") : expEffect, stateType);
-
-		expEffect = stateType;
+	void setStates(List<String> states) {
+		this.states = states;
+		changeState(0);
+	}
+	void setValue(String value) {
+		this.value = states.indexOf(value);
 	}
 
 	public void setText(String text) {
 		jbLabel.setText(text);
 	}
-
 	public String getText() {
 		return jbLabel.getText();
 	}
@@ -133,7 +123,7 @@ public class JellyBean extends HBox {
 		jbCross.setVisible(removable);
 		jbCross.setManaged(removable);
 	}
-	private void setEditable(boolean editable) {
+	void setEditable(boolean editable) {
 		isEditable = editable;
 
 		getStyleClass().remove("jellyBeanEditable");

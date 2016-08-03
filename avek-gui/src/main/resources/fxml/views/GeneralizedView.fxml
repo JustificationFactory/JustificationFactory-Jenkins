@@ -10,7 +10,7 @@
 <?import java.net.URL?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane"
-        styleClass="out-pane">
+         styleClass="out-pane">
     <!-- fx:controller="fr.axonic.avek.gui.view.GeneralizeView
           -->
 
@@ -30,7 +30,7 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane-transparent">
+        <SplitPane fx:id="monitoredSystemSplitPane">
             <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="in-pane">
                 <top>
                     <BorderPane styleClass="title-pane">
@@ -55,13 +55,13 @@
 
             <!-- Here is a Split -->
 
-            <BorderPane styleClass="title-pane">
+            <BorderPane>
                 <center>
                     <BorderPane styleClass="center-pane-group">
                         <top>
-                            <BorderPane fx:id="resultsPane">
+                            <BorderPane fx:id="resultsPane" styleClass="in-pane">
                                 <top>
-                                    <BorderPane>
+                                    <BorderPane styleClass="title-pane">
                                         <left>
                                             <Button styleClass="inner-hide-button" text="◨"
                                                     onAction="#onClickResultsButton"/>
@@ -74,9 +74,7 @@
                                     </BorderPane>
                                 </top>
                                 <center>
-                                    <HBox styleClass="jelly-bean-pane">
-                                        <JellyBeanPane fx:id="jellyBeanPane"/>
-                                    </HBox>
+                                    <JellyBeanPane fx:id="jellyBeanPane" prefWidth="1e8"/>
                                 </center>
                             </BorderPane>
                         </top>
@@ -98,9 +96,9 @@
 
                                     <!-- Here is a Split -->
 
-                                    <BorderPane fx:id="fileListPane" maxWidth="250" styleClass="title-pane">
+                                    <BorderPane fx:id="fileListPane" maxWidth="250" styleClass="in-pane">
                                         <top>
-                                            <BorderPane styleClass="pane-transparent">
+                                            <BorderPane styleClass="title-pane">
                                                 <left>
                                                     <Button styleClass="inner-hide-button" text="◨"
                                                             onAction="#onClickFileListViewButton"/>
@@ -120,9 +118,9 @@
 
                                 <!-- Here is an Horizontal Split -->
 
-                                <BorderPane fx:id="commentsPane" maxHeight="200" styleClass="title-pane">
+                                <BorderPane fx:id="commentsPane" maxHeight="200" styleClass="in-pane">
                                     <top>
-                                        <BorderPane styleClass="pane-transparent">
+                                        <BorderPane styleClass="title-pane">
                                             <left>
                                                 <Button styleClass="inner-hide-button" text="◨"
                                                         onAction="#onClickCommentsButton"/>

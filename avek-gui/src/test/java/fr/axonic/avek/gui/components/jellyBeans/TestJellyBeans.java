@@ -1,10 +1,9 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
 import fr.axonic.avek.gui.model.sample.ExampleState;
+import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.base.AEnum;
-import fr.axonic.base.ARangedEnum;
-import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,10 +12,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,8 +21,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Nathaël N on 07/07/16.
  */
 public class TestJellyBeans extends ApplicationTest {
-	static { UtilForTests.disableGraphics();
-		 }
+	static { UtilForTests.disableGraphics(); }
 
 	private JellyBean jb;
 	private Button jbText, jbCross;
@@ -47,27 +42,28 @@ public class TestJellyBeans extends ApplicationTest {
 
 	@Test
 	public void testReadOnly() throws VerificationException {
-		ARangedEnum<ExampleState> are = new ARangedEnum<>(ExampleState.VERY_LOW);
-		are.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
+		List<String> list = new ArrayList<>();
+		Arrays.asList(ExampleState.values()).forEach((elem) -> list.add(elem.toString()));
 
-		this.jb.setStateType(are);
+		this.jb.setStates(list);
+		this.jb.setValue(ExampleState.VERY_LOW.toString());
 		// ReadOnly if not 'setOnDelete'
 		//this.jb.setOnDelete(this::calledOnDelete);
 
-		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
 
 		clickOn(jbText);
-		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
 
 		clickOn(jbText); // Medium
 		clickOn(jbText);
-		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
 
 		clickOn(jbText); // Very high
 		clickOn(jbText); // Very Low
 		clickOn(jbText); // low
 		clickOn(jbText);
-		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
 
 		// try delete
 		clickOn(jbCross);
@@ -80,28 +76,31 @@ public class TestJellyBeans extends ApplicationTest {
 	}
 
 	@Test
-	public void testStateChange() throws VerificationException {
-		ARangedEnum<ExampleState> are = new ARangedEnum<>(ExampleState.VERY_LOW);
-		are.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
+	public void testStateChange() throws Exception {
+		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+		List<String> list = new ArrayList<>();
+		Arrays.asList(ExampleState.values()).forEach((elem) -> list.add(elem.toString()));
 
-		this.jb.setStateType(are);
-		this.jb.setOnDelete(this::calledOnDelete);
+		this.jb.setStates(list);
+		this.jb.setValue(ExampleState.VERY_LOW.toString());
 
-		assertEquals(ExampleState.VERY_LOW, ((AEnum)jb.getState()).getValue());
+		ctm.runNowOnPlatform(() -> this.jb.setOnDelete(this::calledOnDelete));
+
+		assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
 
 		clickOn(jbText);
-		assertEquals(ExampleState.LOW, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.LOW.toString(), jb.getState());
 
 
 		clickOn(jbText); // Medium
 		clickOn(jbText);
-		assertEquals(ExampleState.HIGH, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.HIGH.toString(), jb.getState());
 
 		clickOn(jbText); // Very high
 		clickOn(jbText); // Very Low
 		clickOn(jbText); // low
 		clickOn(jbText);
-		assertEquals(ExampleState.MEDIUM, ((AEnum)jb.getState()).getValue());
+		assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
 
 		// try delete
 		clickOn(jbCross);

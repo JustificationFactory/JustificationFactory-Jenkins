@@ -4,9 +4,14 @@ import fr.axonic.avek.gui.components.parameters.list.ExpParameterLeaf;
 import fr.axonic.avek.gui.components.parameters.list.leaves.BoundedParameter;
 import fr.axonic.avek.gui.components.parameters.list.leaves.RangedParameter;
 import fr.axonic.avek.gui.components.parameters.list.leaves.SimpleParameter;
+import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.AString;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Nathaël N on 13/07/16.
@@ -50,10 +55,17 @@ public abstract class GeneralizedParametersGroup extends ParametersGroup {
 				subLeaf = new BoundedParameter(level + 1, aVar);
 				break;
 			case RANGED_ENUM:
-			case BOOLEAN:
-			case ENUM:
-				subLeaf = new RangedParameter(level + 1, aVar);
+				subLeaf = new RangedParameter(level + 1, aVar, ((ARangedEnum)aVar).getRange());
 				break;
+			case BOOLEAN:
+				List<AVar> values = Arrays.asList(
+						new AString("unknown", "unknown"),
+						new AString("true", "true"),
+						new AString("false", "false"));
+
+				subLeaf = new RangedParameter(level + 1, aVar, values);
+				break;
+			case ENUM:
 			case STRING:
 			case UNKNOWN:
 			default:

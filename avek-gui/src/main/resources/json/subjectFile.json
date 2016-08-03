@@ -44,10 +44,10 @@
         "value": {
           "year": 2016,
           "month": 7,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 22,
-          "second": 42
+          "dayOfMonth": 3,
+          "hourOfDay": 11,
+          "minute": 15,
+          "second": 54
         },
         "format": {
           "formatType": "DATE"

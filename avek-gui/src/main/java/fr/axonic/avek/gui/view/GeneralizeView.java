@@ -5,10 +5,11 @@ import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.gui.model.structure.ExperimentResult;
-import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
+import fr.axonic.base.AEnum;
+import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,7 +17,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GeneralizeView extends AbstractView {
@@ -40,18 +43,22 @@ public class GeneralizeView extends AbstractView {
 
 	@FXML
 	private void initialize() {
-		logger.info("Getting monitored system...");
-		monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
+		new Thread(() -> { // Load asynchronously
+			Platform.runLater(() ->
+					DataBus.getExperimentParameters().forEach(parametersRoot::addParameter));
 
-		logger.info("Getting experiment parameters...");
-		AList<AEntity> list = DataBus.getExperimentParameters();
-		list.getList().forEach(parametersRoot::addParameter);
+			Platform.runLater(() ->
+					monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
 
-		logger.info("Getting experiment results...");
-		ExperimentResultsMap expResMap = DataBus.getExperimentResults();
-
-		for(ExperimentResult expRes : expResMap.getList())
-			jellyBeanPane.addJellyBean(expRes);
+			Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
+			for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
+				List<String> ls = new ArrayList<>();
+				for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange()))
+					ls.add(ae.getValue().toString());
+				Platform.runLater(() ->
+						jellyBeanPane.addJellyBean(entry.getKey(), ls));
+			}
+		}).start();
 	}
 
 
@@ -85,8 +92,10 @@ public class GeneralizeView extends AbstractView {
 	@FXML private BorderPane monitoredSystemPane;
 	@FXML private ToggleButton outerMonitoredSystemButton;
 	@FXML public void onClickMonitoredSystemButton(ActionEvent event) {
-		boolean newState = !monitoredSystemPane.isVisible();
-		if(newState)
+		setMonitoredSystemVisible(!monitoredSystemPane.isVisible());
+	}
+	private void setMonitoredSystemVisible(boolean isVisible) {
+		if(isVisible)
 			showPane(0, monitoredSystemPane,
 					monitoredSystemSplitPane, outerMonitoredSystemButton);
 		else
@@ -97,10 +106,12 @@ public class GeneralizeView extends AbstractView {
 	@FXML private BorderPane resultsPane;
 	@FXML private ToggleButton outerResultsButton;
 	@FXML public void onClickResultsButton(ActionEvent event) {
-		boolean newState = !resultsPane.isVisible();
-		resultsPane.setVisible(newState);
-		resultsPane.setManaged(newState);
-		outerResultsButton.setSelected(newState);
+		setResultsVisible(!resultsPane.isVisible());
+	}
+	private void setResultsVisible(boolean isVisible) {
+		resultsPane.setVisible(isVisible);
+		resultsPane.setManaged(isVisible);
+		outerResultsButton.setSelected(isVisible);
 	}
 
 

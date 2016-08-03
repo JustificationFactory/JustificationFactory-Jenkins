@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.filelist;
 
-import fr.axonic.avek.gui.model.structure.UploadedFile;
+import fr.axonic.avek.gui.model.UploadedFile;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressIndicator;

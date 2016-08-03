@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.util;
 
-import fr.axonic.avek.gui.model.structure.UploadedFile;
+import fr.axonic.avek.gui.model.UploadedFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;

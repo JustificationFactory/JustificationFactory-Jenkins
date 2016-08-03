@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.model.json;
 
+import fr.axonic.avek.gui.model.sample.BooleanState;
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.sample.ExampleStateBool;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.*;
 import fr.axonic.base.engine.AEntity;
@@ -51,7 +51,7 @@ public class TestJsonifier {
 		ms.addAVar("Cat1", rangedEnumState);
 		ms.addAVar("Cat2", new ANumber(49.3));
 
-		ARangedEnum<ExampleStateBool> rangedEnumBool = new ARangedEnum<>(ExampleStateBool.FALSE);
+		ARangedEnum<BooleanState> rangedEnumBool = new ARangedEnum<>(BooleanState.FALSE);
 		o2 = jsonifier.fromJson(Jsonifier.toJson(rangedEnumBool));
 		assertEquals(rangedEnumBool.getValue().toString(), o2.getValue().toString());
 		assertEquals(rangedEnumBool.getRange(), o2.getRange());

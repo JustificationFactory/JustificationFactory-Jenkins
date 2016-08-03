@@ -5,6 +5,7 @@ import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersR
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -32,12 +33,13 @@ public class TreatView extends AbstractView {
 
 	@FXML
 	private void initialize() {
-		logger.info("Getting monitored system...");
-		monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
+		new Thread(() -> { // Load asynchronously
+			Platform.runLater(() ->
+					monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
 
-		logger.info("Getting experiment parameters...");
-		AList<AEntity> list = DataBus.getExperimentParameters();
-		list.getList().forEach(parametersRoot::addParameter);
+			Platform.runLater(() ->
+					DataBus.getExperimentParameters().forEach(parametersRoot::addParameter));
+		}).start();
 	}
 
 	@FXML private SplitPane monitoredSystemSplitPane;

@@ -29,3 +29,7 @@
 .jellyBean:hover > .jellyBeanCross {
     -fx-opacity: 80%;
 }
+
+.jellyBeanPane * {
+    -fx-alignment: center;
+}

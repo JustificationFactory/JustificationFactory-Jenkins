@@ -1,8 +1,8 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.gui.util.UtilForTests;
+import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
@@ -14,7 +14,8 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,14 +36,15 @@ public class TestJellyBeanSelector extends ApplicationTest {
 		stage.setScene(scene);
 		stage.show();
 
-		ExperimentResultsMap expResMap = new ExperimentResultsMap();
+		Map<String, List<String>> expResMap = new LinkedHashMap<>();
 		for (int i = 1; i <= 30; i++) {
 			ExampleState val = ExampleState.values()[0];
 			ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
 			aEnum.setDefaultValue(ExampleState.MEDIUM);
 			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
 
-			expResMap.put("AE" + i, aEnum);
+			List<String> ls = aEnum.getRange().stream().map(AEnum::toString).collect(Collectors.toList());
+			expResMap.put("AE" + i, ls);
 		}
 
 		// Fill experiment sample list

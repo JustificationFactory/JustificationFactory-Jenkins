@@ -31,10 +31,10 @@
       "value": {
         "year": 2016,
         "month": 7,
-        "dayOfMonth": 1,
-        "hourOfDay": 10,
-        "minute": 22,
-        "second": 37
+        "dayOfMonth": 3,
+        "hourOfDay": 11,
+        "minute": 13,
+        "second": 6
       },
       "format": {
         "formatType": "DATE"

@@ -1,9 +1,7 @@
 package fr.axonic.avek.gui.components.jellyBeans;
 
-import fr.axonic.avek.gui.model.structure.ExperimentResult;
-import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
+import fr.axonic.base.ARangedEnum;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +15,9 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cduffau on 02/07/16.
@@ -34,14 +33,10 @@ public class JellyBeanSelector extends VBox {
 	@FXML
 	private JellyBeanPane jellyBeanPane;
 	@FXML
-	private ComboBox<ExperimentResult> comboBoxJellyBean;
-
-	private final Set<String> addedEffects;
+	private ComboBox<Map.Entry<String, List<String>>> comboBoxJellyBean;
 
 	// should be public
 	public JellyBeanSelector() {
-		addedEffects = new HashSet<>();
-
 		FXMLLoader fxmlLoader = new FXMLLoader(FXML);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -55,12 +50,13 @@ public class JellyBeanSelector extends VBox {
 		}
 
 		this.getStylesheets().add(CSS);
-		logger.info("Added css for jellyBeanSelector");
+		logger.info("Added css for JellyBeanSelector");
 	}
 
 	@FXML
 	protected void initialize() {
 		jellyBeanPane.onRemoveJellyBean(this::onRemoveJellyBean);
+		jellyBeanPane.setJellyBeansStateEditable(true);
 		updateJellyBeanChoice();
 	}
 
@@ -69,28 +65,22 @@ public class JellyBeanSelector extends VBox {
 		addJellyBean();
 	}
 
-	@FXML
-	void onNewExpEffectClicked(ActionEvent event) {
-		newExpEffectButton.setDisable(true);
-	}
-
 	private void addJellyBean() {
 		// Verify if JellyBean already created (this result is already selected)
-		ExperimentResult choice = comboBoxJellyBean.getValue();
+		Map.Entry<String, List<String>> choice = comboBoxJellyBean.getValue();
 		if (choice == null) {
 			logger.warn("Choice is null");
 			return;
 		}
-		if (addedEffects.contains(choice.getName())) {
-			logger.warn("Choice already added: "+choice.getName());
+		if (jellyBeanPane.contains(choice.getKey())) {
+			logger.warn("Choice already added: "+choice.getKey());
 			return;
 		}
-		jellyBeanPane.addJellyBean(comboBoxJellyBean.getValue());
+		jellyBeanPane.addJellyBean(choice.getKey(), choice.getValue());
 		updateJellyBeanChoice();
-		addedEffects.add(choice.getName());
 	}
 	private void onRemoveJellyBean(String effectName) {
-		addedEffects.remove(effectName);
+		jellyBeanPane.remove(effectName);
 		updateJellyBeanChoice();
 	}
 
@@ -100,18 +90,18 @@ public class JellyBeanSelector extends VBox {
 	 */
 	private void updateJellyBeanChoice() {
 		comboBoxJellyBean.setCellFactory(
-				new Callback<ListView<ExperimentResult>, ListCell<ExperimentResult>>() {
+				new Callback<ListView<Map.Entry<String, List<String>>>, ListCell<Map.Entry<String, List<String>>>>() {
 					@Override
-					public ListCell<ExperimentResult> call(ListView<ExperimentResult> param) {
-						return new ListCell<ExperimentResult>() {
+					public ListCell<Map.Entry<String, List<String>>> call(ListView<Map.Entry<String, List<String>>> param) {
+						return new ListCell<Map.Entry<String, List<String>>>() {
 							@Override
-							public void updateItem(ExperimentResult item, boolean empty) {
+							public void updateItem(Map.Entry<String, List<String>> item, boolean empty) {
 								super.updateItem(item, empty);
 								if (item != null) {
-									setText(item.getName());
+									setText(item.getKey());
 									getStyleClass().remove("selectedResult");
 									getStyleClass().remove("notSelectedResult");
-									getStyleClass().add(addedEffects.contains(item.getName()) ? "selectedResult" : "notSelectedResult");
+									getStyleClass().add(jellyBeanPane.contains(item.getKey()) ? "selectedResult" : "notSelectedResult");
 								}
 							}
 						};
@@ -119,9 +109,9 @@ public class JellyBeanSelector extends VBox {
 				});
 	}
 
-	public void setJellyBeansChoice(ExperimentResultsMap exprMap) {
+	public void setJellyBeansChoice(Map<String, List<String>> exprMap) {
 		this.comboBoxJellyBean.setItems(
-				FXCollections.observableArrayList(exprMap.getList()));
+				FXCollections.observableArrayList(new ArrayList<>(exprMap.entrySet())));
 	}
 
 	public JellyBeanPane getJellyBeanPane() {

@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.model.structure;
+package fr.axonic.avek.gui.model;
 
 import javafx.application.Platform;
 import org.apache.log4j.Logger;

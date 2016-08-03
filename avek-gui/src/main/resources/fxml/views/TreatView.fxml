@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fr.axonic.avek.gui.components.filelist.FileListView?>
-<?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane?>
 <?import fr.axonic.avek.gui.components.MonitoredSystemView?>
-<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot?>
+<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanSelector?>
-<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane"
          styleClass="out-pane">

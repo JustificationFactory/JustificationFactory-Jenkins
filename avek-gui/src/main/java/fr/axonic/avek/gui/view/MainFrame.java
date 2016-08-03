@@ -73,7 +73,7 @@ public class MainFrame extends BorderPane {
 			btnStrategy.setVisible(true);
 
 			List<ViewOrchestrator> following = view.getFollowing();
-			btnStrategy.setText(following.size() != 1 ? "Strategy" : following.get(0).getName());
+			btnStrategy.setText(orchestrator.getName());
 		}
 	}
 }

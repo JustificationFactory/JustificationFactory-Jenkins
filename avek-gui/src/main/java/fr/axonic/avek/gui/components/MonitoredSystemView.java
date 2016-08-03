@@ -3,7 +3,6 @@ package fr.axonic.avek.gui.components;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 
 import java.util.Map;
 import java.util.Set;

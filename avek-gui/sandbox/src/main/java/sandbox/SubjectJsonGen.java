@@ -1,9 +1,8 @@
 package sandbox;
 
 import fr.axonic.avek.gui.model.json.Jsonifier;
+import fr.axonic.avek.gui.model.sample.BooleanState;
 import fr.axonic.avek.gui.model.sample.ExampleState;
-import fr.axonic.avek.gui.model.sample.ExampleStateBool;
-import fr.axonic.avek.gui.model.structure.ExperimentResultsMap;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ADate;
 import fr.axonic.base.ANumber;
@@ -16,8 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 /**
  * Created by Nathaël N on 12/07/16.
@@ -62,8 +60,8 @@ public class SubjectJsonGen {
 		return Jsonifier.toJson(ms);
 	}
 
-	public static String generateParameters() throws VerificationException {
-		ExperimentResultsMap expRes = new ExperimentResultsMap();
+	private static String generateParameters() throws VerificationException {
+		Map<String, ARangedEnum> expRes = new LinkedHashMap<>();
 
 		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
 			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
@@ -75,8 +73,8 @@ public class SubjectJsonGen {
 			expRes.put("AE2", aEnum);
 		}
 		{
-			ARangedEnum<ExampleStateBool> aEnum = new ARangedEnum<>(ExampleStateBool.FALSE);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleStateBool.values())));
+			ARangedEnum<BooleanState> aEnum = new ARangedEnum<>(BooleanState.FALSE);
+			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(BooleanState.values())));
 			expRes.put("AE3", aEnum);
 		}
 		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
@@ -96,8 +94,8 @@ public class SubjectJsonGen {
 			expRes.put("AE7", aEnum);
 		}
 		{
-			ARangedEnum<ExampleStateBool> aEnum = new ARangedEnum<>(ExampleStateBool.TRUE);
-			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleStateBool.values())));
+			ARangedEnum<BooleanState> aEnum = new ARangedEnum<>(BooleanState.TRUE);
+			aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(BooleanState.values())));
 			expRes.put("AE8", aEnum);
 		}
 		{	ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.VERY_LOW);
