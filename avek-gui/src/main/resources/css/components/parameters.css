@@ -1,22 +1,26 @@
 .category-title {
     -fx-font-weight: bold;
-	-fx-padding: 3px 3px 1px 3px;
+    -fx-padding: 1px 10px 1px 10px;
 }
-
 
 .levelmark-line {
     -fx-background-color: #8FB8CC; /* default pastel blue */
-	-fx-pref-width: 10px;
-	-fx-fit-to-height: true;
-	-fx-background-insets: 0px 4px;
-	-fx-border-insets: 0px 4px;
+    -fx-pref-width: 10px;
+    -fx-fit-to-height: true;
+    -fx-background-insets: 0px 4px;
+    -fx-border-insets: 0px 4px;
 }
 
 .levelmark-arrow * {
     -fx-text-fill: #8FB8CC; /* default pastel blue */
-	-fx-pref-width: 6px;
+    -fx-pref-width: 6px;
 }
 
 .hide-button {
     -fx-background-color: #0001;
+}
+
+.parameter-group {
+    -fx-vgap: 1px;
+    -fx-hgap: 2px;
 }

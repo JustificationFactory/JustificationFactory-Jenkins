@@ -9,7 +9,6 @@ import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -17,34 +16,34 @@ import java.util.Map;
  */
 public class DataBus {
 
-	public static MonitoredSystem getMonitoredSystem() {
-		String monitoredSystemJson = Util.getFileContent("json/subjectFile.json");
-		return new Jsonifier<>(MonitoredSystem.class).fromJson(monitoredSystemJson);
-	}
+    public static MonitoredSystem getMonitoredSystem() {
+        String monitoredSystemJson = Util.getFileContent("json/subjectFile.json");
+        return new Jsonifier<>(MonitoredSystem.class).fromJson(monitoredSystemJson);
+    }
 
-	public static AList<AEntity> getExperimentParameters() {
-		String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
-		AList<AEntity> list = (AList<AEntity>) Jsonifier.toAEntity(experimentParametersJson);
+    public static AList<AEntity> getExperimentParameters() {
+        String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
+        AList<AEntity> list = (AList<AEntity>) Jsonifier.toAEntity(experimentParametersJson);
 
-		return list;
-	}
+        return list;
+    }
 
-	public static Map<String, ARangedEnum> getExperimentResults() {
-		String experimentResultsJson = Util.getFileContent("json/resultEnum1.json");
+    public static Map<String, ARangedEnum> getExperimentResults() {
+        String experimentResultsJson = Util.getFileContent("json/resultEnum1.json");
 
-		Map<String, LinkedTreeMap> map1 =
-				new Jsonifier<>(HashMap.class)
-						.fromJson(experimentResultsJson);
+        Map<String, LinkedTreeMap> map1 =
+                new Jsonifier<>(HashMap.class)
+                        .fromJson(experimentResultsJson);
 
-		Map<String, ARangedEnum> expResMap = new HashMap<>();
-		for(Map.Entry<String, LinkedTreeMap> entry : map1.entrySet()) {
-			expResMap.put(entry.getKey(),
-					new Jsonifier<>(ARangedEnum.class)
-							.fromJson(Jsonifier.toJson(entry.getValue())));
-		}
+        Map<String, ARangedEnum> expResMap = new HashMap<>();
+        for (Map.Entry<String, LinkedTreeMap> entry : map1.entrySet()) {
+            expResMap.put(entry.getKey(),
+                    new Jsonifier<>(ARangedEnum.class)
+                            .fromJson(Jsonifier.toJson(entry.getValue())));
+        }
 
-		System.out.println(expResMap);
+        System.out.println(expResMap);
 
-		return expResMap;
-	}
+        return expResMap;
+    }
 }

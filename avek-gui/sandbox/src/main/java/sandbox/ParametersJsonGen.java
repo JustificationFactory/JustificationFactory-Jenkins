@@ -23,48 +23,48 @@ import java.util.Map;
  */
 public class ParametersJsonGen {
 
-	public static void main(String[] args) throws VerificationException, IOException {
-		// serializing
-		String parametersJson = generateExpParameters();
+    public static void main(String[] args) throws VerificationException, IOException {
+        // serializing
+        String parametersJson = generateExpParameters();
 
-		System.out.println(" > " + parametersJson);
+        System.out.println(" > " + parametersJson);
 
-		// Try deserializing
-		AList aList = (AList) Jsonifier.toAEntity(parametersJson);
+        // Try deserializing
+        AList aList = (AList) Jsonifier.toAEntity(parametersJson);
 
-		File f = new File("./avek-gui/src/main/resources/json/parametersFile.json");
-		f.delete();
-		f.createNewFile();
+        File f = new File("./avek-gui/src/main/resources/json/parametersFile.json");
+        f.delete();
+        f.createNewFile();
 
-		Files.write(Paths.get(f.toURI()),
-				parametersJson.getBytes());
-	}
+        Files.write(Paths.get(f.toURI()),
+                parametersJson.getBytes());
+    }
 
-	private static String generateExpParameters() {
-		AList aList = new AList();
+    private static String generateExpParameters() {
+        AList aList = new AList();
 
-		aList.add(new ANumber("Frequency", 42.0));
-		aList.add(new ABoolean("Bool?", true));
+        aList.add(new ANumber("Frequency", 42.0));
+        aList.add(new ABoolean("Bool?", true));
 
-		AList<AEntity> list = new AList<>();
-		list.setLabel("List");
-		list.add(new ANumber("SubNumber", 12.34));
-		list.add(new ADate("SubDate", new GregorianCalendar()));
+        AList<AEntity> list = new AList<>();
+        list.setLabel("List");
+        list.add(new ANumber("SubNumber", 12.34));
+        list.add(new ADate("SubDate", new GregorianCalendar()));
 
-		AList<AVar> subList = new AList<>();
-		subList.setLabel("SubList");
-		subList.add(new ANumber("SubSubInteger", 42));
-		subList.add(new AString("SubSubString", "TheSubSubStringValue"));
-		subList.add(new ANumber("SubSubDouble", 49.3));
+        AList<AVar> subList = new AList<>();
+        subList.setLabel("SubList");
+        subList.add(new ANumber("SubSubInteger", 42));
+        subList.add(new AString("SubSubString", "TheSubSubStringValue"));
+        subList.add(new ANumber("SubSubDouble", 49.3));
 
-		list.add(subList);
-		list.add(new ABoolean("SubBool", false));
-		list.setLabel("SubCategory");
-		aList.add(list);
+        list.add(subList);
+        list.add(new ABoolean("SubBool", false));
+        list.setLabel("SubCategory");
+        aList.add(list);
 
-		aList.add(new ANumber("Times redo", 12));
+        aList.add(new ANumber("Times redo", 12));
 
-		Map<String, AList> expParameters = new HashMap<>();
-		return Jsonifier.fromAEntity(aList);
-	}
+        Map<String, AList> expParameters = new HashMap<>();
+        return Jsonifier.fromAEntity(aList);
+    }
 }

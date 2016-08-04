@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.view;
 
-import fr.axonic.avek.gui.util.ViewOrchestrator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,37 +11,38 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class StrategySelectionView extends AbstractView {
-	private final static Logger logger = Logger.getLogger(StrategySelectionView.class);
-	private final static String FXML = "fxml/views/StrategySelectionView.fxml";
+    private final static Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
+    private final static String FXML = "fxml/views/StrategySelectionView.fxml";
 
-	@FXML
-	private Button submit;
-	@FXML
-	private ComboBox<ViewOrchestrator> comboBox;
+    @FXML
+    private Button submit;
+    @FXML
+    private ComboBox<ViewOrchestrator> comboBox;
 
-	private Consumer<ViewOrchestrator> onSetViewMethod;
+    private Consumer<ViewOrchestrator> onSetViewMethod;
 
-	@Override
-	protected void onLoad() {
-		logger.info("Loading StrategySelectionView...");
-		super.load(FXML);
-		logger.debug("StrategySelectionView loaded.");
-	}
+    @Override
+    protected void onLoad() {
+        LOGGER.info("Loading StrategySelectionView...");
+        super.load(FXML);
+        LOGGER.debug("StrategySelectionView loaded.");
+    }
 
-	@FXML
-	void onSubmit(ActionEvent event) {
-		setView(comboBox.getValue());
-	}
+    @FXML
+    void onSubmit(ActionEvent event) {
+        setView(comboBox.getValue());
+    }
 
-	void setAvailableChoices(List<ViewOrchestrator> views) {
-		comboBox.setItems(FXCollections.observableArrayList(views));
-	}
+    void setAvailableChoices(List<ViewOrchestrator> views) {
+        comboBox.setItems(FXCollections.observableArrayList(views));
+    }
 
-	private void setView(ViewOrchestrator view) {
-		onSetViewMethod.accept(view);
-	}
-	void onSetView(Consumer<ViewOrchestrator> onSetViewMethod) {
-		this.onSetViewMethod = onSetViewMethod;
-	}
+    private void setView(ViewOrchestrator view) {
+        onSetViewMethod.accept(view);
+    }
+
+    void onSetView(Consumer<ViewOrchestrator> onSetViewMethod) {
+        this.onSetViewMethod = onSetViewMethod;
+    }
 }
 

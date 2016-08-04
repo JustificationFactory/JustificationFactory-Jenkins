@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fr.axonic.avek.gui.components.filelist.FileListView?>
-<?import fr.axonic.avek.gui.components.jellyBeans.JellyBeanPane?>
+<?import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane?>
 <?import fr.axonic.avek.gui.components.MonitoredSystemView?>
-<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.GeneralizedParametersRoot?>
+<?import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
@@ -17,7 +17,7 @@
     <!-- ◧ ◨ ⬒ ⬓ -->
 
     <stylesheets>
-        <URL value="@../../css/views/GeneralizedView.css" />
+        <URL value="@../../css/views/GeneralizedView.css"/>
     </stylesheets>
 
 
@@ -49,7 +49,8 @@
                     <MonitoredSystemView fx:id="monitoredSystemView"/>
                 </center>
                 <bottom>
-                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER" styleClass="b-history"/>
+                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER"
+                            styleClass="b-history"/>
                 </bottom>
             </BorderPane>
 
@@ -83,13 +84,14 @@
                                 <SplitPane fx:id="fileListSplitPane">
                                     <BorderPane styleClass="title-pane">
                                         <top>
-                                            <Label textAlignment="CENTER" BorderPane.alignment="CENTER" styleClass="title-text">
+                                            <Label textAlignment="CENTER" BorderPane.alignment="CENTER"
+                                                   styleClass="title-text">
                                                 Experimentation parameters
                                             </Label>
                                         </top>
                                         <center>
                                             <ScrollPane styleClass="in-pane-in">
-                                                <GeneralizedParametersRoot fx:id="parametersRoot"/>
+                                                <GeneralizedRoot fx:id="parametersRoot"/>
                                             </ScrollPane>
                                         </center>
                                     </BorderPane>
@@ -104,7 +106,8 @@
                                                             onAction="#onClickFileListViewButton"/>
                                                 </left>
                                                 <center>
-                                                    <Label styleClass="title-text" BorderPane.alignment="CENTER" textAlignment="CENTER">
+                                                    <Label styleClass="title-text" BorderPane.alignment="CENTER"
+                                                           textAlignment="CENTER">
                                                         Complementary files
                                                     </Label>
                                                 </center>

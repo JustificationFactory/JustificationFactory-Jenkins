@@ -15,78 +15,94 @@ import java.util.concurrent.FutureTask;
  * Created by Nathaël N on 25/07/16.
  */
 public class ConcurrentTaskManager {
-	private static Thread platformThread;
-	static {
-		Platform.runLater(() -> platformThread = Thread.currentThread());
-	}
+    private static Thread platformThread;
 
-	private final static Logger logger = Logger.getLogger(ConcurrentTaskManager.class);
-	private volatile static int taskCount = 0;
-	private final Set<FutureTask> running = new HashSet<>();
-	private final Map<Thread,Integer> threads = new HashMap<>();
+    static {
+        Platform.runLater(() -> platformThread = Thread.currentThread());
+    }
 
-	private void run(Runnable r, boolean onPlatform) throws Exception {
-		this.run(() -> {r.run(); return true;},	onPlatform);
-	}
-	private <V> void run(Callable<V> c, boolean onPlatform) throws Exception {
-		if (Thread.currentThread() == platformThread && onPlatform) {
-			c.call();
-			return;
-		}
+    private final static Logger LOGGER = Logger.getLogger(ConcurrentTaskManager.class);
+    private volatile static int taskCount = 0;
+    private final Set<FutureTask> running = new HashSet<>();
+    private final Map<Thread, Integer> threads = new HashMap<>();
 
-		final FutureTask<V> ft = new FutureTask<>(() -> {
-			int id = ++taskCount;
+    private void run(Runnable r, boolean onPlatform) throws Exception {
+        this.run(() -> {
+            r.run();
+            return true;
+        }, onPlatform);
+    }
 
-			logger.debug("Task " + id + " started");
-			V ret = c.call();
-			logger.debug("Task " + id + " finished");
+    private <V> void run(Callable<V> c, boolean onPlatform) throws Exception {
+        if (Thread.currentThread() == platformThread && onPlatform) {
+            c.call();
+            return;
+        }
 
-			Thread t = Thread.currentThread();
-			threads.put(t, threads.containsKey(t) ? threads.get(t) + 1 : 1);
-			return ret;
-		});
+        final FutureTask<V> ft = new FutureTask<>(() -> {
+            int id = ++taskCount;
 
-		if(onPlatform) {
-			Platform.runLater(ft);
-			threads.put(platformThread, threads.containsKey(platformThread) ? threads.get(platformThread) + 1 : 1);
-		}
-		else
-			new Thread(ft).start();
+            LOGGER.debug("Task " + id + " started");
+            V ret = c.call();
+            LOGGER.debug("Task " + id + " finished");
 
-		running.add(ft);
-	}
+            Thread t = Thread.currentThread();
+            threads.put(t, threads.containsKey(t) ? threads.get(t) + 1 : 1);
+            return ret;
+        });
 
-	public boolean runNowOnPlatform(Runnable r) throws Exception {
-		return runNowOnPlatform(() -> {r.run(); return true;});
-	}
-	public <V> V runNowOnPlatform(Callable<V> c) throws Exception {
-		if(Thread.currentThread() == platformThread)
-			c.call();
+        if (onPlatform) {
+            Platform.runLater(ft);
+            threads.put(platformThread, threads.containsKey(platformThread) ? threads.get(platformThread) + 1 : 1);
+        } else {
+            new Thread(ft).start();
+        }
 
-		FutureTask<V> ft = new FutureTask<>(c);
-		Platform.runLater(ft);
-		return ft.get();
-	}
-	public void runLaterOnPlatform(Runnable r) throws Exception {
-		run(r, true);
-	}
-	public <V> void runLaterOnPlatform(Callable<V> c) throws Exception {
-		run(c, true);
-	}
-	public void runLaterOnThread(Runnable r) throws Exception {
-		run(r, false);
-	}
-	public <V> void runLaterOnThread(Callable<V> c) throws Exception {
-		run(c, false);
-	}
+        running.add(ft);
+    }
 
-	public void waitForTasks() throws ExecutionException, InterruptedException {
-		for(FutureTask ft : running)
-			waitForTask(ft);
-	}
-	private Object waitForTask(FutureTask ft) throws ExecutionException, InterruptedException {
-		Object value = ft.get();
-		running.remove(ft);
-		return value;
-	}
+    public boolean runNowOnPlatform(Runnable r) throws Exception {
+        return runNowOnPlatform(() -> {
+            r.run();
+            return true;
+        });
+    }
+
+    public <V> V runNowOnPlatform(Callable<V> c) throws Exception {
+        if (Thread.currentThread() == platformThread) {
+            c.call();
+        }
+
+        FutureTask<V> ft = new FutureTask<>(c);
+        Platform.runLater(ft);
+        return ft.get();
+    }
+
+    public void runLaterOnPlatform(Runnable r) throws Exception {
+        run(r, true);
+    }
+
+    public <V> void runLaterOnPlatform(Callable<V> c) throws Exception {
+        run(c, true);
+    }
+
+    public void runLaterOnThread(Runnable r) throws Exception {
+        run(r, false);
+    }
+
+    public <V> void runLaterOnThread(Callable<V> c) throws Exception {
+        run(c, false);
+    }
+
+    public void waitForTasks() throws ExecutionException, InterruptedException {
+        for (FutureTask ft : running) {
+            waitForTask(ft);
+        }
+    }
+
+    private Object waitForTask(FutureTask ft) throws ExecutionException, InterruptedException {
+        Object value = ft.get();
+        running.remove(ft);
+        return value;
+    }
 }

@@ -11,10 +11,10 @@
          onDragOver="#onDragOver">
 
     <stylesheets>
-        <URL value="@../../css/components/FileListView.css" />
+        <URL value="@../../css/components/FileListView.css"/>
     </stylesheets>
 
-    <ListView fx:id="fileList" />
+    <ListView fx:id="fileList"/>
     <Label fx:id="dragDropPane"
            styleClass="drag-drop-pane">
         +

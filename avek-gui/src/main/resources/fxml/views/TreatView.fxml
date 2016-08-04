@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fr.axonic.avek.gui.components.MonitoredSystemView?>
-<?import fr.axonic.avek.gui.components.parameters.list.parametersGroup.ParametersRoot?>
+<?import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
@@ -11,7 +11,7 @@
          styleClass="out-pane">
 
     <stylesheets>
-        <URL value="@../../css/views/TreatView.css" />
+        <URL value="@../../css/views/TreatView.css"/>
     </stylesheets>
 
     <left>
@@ -42,7 +42,8 @@
                     <MonitoredSystemView fx:id="monitoredSystemView"/>
                 </center>
                 <bottom>
-                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER" styleClass="b-history"/>
+                    <Button fx:id="monitoredSystemHistory" text="History" BorderPane.alignment="CENTER"
+                            styleClass="b-history"/>
                 </bottom>
             </BorderPane>
 

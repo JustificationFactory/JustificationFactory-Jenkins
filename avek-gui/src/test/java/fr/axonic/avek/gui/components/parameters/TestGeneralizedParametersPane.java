@@ -4,7 +4,7 @@ package fr.axonic.avek.gui.components.parameters;
  * Created by Nathaël N on 25/07/16.
  */
 public class TestGeneralizedParametersPane { /*extends ApplicationTest {
-	static { UtilForTests.disableGraphics(); }
+    static { UtilForTests.disableGraphics(); }
 
 	private GeneralizedParametersPane pp;
 

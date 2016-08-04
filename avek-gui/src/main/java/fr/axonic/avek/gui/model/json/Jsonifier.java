@@ -1,88 +1,93 @@
 package fr.axonic.avek.gui.model.json;
 
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import fr.axonic.base.ANumber;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-
 /**
  * Created by Nathaël N on 12/07/16.
  */
 public class Jsonifier<T> {
-	private static final Logger logger = Logger.getLogger(Jsonifier.class);
-	private final Class<T> tClass;
+    private static final Logger LOGGER = Logger.getLogger(Jsonifier.class);
+    private final Class<T> tClass;
 
-	public Jsonifier(Class<T> tClass) {
-		this.tClass = tClass;
-	}
+    public Jsonifier(Class<T> tClass) {
+        this.tClass = tClass;
+    }
 
-	public static String toJson(Object o) {
-		logger.debug("Object to JSON:" + o);
-		return correct(new GsonBuilder()
-				.setPrettyPrinting()
-				.create()
-				.toJson(o));
-	}
-	public T fromJson(String s) {
-		logger.debug("Creating new " + tClass.getTypeName() + " from Json");
-		return new GsonBuilder()
-				.create()
-				.fromJson(s, tClass);
-	}
+    public static String toJson(Object o) {
+        LOGGER.debug("Object to JSON:" + o);
+        return correct(new GsonBuilder()
+                .setPrettyPrinting()
+                .create()
+                .toJson(o));
+    }
 
-	public static String fromAEntity(AEntity entity) {
-		JsonObject json = new JsonObject();
-		json.addProperty("class_name", entity.getClass().toString());
+    public T fromJson(String s) {
+        LOGGER.debug("Creating new " + tClass.getTypeName() + " from Json");
+        return new GsonBuilder()
+                .create()
+                .fromJson(s, tClass);
+    }
 
-		if(entity instanceof AList) {
-			AList<AEntity> list = (AList<AEntity>) entity;
-			JsonArray array = new JsonArray();
+    public static String fromAEntity(AEntity entity) {
+        JsonObject json = new JsonObject();
+        json.addProperty("class_name", entity.getClass().toString());
 
-			for(AEntity ae : list.getList())
-				array.add(new JsonParser().parse(fromAEntity(ae)));
+        if (entity instanceof AList) {
+            AList<AEntity> list = (AList<AEntity>) entity;
+            JsonArray array = new JsonArray();
 
-			json.add("value", array);
-			if(list.getLabel() != null)
-				json.addProperty("label", list.getLabel());
-		}
-		else
-			json.add("value", new JsonParser().parse(toJson(entity)).getAsJsonObject());
+            for (AEntity ae : list.getList()) {
+                array.add(new JsonParser().parse(fromAEntity(ae)));
+            }
 
-		return json.toString();
-	}
-	public static AEntity toAEntity(String src) {
-		JsonObject element = new JsonParser().parse(src).getAsJsonObject();
-		String type = element.get("class_name").getAsString();
+            json.add("value", array);
+            if (list.getLabel() != null) {
+                json.addProperty("label", list.getLabel());
+            }
+        } else {
+            json.add("value", new JsonParser().parse(toJson(entity)).getAsJsonObject());
+        }
 
-		if(type.equals(AList.class.toString())) {
-			JsonArray list = element.get("value").getAsJsonArray();
-			AList alAE = new AList();
+        return json.toString();
+    }
 
-			for(int i=0; i<list.size(); i++)
-				alAE.add(toAEntity(list.get(i).toString()));
+    public static AEntity toAEntity(String src) {
+        JsonObject element = new JsonParser().parse(src).getAsJsonObject();
+        String type = element.get("class_name").getAsString();
 
-			if(element.has("label"))
-				alAE.setLabel(element.get("label").getAsString());
-			return alAE;
-		} else {
-			JsonObject object = element.get("value").getAsJsonObject();
+        if (type.equals(AList.class.toString())) {
+            JsonArray list = element.get("value").getAsJsonArray();
+            AList alAE = new AList();
 
-			if(object.has("format"))
-				return new Jsonifier<>(AVar.class).fromJson(element.get("value").toString());
-		}
+            for (int i = 0; i < list.size(); i++) {
+                alAE.add(toAEntity(list.get(i).toString()));
+            }
 
-		return null;
-	}
+            if (element.has("label")) {
+                alAE.setLabel(element.get("label").getAsString());
+            }
+            return alAE;
+        } else {
+            JsonObject object = element.get("value").getAsJsonObject();
 
-	private static String correct(String json) {
-		String s = json.replaceAll("([0-9]*)\\.0([^0-9])", "$1$2");
-		return s;
-	}
+            if (object.has("format")) {
+                return new Jsonifier<>(AVar.class).fromJson(element.get("value").toString());
+            }
+        }
+
+        return null;
+    }
+
+    private static String correct(String json) {
+        String s = json.replaceAll("([0-9]*)\\.0([^0-9])", "$1$2");
+        return s;
+    }
 
 }

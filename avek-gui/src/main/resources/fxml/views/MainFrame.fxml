@@ -11,7 +11,7 @@
          styleClass="main-frame, out-pane">
 
     <stylesheets>
-        <URL value="@../../css/views/MainFrame.css" />
+        <URL value="@../../css/views/MainFrame.css"/>
     </stylesheets>
 
     <top>
@@ -20,7 +20,7 @@
                 <VBox alignment="CENTER" style="-fx-border-width: 5px; -fx-border-color: transparent">
                     <ImageView fitHeight="45"
                                preserveRatio="true">
-                        <Image url="@../../images/LogoI3S.png" />
+                        <Image url="@../../images/LogoI3S.png"/>
                     </ImageView>
                 </VBox>
             </left>

@@ -11,40 +11,45 @@ import java.net.URL;
  * Created by Nathaël N on 26/07/16.
  */
 public abstract class AbstractView extends BorderPane {
-	private final static Logger logger = Logger.getLogger(AbstractView.class);
+    private final static Logger LOGGER = Logger.getLogger(AbstractView.class);
 
-	private boolean loaded;
+    private boolean loaded;
 
-	AbstractView() {
-		loaded = false;
-	}
+    AbstractView() {
+        loaded = false;
+    }
 
-	public boolean isLoaded() {
-		return loaded;
-	}
-	public final void load() {
-		if(loaded)
-			return;
+    public boolean isLoaded() {
+        return loaded;
+    }
 
-		this.onLoad();
-	}
-	protected abstract void onLoad();
-	protected final void load(String path) {
-		if(loaded)
-			return;
+    public final void load() {
+        if (loaded) {
+            return;
+        }
 
-		URL fxml = getClass().getClassLoader().getResource(path);
+        this.onLoad();
+    }
 
-		FXMLLoader fxmlLoader = new FXMLLoader(fxml);
-		fxmlLoader.setController(this);
-		fxmlLoader.setRoot(this);
+    protected abstract void onLoad();
 
-		try {
-			fxmlLoader.load();
-			loaded = true;
-		} catch (IOException | RuntimeException e) {
-			logger.fatal("Impossible to load FXML", e);
-		}
-	}
+    protected final void load(String path) {
+        if (loaded) {
+            return;
+        }
+
+        URL fxml = getClass().getClassLoader().getResource(path);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(fxml);
+        fxmlLoader.setController(this);
+        fxmlLoader.setRoot(this);
+
+        try {
+            fxmlLoader.load();
+            loaded = true;
+        } catch (IOException | RuntimeException e) {
+            LOGGER.fatal("Impossible to load FXML", e);
+        }
+    }
 
 }

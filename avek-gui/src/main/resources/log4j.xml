@@ -8,8 +8,8 @@
             <param name="ConversionPattern" value="[%p] %d{HH:mm:ss,SSS} %c{1}:%L - %m    [%t]%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMax" value="INFO" />
-            <param name="levelMin" value="TRACE" />
+            <param name="levelMax" value="INFO"/>
+            <param name="levelMin" value="TRACE"/>
         </filter>
     </appender>
 
@@ -19,8 +19,8 @@
             <param name="ConversionPattern" value="[%p] %d{HH:mm:ss,SSS} %c{1}:%L - %m    [%t]%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMax" value="FATAL" />
-            <param name="levelMin" value="WARN" />
+            <param name="levelMax" value="FATAL"/>
+            <param name="levelMin" value="WARN"/>
         </filter>
     </appender>
 
@@ -43,16 +43,16 @@
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] - %m%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMax" value="INFO" />
-            <param name="levelMin" value="INFO" />
+            <param name="levelMax" value="INFO"/>
+            <param name="levelMin" value="INFO"/>
         </filter>
     </appender>
 
     <root>
-        <priority value ="debug" />
-        <appender-ref ref="sout" />
-        <appender-ref ref="serr" />
-        <appender-ref ref="logfile" />
-        <appender-ref ref="userlog" />
+        <priority value="debug"/>
+        <appender-ref ref="sout"/>
+        <appender-ref ref="serr"/>
+        <appender-ref ref="logfile"/>
+        <appender-ref ref="userlog"/>
     </root>
 </log4j:configuration>

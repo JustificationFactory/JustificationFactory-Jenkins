@@ -23,73 +23,76 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 25/07/16.
  */
 public class TestFileList extends ApplicationTest {
-	private final static Logger logger = Logger.getLogger(TestFileList.class);
+    private final static Logger LOGGER = Logger.getLogger(TestFileList.class);
 
-	static { UtilForTests.disableGraphics(); }
+    static {
+        UtilForTests.disableGraphics();
+    }
 
-	private FileListView flv;
+    private FileListView flv;
 
-	@Override
-	public void start(Stage stage) throws Exception {
-		this.flv = new FileListView();
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.flv = new FileListView();
 
-		Scene scene = new Scene(flv, 500, 300);
-		stage.setScene(scene);
-		stage.show();
-	}
+        Scene scene = new Scene(flv, 500, 300);
+        stage.setScene(scene);
+        stage.show();
+    }
 
-	@Before
-	public void before() throws IOException {
-		UtilForTests.createFileArchi();
-	}
-	@After
-	public void after() {
-		UtilForTests.deleteFileArchi();
-	}
+    @Before
+    public void before() throws IOException {
+        UtilForTests.createFileArchi();
+    }
 
-	@Test
-	public void testAddFiles() throws Exception {
-		ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+    @After
+    public void after() {
+        UtilForTests.deleteFileArchi();
+    }
 
-		// Get method FileListView.onAddFiles(File) with authorized use access
-		Method method = FileListView.class.getDeclaredMethod("onAddFiles", List.class);
-		method.setAccessible(true);
+    @Test
+    public void testAddFiles() throws Exception {
+        ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
-		assertEquals(0, flv.getFileList().getItems().size());
+        // Get method FileListView.onAddFiles(File) with authorized use access
+        Method method = FileListView.class.getDeclaredMethod("onAddFiles", List.class);
+        method.setAccessible(true);
 
-		ctm.runNowOnPlatform(() ->
-				method.invoke(flv,
-						Collections.singletonList(
-								new File("./temp/toto/titi.txt"))));
-		assertEquals(1, flv.getFileList().getItems().size());
+        assertEquals(0, flv.getFileList().getItems().size());
 
-		ctm.runNowOnPlatform(() ->
-				method.invoke(flv,
-						Collections.singletonList(
-								new File("./temp/toto/tonton.txt"))));
-		assertEquals(2, flv.getFileList().getItems().size());
+        ctm.runNowOnPlatform(() ->
+                method.invoke(flv,
+                        Collections.singletonList(
+                                new File("./temp/toto/titi.txt"))));
+        assertEquals(1, flv.getFileList().getItems().size());
 
-		// File already added
-		logger.warn("[NOT A WARNING] A deliberate action should show a WARN message\n" +
-				"    \"FileListView - File already added\" should following this (Tests)");
-		ctm.runNowOnPlatform(() ->
-				method.invoke(flv,
-						Collections.singletonList(
-								new File("./temp/toto/titi.txt"))));
-		assertEquals(2, flv.getFileList().getItems().size());
+        ctm.runNowOnPlatform(() ->
+                method.invoke(flv,
+                        Collections.singletonList(
+                                new File("./temp/toto/tonton.txt"))));
+        assertEquals(2, flv.getFileList().getItems().size());
 
-		// File not found
-		logger.error("[NOT AN ERROR] A deliberate action should show a ERROR message\n" +
-				"    \"FileListView - File not found\" should following this (Tests)");
-		ctm.runNowOnPlatform(() ->
-				method.invoke(flv,
-						Collections.singletonList(
-								new File("./temp/toto/ThisIsNotAFile.txt"))));
-		assertEquals(2, flv.getFileList().getItems().size());
-	}
+        // File already added
+        LOGGER.warn("[NOT A WARNING] A deliberate action should show a WARN message\n" +
+                "    \"FileListView - File already added\" should following this (Tests)");
+        ctm.runNowOnPlatform(() ->
+                method.invoke(flv,
+                        Collections.singletonList(
+                                new File("./temp/toto/titi.txt"))));
+        assertEquals(2, flv.getFileList().getItems().size());
+
+        // File not found
+        LOGGER.error("[NOT AN ERROR] A deliberate action should show a ERROR message\n" +
+                "    \"FileListView - File not found\" should following this (Tests)");
+        ctm.runNowOnPlatform(() ->
+                method.invoke(flv,
+                        Collections.singletonList(
+                                new File("./temp/toto/ThisIsNotAFile.txt"))));
+        assertEquals(2, flv.getFileList().getItems().size());
+    }
 
 /* TODO: Not working drag and drop tests
-	@Test
+    @Test
 	public void testDragAndDrop() throws InterruptedException {
 		assertEquals(0, flv.getFileList().getItems().size());
 

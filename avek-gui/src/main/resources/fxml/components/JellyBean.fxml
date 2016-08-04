@@ -7,7 +7,7 @@
          styleClass="jellyBean">
 
     <stylesheets>
-        <URL value="@../../css/components/JellyBean.css" />
+        <URL value="@../../css/components/JellyBean.css"/>
     </stylesheets>
 
     <Button fx:id="jbLabel" styleClass="jellyBeanLabel" onAction="#onClickOnLabel">null</Button>

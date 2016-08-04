@@ -11,7 +11,7 @@
          type="javafx.scene.layout.BorderPane" styleClass="title-pane">
 
     <stylesheets>
-        <URL value="@../../css/views/StrategySelectionView.css" />
+        <URL value="@../../css/views/StrategySelectionView.css"/>
     </stylesheets>
 
     <center>
