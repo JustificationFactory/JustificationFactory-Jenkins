@@ -2,9 +2,12 @@ package fr.axonic.avek.engine.instance.evidence;
 
 import fr.axonic.base.ADate;
 import fr.axonic.base.AEnum;
+import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AStructure;
+import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 /**
@@ -12,19 +15,20 @@ import java.util.GregorianCalendar;
  */
 public class PathologySubjectInformations extends AStructure{
 
-    private AEnum<ObesityType> obesityType;
+    private ARangedEnum<ObesityType> obesityType;
     private ADate beginningOfObesity;
 
-    public PathologySubjectInformations() {
+    public PathologySubjectInformations() throws VerificationException {
         super();
         this.setLabel("Pathology Subject Informations");
         this.setPath("fr.axonic.subject");
         this.setCode("pathology");
 
-        obesityType=new AEnum<>();
+        obesityType=new ARangedEnum<>();
         obesityType.setLabel("Obesity Type");
         obesityType.setCode("obesityType");
         obesityType.setPath("fr.axonic.subject.pathology");
+        obesityType.setRange(AVarHelper.transformToAVar(Arrays.asList(ObesityType.values())));
 
         beginningOfObesity=new ADate();
         beginningOfObesity.setCode("beginningObesity");
@@ -37,7 +41,7 @@ public class PathologySubjectInformations extends AStructure{
         return obesityType;
     }
 
-    private void setObesityType(AEnum<ObesityType> obesityType) {
+    private void setObesityType(ARangedEnum<ObesityType> obesityType) {
         this.obesityType = obesityType;
     }
 

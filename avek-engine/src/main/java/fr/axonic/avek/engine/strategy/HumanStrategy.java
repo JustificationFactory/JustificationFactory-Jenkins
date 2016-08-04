@@ -6,6 +6,13 @@ import fr.axonic.avek.engine.evidence.Evidence;
 import java.util.Map;
 
 public abstract class HumanStrategy extends Strategy{
-		abstract  boolean check(Map<String,Evidence> evidenceRoles, Conclusion conclusion);
+
+	private Comment comment;
+
+	public void addComment(Comment comment){
+		this.comment=comment;
+	}
+
+	public abstract  boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion);
 
 	}
