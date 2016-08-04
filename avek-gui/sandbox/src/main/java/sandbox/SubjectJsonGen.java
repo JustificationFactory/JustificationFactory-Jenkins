@@ -5,6 +5,8 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ADate;
 import fr.axonic.base.ANumber;
 import fr.axonic.base.AString;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 
 import java.io.File;
@@ -30,21 +32,27 @@ public class SubjectJsonGen {
 
     private static String generateSubject() {
         MonitoredSystem ms = new MonitoredSystem(42);
-        ms.addCategory("Static");
 
-        ms.addAVar("Static", new ANumber("Id", 42));
-        ms.addAVar("Static", new ANumber("Age", 25));
-        ms.addAVar("Static", new ANumber("Sex", 1));
+        AList<AEntity> staticList = new AList<>(
+            new ANumber("Id", 42),
+            new ANumber("Age", 25),
+            new ANumber("Sex", 1));
+        staticList.setLabel("Static");
+        ms.addCategory(staticList);
 
-        ms.addCategory("Pathologic");
-        ms.addAVar("Pathologic", new AString("Pathology", "OVERWEIGHT"));
-        ms.addAVar("Pathologic", new ADate("Beginning", new GregorianCalendar()));
-        ms.addAVar("Pathologic", new AString("Type", "Gynoid"));
+        AList<AEntity> pathologicList = new AList<>(
+            new AString("Pathology", "OVERWEIGHT"),
+            new ADate("Beginning", new GregorianCalendar()),
+            new AString("Type", "Gynoid"));
+        pathologicList.setLabel("Pathologic");
+        ms.addCategory(pathologicList);
 
-        ms.addCategory("Dynamic");
-        ms.addAVar("Dynamic", new ANumber("Size", 123.45));
-        ms.addAVar("Dynamic", new ANumber("Weight", 67));
-        ms.addAVar("Dynamic", new ANumber("IMC", 67d / (1.2345 * 1.2345)));
+        AList<AEntity> dynamicList = new AList<>(
+            new ANumber("Size", 123.45),
+            new ANumber("Weight", 67),
+            new ANumber("IMC", 67d / (1.2345 * 1.2345)));
+        dynamicList.setLabel("Dynamic");
+        ms.addCategory(dynamicList);
 
         return Jsonifier.toJson(ms);
     }

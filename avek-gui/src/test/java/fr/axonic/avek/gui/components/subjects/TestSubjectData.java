@@ -7,6 +7,8 @@ import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ADate;
 import fr.axonic.base.ANumber;
 import fr.axonic.base.AString;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -44,15 +46,20 @@ public class TestSubjectData extends ApplicationTest {
     public void testMonitoredSystem() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
         MonitoredSystem ms1 = new MonitoredSystem(42);
-        ms1.addCategory("Category 1");
-        ms1.addAVar("Category 1", new AString("a string", "strval1"));
-        ms1.addAVar("Category 1", new ANumber("an integer", 123456789));
-        ms1.addAVar("Category 1", new ANumber("a double", 12345.6789));
-        ms1.addAVar("Category 1", new ADate("a date", new GregorianCalendar()));
 
-        ms1.addCategory("Category 2");
-        ms1.addAVar("Category 2", new ANumber("an integer", 987654321));
-        ms1.addAVar("Category 2", new ANumber("a double", 98765.4321));
+        AList<AEntity> category1 = new AList<>(
+            new AString("a string", "strval1"),
+            new ANumber("an integer", 123456789),
+            new ANumber("a double", 12345.6789),
+            new ADate("a date", new GregorianCalendar()));
+        category1.setLabel("Category 1");
+        ms1.addCategory(category1);
+
+        AList<AEntity> category2 = new AList<>(
+            new ANumber("an integer", 987654321),
+            new ANumber("a double", 98765.4321));
+        category2.setLabel("Category 2");
+        ms1.addCategory(category2);
 
         ctm.runNowOnPlatform(() -> monitoredSystemView.setMonitoredSystem(ms1));
         assertEquals(2, monitoredSystemView.getPanes().size());
@@ -68,17 +75,24 @@ public class TestSubjectData extends ApplicationTest {
         assertEquals(2, vb.getItems().size());
 
         MonitoredSystem ms2 = new MonitoredSystem(21);
-        ms2.addCategory("Category 1");
-        ms2.addAVar("Category 1", new AString("a string", "strval1"));
-        ms2.addAVar("Category 1", new ANumber("an integer", 123456789));
-        ms2.addAVar("Category 1", new ADate("a date", new GregorianCalendar()));
 
-        ms2.addCategory("Category 2");
-        ms2.addAVar("Category 2", new ANumber("an integer", 987654321));
-        ms2.addAVar("Category 2", new ANumber("a double", 12345.6789));
-        ms2.addAVar("Category 2", new ANumber("a double", 98765.4321));
+        category1 = new AList<>(
+            new AString("a string", "strval1"),
+            new ANumber("an integer", 123456789),
+            new ADate("a date", new GregorianCalendar()));
+        category1.setLabel("Category 1");
+        ms2.addCategory(category1);
 
-        ms2.addCategory("Category 3");
+        category2 = new AList<>(
+                new ANumber("an integer", 987654321),
+                new ANumber("a double", 12345.6789),
+                new ANumber("a double", 98765.4321));
+        category2.setLabel("Category 2");
+        ms2.addCategory(category2);
+
+        AList<AEntity> category3 = new AList<>();
+        category3.setLabel("Category 3");
+        ms2.addCategory(category3);
 
         ctm.runNowOnPlatform(() -> monitoredSystemView.setMonitoredSystem(ms2));
         assertEquals(3, monitoredSystemView.getPanes().size());

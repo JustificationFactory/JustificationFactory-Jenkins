@@ -48,17 +48,23 @@ public class TestJsonifier {
         test2(rangedEnumState);
 
         MonitoredSystem ms = new MonitoredSystem(42);
-        ms.addCategory("Cat1");
-        ms.addCategory("Cat2");
-        ms.addAVar("Cat1", rangedEnumState);
-        ms.addAVar("Cat2", new ANumber(49.3));
+
+        AList<AEntity> cat1 = new AList<>(
+                rangedEnumState,
+                new AString("Some AString"));
+        cat1.setLabel("Cat1");
+        ms.addCategory(cat1);
 
         ARangedEnum<BooleanState> rangedEnumBool = new ARangedEnum<>(BooleanState.FALSE);
         o2 = jsonifier.fromJson(Jsonifier.toJson(rangedEnumBool));
         assertEquals(rangedEnumBool.getValue().toString(), o2.getValue().toString());
         assertEquals(rangedEnumBool.getRange(), o2.getRange());
-        ms.addAVar("Cat2", rangedEnumBool);
-        ms.addAVar("Cat1", new AString("Some AString"));
+
+        AList<AEntity> cat2 = new AList<>(
+                new ANumber(49.3),
+                rangedEnumBool);
+        cat1.setLabel("Cat2");
+        ms.addCategory(cat2);
 
         test2(rangedEnumBool);
 

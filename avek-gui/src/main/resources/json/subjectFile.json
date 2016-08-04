@@ -1,7 +1,7 @@
 {
   "id": 42,
-  "categories": {
-    "Static": [
+  "categories": [
+    [
       {
         "value": 42,
         "format": {
@@ -30,7 +30,7 @@
         "label": "Sex"
       }
     ],
-    "Pathologic": [
+    [
       {
         "value": "OVERWEIGHT",
         "format": {
@@ -44,10 +44,10 @@
         "value": {
           "year": 2016,
           "month": 7,
-          "dayOfMonth": 3,
-          "hourOfDay": 16,
-          "minute": 38,
-          "second": 36
+          "dayOfMonth": 4,
+          "hourOfDay": 15,
+          "minute": 18,
+          "second": 38
         },
         "format": {
           "formatType": "DATE"
@@ -66,7 +66,7 @@
         "label": "Type"
       }
     ],
-    "Dynamic": [
+    [
       {
         "value": 123.45,
         "format": {
@@ -95,5 +95,5 @@
         "label": "IMC"
       }
     ]
-  }
+  ]
 }

@@ -1,6 +1,8 @@
 package fr.axonic.avek.gui.components;
 
 import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.control.*;
 
@@ -14,19 +16,19 @@ public class MonitoredSystemView extends Accordion {
     public void setMonitoredSystem(MonitoredSystem ms) {
         getPanes().clear();
 
-        Map<String, Set<AVar>> map = ms.getMap();
-        for (String category : map.keySet()) {
+        Set<AList<AEntity>> map = ms.getCategories();
+        for (AList<AEntity> category : map) {
             ScrollPane sp = new ScrollPane();
             ListView<Label> list = new ListView<>();
             list.setMaxWidth(Integer.MAX_VALUE);
 
-            getPanes().add(new TitledPane(category, sp));
+            getPanes().add(new TitledPane(category.getLabel(), sp));
             sp.setContent(list);
             sp.setFitToWidth(true);
             sp.setFitToHeight(true);
 
-	        for (AVar av : map.get(category)) {
-		        list.getItems().add(new Label(av.getLabel() + " : " + av.getValue().toString()));
+	        for (AEntity av : category) {
+		        list.getItems().add(new Label(av.getLabel() + " : " + ((AVar)av).getValue().toString()));
 	        }
         }
     }
