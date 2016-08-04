@@ -1,9 +1,9 @@
-package fr.axonic.avek.instance.conclusion;
+package fr.axonic.avek.engine.instance.conclusion;
 
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.conclusion.Limit;
-import fr.axonic.avek.instance.evidence.Stimulation;
-import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.engine.instance.evidence.Stimulation;
+import fr.axonic.avek.engine.instance.evidence.Subject;
 
 import java.util.Arrays;
 

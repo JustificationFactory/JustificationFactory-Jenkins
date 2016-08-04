@@ -1,4 +1,4 @@
-package fr.axonic.avek.instance.evidence;
+package fr.axonic.avek.engine.instance.evidence;
 
 import fr.axonic.avek.engine.conclusion.Limit;
 import fr.axonic.avek.engine.evidence.Element;
@@ -24,6 +24,7 @@ public class Stimulation extends Element implements Limit {
         amplitude.setPath("fr.axonic.stimulation");
         amplitude.setCode("amplitude");
         amplitude.setUnit("mA");
+        frequency=new ANumber();
         this.frequency.setLabel("Frequency");
         frequency.setPath("fr.axonic.stimulation");
         frequency.setCode("frequency");

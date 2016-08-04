@@ -1,15 +1,16 @@
 package fr.axonic.avek.engine;
 
 
-import fr.axonic.avek.instance.conclusion.Experimentation;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.Stimulation;
-import fr.axonic.avek.instance.evidence.Subject;
-import fr.axonic.avek.instance.evidence.Result;
-import fr.axonic.avek.instance.strategy.TreatStrategy;
+import fr.axonic.avek.engine.instance.conclusion.Experimentation;
+import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.engine.instance.evidence.Stimulation;
+import fr.axonic.avek.engine.instance.evidence.Subject;
+import fr.axonic.avek.engine.instance.evidence.Result;
+import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ import static org.junit.Assert.*;
 public class PatternTest {
 
     @Test
-    public void testApplicableWithNotGoodOrderEvidenceType() throws WrongEvidenceException {
+    public void testApplicableWithNotGoodOrderEvidenceType() throws WrongEvidenceException, VerificationException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
@@ -40,7 +41,7 @@ public class PatternTest {
     }
 
     @Test
-    public void testApplicableWithNotGoodEvidenceType() throws WrongEvidenceException {
+    public void testApplicableWithNotGoodEvidenceType() throws WrongEvidenceException, VerificationException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         EvidenceRoleType rtResult = new EvidenceRoleType("subject", Result.class);
@@ -55,7 +56,7 @@ public class PatternTest {
     }
 
     @Test(expected = StepBuildingException.class)
-    public void testStepWithNotGoodOrderEvidenceType() throws WrongEvidenceException, StepBuildingException {
+    public void testStepWithNotGoodOrderEvidenceType() throws WrongEvidenceException, StepBuildingException, VerificationException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
@@ -73,7 +74,7 @@ public class PatternTest {
     }
 
     @Test
-    public void testGoodStep() throws WrongEvidenceException, StepBuildingException {
+    public void testGoodStep() throws WrongEvidenceException, StepBuildingException, VerificationException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);

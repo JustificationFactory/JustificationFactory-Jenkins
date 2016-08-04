@@ -4,19 +4,20 @@ import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
-import fr.axonic.avek.instance.conclusion.Effect;
-import fr.axonic.avek.instance.conclusion.Experimentation;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.*;
-import fr.axonic.avek.instance.strategy.TreatStrategy;
+import fr.axonic.avek.engine.instance.conclusion.Effect;
+import fr.axonic.avek.engine.instance.conclusion.Experimentation;
+import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.engine.instance.evidence.*;
+import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.validation.exception.VerificationException;
 
 import java.util.Arrays;
 
 
 public class TestDeclarationPatterns {
 
-	public static void main(String[] args) throws WrongEvidenceException, StepBuildingException {
+	public static void main(String[] args) throws WrongEvidenceException, StepBuildingException, VerificationException {
 		EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
 		EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
 		ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);

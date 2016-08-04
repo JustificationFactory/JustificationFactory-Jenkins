@@ -1,4 +1,4 @@
-package fr.axonic.avek.instance.evidence;
+package fr.axonic.avek.engine.instance.evidence;
 
 import fr.axonic.avek.engine.conclusion.Limit;
 import fr.axonic.avek.engine.evidence.Element;
@@ -12,7 +12,7 @@ public class Subject extends Element implements Limit {
     private DynamicSubjectInformations dynamicInformations;
     private PathologySubjectInformations pathologyInformations;
 
-    public Subject() {
+    public Subject() throws VerificationException {
         super();
         this.setLabel("Subject");
         this.setPath("fr.axonic");

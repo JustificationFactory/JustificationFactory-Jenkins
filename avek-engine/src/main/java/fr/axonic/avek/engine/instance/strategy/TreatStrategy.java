@@ -1,10 +1,10 @@
-package fr.axonic.avek.instance.strategy;
+package fr.axonic.avek.engine.instance.strategy;
 
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.Stimulation;
-import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.engine.instance.evidence.Stimulation;
+import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.engine.strategy.ComputedStrategy;
 
 import java.util.Map;
