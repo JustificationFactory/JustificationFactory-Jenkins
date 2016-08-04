@@ -1,12 +1,11 @@
 package fr.axonic.avek.engine.instance.evidence;
 
-import fr.axonic.base.ADate;
-import fr.axonic.base.AEnum;
-import fr.axonic.base.ANumber;
-import fr.axonic.base.AString;
+import fr.axonic.base.*;
 import fr.axonic.base.engine.AStructure;
+import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 /**
@@ -14,20 +13,21 @@ import java.util.GregorianCalendar;
  */
 public class StaticSubjectInformations extends AStructure{
 
-    private AEnum<Gender> gender;
+    private ARangedEnum<Gender> gender;
     private ADate birthday;
     private AString name;
     private ANumber height;
 
-    public StaticSubjectInformations() {
+    public StaticSubjectInformations() throws VerificationException {
         super();
         this.setCode("static");
         this.setPath("fr.axonic.subject");
 
-        gender=new AEnum<>();
+        gender=new ARangedEnum<>();
         gender.setLabel("Gender");
         gender.setCode("gender");
         gender.setPath("fr.axonic.subject.static");
+        gender.setRange(AVarHelper.transformToAVar(Arrays.asList(Gender.values())));
 
         birthday=new ADate();
         birthday.setLabel("Birthday");
@@ -51,7 +51,7 @@ public class StaticSubjectInformations extends AStructure{
         return gender;
     }
 
-    private void setGender(AEnum<Gender> gender) {
+    private void setGender(ARangedEnum<Gender> gender) {
         this.gender = gender;
     }
 
