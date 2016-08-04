@@ -6,6 +6,13 @@
 
     <artifactId>avek-engine</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>fr.axonic.avek</groupId>
+            <artifactId>avek-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <parent>
         <groupId>fr.axonic.avek</groupId>
         <artifactId>avek</artifactId>
