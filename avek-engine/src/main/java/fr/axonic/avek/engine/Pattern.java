@@ -16,12 +16,17 @@ public class Pattern {
 	private String id;
 	private ConclusionType conclusionType;
 
-	public Pattern(String aName, Strategy aStrategy, List<EvidenceRoleType> roleTypeList, 
+	public Pattern(String id,String aName, Strategy aStrategy, List<EvidenceRoleType> roleTypeList,
 			ConclusionType aConclusionExperimentationType) {
+		this.id=id;
 		name = aName;
 		strategy = aStrategy;
 		roleTypes= roleTypeList;
 		conclusionType = aConclusionExperimentationType;
+	}
+	public Pattern(String aName, Strategy aStrategy, List<EvidenceRoleType> roleTypeList,
+				   ConclusionType aConclusionExperimentationType) {
+		this("0",aName,aStrategy,roleTypeList,aConclusionExperimentationType);
 	}
 	
 	public boolean applicable(List<EvidenceRole> asList) {
@@ -74,4 +79,43 @@ public class Pattern {
 				+ conclusionType + "]";
 	}
 
+	public List<EvidenceRoleType> getRoleTypes() {
+		return roleTypes;
+	}
+
+	public void setRoleTypes(List<EvidenceRoleType> roleTypes) {
+		this.roleTypes = roleTypes;
+	}
+
+	public Strategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public ConclusionType getConclusionType() {
+		return conclusionType;
+	}
+
+	public void setConclusionType(ConclusionType conclusionType) {
+		this.conclusionType = conclusionType;
+	}
 }
