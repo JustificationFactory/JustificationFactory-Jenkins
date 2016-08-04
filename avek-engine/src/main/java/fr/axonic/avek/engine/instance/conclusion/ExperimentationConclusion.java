@@ -28,4 +28,29 @@ public class ExperimentationConclusion extends Conclusion<Experimentation> {
         this.subject = subject;
         this.stimulation = stimulation;
     }
+
+    public Stimulation getStimulation() {
+        return stimulation;
+    }
+
+    public void setStimulation(Stimulation stimulation) {
+        if(this.stimulation!=null){
+            limits.remove(stimulation);
+        }
+        this.stimulation = stimulation;
+        limits.add(stimulation);
+
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        if(this.subject!=null){
+            limits.remove(subject);
+        }
+        this.subject = subject;
+        limits.add(subject);
+    }
 }
