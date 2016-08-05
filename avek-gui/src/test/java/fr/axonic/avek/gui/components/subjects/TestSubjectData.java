@@ -45,7 +45,7 @@ public class TestSubjectData extends ApplicationTest {
     @Test
     public void testMonitoredSystem() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-        MonitoredSystem ms1 = new MonitoredSystem(42);
+        MonitoredSystem ms1 = new MonitoredSystem(new AString("id","42A"));
 
         AList<AEntity> category1 = new AList<>(
             new AString("a string", "strval1"),
@@ -74,7 +74,7 @@ public class TestSubjectData extends ApplicationTest {
         vb = (ListView<Label>) sp.getContent();
         assertEquals(2, vb.getItems().size());
 
-        MonitoredSystem ms2 = new MonitoredSystem(21);
+        MonitoredSystem ms2 = new MonitoredSystem(new AString("id","21B"));
 
         category1 = new AList<>(
             new AString("a string", "strval1"),

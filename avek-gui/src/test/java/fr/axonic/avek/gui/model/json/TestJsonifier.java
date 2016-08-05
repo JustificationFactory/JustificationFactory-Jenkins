@@ -47,7 +47,7 @@ public class TestJsonifier {
         assertEquals(rangedEnumState.getRange(), o2.getRange());
         test2(rangedEnumState);
 
-        MonitoredSystem ms = new MonitoredSystem(42);
+        MonitoredSystem ms = new MonitoredSystem(new AString("id","42A"));
 
         AList<AEntity> cat1 = new AList<>(
                 rangedEnumState,
@@ -73,7 +73,6 @@ public class TestJsonifier {
         assertEquals(oJson, o2Json);
     }
 
-    @Ignore
     @Test
     public void testAListOfAEntities() {
         AList<AEntity> aList = new AList<>();
@@ -117,5 +116,4 @@ public class TestJsonifier {
         String o2Json = Jsonifier.fromAEntity(Jsonifier.toAEntity(oJson));
         assertEquals(oJson, o2Json);
     }
-
 }

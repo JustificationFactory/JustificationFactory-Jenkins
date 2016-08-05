@@ -107,8 +107,8 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
         subject.setPathologyInformations(pathologyInfos);
         Evidence<Stimulation> stimulation0 = new Evidence<Stimulation>("Stimulation 0", stimulation);
         Evidence<Subject> subject0 = new Evidence<Subject>("Subject 0",subject);
-        EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
-        EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
+        EvidenceRoleType<Stimulation> rtStimulation = new EvidenceRoleType<>("stimulation", Stimulation.class);
+        EvidenceRoleType<Subject> rtSubject = new EvidenceRoleType<>("subject", Subject.class);
         EvidenceRole evStimulation0 = rtStimulation.create(stimulation0);
         EvidenceRole evSubject0 = rtSubject.create(subject0);
         baseEvidences.add(evStimulation0);

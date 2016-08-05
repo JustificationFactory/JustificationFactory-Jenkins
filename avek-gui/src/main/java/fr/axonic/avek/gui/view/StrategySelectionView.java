@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import fr.axonic.avek.gui.Orchestrator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
-class StrategySelectionView extends AbstractView {
+public class StrategySelectionView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
     private final static String FXML = "fxml/views/StrategySelectionView.fxml";
 
@@ -30,7 +31,7 @@ class StrategySelectionView extends AbstractView {
         Orchestrator.submitChoice(comboBox.getValue());
     }
 
-    void setAvailableChoices(List<String> choices) {
+    public void setAvailableChoices(List<String> choices) {
         comboBox.setItems(FXCollections.observableArrayList(choices));
     }
 }

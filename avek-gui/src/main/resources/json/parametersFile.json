@@ -1,8 +1,8 @@
 {
-  "class_name": "class fr.axonic.base.engine.AList",
+  "class_name": "fr.axonic.base.engine.AList",
   "value": [
     {
-      "class_name": "class fr.axonic.base.ANumber",
+      "class_name": "fr.axonic.base.ANumber",
       "value": {
         "value": 42,
         "format": {
@@ -14,7 +14,7 @@
       }
     },
     {
-      "class_name": "class fr.axonic.base.ABoolean",
+      "class_name": "fr.axonic.base.ABoolean",
       "value": {
         "value": true,
         "format": {
@@ -26,10 +26,10 @@
       }
     },
     {
-      "class_name": "class fr.axonic.base.engine.AList",
+      "class_name": "fr.axonic.base.engine.AList",
       "value": [
         {
-          "class_name": "class fr.axonic.base.ANumber",
+          "class_name": "fr.axonic.base.ANumber",
           "value": {
             "value": 12.34,
             "format": {
@@ -41,15 +41,15 @@
           }
         },
         {
-          "class_name": "class fr.axonic.base.ADate",
+          "class_name": "fr.axonic.base.ADate",
           "value": {
             "value": {
               "year": 2016,
               "month": 7,
-              "dayOfMonth": 3,
-              "hourOfDay": 16,
-              "minute": 38,
-              "second": 31
+              "dayOfMonth": 5,
+              "hourOfDay": 11,
+              "minute": 43,
+              "second": 0
             },
             "format": {
               "formatType": "DATE"
@@ -60,10 +60,10 @@
           }
         },
         {
-          "class_name": "class fr.axonic.base.engine.AList",
+          "class_name": "fr.axonic.base.engine.AList",
           "value": [
             {
-              "class_name": "class fr.axonic.base.ANumber",
+              "class_name": "fr.axonic.base.ANumber",
               "value": {
                 "value": 42,
                 "format": {
@@ -75,7 +75,7 @@
               }
             },
             {
-              "class_name": "class fr.axonic.base.AString",
+              "class_name": "fr.axonic.base.AString",
               "value": {
                 "value": "TheSubSubStringValue",
                 "format": {
@@ -87,7 +87,7 @@
               }
             },
             {
-              "class_name": "class fr.axonic.base.ANumber",
+              "class_name": "fr.axonic.base.ANumber",
               "value": {
                 "value": 49.3,
                 "format": {
@@ -102,7 +102,7 @@
           "label": "SubList"
         },
         {
-          "class_name": "class fr.axonic.base.ABoolean",
+          "class_name": "fr.axonic.base.ABoolean",
           "value": {
             "value": false,
             "format": {
@@ -117,7 +117,7 @@
       "label": "SubCategory"
     },
     {
-      "class_name": "class fr.axonic.base.ANumber",
+      "class_name": "fr.axonic.base.ANumber",
       "value": {
         "value": 12,
         "format": {

@@ -37,7 +37,7 @@ public class Jsonifier<T> {
 
     public static String fromAEntity(AEntity entity) {
         JsonObject json = new JsonObject();
-        json.addProperty("class_name", entity.getClass().toString());
+        json.addProperty("class_name", entity.getClass().getCanonicalName());
 
         if (entity instanceof AList) {
             AList<AEntity> list = (AList<AEntity>) entity;
@@ -55,14 +55,14 @@ public class Jsonifier<T> {
             json.add("value", new JsonParser().parse(toJson(entity)).getAsJsonObject());
         }
 
-        return json.toString();
+        return new GsonBuilder().setPrettyPrinting().create().toJson(json);
     }
 
     public static AEntity toAEntity(String src) {
         JsonObject element = new JsonParser().parse(src).getAsJsonObject();
         String type = element.get("class_name").getAsString();
 
-        if (type.equals(AList.class.toString())) {
+        if (type.equals(AList.class.getName())) {
             JsonArray list = element.get("value").getAsJsonArray();
             AList alAE = new AList();
 
@@ -75,8 +75,13 @@ public class Jsonifier<T> {
             }
             return alAE;
         } else {
-            JsonObject object = element.get("value").getAsJsonObject();
+            try {
+                return (AEntity) new Jsonifier<>(Class.forName(type)).fromJson(element.get("value").toString());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
+            JsonObject object = element.get("value").getAsJsonObject();
             if (object.has("format")) {
                 return new Jsonifier<>(AVar.class).fromJson(element.get("value").toString());
             }

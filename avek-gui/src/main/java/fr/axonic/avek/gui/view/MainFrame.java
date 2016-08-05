@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.view;
 
+import fr.axonic.avek.gui.Orchestrator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Created by Nathaël N on 26/07/16.

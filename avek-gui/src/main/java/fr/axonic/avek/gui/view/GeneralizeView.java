@@ -50,7 +50,7 @@ public class GeneralizeView extends AbstractView {
     private void initialize() {
         new Thread(() -> { // Load asynchronously
             Platform.runLater(() ->
-                    DataBus.getExperimentParameters().forEach(parametersRoot::addParameter));
+                    DataBus.getExperimentParams().forEach(parametersRoot::addParameter));
 
             Platform.runLater(() ->
                     monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));

@@ -40,7 +40,7 @@ public class TreatView extends AbstractView {
                     monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
 
             Platform.runLater(() ->
-                    DataBus.getExperimentParameters().forEach(parametersRoot::addParameter));
+                    DataBus.getExperimentParams().forEach(parametersRoot::addParameter));
         }).start();
     }
 

@@ -1,15 +1,22 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui;
 
 import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
 import fr.axonic.avek.engine.Pattern;
 import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.instance.evidence.Stimulation;
+import fr.axonic.avek.engine.instance.evidence.Subject;
+import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.view.*;
+import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -38,9 +45,12 @@ public class Orchestrator {
             evidences = adAPI.getBaseEvidences();
             patternList = adAPI.getPossiblePatterns(evidences);
 
+            setEvidencesInDataBus();
+
             if (patternList.size() == 1) {
-                if (setViewFromPattern(patternList.get(0)))
+                if (setViewFromPattern(patternList.get(0))) {
                     return;
+                }
             }
 
             StrategySelectionView ssv = new StrategySelectionView();
@@ -48,6 +58,55 @@ public class Orchestrator {
             List<String> names = patternList.stream().map(Pattern::getName).collect(Collectors.toList());
             ssv.setAvailableChoices(names);
         }).start();
+    }
+
+    private void setEvidencesInDataBus() {
+        for(EvidenceRole evidenceRole : evidences) {
+            try {
+                switch (evidenceRole.getRole()) {
+                    case "subject":
+                        Subject subject = (Subject) evidenceRole.getEvidence().getElement();
+
+                        MonitoredSystem ms = new MonitoredSystem(subject.getId());
+                        Map<String, AEntity> map = subject.getStaticInformations().getFieldsContainer();
+                        System.err.println(map);
+                        AList<AEntity> al = new AList<>();
+                        al.setLabel("Static");
+                        al.addAll(map.values());
+                        ms.addCategory(al);
+
+                        map = subject.getDynamicInformations().getFieldsContainer();
+                        System.err.println(map);
+                        al = new AList<>();
+                        al.setLabel("Dynamic");
+                        al.addAll(map.values());
+                        ms.addCategory(al);
+
+                        map = subject.getPathologyInformations().getFieldsContainer();
+                        System.err.println(map);
+                        al = new AList<>();
+                        al.setLabel("Pathologic");
+                        al.addAll(map.values());
+                        ms.addCategory(al);
+
+                        DataBus.setMonitoredSystem(ms);
+                        System.err.println(ms);
+                        break;
+                    case "stimulation":
+                        Stimulation stimulation = (Stimulation) evidenceRole.getEvidence().getElement();
+
+                        AList<AEntity> list = new AList<>();
+                        list.setLabel("root");
+                        list.addAll(stimulation.getFieldsContainer().values());
+                        DataBus.setExperimentParams(list);
+                        break;
+                    default:
+                        LOGGER.warn("Unknown Evidence role: " + evidenceRole.getRole() + " in " + evidenceRole);
+                }
+            } catch (RuntimeException e) {
+                LOGGER.error("Impossible to treat Evidence role: " + evidenceRole, e);
+            }
+        }
     }
 
     private boolean setViewFromPattern(Pattern p) {
@@ -71,7 +130,7 @@ public class Orchestrator {
     }
 
 
-    public static void setFrame(MainFrame frame) {
+    static void setFrame(MainFrame frame) {
         INSTANCE.frame = frame;
         try {
             INSTANCE.orchestrate();

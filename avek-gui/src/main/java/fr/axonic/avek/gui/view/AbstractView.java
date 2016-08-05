@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

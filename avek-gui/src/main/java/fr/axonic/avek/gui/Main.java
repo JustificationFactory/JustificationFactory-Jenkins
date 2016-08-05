@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-import fr.axonic.avek.gui.view.*;
+import fr.axonic.avek.gui.view.MainFrame;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

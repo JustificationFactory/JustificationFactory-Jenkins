@@ -19,12 +19,39 @@ import java.util.Map;
  * Created by Nathaël N on 28/07/16.
  */
 public class DataBus {
+    private static final DataBus INSTANCE = new DataBus();
+
+    private MonitoredSystem monitoredSystem;
+    private AList<AEntity> experimentParams;
+    private Map<String, ARangedEnum> experimentResults;
 
     public static MonitoredSystem getMonitoredSystem() {
-        //String monitoredSystemJson = Util.getFileContent("json/subjectFile.json");
+        return INSTANCE.monitoredSystem;
+    }
+    public static void setMonitoredSystem(MonitoredSystem monitoredSystem) {
+        INSTANCE.monitoredSystem = monitoredSystem;
+    }
+
+    public static AList<AEntity> getExperimentParams() {
+        return INSTANCE.experimentParams;
+    }
+    public static void setExperimentParams(AList<AEntity> experimentParams) {
+        INSTANCE.experimentParams = experimentParams;
+    }
+
+    public static Map<String, ARangedEnum> getExperimentResults() {
+        return INSTANCE.experimentResults;
+    }
+    public static void setExperimentResults(Map<String, ARangedEnum> experimentResults) {
+        INSTANCE.experimentResults = experimentResults;
+    }
+
+    // MOCK
+    static {
+        //String monitoredSystemJson = Util.getFileContent("json/MonitoredSystemFile.json");
         //return new Jsonifier<>(MonitoredSystem.class).fromJson(monitoredSystemJson);
 
-        MonitoredSystem ms = new MonitoredSystem(42);
+        MonitoredSystem ms = new MonitoredSystem(new AString("id", "42X"));
 
         AList<AEntity> staticList = new AList<>(
                 new ANumber("Id", 42),
@@ -47,16 +74,15 @@ public class DataBus {
         dynamicList.setLabel("Dynamic");
         ms.addCategory(dynamicList);
 
-        return ms;
+        setMonitoredSystem(ms);
     }
 
-    public static AList<AEntity> getExperimentParameters() {
+    static {
         String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
-
-        return (AList<AEntity>) Jsonifier.toAEntity(experimentParametersJson);
+        setExperimentParams((AList<AEntity>)Jsonifier.toAEntity(experimentParametersJson));
     }
 
-    public static Map<String, ARangedEnum> getExperimentResults() {
+    static {
         String experimentResultsJson = Util.getFileContent("json/resultEnum1.json");
 
         Map<String, LinkedTreeMap> map1 =
@@ -70,8 +96,6 @@ public class DataBus {
                             .fromJson(Jsonifier.toJson(entry.getValue())));
         }
 
-        System.out.println(expResMap);
-
-        return expResMap;
+        setExperimentResults(expResMap);
     }
 }

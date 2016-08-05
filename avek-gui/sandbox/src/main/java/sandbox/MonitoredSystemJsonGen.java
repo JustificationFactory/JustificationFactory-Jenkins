@@ -18,11 +18,11 @@ import java.util.GregorianCalendar;
 /**
  * Created by Nathaël N on 12/07/16.
  */
-public class SubjectJsonGen {
+public class MonitoredSystemJsonGen {
 
     public static void main(String[] args) throws VerificationException, IOException {
         String subjectJson = generateSubject();
-        File f = new File("./avek-gui/src/main/resources/json/subjectFile.json");
+        File f = new File("./avek-gui/src/main/resources/json/MonitoredSystemFile.json");
         f.delete();
         f.createNewFile();
 
@@ -31,7 +31,7 @@ public class SubjectJsonGen {
     }
 
     private static String generateSubject() {
-        MonitoredSystem ms = new MonitoredSystem(42);
+        MonitoredSystem ms = new MonitoredSystem(new AString("id", "42A"));
 
         AList<AEntity> staticList = new AList<>(
             new ANumber("Id", 42),
@@ -54,6 +54,6 @@ public class SubjectJsonGen {
         dynamicList.setLabel("Dynamic");
         ms.addCategory(dynamicList);
 
-        return Jsonifier.toJson(ms);
+        return Jsonifier.fromAEntity(ms);
     }
 }

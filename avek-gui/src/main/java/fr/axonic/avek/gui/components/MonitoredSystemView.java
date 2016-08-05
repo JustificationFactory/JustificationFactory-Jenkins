@@ -6,7 +6,6 @@ import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.control.*;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
