@@ -35,13 +35,8 @@ public class TreatView extends AbstractView {
 
     @FXML
     private void initialize() {
-        new Thread(() -> { // Load asynchronously
-            Platform.runLater(() ->
-                    monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
-
-            Platform.runLater(() ->
-                    DataBus.getExperimentParams().forEach(parametersRoot::addParameter));
-        }).start();
+        monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
+        DataBus.getExperimentParams().forEach(parametersRoot::addParameter);
     }
 
     @FXML

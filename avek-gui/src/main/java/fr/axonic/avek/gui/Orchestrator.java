@@ -1,16 +1,13 @@
 package fr.axonic.avek.gui;
 
-import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
-import fr.axonic.avek.engine.Pattern;
-import fr.axonic.avek.engine.WrongEvidenceException;
+import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.*;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.engine.AEntity;
-import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.*;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
@@ -69,28 +66,24 @@ public class Orchestrator {
 
                         MonitoredSystem ms = new MonitoredSystem(subject.getId());
                         Map<String, AEntity> map = subject.getStaticInformations().getFieldsContainer();
-                        System.err.println(map);
                         AList<AEntity> al = new AList<>();
                         al.setLabel("Static");
                         al.addAll(map.values());
                         ms.addCategory(al);
 
                         map = subject.getDynamicInformations().getFieldsContainer();
-                        System.err.println(map);
                         al = new AList<>();
                         al.setLabel("Dynamic");
                         al.addAll(map.values());
                         ms.addCategory(al);
 
                         map = subject.getPathologyInformations().getFieldsContainer();
-                        System.err.println(map);
                         al = new AList<>();
                         al.setLabel("Pathologic");
                         al.addAll(map.values());
                         ms.addCategory(al);
 
                         DataBus.setMonitoredSystem(ms);
-                        System.err.println(ms);
                         break;
                     case "stimulation":
                         Stimulation stimulation = (Stimulation) evidenceRole.getEvidence().getElement();

@@ -48,23 +48,17 @@ public class GeneralizeView extends AbstractView {
 
     @FXML
     private void initialize() {
-        new Thread(() -> { // Load asynchronously
-            Platform.runLater(() ->
-                    DataBus.getExperimentParams().forEach(parametersRoot::addParameter));
+        DataBus.getExperimentParams().forEach(parametersRoot::addParameter);
+        monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
 
-            Platform.runLater(() ->
-                    monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
-
-            Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
-            for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
-                List<String> ls = new ArrayList<>();
-                for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
-                    ls.add(ae.getValue().toString());
-                }
-                Platform.runLater(() ->
-                        jellyBeanPane.addJellyBean(entry.getKey(), ls));
+        Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
+        for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
+            List<String> ls = new ArrayList<>();
+            for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
+                ls.add(ae.getValue().toString());
             }
-        }).start();
+            jellyBeanPane.addJellyBean(entry.getKey(), ls);
+        }
     }
 
 

@@ -45,23 +45,20 @@ public class EstablishEffectView extends AbstractView {
 
     @FXML
     private void initialize() {
-        new Thread(() -> { // Load asynchronously
-            Platform.runLater(() -> monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem()));
+        monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
 
-            Platform.runLater(() ->
-                    DataBus.getExperimentParams().forEach(parametersRoot::addParameter));
+        DataBus.getExperimentParams().forEach(parametersRoot::addParameter);
 
-            Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
-            Map<String, List<String>> map = new HashMap<>();
-            for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
-                List<String> ls = new ArrayList<>();
-                for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
-                    ls.add(ae.getValue().toString());
-                }
-                map.put(entry.getKey(), ls);
+        Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
+        Map<String, List<String>> map = new HashMap<>();
+        for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
+            List<String> ls = new ArrayList<>();
+            for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
+                ls.add(ae.getValue().toString());
             }
-            Platform.runLater(() -> jellyBeanSelector.setJellyBeansChoice(map));
-        }).start();
+            map.put(entry.getKey(), ls);
+        }
+        jellyBeanSelector.setJellyBeansChoice(map);
     }
 
     @FXML
