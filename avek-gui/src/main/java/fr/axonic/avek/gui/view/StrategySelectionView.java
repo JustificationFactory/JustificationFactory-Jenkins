@@ -8,18 +8,15 @@ import javafx.scene.control.ComboBox;
 import org.apache.log4j.Logger;
 
 import java.util.List;
-import java.util.function.Consumer;
 
-public class StrategySelectionView extends AbstractView {
+class StrategySelectionView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
     private final static String FXML = "fxml/views/StrategySelectionView.fxml";
 
     @FXML
     private Button submit;
     @FXML
-    private ComboBox<ViewOrchestrator> comboBox;
-
-    private Consumer<ViewOrchestrator> onSetViewMethod;
+    private ComboBox<String> comboBox;
 
     @Override
     protected void onLoad() {
@@ -30,19 +27,10 @@ public class StrategySelectionView extends AbstractView {
 
     @FXML
     void onSubmit(ActionEvent event) {
-        setView(comboBox.getValue());
+        Orchestrator.submitChoice(comboBox.getValue());
     }
 
-    void setAvailableChoices(List<ViewOrchestrator> views) {
-        comboBox.setItems(FXCollections.observableArrayList(views));
-    }
-
-    private void setView(ViewOrchestrator view) {
-        onSetViewMethod.accept(view);
-    }
-
-    void onSetView(Consumer<ViewOrchestrator> onSetViewMethod) {
-        this.onSetViewMethod = onSetViewMethod;
+    void setAvailableChoices(List<String> choices) {
+        comboBox.setItems(FXCollections.observableArrayList(choices));
     }
 }
-

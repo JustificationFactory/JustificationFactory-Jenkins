@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import fr.axonic.avek.gui.view.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -31,19 +32,7 @@ public class Main extends Application {
         primaryStage.show();
         LOGGER.debug("MainFrame created.");
 
-        ViewOrchestrator oNull = new ViewOrchestrator(null, "Strategy chooser");
-        ViewOrchestrator o3 = new ViewOrchestrator(new GeneralizeView(), "Generalize");
-        o3.addFollowing(oNull);
-        ViewOrchestrator o2 = new ViewOrchestrator(new EstablishEffectView(), "Establish effects");
-        o2.addFollowing(o3);
-        ViewOrchestrator o1 = new ViewOrchestrator(new TreatView(), "Treat");
-        o1.addFollowing(o2);
-
-        oNull.addFollowing(o1);
-        oNull.addFollowing(o2);
-        oNull.addFollowing(o3);
-
-        mainFrame.setView(oNull);
+        Orchestrator.setFrame(mainFrame);
     }
 
     MainFrame getMainFrame() {

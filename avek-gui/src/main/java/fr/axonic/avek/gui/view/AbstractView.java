@@ -6,6 +6,9 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Nathaël N on 26/07/16.
@@ -13,10 +16,14 @@ import java.net.URL;
 public abstract class AbstractView extends BorderPane {
     private final static Logger LOGGER = Logger.getLogger(AbstractView.class);
 
+    private final Set<AbstractView> orchestrator;
+
+
     private boolean loaded;
 
     AbstractView() {
         loaded = false;
+        orchestrator = new LinkedHashSet<>();
     }
 
     public boolean isLoaded() {

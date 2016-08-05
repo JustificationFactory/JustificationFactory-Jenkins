@@ -22,9 +22,6 @@ public class MainFrame extends BorderPane {
     @FXML
     private Button btnStrategy;
 
-
-    private ViewOrchestrator orchestrator;
-
     public MainFrame() {
         FXMLLoader fxmlLoader = new FXMLLoader(FXML);
         fxmlLoader.setController(this);
@@ -41,38 +38,13 @@ public class MainFrame extends BorderPane {
 
     @FXML
     private void onClicStrategyButton(ActionEvent event) {
-        List<ViewOrchestrator> orchs = orchestrator.getFollowing();
-        if (orchs.size() == 1) {
-            setView(orchs.get(0));
-        } else {
-            StrategySelectionView ssv = new StrategySelectionView();
-            setCenter(ssv); // remove abstract view currently loaded
-            ssv.load();
-
-            ssv.setAvailableChoices(orchestrator.getFollowing());
-            ssv.onSetView(this::setView);
-
-            btnStrategy.setVisible(false);
-        }
+        Orchestrator.onValidate();
     }
 
 
-    public void setView(ViewOrchestrator view) {
-        if (view == null) {
-            return;
-        }
-
-        this.orchestrator = view;
-        AbstractView av = view.getView();
-        if (av == null) {
-            onClicStrategyButton(null);
-        } else {
-            setCenter(view.getView()); // remove abstract view currently loaded
-            view.getView().load();
-            btnStrategy.setVisible(true);
-
-            List<ViewOrchestrator> following = view.getFollowing();
-            btnStrategy.setText(orchestrator.getName());
-        }
+    public void setView(AbstractView av) {
+        if(!av.isLoaded())
+            av.load();
+        setCenter(av); // remove abstract view currently loaded
     }
 }
