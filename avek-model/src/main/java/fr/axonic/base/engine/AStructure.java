@@ -54,7 +54,7 @@ public abstract class AStructure extends AElement {
     protected void init(){
 
         try {
-            Field[] fields = this.getClass().getFields();
+            Field[] fields = this.getClass().getDeclaredFields();
 
             for (Field field : fields){
 

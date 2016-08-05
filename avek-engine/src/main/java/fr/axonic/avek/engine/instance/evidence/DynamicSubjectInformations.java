@@ -32,7 +32,7 @@ public class DynamicSubjectInformations extends AStructure{
         weight.setLabel("Weight");
         bmi.setLabel("Body Mass Index (BMI)");
 
-        super.init();
+        init();
     }
 
     public ANumber getWeight() {
