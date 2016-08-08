@@ -1,7 +1,10 @@
 package fr.axonic.avek.gui;
 
 import fr.axonic.avek.engine.*;
+import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.instance.conclusion.Experimentation;
+import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.model.DataBus;
@@ -23,8 +26,13 @@ public class Orchestrator {
     private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
     private final static Orchestrator INSTANCE = new Orchestrator();
 
-    private MainFrame frame;
+
     private Pattern currentPattern;
+    private Subject currentSubject;
+    private Stimulation currentStimulation;
+
+    private final LoadingView loadingView = new LoadingView();
+    private MainFrame frame;
     private List<Pattern> patternList;
     private List<EvidenceRole> evidences;
 
@@ -32,7 +40,7 @@ public class Orchestrator {
     }
 
     private void orchestrate() throws VerificationException, WrongEvidenceException {
-        frame.setView(new LoadingView());
+        frame.setView(loadingView);
         ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
         evidences = null;
         patternList = null;
@@ -62,22 +70,22 @@ public class Orchestrator {
             try {
                 switch (evidenceRole.getRole()) {
                     case "subject":
-                        Subject subject = (Subject) evidenceRole.getEvidence().getElement();
+                        currentSubject = (Subject) evidenceRole.getEvidence().getElement();
 
-                        MonitoredSystem ms = new MonitoredSystem(subject.getId());
-                        Map<String, AEntity> map = subject.getStaticInformations().getFieldsContainer();
+                        MonitoredSystem ms = new MonitoredSystem(currentSubject.getId());
+                        Map<String, AEntity> map = currentSubject.getStaticInformations().getFieldsContainer();
                         AList<AEntity> al = new AList<>();
                         al.setLabel("Static");
                         al.addAll(map.values());
                         ms.addCategory(al);
 
-                        map = subject.getDynamicInformations().getFieldsContainer();
+                        map = currentSubject.getDynamicInformations().getFieldsContainer();
                         al = new AList<>();
                         al.setLabel("Dynamic");
                         al.addAll(map.values());
                         ms.addCategory(al);
 
-                        map = subject.getPathologyInformations().getFieldsContainer();
+                        map = currentSubject.getPathologyInformations().getFieldsContainer();
                         al = new AList<>();
                         al.setLabel("Pathologic");
                         al.addAll(map.values());
@@ -86,11 +94,11 @@ public class Orchestrator {
                         DataBus.setMonitoredSystem(ms);
                         break;
                     case "stimulation":
-                        Stimulation stimulation = (Stimulation) evidenceRole.getEvidence().getElement();
+                        currentStimulation = (Stimulation) evidenceRole.getEvidence().getElement();
 
                         AList<AEntity> list = new AList<>();
                         list.setLabel("root");
-                        list.addAll(stimulation.getFieldsContainer().values());
+                        list.addAll(currentStimulation.getFieldsContainer().values());
                         DataBus.setExperimentParams(list);
                         break;
                     default:
@@ -152,8 +160,13 @@ public class Orchestrator {
 
     public static void onValidate() {
         try {
+            ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
+            adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                                INSTANCE.evidences,
+                                new ExperimentationConclusion(INSTANCE.currentSubject,
+                                        INSTANCE.currentStimulation));
             INSTANCE.orchestrate();
-        } catch (VerificationException | WrongEvidenceException e) {
+        } catch (StepBuildingException | VerificationException | WrongEvidenceException e) {
             LOGGER.error("Impossible to get ArgumentationDiagramAPIImpl", e);
         }
     }
