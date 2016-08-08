@@ -8,6 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Set;
 
 /**
@@ -40,6 +43,16 @@ public class BoundedParameter extends SensitiveParameter {
         // GridPane.setColumnIndex(this.paramTitle, 2);
         // GridPane.setColumnIndex(this.paramValue, 3);
         GridPane.setColumnIndex(generalizationPane, 4);
+
+
+        // Pretty print dates
+        if(paramValue.getValue() instanceof Calendar) {
+            SimpleDateFormat df = new SimpleDateFormat();
+            df.applyPattern("dd/MM/yyyy");
+            minEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+            maxEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+            this.paramValue.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+        }
     }
 
     @Override

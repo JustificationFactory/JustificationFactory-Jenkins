@@ -1,11 +1,14 @@
 package fr.axonic.avek.gui.components;
 
 import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.ADate;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.control.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Set;
 
 /**
@@ -27,7 +30,17 @@ public class MonitoredSystemView extends Accordion {
             sp.setFitToHeight(true);
 
 	        for (AEntity av : category) {
-		        list.getItems().add(new Label(av.getLabel() + " : " + ((AVar)av).getValue().toString()));
+
+                // Pretty print dates
+                if(av instanceof ADate) {
+                    SimpleDateFormat df = new SimpleDateFormat();
+                    df.applyPattern("dd/MM/yyyy HH:mm:ss");
+                    list.getItems().add(new Label(
+                            av.getLabel() + " : "+ df.format(((ADate)av).getValue().getTime())));
+                } else {
+                    list.getItems().add(new Label(
+                            av.getLabel() + " : " + ((AVar)av).getValue().toString()));
+                }
 	        }
         }
     }
