@@ -42,11 +42,29 @@ public class Orchestrator {
     private void orchestrate() throws VerificationException, WrongEvidenceException {
         frame.setView(loadingView);
         ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
-        evidences = null;
-        patternList = null;
-        currentPattern = null;
 
         new Thread(() -> {
+            // Constructing conclusion
+
+            if(currentPattern != null) {
+                try {
+                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                            INSTANCE.evidences,
+                            new ExperimentationConclusion(
+                                    "Experimentation",
+                                    new Experimentation(),
+                                    INSTANCE.currentSubject,
+                                    INSTANCE.currentStimulation));
+                } catch (WrongEvidenceException | StepBuildingException e) {
+                    LOGGER.error("Impossible to constructStep");
+                }
+            }
+
+            evidences = null;
+            patternList = null;
+            currentPattern = null;
+
+            // Preparing following view
             evidences = adAPI.getBaseEvidences();
             patternList = adAPI.getPossiblePatterns(evidences);
 
@@ -59,9 +77,11 @@ public class Orchestrator {
             }
 
             StrategySelectionView ssv = new StrategySelectionView();
+            ssv.load();
             Platform.runLater(() -> frame.setView(ssv));
             List<String> names = patternList.stream().map(Pattern::getName).collect(Collectors.toList());
-            ssv.setAvailableChoices(names);
+            if(names != null)
+                ssv.setAvailableChoices(names);
         }).start();
     }
 
@@ -113,13 +133,22 @@ public class Orchestrator {
     private boolean setViewFromPattern(Pattern p) {
         switch (p.getName()) {
             case "Treat":
-                Platform.runLater(() -> frame.setView(new TreatView()));
+                Platform.runLater(() -> {
+                    frame.setView(new TreatView());
+                    frame.setStrategyButtonLabel("Treat");
+                });
                 break;
             case "Establish Effect":
-                Platform.runLater(() -> frame.setView(new EstablishEffectView()));
+                Platform.runLater(() -> {
+                    frame.setView(new EstablishEffectView());
+                    frame.setStrategyButtonLabel("Establish Effect");
+                });
                 break;
             case "Generalize":
-                Platform.runLater(() -> frame.setView(new GeneralizeView()));
+                Platform.runLater(() -> {
+                    frame.setView(new GeneralizeView());
+                    frame.setStrategyButtonLabel("Generalize");
+                });
                 break;
             default:
                 LOGGER.warn("Pattern is unknown for View conversion: " + p);
@@ -160,16 +189,8 @@ public class Orchestrator {
 
     public static void onValidate() {
         try {
-            ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
-            adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                                INSTANCE.evidences,
-                                new ExperimentationConclusion(
-                                        "Experimentation",
-                                        new Experimentation(),
-                                        INSTANCE.currentSubject,
-                                        INSTANCE.currentStimulation));
             INSTANCE.orchestrate();
-        } catch (StepBuildingException | VerificationException | WrongEvidenceException e) {
+        } catch (VerificationException | WrongEvidenceException e) {
             LOGGER.error("Impossible to get ArgumentationDiagramAPIImpl", e);
         }
     }

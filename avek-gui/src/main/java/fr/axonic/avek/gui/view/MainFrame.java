@@ -47,4 +47,8 @@ public class MainFrame extends BorderPane {
             av.load();
         setCenter(av); // remove abstract view currently loaded
     }
+
+    public void setStrategyButtonLabel(String strategyButtonLabel) {
+        btnStrategy.setText(strategyButtonLabel);
+    }
 }
