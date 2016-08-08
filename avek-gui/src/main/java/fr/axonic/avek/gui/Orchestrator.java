@@ -59,7 +59,7 @@ public class Orchestrator {
             }
 
             StrategySelectionView ssv = new StrategySelectionView();
-            frame.setView(ssv);
+            Platform.runLater(() -> frame.setView(ssv));
             List<String> names = patternList.stream().map(Pattern::getName).collect(Collectors.toList());
             ssv.setAvailableChoices(names);
         }).start();
@@ -102,7 +102,7 @@ public class Orchestrator {
                         DataBus.setExperimentParams(list);
                         break;
                     default:
-                        LOGGER.warn("Unknown Evidence role: " + evidenceRole.getRole() + " in " + evidenceRole);
+                        LOGGER.warn("Unknown Evidence role \"" + evidenceRole.getRole() + "\" in " + evidenceRole);
                 }
             } catch (RuntimeException e) {
                 LOGGER.error("Impossible to treat Evidence role: " + evidenceRole, e);
@@ -163,7 +163,10 @@ public class Orchestrator {
             ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
             adAPI.constructStep(INSTANCE.currentPattern.getId(),
                                 INSTANCE.evidences,
-                                new ExperimentationConclusion(INSTANCE.currentSubject,
+                                new ExperimentationConclusion(
+                                        "Experimentation",
+                                        new Experimentation(),
+                                        INSTANCE.currentSubject,
                                         INSTANCE.currentStimulation));
             INSTANCE.orchestrate();
         } catch (StepBuildingException | VerificationException | WrongEvidenceException e) {
