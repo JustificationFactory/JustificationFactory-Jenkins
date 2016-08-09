@@ -5,6 +5,7 @@ import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.strategy.Strategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,16 +30,25 @@ public class Pattern {
 		this("0",aName,aStrategy,roleTypeList,aConclusionExperimentationType);
 	}
 
-	// TODO : handle the <= case
 	public boolean applicable(List<EvidenceRole> asList) {
-		if(roleTypes.size()==asList.size()){
-			for(int i=0;i<roleTypes.size();i++){
-				EvidenceRoleType roleType=roleTypes.get(i);
-				if(!roleType.isEvidenceType(asList.get(i).getEvidence())){
-					return false;
+		List<EvidenceRoleType> evidenceRoleTypesUsed=new ArrayList<>();
+		if(roleTypes.size()<=asList.size()) {
+			for (int i = 0; i < roleTypes.size(); i++) {
+				for (int j = 0; j < asList.size(); j++) {
+					if(roleTypes.get(i).isEvidenceType(asList.get(j).getEvidence())){
+						evidenceRoleTypesUsed.add(roleTypes.get(i));
+						if(evidenceRoleTypesUsed.size()==roleTypes.size()){
+							return true;
+						}
+					}
+				}
+				if (roleTypes.get(i).isOptional() && !evidenceRoleTypesUsed.contains(roleTypes.get(i))){
+					evidenceRoleTypesUsed.add(roleTypes.get(i));
+					if(evidenceRoleTypesUsed.size()==roleTypes.size()){
+						return true;
+					}
 				}
 			}
-			return true;
 		}
 		return false;
 	}

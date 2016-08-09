@@ -80,6 +80,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
 
         EvidenceRoleType rtExperimentation = new EvidenceRoleType("experimentation", Experimentation.class);
         EvidenceRoleType rtResult = new EvidenceRoleType("experimentation", Result.class);
+        rtResult.setOptional(true);
         ConclusionType conclusionEffectType = new ConclusionType(EstablishedEffect.class);
         //Revoir car ici on a un singleton...
         Strategy ts2 = new EstablishEffectStrategy();
