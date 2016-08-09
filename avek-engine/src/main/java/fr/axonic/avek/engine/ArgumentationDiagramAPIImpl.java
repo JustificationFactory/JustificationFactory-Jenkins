@@ -22,7 +22,6 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     private List<EvidenceRole> baseEvidences;
     private List<Step> steps;
 
-
     private static ArgumentationDiagramAPIImpl INSTANCE;
 
     public static synchronized ArgumentationDiagramAPIImpl getInstance() throws VerificationException, WrongEvidenceException {
@@ -60,6 +59,11 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
         steps.add(step);
         EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
         baseEvidences.add(evidenceRoleType.create(step.getConclusion()));
+    }
+
+    @Override
+    public List<Step> getSteps() {
+        return steps;
     }
 
     private void initPatterns(){
