@@ -108,6 +108,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
         to.add(Calendar.HOUR_OF_DAY,1);
         scheduler.setToValue(to);
         Stimulation stimulation=new Stimulation(scheduler, waveformParameter);
+        stimulation.setWaveformValue(WaveformEnum.RECTANGULAR);
 
 
 
