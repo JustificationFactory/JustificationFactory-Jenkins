@@ -57,7 +57,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     public final void addParameter(AEntity aEntity) {
 
         if(aEntity instanceof AStructure) {
-            addCategory(AVarHelper.transformAStructureIntoAList((AStructure) aEntity));
+            addCategory(AVarHelper.transformAStructureToAList((AStructure) aEntity));
         }
 		/*if(aEntity instanceof AList<AEntity>)
 			addCategory(aEntity);

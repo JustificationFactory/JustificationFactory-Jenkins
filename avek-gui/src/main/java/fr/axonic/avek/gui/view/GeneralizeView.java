@@ -7,6 +7,9 @@ import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.AString;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -157,11 +160,11 @@ public class GeneralizeView extends AbstractView {
         button.setSelected(false);
     }
 
-    public Object getGeneralization() {
-        Map<String, Object> generalization = new HashMap<>();
+    public AList<AEntity> getGeneralization() {
+        AList<AEntity> generalization = new AList<>();
 
-        generalization.put("comments", textfieldComments.getText());
-        generalization.put("parameters", parametersRoot.getAsAEntity());
+        generalization.add(new AString("comments", textfieldComments.getText()));
+        generalization.add(parametersRoot.getAsAEntity());
         // generalization.put("files", ...... );
 
         return generalization;

@@ -4,6 +4,7 @@ import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
 import fr.axonic.avek.engine.instance.conclusion.Experimentation;
 import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
@@ -93,17 +94,18 @@ public class Orchestrator {
                     LOGGER.error("Impossible to constructStep");
                 }
                 break;
-            case "Establish Effect":
+            /*case "Establish Effect":
                 try {
                     final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
-                    currentView.getEffects(); // TODO use this
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
-                            new ExperimentationConclusion(
-                                    "Experimentation",
-                                    new Experimentation(),
-                                    INSTANCE.currentSubject,
-                                    INSTANCE.currentStimulation));
+                            new EstablishEffectConclusion(
+                                    "Establish Effect",new EstablishedEffect(
+                                    new Experimentation(
+                                            INSTANCE.currentStimulation,
+                                            INSTANCE.currentSubject),
+                                    currentView.getEffects()
+                            )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
                 }
@@ -111,18 +113,19 @@ public class Orchestrator {
             case "Generalize":
                 try {
                     final GeneralizeView currentView = (GeneralizeView) this.currentView;
-                    currentView.getGeneralization();
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                            INSTANCE.evidences,
-                            // TODO : use EstablishEffectConclusion
-                            new ExperimentationConclusion(
-                                    "Experimentation",
-                                    INSTANCE.currentSubject,
-                                    INSTANCE.currentStimulation));
+                            INSTANCE.evidences
+                            new EstablishEffectConclusion(
+                                    "Generalization",new EstablishedEffect(
+                                            new Experimentation(
+                                                    INSTANCE.currentStimulation,
+                                                    INSTANCE.currentSubject),
+                                    currentView.getGeneralization()
+                            )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
                 }
-                break;
+                break;*/
             default:
         }
     }
