@@ -96,19 +96,19 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     }
     private void initBaseEvidences() throws VerificationException, WrongEvidenceException {
         baseEvidences=new ArrayList<>();
-        Stimulation stimulation=new Stimulation();
-        stimulation.setWaveformValue(WaveformEnum.RECTANGULAR);
+
         WaveformParameter waveformParameter=new WaveformParameter();
         waveformParameter.setAmplitudeValue(1000.1);
         waveformParameter.setDurationValue(300);
         waveformParameter.setFrequencyValue(500);
-        stimulation.setWaveformParameter(waveformParameter);
+
         StimulationScheduler scheduler=new StimulationScheduler();
         scheduler.setFromValue(new GregorianCalendar());
         GregorianCalendar to=new GregorianCalendar();
         to.add(Calendar.HOUR_OF_DAY,1);
         scheduler.setToValue(to);
-        stimulation.setStimulationScheduler(scheduler);
+        Stimulation stimulation=new Stimulation(scheduler, waveformParameter);
+
 
 
         Subject subject=new Subject();
