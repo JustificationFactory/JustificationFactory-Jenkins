@@ -5,6 +5,7 @@ import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
+import fr.axonic.base.engine.DiscretAVar;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -21,7 +22,7 @@ public class RangedParameter extends SensitiveParameter {
     private final HBox generalizationPane;
     private final JellyBeanPane jellyBeanPane;
 
-    public RangedParameter(int level, AVar paramValue, List<AVar> values) {
+    public <T extends AVar & DiscretAVar> RangedParameter(int level, T paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
@@ -29,9 +30,15 @@ public class RangedParameter extends SensitiveParameter {
         generalizationPane.getChildren().add(jellyBeanPane);
 
         jellyBeanPane.setJellyBeansStateEditable(true);
-        List<String> boolList = Arrays.asList("unknown", "true", "false");
-        for (AVar value : values) {
-            jellyBeanPane.addJellyBean(value.getValue().toString(), boolList);
+        for (Object value : paramValue.getRange()) {
+            if(value.equals(paramValue.getValue().toString())) {
+                List<String> boolList = Arrays.asList("true", "false","unknown");
+                jellyBeanPane.addJellyBean(value.toString(), boolList);
+            }
+            else {
+                List<String> boolList = Arrays.asList("unknown", "true", "false");
+                jellyBeanPane.addJellyBean(value.toString(), boolList);
+            }
         }
 
         // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass

@@ -3,10 +3,7 @@ package fr.axonic.avek.gui;
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
-import fr.axonic.avek.engine.instance.conclusion.EstablishEffectConclusion;
-import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
-import fr.axonic.avek.engine.instance.conclusion.Experimentation;
-import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.model.DataBus;
@@ -83,6 +80,7 @@ public class Orchestrator {
     private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
         switch(currentPattern.getName()) {
             case "Treat":
+                LOGGER.debug("Constructing Treat step");
                 try {
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
@@ -94,9 +92,20 @@ public class Orchestrator {
                     LOGGER.error("Impossible to constructStep");
                 }
                 break;
-            /*case "Establish Effect":
+            case "Establish Effect":
+                LOGGER.debug("Constructing Establish effect step");
                 try {
                     final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
+
+                    final AList<Effect> effectList = new AList<>();
+                    /* TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      Map<String, String> effectsAsMap = currentView.getEffects();
+
+                        for(String key : effectsAsMap.keySet()) {
+                            effectList.add(new Effect(  ?  ));
+                    }*/
+
+
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
                             new EstablishEffectConclusion(
@@ -104,29 +113,35 @@ public class Orchestrator {
                                     new Experimentation(
                                             INSTANCE.currentStimulation,
                                             INSTANCE.currentSubject),
-                                    currentView.getEffects()
+                                    effectList
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
                 }
                 break;
             case "Generalize":
+                LOGGER.debug("Constructing Generalize step");
                 try {
                     final GeneralizeView currentView = (GeneralizeView) this.currentView;
+
+                    final AList<Effect> effectList = new AList<>();
+                    // Todo
+
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                            INSTANCE.evidences
-                            new EstablishEffectConclusion(
+                            INSTANCE.evidences,
+                            new GeneralizationConclusion(
                                     "Generalization",new EstablishedEffect(
                                             new Experimentation(
                                                     INSTANCE.currentStimulation,
                                                     INSTANCE.currentSubject),
-                                    currentView.getGeneralization()
+                                    effectList
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
                 }
-                break;*/
+                break;
             default:
+                LOGGER.error("Constructing \""+currentPattern.getName()+"\" not implemented");
         }
     }
 

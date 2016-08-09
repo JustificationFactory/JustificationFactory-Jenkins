@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.base.engine.AVar;
+import fr.axonic.base.engine.ContinuousAVar;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ public class BoundedParameter extends SensitiveParameter {
     private final TextField minEquivRange;
     private final TextField maxEquivRange;
 
-    public BoundedParameter(int level, AVar paramValue) {
+    public <T extends AVar & ContinuousAVar> BoundedParameter(int level, T paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
@@ -48,10 +49,9 @@ public class BoundedParameter extends SensitiveParameter {
         // Pretty print dates
         if(paramValue.getValue() instanceof Calendar) {
             SimpleDateFormat df = new SimpleDateFormat();
-            df.applyPattern("dd/MM/yyyy");
+            df.applyPattern("dd/MM/yyyy HH:mm:ss");
             minEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
             maxEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
-            this.paramValue.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
         }
     }
 

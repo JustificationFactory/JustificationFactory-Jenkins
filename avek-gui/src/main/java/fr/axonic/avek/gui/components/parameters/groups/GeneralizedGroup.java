@@ -7,9 +7,7 @@ import fr.axonic.avek.gui.components.parameters.leaves.RangedParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.SimpleParameter;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.AString;
-import fr.axonic.base.engine.AEntity;
-import fr.axonic.base.engine.AList;
-import fr.axonic.base.engine.AVar;
+import fr.axonic.base.engine.*;
 import javafx.scene.Node;
 
 import java.util.Arrays;
@@ -56,30 +54,19 @@ public abstract class GeneralizedGroup extends ParametersGroup {
 
     @Override
     protected void addLeaf(AVar aVar) {
+        myAddLeaf(aVar);
+    }
+
+    private <T extends AVar & ContinuousAVar, U extends AVar & DiscretAVar>
+                void myAddLeaf(AVar aVar) {
         ExpParameterLeaf subLeaf;
 
-        switch (aVar.getType()) {
-            case RANGED_NUMBER:
-            case NUMBER:
-            case DATE:
-                subLeaf = new BoundedParameter(level + 1, aVar);
-                break;
-            case RANGED_ENUM:
-                subLeaf = new RangedParameter(level + 1, aVar, ((ARangedEnum) aVar).getRange());
-                break;
-            case BOOLEAN:
-                List<AVar> values = Arrays.asList(
-                        new AString("unknown", "unknown"),
-                        new AString("true", "true"),
-                        new AString("false", "false"));
-
-                subLeaf = new RangedParameter(level + 1, aVar, values);
-                break;
-            case ENUM:
-            case STRING:
-            case UNKNOWN:
-            default:
-                subLeaf = new SimpleParameter(level + 1, aVar);
+        if(aVar instanceof ContinuousAVar) {
+            subLeaf = new BoundedParameter(level + 1, (T) aVar);
+        } else if(aVar instanceof DiscretAVar) {
+            subLeaf = new RangedParameter(level + 1, (U) aVar);
+        } else {
+            subLeaf = new SimpleParameter(level + 1, aVar);
         }
 
         addExpParameter(subLeaf);

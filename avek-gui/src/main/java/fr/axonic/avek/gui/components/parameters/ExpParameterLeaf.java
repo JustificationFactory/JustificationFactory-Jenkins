@@ -9,6 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -33,7 +35,14 @@ public class ExpParameterLeaf implements IExpParameter {
         levelMark = new LevelMark(level);
 
         if(paramValue.getValue() != null && !paramValue.getValue().toString().equals("")) {
-            this.paramValue.setText(" : " + paramValue.getValue().toString());
+            // Pretty print dates
+            if(paramValue.getValue() instanceof Calendar) {
+                SimpleDateFormat df = new SimpleDateFormat();
+                df.applyPattern("dd/MM/yyyy HH:mm:ss");
+                this.paramValue.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+            } else {
+                this.paramValue.setText(" : " + paramValue.getValue().toString());
+            }
         }
 
         GridPane.setColumnIndex(this.levelMark, 0);
