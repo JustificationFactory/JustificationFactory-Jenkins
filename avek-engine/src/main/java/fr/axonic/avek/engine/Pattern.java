@@ -28,7 +28,8 @@ public class Pattern {
 				   ConclusionType aConclusionExperimentationType) {
 		this("0",aName,aStrategy,roleTypeList,aConclusionExperimentationType);
 	}
-	
+
+	// TODO : handle the <= case
 	public boolean applicable(List<EvidenceRole> asList) {
 		if(roleTypes.size()==asList.size()){
 			for(int i=0;i<roleTypes.size();i++){
@@ -37,8 +38,9 @@ public class Pattern {
 					return false;
 				}
 			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean checkConclusion(List<Evidence> asList, Conclusion conclusion) {

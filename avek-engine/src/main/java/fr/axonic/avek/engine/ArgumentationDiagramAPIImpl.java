@@ -4,9 +4,11 @@ import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.Effect;
+import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
 import fr.axonic.avek.engine.instance.conclusion.Experimentation;
 import fr.axonic.avek.engine.instance.evidence.*;
 import fr.axonic.avek.engine.instance.strategy.EstablishEffectStrategy;
+import fr.axonic.avek.engine.instance.strategy.GeneralizeStrategy;
 import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.validation.exception.VerificationException;
@@ -78,11 +80,19 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
 
         EvidenceRoleType rtExperimentation = new EvidenceRoleType("experimentation", Experimentation.class);
         EvidenceRoleType rtResult = new EvidenceRoleType("experimentation", Result.class);
-        ConclusionType conclusionEffectType = new ConclusionType(Effect.class);
+        ConclusionType conclusionEffectType = new ConclusionType(EstablishedEffect.class);
         //Revoir car ici on a un singleton...
         Strategy ts2 = new EstablishEffectStrategy();
         Pattern establishEffect = new Pattern("2","Establish Effect", ts2, Arrays.asList(new EvidenceRoleType[] {rtExperimentation, rtResult}), conclusionEffectType);
         patterns.put(establishEffect.getId(),establishEffect);
+
+        EvidenceRoleType rtEstablishedEffect= new EvidenceRoleType("effects", EstablishedEffect.class);
+
+        Strategy ts3=new GeneralizeStrategy();
+        Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new EvidenceRoleType[]{rtEstablishedEffect}),conclusionEffectType);
+        patterns.put(generalize.getId(),generalize);
+
+
     }
     private void initBaseEvidences() throws VerificationException, WrongEvidenceException {
         baseEvidences=new ArrayList<>();

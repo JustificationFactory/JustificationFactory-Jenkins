@@ -28,7 +28,7 @@ public class TestDeclarationPatterns {
 		
 		Evidence<Stimulation> stimulation0 = new Evidence<Stimulation>("Stimulation 0", new Stimulation());
 		Evidence<Subject> subject0 = new Evidence<Subject>("Subject 0",new Subject());
-		ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0",new Experimentation(), subject0.getElement(),stimulation0.getElement());
+		ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0",subject0.getElement(),stimulation0.getElement());
 		
 		EvidenceRole evStimulation0 = rtStimulation.create(stimulation0 );
 		EvidenceRole evSubject0 = rtSubject.create(subject0);
