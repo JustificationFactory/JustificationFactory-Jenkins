@@ -22,7 +22,6 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     private List<EvidenceRole> baseEvidences;
     private List<Step> steps;
 
-
     private static ArgumentationDiagramAPIImpl INSTANCE;
 
     public static synchronized ArgumentationDiagramAPIImpl getInstance() throws VerificationException, WrongEvidenceException {
@@ -62,6 +61,11 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
         baseEvidences.add(evidenceRoleType.create(step.getConclusion()));
     }
 
+    @Override
+    public List<Step> getSteps() {
+        return steps;
+    }
+
     private void initPatterns(){
         patterns=new HashMap<>();
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
@@ -83,13 +87,21 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     private void initBaseEvidences() throws VerificationException, WrongEvidenceException {
         baseEvidences=new ArrayList<>();
         Stimulation stimulation=new Stimulation();
-        stimulation.setAmplitudeValue(1000.1);
-        stimulation.setDurationValue(300);
-        stimulation.setWaveformValue("RECTANGULAR");
-        stimulation.setFrequencyValue(500);
+        stimulation.setWaveformValue(WaveformEnum.RECTANGULAR);
+        WaveformParameter waveformParameter=new WaveformParameter();
+        waveformParameter.setAmplitudeValue(1000.1);
+        waveformParameter.setDurationValue(300);
+        waveformParameter.setFrequencyValue(500);
+        stimulation.setWaveformParameter(waveformParameter);
+        StimulationScheduler scheduler=new StimulationScheduler();
+        scheduler.setFromValue(new GregorianCalendar());
+        GregorianCalendar to=new GregorianCalendar();
+        to.add(Calendar.HOUR_OF_DAY,1);
+        scheduler.setToValue(to);
+        stimulation.setStimulationScheduler(scheduler);
+
 
         Subject subject=new Subject();
-
         subject.setIdValue("12345");
         StaticSubjectInformations staticInfos=new StaticSubjectInformations();
         staticInfos.setBirthdayValue(new GregorianCalendar());
