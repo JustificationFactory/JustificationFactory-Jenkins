@@ -4,9 +4,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 28/07/16.
@@ -78,5 +78,18 @@ public class JellyBeanPane extends HBox {
                 break;
             }
         }
+    }
+
+    /**
+     *
+     * @return Map&lt;JellyBean's label, JellyBean's state&gt;
+     */
+    Map<String, String> getJellyBeans() {
+        Map<String, String> map = new HashMap<>();
+        for(Node n : getChildren())
+            map.put(((JellyBean)n).getText(),
+                    ((JellyBean)n).getState());
+
+        return map;
     }
 }

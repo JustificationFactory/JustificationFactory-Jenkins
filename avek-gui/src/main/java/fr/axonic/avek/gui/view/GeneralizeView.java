@@ -157,5 +157,14 @@ public class GeneralizeView extends AbstractView {
         button.setSelected(false);
     }
 
+    public Object getGeneralization() {
+        Map<String, Object> generalization = new HashMap<>();
+
+        generalization.put("comments", textfieldComments.getText());
+        generalization.put("parameters", parametersRoot.getAsAEntity());
+        // generalization.put("files", ...... );
+
+        return generalization;
+    }
 }
 

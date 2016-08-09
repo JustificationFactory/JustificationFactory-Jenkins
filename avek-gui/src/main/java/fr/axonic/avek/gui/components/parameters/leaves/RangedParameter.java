@@ -1,6 +1,9 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
+import fr.axonic.avek.gui.components.parameters.IExpParameter;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -9,6 +12,7 @@ import javafx.scene.layout.HBox;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 21/07/16.
@@ -43,5 +47,15 @@ public class RangedParameter extends SensitiveParameter {
         elts.add(generalizationPane);
 
         return elts;
+    }
+
+
+    @Override
+    public AVar getAsAEntity() {
+        AVar var = super.getAsAEntity();
+
+        // Add range to var here
+
+        return var;
     }
 }

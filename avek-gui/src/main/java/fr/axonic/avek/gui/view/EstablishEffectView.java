@@ -6,7 +6,6 @@ import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -96,6 +95,10 @@ public class EstablishEffectView extends AbstractView {
         resultsPane.setVisible(newState);
         resultsPane.setManaged(newState);
         outerResultsButton.setSelected(newState);
+    }
+
+    public Map<String, String> getEffects() {
+        return jellyBeanSelector.getSelected();
     }
 }
 

@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.groups;
 
 import fr.axonic.avek.gui.components.parameters.ExpParameterLeaf;
+import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.BoundedParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.RangedParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.SimpleParameter;
@@ -9,20 +10,26 @@ import fr.axonic.base.AString;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
+import javafx.scene.Node;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 13/07/16.
  */
 public abstract class GeneralizedGroup extends ParametersGroup {
+
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
      * @param title Title of the ParametersGrid
      */
     GeneralizedGroup(final int level, final String title) {
         super(level, title);
+
         /*
 		[ checkbox ][ Levelmark ][ Title Value               ][ Generalization ]
 		     []          ↓       Main ParametersGrid's title
@@ -42,6 +49,9 @@ public abstract class GeneralizedGroup extends ParametersGroup {
 
         // Adding to the GUI
         addExpParameter(subCategory);
+
+        AList<AEntity> newAList = new AList<>();
+        newAList.setLabel(aList.getLabel());
     }
 
     @Override

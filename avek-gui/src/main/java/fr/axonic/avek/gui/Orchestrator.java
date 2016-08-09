@@ -95,7 +95,23 @@ public class Orchestrator {
                 break;
             case "Establish Effect":
                 try {
-
+                    final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
+                    currentView.getEffects(); // TODO use this
+                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                            INSTANCE.evidences,
+                            new ExperimentationConclusion(
+                                    "Experimentation",
+                                    new Experimentation(),
+                                    INSTANCE.currentSubject,
+                                    INSTANCE.currentStimulation));
+                } catch (WrongEvidenceException | StepBuildingException e) {
+                    LOGGER.error("Impossible to constructStep");
+                }
+                break;
+            case "Generalize":
+                try {
+                    final GeneralizeView currentView = (GeneralizeView) this.currentView;
+                    currentView.getGeneralization();
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
                             new ExperimentationConclusion(

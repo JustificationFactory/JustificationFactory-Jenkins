@@ -1,6 +1,8 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.util.LevelMark;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -10,24 +12,27 @@ import javafx.scene.layout.GridPane;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 04/07/16.
  */
 public class ExpParameterLeaf implements IExpParameter {
     // GUI Component
-    protected Label paramTitle;
-    protected Label paramValue;
+    protected final Label paramTitle;
+    protected final Label paramValue;
+    private final AVar var;
     protected final LevelMark levelMark;
 
     public ExpParameterLeaf(int level, AVar paramValue) {
         // Init elements
+        this.var = paramValue;
         this.paramTitle = new Label(paramValue.getLabel());
         this.paramValue = new Label();
 
         levelMark = new LevelMark(level);
 
-        if (!paramValue.getValue().toString().equals("")) {
+        if(paramValue.getValue() != null && !paramValue.getValue().toString().equals("")) {
             this.paramValue.setText(" : " + paramValue.getValue().toString());
         }
 
@@ -67,5 +72,10 @@ public class ExpParameterLeaf implements IExpParameter {
 
     public Label getLabelTitle() {
         return paramTitle;
+    }
+
+    @Override
+    public AVar getAsAEntity() {
+        return var;
     }
 }

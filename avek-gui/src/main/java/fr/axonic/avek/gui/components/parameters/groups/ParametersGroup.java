@@ -2,9 +2,7 @@ package fr.axonic.avek.gui.components.parameters.groups;
 
 import fr.axonic.avek.gui.components.parameters.ExpParameterLeaf;
 import fr.axonic.avek.gui.components.parameters.IExpParameter;
-import fr.axonic.base.engine.AEntity;
-import fr.axonic.base.engine.AList;
-import fr.axonic.base.engine.AVar;
+import fr.axonic.base.engine.*;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import org.apache.log4j.Logger;
@@ -13,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 13/07/16.
@@ -56,16 +55,24 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
      *                            nor a AList (of AList and AVar)
      */
     public final void addParameter(AEntity aEntity) {
-		/*
-		if(aEntity instanceof AList<AEntity>)
+
+        if(aEntity instanceof AStructure) {
+            addCategory(AVarHelper.transformAStructureIntoAList((AStructure) aEntity));
+        }
+		/*if(aEntity instanceof AList<AEntity>)
 			addCategory(aEntity);
 		else if(aEntity instanceof AVar)
 			addLeaf(aEntity);*/
-
-        try {
-            addCategory((AList<AEntity>) aEntity);
-        } catch (ClassCastException cce) {
-            addLeaf((AVar) aEntity); // throws ClassCastException if not a AVar
+		else {
+		    try {
+                addCategory((AList<AEntity>) aEntity);
+            } catch (ClassCastException cce) {
+                try {
+                    addLeaf((AVar) aEntity); // throws ClassCastException if not a AVar
+                }catch(Exception e) {
+                    LOGGER.error("Impossible cast object to AVar: "+aEntity, e);
+                }
+            }
         }
     }
 
@@ -137,5 +144,14 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
         Set<Node> s = new HashSet<>();
         s.add(this);
         return s;
+    }
+
+    @Override
+    public AList<AEntity> getAsAEntity() {
+        AList<AEntity> list = new AList<>();
+        list.setLabel(getName());
+        list.addAll(getChildren().stream().map(n -> ((IExpParameter) n).getAsAEntity()).collect(Collectors.toList()));
+
+        return list;
     }
 }

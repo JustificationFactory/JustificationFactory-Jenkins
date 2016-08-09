@@ -143,4 +143,8 @@ public class JellyBeanSelector extends VBox {
     JellyBeanPane getJellyBeanPane() {
         return jellyBeanPane;
     }
+
+    public Map<String, String> getSelected() {
+        return jellyBeanPane.getJellyBeans();
+    }
 }

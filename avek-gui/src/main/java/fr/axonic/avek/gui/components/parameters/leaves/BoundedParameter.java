@@ -71,4 +71,14 @@ public class BoundedParameter extends SensitiveParameter {
 
         return elts;
     }
+
+
+    @Override
+    public AVar getAsAEntity() {
+        AVar var = super.getAsAEntity();
+
+        // Add bound to var here
+
+        return var;
+    }
 }
