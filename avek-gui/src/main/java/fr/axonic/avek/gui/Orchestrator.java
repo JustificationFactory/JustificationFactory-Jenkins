@@ -3,6 +3,7 @@ package fr.axonic.avek.gui;
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.instance.conclusion.EstablishEffectConclusion;
 import fr.axonic.avek.engine.instance.conclusion.Experimentation;
 import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
@@ -86,7 +87,6 @@ public class Orchestrator {
                             INSTANCE.evidences,
                             new ExperimentationConclusion(
                                     "Experimentation",
-                                    new Experimentation(),
                                     INSTANCE.currentSubject,
                                     INSTANCE.currentStimulation));
                 } catch (WrongEvidenceException | StepBuildingException e) {
@@ -114,9 +114,9 @@ public class Orchestrator {
                     currentView.getGeneralization();
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
+                            // TODO : use EstablishEffectConclusion
                             new ExperimentationConclusion(
                                     "Experimentation",
-                                    new Experimentation(),
                                     INSTANCE.currentSubject,
                                     INSTANCE.currentStimulation));
                 } catch (WrongEvidenceException | StepBuildingException e) {

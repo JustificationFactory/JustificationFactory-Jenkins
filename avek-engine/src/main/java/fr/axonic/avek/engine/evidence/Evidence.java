@@ -1,8 +1,8 @@
 package fr.axonic.avek.engine.evidence;
 
 public class Evidence<T extends Element> {
-    private String name;
-    private T element;
+    protected String name;
+    protected T element;
 
     public Evidence(String name, T element) {
         this.name = name;

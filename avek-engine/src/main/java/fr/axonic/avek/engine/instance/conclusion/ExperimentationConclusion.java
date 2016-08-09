@@ -17,16 +17,19 @@ public class ExperimentationConclusion extends Conclusion<Experimentation> {
     public ExperimentationConclusion() {
 
     }
-    public ExperimentationConclusion(Subject subject, Stimulation stimulation) {
+    public ExperimentationConclusion(String name, Subject subject, Stimulation stimulation) {
+        this(name,new Experimentation(stimulation, subject), subject, stimulation);
+    }
+
+    public ExperimentationConclusion(String name, Experimentation element) {
+        this(name,element,element.getSubject(), element.getStimulation());
+    }
+
+    protected ExperimentationConclusion(String name, Experimentation experimentation, Subject subject, Stimulation stimulation) {
+        super(name, experimentation);
         this.subject = subject;
         this.stimulation = stimulation;
         limits = Arrays.asList(new Limit[]{subject,stimulation});
-    }
-
-    public ExperimentationConclusion(String name, Experimentation element, Subject subject, Stimulation stimulation) {
-        super(name, element);
-        this.subject = subject;
-        this.stimulation = stimulation;
     }
 
     public Stimulation getStimulation() {
