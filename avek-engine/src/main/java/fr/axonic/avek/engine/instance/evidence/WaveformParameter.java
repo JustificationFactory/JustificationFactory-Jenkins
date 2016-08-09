@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.instance.evidence;
 
+import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.ANumber;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AStructure;
@@ -9,23 +10,23 @@ import fr.axonic.validation.exception.VerificationException;
  * Created by cduffau on 09/08/16.
  */
 public class WaveformParameter extends AStructure{
-    private ANumber amplitude;
-    private ANumber frequency;
-    private ANumber duration;
+    private AContinuousNumber amplitude;
+    private AContinuousNumber frequency;
+    private AContinuousNumber duration;
 
     public WaveformParameter() throws VerificationException {
         super();
-        this.amplitude=new ANumber();
+        this.amplitude=new AContinuousNumber();
         amplitude.setLabel("Amplitude");
         amplitude.setPath("fr.axonic.stimulation");
         amplitude.setCode("amplitude");
         amplitude.setUnit("mA");
-        frequency=new ANumber();
+        frequency=new AContinuousNumber();
         this.frequency.setLabel("Frequency");
         frequency.setPath("fr.axonic.stimulation");
         frequency.setCode("frequency");
         frequency.setUnit("Hz");
-        this.duration=new ANumber();
+        this.duration=new AContinuousNumber();
         duration.setUnit("ms");
         duration.setPath("fr.axonic.stimulation");
         duration.setCode("duration");
@@ -57,15 +58,15 @@ public class WaveformParameter extends AStructure{
         return duration;
     }
 
-    private void setAmplitude(ANumber amplitude) {
+    private void setAmplitude(AContinuousNumber amplitude) {
         this.amplitude = amplitude;
     }
 
-    private void setFrequency(ANumber frequency) {
+    private void setFrequency(AContinuousNumber frequency) {
         this.frequency = frequency;
     }
 
-    private void setDuration(ANumber duration) {
+    private void setDuration(AContinuousNumber duration) {
         this.duration = duration;
     }
 
