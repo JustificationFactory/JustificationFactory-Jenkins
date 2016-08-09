@@ -15,12 +15,16 @@ public enum EffectEnum {
 
     public ARangedEnum<EffectStateEnum> state;
 
-    EffectEnum(EffectStateEnum ... effectStateEnums ) throws VerificationException {
+    EffectEnum(EffectStateEnum ... effectStateEnums ){
         state=new ARangedEnum<>();
         state.setLabel("Effect State");
         state.setPath("fr.axonic.effectType");
         state.setCode("state");
-        state.setRange(AVarHelper.transformToAVar(Arrays.asList(effectStateEnums)));
+        try {
+            state.setRange(AVarHelper.transformToAVar(Arrays.asList(effectStateEnums)));
+        } catch (VerificationException e) {
+            throw new ExceptionInInitializerError(e);
+        }
     }
 
     public ARangedEnum<EffectStateEnum> getState() {

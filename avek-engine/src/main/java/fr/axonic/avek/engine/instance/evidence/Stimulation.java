@@ -2,99 +2,68 @@ package fr.axonic.avek.engine.instance.evidence;
 
 import fr.axonic.avek.engine.conclusion.Limit;
 import fr.axonic.avek.engine.evidence.Element;
-import fr.axonic.base.ANumber;
-import fr.axonic.base.AString;
+import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
+
+import java.util.Arrays;
 
 public class Stimulation extends Element implements Limit {
 
-    private AString waveform;
-    private ANumber amplitude;
-    private ANumber frequency;
-    private ANumber duration;
+    private ARangedEnum<WaveformEnum> waveform;
+    private WaveformParameter waveformParameter;
+    private StimulationScheduler stimulationScheduler;
+
 
     public Stimulation() throws VerificationException {
         super();
-        this.waveform=new AString();
+        this.waveform=new ARangedEnum<>();
         waveform.setLabel("Waveform");
         waveform.setCode("waveform");
+        waveform.setRange(AVarHelper.transformToAVar(Arrays.asList(WaveformEnum.values())));
         waveform.setPath("fr.axonic.stimulation");
-        this.amplitude=new ANumber();
-        amplitude.setLabel("Amplitude");
-        amplitude.setPath("fr.axonic.stimulation");
-        amplitude.setCode("amplitude");
-        amplitude.setUnit("mA");
-        frequency=new ANumber();
-        this.frequency.setLabel("Frequency");
-        frequency.setPath("fr.axonic.stimulation");
-        frequency.setCode("frequency");
-        frequency.setUnit("Hz");
-        this.duration=new ANumber();
-        duration.setUnit("ms");
-        duration.setPath("fr.axonic.stimulation");
-        duration.setCode("duration");
-        duration.setLabel("Duration");
+
+        waveformParameter=new WaveformParameter();
+        stimulationScheduler=new StimulationScheduler();
         this.setLabel("Stimulation");
         this.setCode("stimulation");
         this.setPath("fr.axonic");
         super.init();
     }
 
-    public AString getWaveform() {
+    public ARangedEnum<WaveformEnum> getWaveform() {
         return waveform;
     }
 
-    public void setWaveformValue(String waveform) throws VerificationException {
+    public void setWaveformValue(WaveformEnum waveform) throws VerificationException {
         this.waveform.setValue(waveform);
     }
-
-    public ANumber getAmplitude() {
-        return amplitude;
-    }
-
-    public void setAmplitudeValue(double amplitude) throws VerificationException {
-        this.amplitude.setValue(amplitude);
-    }
-
-    public ANumber getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequencyValue(double frequency) throws VerificationException {
-        this.frequency.setValue(frequency);
-    }
-
-    public ANumber getDuration() {
-        return duration;
-    }
-
-    private void setAmplitude(ANumber amplitude) {
-        this.amplitude = amplitude;
-    }
-
-    private void setWaveform(AString waveform) {
+    private void setWaveform(ARangedEnum<WaveformEnum> waveform) {
         this.waveform = waveform;
     }
 
-    private void setFrequency(ANumber frequency) {
-        this.frequency = frequency;
+    public WaveformParameter getWaveformParameter() {
+        return waveformParameter;
     }
 
-    private void setDuration(ANumber duration) {
-        this.duration = duration;
+    public void setWaveformParameter(WaveformParameter waveformParameter) {
+        this.waveformParameter = waveformParameter;
     }
 
-    public void setDurationValue(int duration) throws VerificationException {
-        this.duration.setValue(duration);
+    public StimulationScheduler getStimulationScheduler() {
+        return stimulationScheduler;
+    }
+
+    public void setStimulationScheduler(StimulationScheduler stimulationScheduler) {
+        this.stimulationScheduler = stimulationScheduler;
     }
 
     @Override
     public String toString() {
         return "Stimulation{" +
                 "waveform=" + waveform +
-                ", amplitude=" + amplitude +
-                ", frequency=" + frequency +
-                ", duration=" + duration +
+                ", waveformParameter=" + waveformParameter +
+                ", stimulationScheduler=" + stimulationScheduler +
                 '}';
     }
 }
