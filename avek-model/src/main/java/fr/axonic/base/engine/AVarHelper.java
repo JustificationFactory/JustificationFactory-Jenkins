@@ -6,6 +6,7 @@ import fr.axonic.validation.exception.VerificationException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -134,12 +135,32 @@ public final class AVarHelper {
         return alist;
     }
 
-    public static AList<AEntity> transformAStructureIntoAList(AStructure aStructure){
+    public static AList<AEntity> transformAStructureToAList(AStructure aStructure){
         AList<AEntity> alist=new AList<>();
         alist.setLabel(aStructure.getLabel());
         alist.setCode(aStructure.getCode());
         alist.setPath(aStructure.getPath());
         alist.addAll(aStructure.getFieldsContainer().values());
+        return alist;
+    }
+
+    public static AList<AEntity> transformAStructureToAListWithDepth(AStructure aStructure){
+        AList<AEntity> alist=new AList<>();
+        alist.setLabel(aStructure.getLabel());
+        alist.setCode(aStructure.getCode());
+        alist.setPath(aStructure.getPath());
+        Collection<AEntity> fields=aStructure.getFieldsContainer().values();
+        Collection<AEntity> entities=new AList<>();
+        for(AEntity field: fields){
+            if(field instanceof AStructure){
+                AList<AEntity> res=transformAStructureToAListWithDepth((AStructure) field);
+                entities.add(res);
+            }
+            else {
+                entities.add(field);
+            }
+        }
+        alist.addAll(fields);
         return alist;
     }
 
