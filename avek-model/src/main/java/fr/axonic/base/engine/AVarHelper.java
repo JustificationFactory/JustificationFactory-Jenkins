@@ -134,4 +134,13 @@ public final class AVarHelper {
         return alist;
     }
 
+    public static AList<AEntity> transformAStructureIntoAList(AStructure aStructure){
+        AList<AEntity> alist=new AList<>();
+        alist.setLabel(aStructure.getLabel());
+        alist.setCode(aStructure.getCode());
+        alist.setPath(aStructure.getPath());
+        alist.addAll(aStructure.getFieldsContainer().values());
+        return alist;
+    }
+
 }
