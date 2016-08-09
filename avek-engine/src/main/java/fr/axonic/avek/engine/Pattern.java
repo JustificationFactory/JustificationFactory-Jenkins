@@ -32,7 +32,6 @@ public class Pattern {
 
 	public boolean applicable(List<EvidenceRole> asList) {
 		List<EvidenceRoleType> evidenceRoleTypesUsed=new ArrayList<>();
-		if(roleTypes.size()<=asList.size()) {
 			for (int i = 0; i < roleTypes.size(); i++) {
 				for (int j = 0; j < asList.size(); j++) {
 					if(roleTypes.get(i).isEvidenceType(asList.get(j).getEvidence())){
@@ -49,7 +48,6 @@ public class Pattern {
 					}
 				}
 			}
-		}
 		return false;
 	}
 	

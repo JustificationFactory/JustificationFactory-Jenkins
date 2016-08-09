@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class PatternTest {
 
     @Test
-    public void testApplicableWithNotGoodOrderEvidenceType() throws WrongEvidenceException, VerificationException {
+    public void testApplicableWithDifferentOrderEvidenceType() throws WrongEvidenceException, VerificationException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
@@ -37,8 +37,44 @@ public class PatternTest {
 
         EvidenceRole evStimulation0 = rtStimulation.create(stimulation0 );
         EvidenceRole evSubject0 = rtSubject.create(subject0);
-        assertFalse(treat.applicable(Arrays.asList(new EvidenceRole[] {evSubject0,evStimulation0})));
+        assertTrue(treat.applicable(Arrays.asList(new EvidenceRole[] {evSubject0,evStimulation0})));
     }
+
+    @Test
+    public void testApplicableWithOptionalEvidenceType() throws WrongEvidenceException, VerificationException {
+        EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
+        EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
+        rtSubject.setOptional(true);
+        ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
+        Strategy ts = new TreatStrategy();
+        Pattern treat = new Pattern("Treat", ts, Arrays.asList(new EvidenceRoleType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
+
+
+        Evidence<Stimulation> stimulation0 = new Evidence<Stimulation>("Stimulation 0", new Stimulation());
+        Evidence<Subject> subject0 = new Evidence<Subject>("Subject 0",new Subject());
+        ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
+
+        EvidenceRole evStimulation0 = rtStimulation.create(stimulation0 );
+        EvidenceRole evSubject0 = rtSubject.create(subject0);
+        assertTrue(treat.applicable(Arrays.asList(new EvidenceRole[] {evSubject0,evStimulation0})));
+    }
+
+    @Test
+    public void testApplicableWithOptionalNotGiveEvidenceType() throws WrongEvidenceException, VerificationException {
+        EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
+        EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
+        rtSubject.setOptional(true);
+        ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
+        Strategy ts = new TreatStrategy();
+        Pattern treat = new Pattern("Treat", ts, Arrays.asList(new EvidenceRoleType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
+
+
+        Evidence<Stimulation> stimulation0 = new Evidence<Stimulation>("Stimulation 0", new Stimulation());
+
+        EvidenceRole evStimulation0 = rtStimulation.create(stimulation0 );
+        assertTrue(treat.applicable(Arrays.asList(new EvidenceRole[] {evStimulation0})));
+    }
+
 
     @Test
     public void testApplicableWithNotGoodEvidenceType() throws WrongEvidenceException, VerificationException {

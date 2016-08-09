@@ -16,7 +16,7 @@ public class Stimulation extends Element implements Limit {
 
 
     public Stimulation() throws VerificationException {
-        this(null,null);
+        this(new StimulationScheduler(),new WaveformParameter());
 
     }
 
@@ -29,9 +29,6 @@ public class Stimulation extends Element implements Limit {
         waveform.setCode("waveform");
         waveform.setRange(AVarHelper.transformToAVar(Arrays.asList(WaveformEnum.values())));
         waveform.setPath("fr.axonic.stimulation");
-
-        this.waveformParameter=waveformParameter;
-        this.stimulationScheduler=stimulationScheduler;
         this.setLabel("Stimulation");
         this.setCode("stimulation");
         this.setPath("fr.axonic");
