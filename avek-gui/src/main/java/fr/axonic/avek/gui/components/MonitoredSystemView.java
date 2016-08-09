@@ -30,7 +30,6 @@ public class MonitoredSystemView extends Accordion {
             sp.setFitToHeight(true);
 
 	        for (AEntity av : category) {
-
                 // Pretty print dates
                 if(av instanceof ADate) {
                     SimpleDateFormat df = new SimpleDateFormat();

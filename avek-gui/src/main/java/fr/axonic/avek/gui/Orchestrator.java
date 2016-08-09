@@ -27,6 +27,7 @@ public class Orchestrator {
     private final static Orchestrator INSTANCE = new Orchestrator();
 
 
+    private AbstractView currentView;
     private Pattern currentPattern;
     private Subject currentSubject;
     private Stimulation currentStimulation;
@@ -41,23 +42,15 @@ public class Orchestrator {
 
     private void orchestrate() throws VerificationException, WrongEvidenceException {
         frame.setView(loadingView);
+        frame.hideStrategyButton();
+
         ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
 
         new Thread(() -> {
             // Constructing conclusion
 
             if(currentPattern != null) {
-                try {
-                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                            INSTANCE.evidences,
-                            new ExperimentationConclusion(
-                                    "Experimentation",
-                                    new Experimentation(),
-                                    INSTANCE.currentSubject,
-                                    INSTANCE.currentStimulation));
-                } catch (WrongEvidenceException | StepBuildingException e) {
-                    LOGGER.error("Impossible to constructStep");
-                }
+                constructStep(adAPI);
             }
 
             evidences = null;
@@ -83,6 +76,39 @@ public class Orchestrator {
             if(names != null)
                 ssv.setAvailableChoices(names);
         }).start();
+    }
+
+    private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
+        switch(currentPattern.getName()) {
+            case "Treat":
+                try {
+                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                            INSTANCE.evidences,
+                            new ExperimentationConclusion(
+                                    "Experimentation",
+                                    new Experimentation(),
+                                    INSTANCE.currentSubject,
+                                    INSTANCE.currentStimulation));
+                } catch (WrongEvidenceException | StepBuildingException e) {
+                    LOGGER.error("Impossible to constructStep");
+                }
+                break;
+            case "Establish Effect":
+                try {
+
+                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                            INSTANCE.evidences,
+                            new ExperimentationConclusion(
+                                    "Experimentation",
+                                    new Experimentation(),
+                                    INSTANCE.currentSubject,
+                                    INSTANCE.currentStimulation));
+                } catch (WrongEvidenceException | StepBuildingException e) {
+                    LOGGER.error("Impossible to constructStep");
+                }
+                break;
+            default:
+        }
     }
 
     private void setEvidencesInDataBus() {
@@ -133,20 +159,26 @@ public class Orchestrator {
     private boolean setViewFromPattern(Pattern p) {
         switch (p.getName()) {
             case "Treat":
+                TreatView tv = new TreatView();
+                currentView = tv;
                 Platform.runLater(() -> {
-                    frame.setView(new TreatView());
+                    frame.setView(tv);
                     frame.setStrategyButtonLabel("Treat");
                 });
                 break;
             case "Establish Effect":
+                EstablishEffectView eev = new EstablishEffectView();
+                currentView = eev;
                 Platform.runLater(() -> {
-                    frame.setView(new EstablishEffectView());
+                    frame.setView(eev);
                     frame.setStrategyButtonLabel("Establish Effect");
                 });
                 break;
             case "Generalize":
+                GeneralizeView gv = new GeneralizeView();
+                currentView = gv;
                 Platform.runLater(() -> {
-                    frame.setView(new GeneralizeView());
+                    frame.setView(gv);
                     frame.setStrategyButtonLabel("Generalize");
                 });
                 break;

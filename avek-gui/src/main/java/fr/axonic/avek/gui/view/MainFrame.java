@@ -49,6 +49,11 @@ public class MainFrame extends BorderPane {
     }
 
     public void setStrategyButtonLabel(String strategyButtonLabel) {
+        btnStrategy.setVisible(true);
         btnStrategy.setText(strategyButtonLabel);
+    }
+
+    public void hideStrategyButton() {
+        btnStrategy.setVisible(false);
     }
 }
