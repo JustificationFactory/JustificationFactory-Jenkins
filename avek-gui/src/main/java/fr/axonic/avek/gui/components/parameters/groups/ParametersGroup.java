@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 13/07/16.
@@ -23,14 +22,14 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     protected final int level;
     private AList<AEntity> element;
     private final List<IExpParameter> subElements;
-    private final ExpParameterLeaf<String> title;
+    private final ExpParameterLeaf title;
 
 
     ParametersGroup(final int level) { this(level, null); }
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
      */
-    ParametersGroup(final int level, ExpParameterLeaf<String> title) {
+    ParametersGroup(final int level, ExpParameterLeaf title) {
         subElements = new ArrayList<>();
         this.level = level;
 
@@ -121,18 +120,13 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     }
 
     @Override
-    public String getName() {
-        return element.getLabel();
-    }
-
-    @Override
     public Set<Node> getElements() {
         Set<Node> s = new HashSet<>();
         s.add(this);
         return s;
     }
 
-    ExpParameterLeaf<String> getCategoryTitle() {
+    ExpParameterLeaf getCategoryTitle() {
         return title;
     }
 }

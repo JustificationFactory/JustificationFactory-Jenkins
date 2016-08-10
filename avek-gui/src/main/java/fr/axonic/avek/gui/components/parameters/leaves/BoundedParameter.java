@@ -1,9 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
-import fr.axonic.avek.gui.Main;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
-import fr.axonic.validation.exception.VerificationException;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -12,16 +10,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
 /**
  * Created by Nathaël N on 21/07/16.
  */
-public class BoundedParameter<T> extends SensitiveParameter<T> {
+public class BoundedParameter extends SensitiveParameter {
     private final static Logger LOGGER = Logger.getLogger(BoundedParameter.class);
     private final static int TEXT_FIELD_WIDTH = 70; // px
 
@@ -29,7 +25,7 @@ public class BoundedParameter<T> extends SensitiveParameter<T> {
     private final TextField minEquivRange;
     private final TextField maxEquivRange;
 
-    public <TT extends AVar<T> & ContinuousAVar<T>> BoundedParameter(int level, TT paramValue) {
+    public <T extends AVar & ContinuousAVar> BoundedParameter(int level, T paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
@@ -64,13 +60,13 @@ public class BoundedParameter<T> extends SensitiveParameter<T> {
                 minEquivRange.getStyleClass().remove("bad-input");
                 switch(paramValue.getFormat().getType()) {
                     case NUMBER:
-                        paramValue.setMin((T) Double.valueOf(newval));
+                        paramValue.setMin(Double.valueOf(newval));
                         break;
                     case DATE:
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                         cal.setTime(textFormat.parse(newval));
-                        paramValue.setMax((T) cal);
+                        paramValue.setMax(cal);
                         break;
                     default:
                         System.out.println("Cannot cast "+paramValue+", "+oldval+" > "+newval);
@@ -86,13 +82,13 @@ public class BoundedParameter<T> extends SensitiveParameter<T> {
                 maxEquivRange.getStyleClass().remove("bad-input");
                 switch(paramValue.getFormat().getType()) {
                     case NUMBER:
-                        paramValue.setMax((T) Double.valueOf(newval));
+                        paramValue.setMax(Double.valueOf(newval));
                         break;
                     case DATE:
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                         cal.setTime(textFormat.parse(newval));
-                        paramValue.setMax((T) cal);
+                        paramValue.setMax(cal);
                         break;
                     default:
                         throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);

@@ -14,11 +14,11 @@ import java.util.Set;
 /**
  * Created by Nathaël N on 21/07/16.
  */
-public class RangedParameter<T> extends SensitiveParameter<T> {
+public class RangedParameter extends SensitiveParameter {
     private final HBox generalizationPane;
     private final JellyBeanPane jellyBeanPane;
 
-    public <TT extends AVar<T> & DiscretAVar<AVar<T>>> RangedParameter(int level, TT paramValue) {
+    public <T extends AVar & DiscretAVar<AVar>> RangedParameter(int level, T paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();

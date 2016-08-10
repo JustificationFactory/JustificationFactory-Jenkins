@@ -8,7 +8,6 @@ import fr.axonic.base.engine.AVar;
 import javafx.scene.control.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Set;
 
 /**

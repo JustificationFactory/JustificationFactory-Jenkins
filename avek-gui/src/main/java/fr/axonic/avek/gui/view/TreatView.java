@@ -3,7 +3,6 @@ package fr.axonic.avek.gui.view;
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

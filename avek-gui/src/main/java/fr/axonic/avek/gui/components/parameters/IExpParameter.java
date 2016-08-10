@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.components.parameters;
 
-import fr.axonic.base.engine.AEntity;
 import javafx.scene.Node;
 
 import java.util.Set;
@@ -10,6 +9,4 @@ import java.util.Set;
  */
 public interface IExpParameter {
     Set<Node> getElements();
-
-    String getName();
 }

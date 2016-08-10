@@ -13,11 +13,11 @@ import java.util.function.Consumer;
 /**
  * Created by Nathaël N on 21/07/16.
  */
-abstract class SensitiveParameter<T> extends ExpParameterLeaf<T> {
+abstract class SensitiveParameter extends ExpParameterLeaf {
     CheckBox markedUtil;
     private Consumer<Boolean> onClickMarkedUtil;
 
-    SensitiveParameter(int level, AVar<T> paramValue) {
+    SensitiveParameter(int level, AVar paramValue) {
         super(level, paramValue);
 
         markedUtil = new CheckBox();

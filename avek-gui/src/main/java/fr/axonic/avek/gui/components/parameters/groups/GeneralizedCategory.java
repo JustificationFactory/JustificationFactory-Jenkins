@@ -12,7 +12,7 @@ import javafx.scene.Node;
 class GeneralizedCategory extends GeneralizedGroup {
 
     GeneralizedCategory(int level, AList<AEntity> list) {
-        super(level, new SimpleParameter<>(level, new AString(list.getLabel(), "")));
+        super(level, new SimpleParameter(level, new AString(list.getLabel(), "")));
 
         // Generating GUI component
         setColumnSpan(this, 5);

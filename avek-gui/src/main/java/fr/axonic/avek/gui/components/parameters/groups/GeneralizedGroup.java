@@ -1,20 +1,10 @@
 package fr.axonic.avek.gui.components.parameters.groups;
 
 import fr.axonic.avek.gui.components.parameters.ExpParameterLeaf;
-import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.BoundedParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.RangedParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.SimpleParameter;
-import fr.axonic.base.ARangedEnum;
-import fr.axonic.base.AString;
 import fr.axonic.base.engine.*;
-import javafx.scene.Node;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 13/07/16.

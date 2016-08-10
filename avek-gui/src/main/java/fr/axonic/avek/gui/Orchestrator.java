@@ -1,7 +1,9 @@
 package fr.axonic.avek.gui;
 
-import fr.axonic.avek.engine.*;
-import fr.axonic.avek.engine.conclusion.Conclusion;
+import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
+import fr.axonic.avek.engine.Pattern;
+import fr.axonic.avek.engine.StepBuildingException;
+import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
@@ -9,12 +11,12 @@ import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.*;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.engine.*;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

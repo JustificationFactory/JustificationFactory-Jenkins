@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.components.parameters;
 
-import fr.axonic.avek.gui.components.parameters.groups.GeneralizedGroup;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
