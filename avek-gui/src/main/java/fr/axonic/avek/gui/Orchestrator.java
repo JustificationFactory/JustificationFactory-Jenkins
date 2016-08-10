@@ -98,11 +98,11 @@ public class Orchestrator {
                     final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
 
                     final AList<Effect> effectList = new AList<>();
-                    /* TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                      Map<String, String> effectsAsMap = currentView.getEffects();
+                    /*/ TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    Map<String, String> effectsAsMap = currentView.getEffects();
 
-                        for(String key : effectsAsMap.keySet()) {
-                            effectList.add(new Effect(  ?  ));
+                    for(String key : effectsAsMap.keySet()) {
+                        effectList.add(new Effect(   ));
                     }*/
 
 

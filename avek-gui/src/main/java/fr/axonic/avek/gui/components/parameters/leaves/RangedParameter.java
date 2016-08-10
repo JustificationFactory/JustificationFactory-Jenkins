@@ -30,7 +30,8 @@ public class RangedParameter extends SensitiveParameter {
         generalizationPane.getChildren().add(jellyBeanPane);
 
         jellyBeanPane.setJellyBeansStateEditable(true);
-        for (Object value : paramValue.getRange()) {
+        for (Object o : paramValue.getRange()) {
+            Object value = ((AVar) o).getValue();
             if(value.equals(paramValue.getValue().toString())) {
                 List<String> boolList = Arrays.asList("true", "false","unknown");
                 jellyBeanPane.addJellyBean(value.toString(), boolList);
