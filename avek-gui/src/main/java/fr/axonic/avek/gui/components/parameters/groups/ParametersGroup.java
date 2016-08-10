@@ -23,14 +23,14 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     protected final int level;
     private AList<AEntity> element;
     private final List<IExpParameter> subElements;
-    private final ExpParameterLeaf title;
+    private final ExpParameterLeaf<String> title;
 
 
     ParametersGroup(final int level) { this(level, null); }
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
      */
-    ParametersGroup(final int level, ExpParameterLeaf title) {
+    ParametersGroup(final int level, ExpParameterLeaf<String> title) {
         subElements = new ArrayList<>();
         this.level = level;
 
@@ -132,7 +132,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
         return s;
     }
 
-    public ExpParameterLeaf getCategoryTitle() {
+    ExpParameterLeaf<String> getCategoryTitle() {
         return title;
     }
 }

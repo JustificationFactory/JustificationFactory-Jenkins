@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
 /**
  * Created by Nathaël N on 04/07/16.
  */
-public class ExpParameterLeaf implements IExpParameter {
+public class ExpParameterLeaf<T> implements IExpParameter {
     // GUI Component
     protected final Label paramTitle;
     protected final Label paramValue;
-    private final AVar var;
+    private final AVar<T> var;
     protected final LevelMark levelMark;
 
-    public ExpParameterLeaf(int level, AVar paramValue) {
+    public ExpParameterLeaf(int level, AVar<T> paramValue) {
         // Init elements
         this.var = paramValue;
         this.paramTitle = new Label(paramValue.getLabel());

@@ -11,7 +11,7 @@ import javafx.scene.Node;
  */
 class ParametersCategory extends ParametersGroup {
     ParametersCategory(int level, AList<AEntity> list) {
-        super(level, new ExpParameterLeaf(level, new AString(list.getLabel(), "")));
+        super(level, new ExpParameterLeaf<>(level, new AString(list.getLabel(), "")));
 
         // Generating GUI component
         setColumnSpan(this, 3);

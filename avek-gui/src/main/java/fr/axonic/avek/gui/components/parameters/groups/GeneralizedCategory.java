@@ -12,13 +12,13 @@ import javafx.scene.Node;
 class GeneralizedCategory extends GeneralizedGroup {
 
     GeneralizedCategory(int level, AList<AEntity> list) {
-        super(level, new SimpleParameter(level, new AString(list.getLabel(), "")));
+        super(level, new SimpleParameter<>(level, new AString(list.getLabel(), "")));
 
         // Generating GUI component
         setColumnSpan(this, 5);
 
         getCategoryTitle().setExpandable(this::onClickExpand);
-        ((SimpleParameter)getCategoryTitle()).setOnClickMarkedUtil(getCategoryTitle()::setExpanded);
+        ((SimpleParameter)getCategoryTitle()).setOnClickMarkedUtil((b) -> getCategoryTitle().setExpanded((boolean)b));
 
         setAList(list);
     }

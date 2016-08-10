@@ -24,3 +24,7 @@
     -fx-vgap: 1px;
     -fx-hgap: 2px;
 }
+
+.bad-input {
+    -fx-text-fill: red;
+}

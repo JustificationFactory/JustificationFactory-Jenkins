@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
+import fr.axonic.avek.gui.Main;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
 import fr.axonic.validation.exception.VerificationException;
@@ -9,7 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import org.apache.log4j.Logger;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -18,14 +21,15 @@ import java.util.Set;
 /**
  * Created by Nathaël N on 21/07/16.
  */
-public class BoundedParameter extends SensitiveParameter {
+public class BoundedParameter<T> extends SensitiveParameter<T> {
+    private final static Logger LOGGER = Logger.getLogger(BoundedParameter.class);
     private final static int TEXT_FIELD_WIDTH = 70; // px
 
     private final HBox generalizationPane;
     private final TextField minEquivRange;
     private final TextField maxEquivRange;
 
-    public <T extends AVar & ContinuousAVar> BoundedParameter(int level, T paramValue) {
+    public <TT extends AVar<T> & ContinuousAVar<T>> BoundedParameter(int level, TT paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
@@ -57,16 +61,45 @@ public class BoundedParameter extends SensitiveParameter {
 
         minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
-                paramValue.setMin(newval);
-            } catch (VerificationException e) {
-                e.printStackTrace();
+                minEquivRange.getStyleClass().remove("bad-input");
+                switch(paramValue.getFormat().getType()) {
+                    case NUMBER:
+                        paramValue.setMin((T) Double.valueOf(newval));
+                        break;
+                    case DATE:
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        cal.setTime(textFormat.parse(newval));
+                        paramValue.setMax((T) cal);
+                        break;
+                    default:
+                        System.out.println("Cannot cast "+paramValue+", "+oldval+" > "+newval);
+                        throw new Exception();
+                }
+            } catch (Exception e) {
+                minEquivRange.getStyleClass().add("bad-input");
+                LOGGER.warn(e.getMessage());
             }
         });
         maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
-                paramValue.setMax(newval);
-            } catch (VerificationException e) {
-                e.printStackTrace();
+                maxEquivRange.getStyleClass().remove("bad-input");
+                switch(paramValue.getFormat().getType()) {
+                    case NUMBER:
+                        paramValue.setMax((T) Double.valueOf(newval));
+                        break;
+                    case DATE:
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        cal.setTime(textFormat.parse(newval));
+                        paramValue.setMax((T) cal);
+                        break;
+                    default:
+                        throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
+                }
+            } catch (Exception e) {
+                maxEquivRange.getStyleClass().add("bad-input");
+                LOGGER.warn(e.getMessage());
             }
         });
     }

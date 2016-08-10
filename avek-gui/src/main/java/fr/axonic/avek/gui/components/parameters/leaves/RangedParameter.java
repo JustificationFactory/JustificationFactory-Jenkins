@@ -1,31 +1,24 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
-import fr.axonic.avek.gui.components.parameters.IExpParameter;
-import fr.axonic.base.AString;
-import fr.axonic.base.engine.AEntity;
-import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
-import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 21/07/16.
  */
-public class RangedParameter extends SensitiveParameter {
+public class RangedParameter<T> extends SensitiveParameter<T> {
     private final HBox generalizationPane;
     private final JellyBeanPane jellyBeanPane;
 
-    public <T extends AVar & DiscretAVar> RangedParameter(int level, T paramValue) {
+    public <TT extends AVar<T> & DiscretAVar<AVar<T>>> RangedParameter(int level, TT paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
