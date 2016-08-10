@@ -23,10 +23,9 @@ public abstract class GeneralizedGroup extends ParametersGroup {
 
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
-     * @param title Title of the ParametersGrid
      */
-    GeneralizedGroup(final int level, final String title) {
-        super(level, title);
+    GeneralizedGroup(final int level) {
+        super(level);
 
         /*
 		[ checkbox ][ Levelmark ][ Title Value               ][ Generalization ]
@@ -38,18 +37,16 @@ public abstract class GeneralizedGroup extends ParametersGroup {
 		 */
     }
 
+    public GeneralizedGroup(int level, SimpleParameter simpleParameter) {
+        super(level, simpleParameter);
+    }
+
     @Override
     protected void addCategory(AList<AEntity> aList) {
-        GeneralizedGroup subCategory = new GeneralizedCategory(level + 1, aList.getLabel());
-
-        // Adding sub elements
-        aList.getList().forEach(subCategory::addParameter);
+        GeneralizedGroup subCategory = new GeneralizedCategory(level + 1, aList);
 
         // Adding to the GUI
         addExpParameter(subCategory);
-
-        AList<AEntity> newAList = new AList<>();
-        newAList.setLabel(aList.getLabel());
     }
 
     @Override

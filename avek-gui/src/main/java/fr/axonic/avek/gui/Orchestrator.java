@@ -98,26 +98,7 @@ public class Orchestrator {
                 try {
                     final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
 
-                    final AList<Effect> effectList = new AList<>();
-
                     Map<String, String> effectsAsMap = currentView.getEffects();
-
-                    // TODO This is a mock
-                    EffectEnum[] eetab = EffectEnum.values();
-                    for(EffectEnum ee : eetab) {
-                        try {
-                            Effect e = new Effect();
-                            e.setEffectValue(ee);
-                            effectList.add(e);
-                        } catch (VerificationException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-
-                    /*for(String key : effectsAsMap.keySet()) {
-                        effectList.add(new Effect(   ));
-                    }*/
-
 
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
@@ -126,7 +107,7 @@ public class Orchestrator {
                                     new Experimentation(
                                             INSTANCE.currentStimulation,
                                             INSTANCE.currentSubject),
-                                    effectList
+                                    toEffectList(effectsAsMap)
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
@@ -137,20 +118,6 @@ public class Orchestrator {
                 try {
                     final GeneralizeView currentView = (GeneralizeView) this.currentView;
 
-                    final AList<Effect> effectList = new AList<>();
-
-                    // TODO This is a mock
-                    EffectEnum[] eetab = EffectEnum.values();
-                    for(EffectEnum ee : eetab) {
-                        try {
-                            Effect e = new Effect();
-                            e.setEffectValue(ee);
-                            effectList.add(e);
-                        } catch (VerificationException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
                             new GeneralizationConclusion(
@@ -158,7 +125,7 @@ public class Orchestrator {
                                             new Experimentation(
                                                     INSTANCE.currentStimulation,
                                                     INSTANCE.currentSubject),
-                                    effectList
+                                    toEffectList(currentView.getEffects())
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
@@ -167,6 +134,27 @@ public class Orchestrator {
             default:
                 LOGGER.error("Constructing \""+currentPattern.getName()+"\" not implemented");
         }
+    }
+
+    private AList<Effect> toEffectList(Map<String, String> effectsAsMap) {
+        final AList<Effect> effectList = new AList<>();
+
+        EffectEnum[] eetab = EffectEnum.values();
+        for(String key : effectsAsMap.keySet()) {
+            for (EffectEnum effectEnum : eetab) {
+                if(key.equals(effectEnum.toString())) {
+                    try {
+                        Effect effect = new Effect();
+                        effect.setEffectValue(effectEnum);
+                        effectList.add(effect);
+                    } catch (VerificationException e) {
+                        LOGGER.error("Impossible to add effect "+key, e);
+                    }
+                }
+            }
+        }
+
+        return effectList;
     }
 
     private void setEvidencesInDataBus() {

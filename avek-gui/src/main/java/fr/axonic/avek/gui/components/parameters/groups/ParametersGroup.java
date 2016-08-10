@@ -21,17 +21,23 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     private static final String CSS = "css/components/parameters.css";
 
     protected final int level;
-    private final String title;
+    private AList<AEntity> element;
     private final List<IExpParameter> subElements;
+    private final ExpParameterLeaf title;
 
+
+    ParametersGroup(final int level) { this(level, null); }
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
-     * @param title Title of the ParametersGrid
      */
-    ParametersGroup(final int level, final String title) {
+    ParametersGroup(final int level, ExpParameterLeaf title) {
         subElements = new ArrayList<>();
-        this.title = title;
         this.level = level;
+
+        this.title = title;
+        if(title != null) {
+            title.getLabelTitle().getStyleClass().add("category-title");
+        }
 
 		/*
         [ Levelmark ][ Title & value            ]
@@ -54,7 +60,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
      * @throws ClassCastException is the parameter is not a AVar
      *                            nor a AList (of AList and AVar)
      */
-    public final void addParameter(AEntity aEntity) {
+    private void addParameter(AEntity aEntity) {
 
         if(aEntity instanceof AStructure) {
             addCategory(AVarHelper.transformAStructureToAList((AStructure) aEntity));
@@ -77,10 +83,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     }
 
     protected void addCategory(AList<AEntity> aList) {
-        ParametersGroup subCategory = new ParametersCategory(level + 1, aList.getLabel());
-
-        // Adding sub elements
-        aList.getList().forEach(subCategory::addParameter);
+        ParametersGroup subCategory = new ParametersCategory(level + 1, aList);
 
         // Adding to the GUI
         addExpParameter(subCategory);
@@ -90,7 +93,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
         addExpParameter(new ExpParameterLeaf(level + 1, aVar));
     }
 
-    void addExpParameter(IExpParameter subParam) {
+    final void addExpParameter(IExpParameter subParam) {
         int rowIndex = subElements.size();
 
         // Adding graphical elements to the GUI
@@ -103,40 +106,23 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
         subElements.add(subParam);
     }
 
-    public synchronized IExpParameter rmParameter(String name) {
-        // searching parameter index
-        int indexToRm = -1;
+    public void setAList(AList<AEntity> list) {
+        this.element = list;
 
-        // int j=0+1 because of title line at index 0
-        for (int j = 1; j < subElements.size(); j++) {
-            if (subElements.get(j).getName().equals(name)) {
-                indexToRm = j;
-                break;
-            }
+        subElements.clear();
+        getChildren().clear();
+
+        // Adding sub elements
+        if(title != null) {
+            title.getElements().forEach(getChildren()::add);
+            subElements.add(title);
         }
-
-        if (indexToRm == -1) {
-            return null;
-        }
-
-        // Removing from view & shift view
-        for (Node n : new ArrayList<>(getChildren())) {
-            int index = GridPane.getRowIndex(n);
-
-            if (indexToRm == index) {
-                getChildren().remove(n);
-            } else if (index > indexToRm) {
-                GridPane.setRowIndex(n, index - 1);
-            }
-        }
-
-        // Removing parameter from list
-        return subElements.remove(indexToRm);
+        element.getList().forEach(this::addParameter);
     }
 
     @Override
     public String getName() {
-        return title;
+        return element.getLabel();
     }
 
     @Override
@@ -146,12 +132,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
         return s;
     }
 
-    @Override
-    public AList<AEntity> getAsAEntity() {
-        AList<AEntity> list = new AList<>();
-        list.setLabel(getName());
-        list.addAll(getChildren().stream().map(n -> ((IExpParameter) n).getAsAEntity()).collect(Collectors.toList()));
-
-        return list;
+    public ExpParameterLeaf getCategoryTitle() {
+        return title;
     }
 }

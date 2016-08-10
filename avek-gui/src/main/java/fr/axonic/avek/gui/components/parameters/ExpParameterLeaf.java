@@ -66,25 +66,15 @@ public class ExpParameterLeaf implements IExpParameter {
         return paramTitle.getText();
     }
 
-    protected void onClickMarkedUtil(ActionEvent event) {
-        paramTitle.setDisable(true);
-        paramValue.setDisable(true);
-    }
-
     public void setExpandable(Consumer<Boolean> onClickExpand) {
         levelMark.setExpandable(onClickExpand);
     }
 
-    protected void setExpanded(boolean expanded) {
+    public void setExpanded(boolean expanded) {
         levelMark.setExpanded(expanded);
     }
 
     public Label getLabelTitle() {
         return paramTitle;
-    }
-
-    @Override
-    public AVar getAsAEntity() {
-        return var;
     }
 }

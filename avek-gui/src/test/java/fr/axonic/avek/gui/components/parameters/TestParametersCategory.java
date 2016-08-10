@@ -8,6 +8,8 @@ import fr.axonic.base.ABoolean;
 import fr.axonic.base.ADate;
 import fr.axonic.base.ANumber;
 import fr.axonic.base.AString;
+import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AList;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -26,7 +28,7 @@ public class TestParametersCategory extends ApplicationTest {
         UtilForTests.disableGraphics();
     }
 
-    private GeneralizedGroup pp;
+    private GeneralizedRoot pp;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -38,38 +40,27 @@ public class TestParametersCategory extends ApplicationTest {
     }
 
     @Test
-    public void testAddRemoveParameters() throws Exception {
-        ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-
-        assertEquals(0, pp.getChildren().size());
-        ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
-        assertEquals(4, pp.getChildren().size());
-
-        ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("2ndLabelText", 12.34)));
-        assertEquals(4 + 4, pp.getChildren().size());
-
-        ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("3rdLabelText", 42)));
-        assertEquals(4 + 4 + 4, pp.getChildren().size());
-
-        ctm.runNowOnPlatform(() -> pp.rmParameter("2ndLabelText"));
-        assertEquals(4 + 4/* +4-4 */, pp.getChildren().size());
-    }
-
-    @Test
     public void testDifferentParametersTypes() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
-        ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
+        AList<AEntity> list = new AList<>();
+        list.setLabel("Root");
+
+        list.add(new ANumber("LabelText", 42.31));
+        ctm.runNowOnPlatform(() -> pp.setAList(list));
 
         assertEquals(4, pp.getChildren().size());
 
-        ctm.runNowOnPlatform(() -> pp.addParameter(new ABoolean("Boolbool", true)));
+        list.add(new ABoolean("Boolbool", true));
+        ctm.runNowOnPlatform(() -> pp.setAList(list));
         assertEquals(4 + 4, pp.getChildren().size());
 
-        ctm.runNowOnPlatform(() -> pp.addParameter(new ADate("Datedate", new GregorianCalendar())));
+        list.add(new ADate("Datedate", new GregorianCalendar()));
+        ctm.runNowOnPlatform(() -> pp.setAList(list));
         assertEquals(4 + 4 + 4, pp.getChildren().size());
 
-        ctm.runNowOnPlatform(() -> pp.addParameter(new AString("Strstr", "LaString")));
+        list.add(new AString("Strstr", "LaString"));
+        ctm.runNowOnPlatform(() -> pp.setAList(list));
         assertEquals(4 + 4 + 4 + 4, pp.getChildren().size());
     }
 }

@@ -32,6 +32,11 @@ public class StrategySelectionView extends AbstractView {
     }
 
     public void setAvailableChoices(List<String> choices) {
-        comboBox.setItems(FXCollections.observableArrayList(choices));
+        try {
+            comboBox.setItems(FXCollections.observableArrayList(choices));
+        }catch(Exception e) {
+            System.err.println("CHOICES="+choices);
+            e.printStackTrace();
+        }
     }
 }

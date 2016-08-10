@@ -35,7 +35,7 @@ public class RangedParameter extends SensitiveParameter {
         jellyBeanPane.setJellyBeansStateEditable(true);
         for (Object o : paramValue.getRange()) {
             Object value = ((AVar) o).getValue();
-            if(value.equals(paramValue.getValue().toString())) {
+            if(value.toString().equals(paramValue.getValue().toString())) {
                 List<String> boolList = Arrays.asList("true", "false","unknown");
                 jellyBeanPane.addJellyBean(value.toString(), boolList);
             }
@@ -58,26 +58,5 @@ public class RangedParameter extends SensitiveParameter {
         elts.add(generalizationPane);
 
         return elts;
-    }
-
-
-    @Override
-    public AVar getAsAEntity() {
-        return getAsDiscretAVar();
-    }
-    private <T extends AVar & DiscretAVar> T getAsDiscretAVar() {
-        T var = (T) super.getAsAEntity();
-
-        AList<AVar> list = new AList<>();
-
-        for(Map.Entry<String,String> entry : jellyBeanPane.getJellyBeans().entrySet()) {
-            list.add(new AString(entry.getKey(), entry.getValue()));
-        }
-
-        try {
-            var.setRange(list);
-        } catch (VerificationException e) {}
-
-        return var;
     }
 }

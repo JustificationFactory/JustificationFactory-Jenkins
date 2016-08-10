@@ -23,6 +23,7 @@ public class LevelMark extends HBox {
     private boolean expandable;
     private boolean expanded;
     private final int level;
+    private Label icon;
 
     public LevelMark(int level) {
         this.level = level;
@@ -49,6 +50,10 @@ public class LevelMark extends HBox {
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
         onClickExpand.accept(expanded);
+
+        RotateTransition rt = new RotateTransition(Duration.millis(ROTATE_DURATION), icon);
+        rt.setByAngle((expanded ? 0 : -90) - icon.getRotate());
+        rt.play();
     }
 
     private void recalculate() {
@@ -66,16 +71,10 @@ public class LevelMark extends HBox {
             this.getChildren().add(p);
 
 
-            Label l = new Label("▼");
-            p.getChildren().add(l);
+            icon = new Label("▼");
+            p.getChildren().add(icon);
 
-            this.setOnMouseClicked((event) -> {
-                expand(event);
-
-                RotateTransition rt = new RotateTransition(Duration.millis(ROTATE_DURATION), l);
-                rt.setByAngle((expanded ? 0 : -90) - l.getRotate());
-                rt.play();
-            });
+            this.setOnMouseClicked((event) -> expand(event));
         }
     }
 }

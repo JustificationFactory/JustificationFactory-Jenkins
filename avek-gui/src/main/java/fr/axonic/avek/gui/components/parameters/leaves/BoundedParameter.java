@@ -2,6 +2,7 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
+import fr.axonic.validation.exception.VerificationException;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -53,6 +54,21 @@ public class BoundedParameter extends SensitiveParameter {
             minEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
             maxEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
         }
+
+        minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
+            try {
+                paramValue.setMin(newval);
+            } catch (VerificationException e) {
+                e.printStackTrace();
+            }
+        });
+        maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
+            try {
+                paramValue.setMax(newval);
+            } catch (VerificationException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -70,15 +86,5 @@ public class BoundedParameter extends SensitiveParameter {
         elts.add(generalizationPane);
 
         return elts;
-    }
-
-
-    @Override
-    public AVar getAsAEntity() {
-        AVar var = super.getAsAEntity();
-
-        // Add bound to var here
-
-        return var;
     }
 }

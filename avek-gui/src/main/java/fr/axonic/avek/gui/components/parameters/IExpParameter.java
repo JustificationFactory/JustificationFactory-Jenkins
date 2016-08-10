@@ -12,6 +12,4 @@ public interface IExpParameter {
     Set<Node> getElements();
 
     String getName();
-
-    AEntity getAsAEntity();
 }

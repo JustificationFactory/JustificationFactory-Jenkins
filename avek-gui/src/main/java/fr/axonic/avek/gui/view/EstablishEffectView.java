@@ -46,7 +46,7 @@ public class EstablishEffectView extends AbstractView {
     private void initialize() {
         monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
 
-        DataBus.getExperimentParams().forEach(parametersRoot::addParameter);
+        parametersRoot.setAList(DataBus.getExperimentParams());
 
         Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
         Map<String, List<String>> map = new HashMap<>();

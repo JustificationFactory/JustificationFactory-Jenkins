@@ -51,7 +51,7 @@ public class GeneralizeView extends AbstractView {
 
     @FXML
     private void initialize() {
-        DataBus.getExperimentParams().forEach(parametersRoot::addParameter);
+        parametersRoot.setAList(DataBus.getExperimentParams());
         monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
 
         Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
@@ -160,14 +160,8 @@ public class GeneralizeView extends AbstractView {
         button.setSelected(false);
     }
 
-    public AList<AEntity> getGeneralization() {
-        AList<AEntity> generalization = new AList<>();
-
-        generalization.add(new AString("comments", textfieldComments.getText()));
-        generalization.add(parametersRoot.getAsAEntity());
-        // generalization.put("files", ...... );
-
-        return generalization;
+    public Map<String, String> getEffects() {
+        return jellyBeanPane.getJellyBeans();
     }
 }
 
