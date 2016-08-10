@@ -43,16 +43,16 @@ public class TestParametersCategory extends ApplicationTest {
 
         assertEquals(0, pp.getChildren().size());
         ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
-        assertEquals(5, pp.getChildren().size());
+        assertEquals(4, pp.getChildren().size());
 
         ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("2ndLabelText", 12.34)));
-        assertEquals(5 + 5, pp.getChildren().size());
+        assertEquals(4 + 4, pp.getChildren().size());
 
         ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("3rdLabelText", 42)));
-        assertEquals(5 + 5 + 5, pp.getChildren().size());
+        assertEquals(4 + 4 + 4, pp.getChildren().size());
 
         ctm.runNowOnPlatform(() -> pp.rmParameter("2ndLabelText"));
-        assertEquals(5 + 5/* +5-5 */, pp.getChildren().size());
+        assertEquals(4 + 4/* +4-4 */, pp.getChildren().size());
     }
 
     @Test
@@ -61,15 +61,15 @@ public class TestParametersCategory extends ApplicationTest {
 
         ctm.runNowOnPlatform(() -> pp.addParameter(new ANumber("LabelText", 42.31)));
 
-        assertEquals(5, pp.getChildren().size());
+        assertEquals(4, pp.getChildren().size());
 
         ctm.runNowOnPlatform(() -> pp.addParameter(new ABoolean("Boolbool", true)));
-        assertEquals(5 + 5, pp.getChildren().size());
+        assertEquals(4 + 4, pp.getChildren().size());
 
         ctm.runNowOnPlatform(() -> pp.addParameter(new ADate("Datedate", new GregorianCalendar())));
-        assertEquals(5 + 5 + 5, pp.getChildren().size());
+        assertEquals(4 + 4 + 4, pp.getChildren().size());
 
         ctm.runNowOnPlatform(() -> pp.addParameter(new AString("Strstr", "LaString")));
-        assertEquals(5 + 5 + 5 + 4, pp.getChildren().size());
+        assertEquals(4 + 4 + 4 + 4, pp.getChildren().size());
     }
 }

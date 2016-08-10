@@ -84,7 +84,7 @@ public class JellyBeanPane extends HBox {
      *
      * @return Map&lt;JellyBean's label, JellyBean's state&gt;
      */
-    Map<String, String> getJellyBeans() {
+    public Map<String, String> getJellyBeans() {
         Map<String, String> map = new HashMap<>();
         for(Node n : getChildren())
             map.put(((JellyBean)n).getText(),

@@ -14,6 +14,7 @@ import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -98,10 +99,22 @@ public class Orchestrator {
                     final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
 
                     final AList<Effect> effectList = new AList<>();
-                    /*/ TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                     Map<String, String> effectsAsMap = currentView.getEffects();
 
-                    for(String key : effectsAsMap.keySet()) {
+                    // TODO This is a mock
+                    EffectEnum[] eetab = EffectEnum.values();
+                    for(EffectEnum ee : eetab) {
+                        try {
+                            Effect e = new Effect();
+                            e.setEffectValue(ee);
+                            effectList.add(e);
+                        } catch (VerificationException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                    /*for(String key : effectsAsMap.keySet()) {
                         effectList.add(new Effect(   ));
                     }*/
 
@@ -125,7 +138,18 @@ public class Orchestrator {
                     final GeneralizeView currentView = (GeneralizeView) this.currentView;
 
                     final AList<Effect> effectList = new AList<>();
-                    // Todo
+
+                    // TODO This is a mock
+                    EffectEnum[] eetab = EffectEnum.values();
+                    for(EffectEnum ee : eetab) {
+                        try {
+                            Effect e = new Effect();
+                            e.setEffectValue(ee);
+                            effectList.add(e);
+                        } catch (VerificationException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
 
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,

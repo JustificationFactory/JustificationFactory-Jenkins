@@ -2,16 +2,19 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.IExpParameter;
+import fr.axonic.base.AString;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
+import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,9 +63,20 @@ public class RangedParameter extends SensitiveParameter {
 
     @Override
     public AVar getAsAEntity() {
-        AVar var = super.getAsAEntity();
+        return getAsDiscretAVar();
+    }
+    private <T extends AVar & DiscretAVar> T getAsDiscretAVar() {
+        T var = (T) super.getAsAEntity();
 
-        // Add range to var here
+        AList<AVar> list = new AList<>();
+
+        for(Map.Entry<String,String> entry : jellyBeanPane.getJellyBeans().entrySet()) {
+            list.add(new AString(entry.getKey(), entry.getValue()));
+        }
+
+        try {
+            var.setRange(list);
+        } catch (VerificationException e) {}
 
         return var;
     }
