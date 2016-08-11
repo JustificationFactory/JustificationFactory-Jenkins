@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +42,7 @@ public class Orchestrator {
     private MainFrame frame;
     private List<Pattern> patternList;
     private List<EvidenceRole> evidences;
+    private FutureTask orchestratingProcess;
 
     private Orchestrator() {
         Map<String, ARangedEnum> map = new HashMap<>();
@@ -51,44 +54,52 @@ public class Orchestrator {
         DataBus.setExperimentResults(map);
     }
 
-    private void orchestrate() throws VerificationException, WrongEvidenceException {
+    private void orchestrate() {
         frame.setView(loadingView);
         frame.hideStrategyButton();
 
+        FutureTask ft = new FutureTask<>(this::setFollowingView);
+        this.orchestratingProcess = ft;
+        new Thread(ft).start();
+    }
+
+    private boolean setFollowingView() throws VerificationException, WrongEvidenceException, ExecutionException, InterruptedException {
         ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
 
+        // Constructing conclusion
+        if (currentPattern != null) {
+            constructStep(adAPI);
+        }
 
+        evidences = null;
+        patternList = null;
+        currentPattern = null;
 
-        new Thread(() -> {
-            // Constructing conclusion
+        // Preparing following view
+        evidences = adAPI.getBaseEvidences();
+        patternList = adAPI.getPossiblePatterns(evidences);
 
-            if(currentPattern != null) {
-                constructStep(adAPI);
+        setEvidencesInDataBus();
+
+        if (patternList.size() == 1) {
+            if (setViewFromPattern(patternList.get(0))) {
+                return true;
             }
+        }
 
-            evidences = null;
-            patternList = null;
-            currentPattern = null;
+        StrategySelectionView ssv = new StrategySelectionView();
+        ssv.load();
 
-            // Preparing following view
-            evidences = adAPI.getBaseEvidences();
-            patternList = adAPI.getPossiblePatterns(evidences);
+        FutureTask setViewTask = new FutureTask<>(() -> { frame.setView(ssv); return true; });
+        Platform.runLater(setViewTask);
 
-            setEvidencesInDataBus();
+        List<String> names = patternList.stream().map(Pattern::getName).collect(Collectors.toList());
+        if (names != null) {
+            ssv.setAvailableChoices(names);
+        }
 
-            if (patternList.size() == 1) {
-                if (setViewFromPattern(patternList.get(0))) {
-                    return;
-                }
-            }
-
-            StrategySelectionView ssv = new StrategySelectionView();
-            ssv.load();
-            Platform.runLater(() -> frame.setView(ssv));
-            List<String> names = patternList.stream().map(Pattern::getName).collect(Collectors.toList());
-            if(names != null)
-                ssv.setAvailableChoices(names);
-        }).start();
+        setViewTask.get(); // Wait for view completely set
+        return true;
     }
 
     private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
@@ -253,11 +264,7 @@ public class Orchestrator {
 
     static void setFrame(MainFrame frame) {
         INSTANCE.frame = frame;
-        try {
-            INSTANCE.orchestrate();
-        } catch (VerificationException | WrongEvidenceException e) {
-            LOGGER.error("Impossible to get ArgumentationDiagramAPIImpl", e);
-        }
+        INSTANCE.orchestrate();
     }
 
     public static void submitChoice(String value) {
@@ -279,10 +286,10 @@ public class Orchestrator {
     }
 
     public static void onValidate() {
-        try {
-            INSTANCE.orchestrate();
-        } catch (VerificationException | WrongEvidenceException e) {
-            LOGGER.error("Impossible to get ArgumentationDiagramAPIImpl", e);
-        }
+        INSTANCE.orchestrate();
+    }
+
+    static void waitforOrchestrating() throws ExecutionException, InterruptedException {
+        INSTANCE.orchestratingProcess.get();
     }
 }

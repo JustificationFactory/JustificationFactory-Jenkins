@@ -44,8 +44,10 @@ public abstract class GeneralizedGroup extends ParametersGroup {
         myAddLeaf(aVar);
     }
 
-    private <T extends AVar & ContinuousAVar, U extends AVar & DiscretAVar>
-                void myAddLeaf(AVar aVar) {
+    private <T extends AVar<V> & ContinuousAVar<V>,
+             U extends AVar<V> & DiscretAVar<U>,
+             V>
+            void myAddLeaf(AVar<V> aVar) {
         ExpParameterLeaf subLeaf;
 
         if(aVar instanceof ContinuousAVar) {

@@ -11,12 +11,9 @@ import java.io.IOException;
 public class Main extends Application {
     private final static Logger LOGGER = Logger.getLogger(Main.class);
 
-    private MainFrame mainFrame;
-
     public static void main(String[] args) {
         launch(args);
     }
-
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -24,7 +21,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("#AVEK analyzer");
 
-        mainFrame = new MainFrame();
+        MainFrame mainFrame = new MainFrame();
         Scene s = new Scene(mainFrame);
         primaryStage.setScene(s);
 
@@ -32,9 +29,5 @@ public class Main extends Application {
         LOGGER.debug("MainFrame created.");
 
         Orchestrator.setFrame(mainFrame);
-    }
-
-    MainFrame getMainFrame() {
-        return mainFrame;
     }
 }

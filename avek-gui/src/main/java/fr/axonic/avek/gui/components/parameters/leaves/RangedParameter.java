@@ -18,7 +18,8 @@ public class RangedParameter extends SensitiveParameter {
     private final HBox generalizationPane;
     private final JellyBeanPane jellyBeanPane;
 
-    public <T extends AVar & DiscretAVar<AVar>> RangedParameter(int level, T paramValue) {
+    public <T, U extends AVar<T> & DiscretAVar<U>>
+    RangedParameter(int level, U paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
@@ -26,19 +27,26 @@ public class RangedParameter extends SensitiveParameter {
         generalizationPane.getChildren().add(jellyBeanPane);
 
         jellyBeanPane.setJellyBeansStateEditable(true);
-        for (Object o : paramValue.getRange()) {
-            Object value = ((AVar) o).getValue();
-            if(value.toString().equals(paramValue.getValue().toString())) {
-                List<String> boolList = Arrays.asList("true", "false","unknown");
-                jellyBeanPane.addJellyBean(value.toString(), boolList);
-                /*jellyBeanPane.addJellyBeanListener(value.toString(), () -> {
+        for (U state : paramValue.getRange()) {
+            T value = state.getValue();
+            String strVal = value.toString();
 
-                });*/
+            if(strVal.equals(paramValue.getValue().toString())) {
+                List<String> boolList = Arrays.asList("true", "false");
+                jellyBeanPane.addJellyBean(strVal, boolList);
+            } else {
+                List<String> boolList = Arrays.asList("false", "true");
+                jellyBeanPane.addJellyBean(strVal, boolList);
             }
-            else {
-                List<String> boolList = Arrays.asList("unknown", "true", "false");
-                jellyBeanPane.addJellyBean(value.toString(), boolList);
-            }
+            jellyBeanPane.addJellyBeanListener(strVal, (newState) -> {
+                if (Boolean.getBoolean(newState)) {
+                    if (paramValue.getRange().contains(state)) {
+                        paramValue.getRange().add(state);
+                    }
+                }else {
+                    paramValue.getRange().remove(state);
+                }
+            });
         }
 
         // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass

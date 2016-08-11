@@ -12,7 +12,6 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -113,13 +112,10 @@ public class TestJellyBeans extends ApplicationTest {
         long timeout = Calendar.getInstance().getTimeInMillis() + 1_000; // 1s
         while (Calendar.getInstance().getTimeInMillis() < timeout
                 && !calledDelete.contains(jb)) {
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException ignored) {
-            }
+            sleep(100);
         }
 
-        assertTrue("OnDelete not called after 1s", calledDelete.contains(jb));
+        assertTrue("OnDelete not called after more than 1s", calledDelete.contains(jb));
     }
 
     private final Set<JellyBean> calledDelete = new HashSet<>();

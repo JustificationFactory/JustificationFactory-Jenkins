@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -29,7 +31,8 @@ public class JellyBean extends HBox {
 
     private List<String> states;
     private int stateIndex = 0;
-    private Consumer<JellyBean> onDelete;
+    private final Set<Consumer<String>> onChangeObservers;
+    private Consumer<JellyBean> onDeleteObserver;
     private final Tooltip tooltip;
 
     private boolean isRemovable, isEditable;
@@ -48,6 +51,7 @@ public class JellyBean extends HBox {
             LOGGER.fatal("Impossible to load FXML for JellyBean", e);
         }
 
+        onChangeObservers = new HashSet<>();
         tooltip = new Tooltip();
 
         this.getStylesheets().add("css/components/results/levels.css");
@@ -66,7 +70,7 @@ public class JellyBean extends HBox {
     @FXML
     public void onClickOnCross(ActionEvent actionEvent) {
         if (isRemovable) {
-            onDelete.accept(this);
+            onDeleteObserver.accept(this);
         }
     }
 
@@ -82,6 +86,7 @@ public class JellyBean extends HBox {
         String before = states.get(stateIndex).toLowerCase();
         stateIndex = state;
         String after = states.get(stateIndex).toLowerCase();
+        LOGGER.debug("State set to "+after);
 
 
         String allStates = "";
@@ -98,8 +103,11 @@ public class JellyBean extends HBox {
             jbCross.getStyleClass().add(after);
 
             tooltip.setText(tooltipText);
-            Tooltip.install(this, tooltip);
+            jbLabel.setTooltip(tooltip);
         });
+        for(Consumer<String> c : onChangeObservers) {
+            c.accept(this.getState());
+        }
     }
 
 
@@ -130,7 +138,7 @@ public class JellyBean extends HBox {
     }
 
     void setOnDelete(Consumer<JellyBean> onDelete) {
-        this.onDelete = onDelete;
+        this.onDeleteObserver = onDelete;
         setEditable(onDelete != null);
         setRemovable(onDelete != null);
     }
@@ -148,5 +156,9 @@ public class JellyBean extends HBox {
         if (editable) {
             getStyleClass().add("jellyBeanEditable");
         }
+    }
+
+    void addListener(Consumer<String> onStateChange) {
+        onChangeObservers.add(onStateChange);
     }
 }

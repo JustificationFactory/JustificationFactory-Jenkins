@@ -94,4 +94,12 @@ public class JellyBeanPane extends HBox {
 
         return map;
     }
+
+    public void addJellyBeanListener(String s, Consumer<String> onChange) {
+        for(Node n : getChildren()) {
+            JellyBean jb  = (JellyBean) n;
+            if(jb.getText().equals(s))
+                jb.addListener(onChange);
+        }
+    }
 }

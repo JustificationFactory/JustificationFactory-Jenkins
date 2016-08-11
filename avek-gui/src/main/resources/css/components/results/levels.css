@@ -23,3 +23,8 @@
     -fx-background-color: green;
     -fx-border-color: darkgreen;
 }
+
+.unknown {
+    -fx-background-color: lightgray;
+    -fx-border-color: gray;
+}
