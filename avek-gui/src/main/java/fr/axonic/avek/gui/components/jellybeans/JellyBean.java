@@ -28,7 +28,7 @@ public class JellyBean extends HBox {
     private Button jbCross;
 
     private List<String> states;
-    private int value = 0;
+    private int stateIndex = 0;
     private Consumer<JellyBean> onDelete;
     private final Tooltip tooltip;
 
@@ -74,44 +74,46 @@ public class JellyBean extends HBox {
     public void onClickOnLabel(ActionEvent actionEvent) {
         // ReadOnly
         if (isEditable) {
-            changeState((value + 1) % states.size());
+            setState((stateIndex + 1) % states.size());
         }
     }
 
-    private void changeState(int state) {
-        String before = states.get(value).toLowerCase();
-        value = state;
-        String after = states.get(value).toLowerCase();
+    private synchronized void setState(int state) {
+        String before = states.get(stateIndex).toLowerCase();
+        stateIndex = state;
+        String after = states.get(stateIndex).toLowerCase();
 
+
+        String allStates = "";
+        for(String s : states)
+            allStates += s.equalsIgnoreCase(after)?", ["+s+"]":(", "+s);
+        allStates = allStates.substring(2).toUpperCase();
+
+        final String tooltipText = "Current stateIndex: " + after.toUpperCase() + "\n"
+                                 + "All states: " + allStates;
         Platform.runLater(() -> {
             jbLabel.getStyleClass().remove(before);
             jbCross.getStyleClass().remove(before);
             jbLabel.getStyleClass().add(after);
             jbCross.getStyleClass().add(after);
 
-            String allStates = "";
-            for(String s : states)
-                allStates += s.equalsIgnoreCase(after)?", ["+s+"]":(", "+s);
-            allStates = allStates.substring(2).toUpperCase();
-
-            tooltip.setText("Current value: "+after.toUpperCase()+"\n"+
-                    "All states: " + allStates);
+            tooltip.setText(tooltipText);
             Tooltip.install(this, tooltip);
         });
     }
 
 
     String getState() {
-        return states.get(value);
+        return states.get(stateIndex);
     }
 
     void setStates(List<String> states) {
         this.states = states;
-        changeState(0);
+        setState(0);
     }
 
-    void setValue(String value) {
-        this.value = states.indexOf(value);
+    void setState(String state) {
+        this.stateIndex = states.indexOf(state);
     }
 
     public void setText(String text) {

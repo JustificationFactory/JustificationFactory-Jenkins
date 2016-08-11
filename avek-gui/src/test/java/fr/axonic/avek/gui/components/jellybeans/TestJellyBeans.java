@@ -12,6 +12,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -47,7 +48,7 @@ public class TestJellyBeans extends ApplicationTest {
         Arrays.asList(ExampleState.values()).forEach((elem) -> list.add(elem.toString()));
 
         this.jb.setStates(list);
-        this.jb.setValue(ExampleState.VERY_LOW.toString());
+        this.jb.setState(ExampleState.VERY_LOW.toString());
         // ReadOnly if not 'setOnDelete'
         //this.jb.setOnDelete(this::calledOnDelete);
 
@@ -87,23 +88,23 @@ public class TestJellyBeans extends ApplicationTest {
         Arrays.asList(ExampleState.values()).forEach((elem) -> list.add(elem.toString()));
 
         this.jb.setStates(list);
-        this.jb.setValue(ExampleState.VERY_LOW.toString());
+        this.jb.setState(ExampleState.VERY_LOW.toString());
 
         ctm.runNowOnPlatform(() -> this.jb.setOnDelete(this::calledOnDelete));
 
         assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
-
         clickOn(jbText);
         assertEquals(ExampleState.LOW.toString(), jb.getState());
-
-
-        clickOn(jbText); // Medium
+        clickOn(jbText);
+        assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
         clickOn(jbText);
         assertEquals(ExampleState.HIGH.toString(), jb.getState());
-
-        clickOn(jbText); // Very high
-        clickOn(jbText); // Very Low
-        clickOn(jbText); // low
+        clickOn(jbText);
+        assertEquals(ExampleState.VERY_HIGH.toString(), jb.getState());
+        clickOn(jbText);
+        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        clickOn(jbText);
+        assertEquals(ExampleState.LOW.toString(), jb.getState());
         clickOn(jbText);
         assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
 
