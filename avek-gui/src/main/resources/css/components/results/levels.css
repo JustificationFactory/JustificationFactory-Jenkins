@@ -14,12 +14,12 @@
     -fx-border-color: darkgoldenrod;
 }
 
-.high {
+.strong {
     -fx-background-color: greenyellow;
     -fx-border-color: limegreen;
 }
 
-.very_high {
+.very_strong {
     -fx-background-color: green;
     -fx-border-color: darkgreen;
 }

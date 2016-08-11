@@ -31,6 +31,9 @@ public class RangedParameter extends SensitiveParameter {
             if(value.toString().equals(paramValue.getValue().toString())) {
                 List<String> boolList = Arrays.asList("true", "false","unknown");
                 jellyBeanPane.addJellyBean(value.toString(), boolList);
+                /*jellyBeanPane.addJellyBeanListener(value.toString(), () -> {
+
+                });*/
             }
             else {
                 List<String> boolList = Arrays.asList("unknown", "true", "false");

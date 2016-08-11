@@ -11,12 +11,14 @@ import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.*;
 import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,6 +42,13 @@ public class Orchestrator {
     private List<EvidenceRole> evidences;
 
     private Orchestrator() {
+        Map<String, ARangedEnum> map = new HashMap<>();
+
+        for(EffectEnum effect : EffectEnum.values()) {
+            map.put(effect.name(), effect.getState());
+        }
+
+        DataBus.setExperimentResults(map);
     }
 
     private void orchestrate() throws VerificationException, WrongEvidenceException {
@@ -47,6 +56,8 @@ public class Orchestrator {
         frame.hideStrategyButton();
 
         ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
+
+
 
         new Thread(() -> {
             // Constructing conclusion

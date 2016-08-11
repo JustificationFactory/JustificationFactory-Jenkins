@@ -10,6 +10,6 @@
 }
 
 .unknown {
-    -fx-background-color: orange;
-    -fx-border-color: darkorange;
+    -fx-background-color: lightgray;
+    -fx-border-color: gray;
 }

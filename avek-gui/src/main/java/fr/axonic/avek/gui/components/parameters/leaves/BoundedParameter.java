@@ -6,8 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +21,6 @@ import java.util.Set;
  */
 public class BoundedParameter extends SensitiveParameter {
     private final static Logger LOGGER = Logger.getLogger(BoundedParameter.class);
-    private final static int TEXT_FIELD_WIDTH = 70; // px
 
     private final HBox generalizationPane;
     private final TextField minEquivRange;
@@ -31,10 +32,22 @@ public class BoundedParameter extends SensitiveParameter {
         generalizationPane = new HBox();
 
         minEquivRange = new TextField(paramValue.getValue().toString());
-        minEquivRange.setMaxWidth(TEXT_FIELD_WIDTH);
-
         maxEquivRange = new TextField(paramValue.getValue().toString());
-        maxEquivRange.setMaxWidth(TEXT_FIELD_WIDTH);
+        // Pretty print dates
+        if(paramValue.getValue() instanceof Calendar) {
+            SimpleDateFormat df = new SimpleDateFormat();
+            df.applyPattern("dd/MM/yyyy HH:mm:ss");
+            minEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+            maxEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+        }
+
+        // Compute boxes size
+        final double width = new Text(paramValue.getValue().toString()+"___")
+                .getLayoutBounds().getWidth() // This big is the Text in the TextField (+ 3 char length)
+                + minEquivRange.getPadding().getLeft() + minEquivRange.getPadding().getRight(); // Add the padding of the TextField
+
+        minEquivRange.setMaxWidth(width);
+        maxEquivRange.setMaxWidth(width);
 
         generalizationPane.getChildren().add(minEquivRange);
         generalizationPane.getChildren().add(new Label(" - "));
@@ -46,32 +59,25 @@ public class BoundedParameter extends SensitiveParameter {
         // GridPane.setColumnIndex(this.paramValue, 3);
         GridPane.setColumnIndex(generalizationPane, 4);
 
-
-        // Pretty print dates
-        if(paramValue.getValue() instanceof Calendar) {
-            SimpleDateFormat df = new SimpleDateFormat();
-            df.applyPattern("dd/MM/yyyy HH:mm:ss");
-            minEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
-            maxEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
-        }
-
         minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
                 minEquivRange.getStyleClass().remove("bad-input");
                 switch(paramValue.getFormat().getType()) {
                     case NUMBER:
+                        minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
                         paramValue.setMin(Double.valueOf(newval));
                         break;
                     case DATE:
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
                         cal.setTime(textFormat.parse(newval));
                         paramValue.setMax(cal);
                         break;
                     default:
-                        System.out.println("Cannot cast "+paramValue+", "+oldval+" > "+newval);
-                        throw new Exception();
+                        throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
                 }
+                minEquivRange.setTooltip(null); // If no error, remove tooltip
             } catch (Exception e) {
                 minEquivRange.getStyleClass().add("bad-input");
                 LOGGER.warn(e.getMessage());
@@ -82,17 +88,20 @@ public class BoundedParameter extends SensitiveParameter {
                 maxEquivRange.getStyleClass().remove("bad-input");
                 switch(paramValue.getFormat().getType()) {
                     case NUMBER:
+                        maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
                         paramValue.setMax(Double.valueOf(newval));
                         break;
                     case DATE:
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
                         cal.setTime(textFormat.parse(newval));
                         paramValue.setMax(cal);
                         break;
                     default:
                         throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
                 }
+                maxEquivRange.setTooltip(null); // If no error, remove tooltip
             } catch (Exception e) {
                 maxEquivRange.getStyleClass().add("bad-input");
                 LOGGER.warn(e.getMessage());

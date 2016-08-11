@@ -8,6 +8,8 @@
     -fx-background-radius: 2;
     -fx-padding: 3px;
     -fx-background-insets: 0;
+    -fx-background-color: lightgray;
+    -fx-border-color: gray;
 }
 
 .jellyBeanCross {
@@ -20,6 +22,8 @@
     -fx-alignment: CENTER;
     -fx-content-display: CENTER;
     -fx-opacity: 0%;
+    -fx-background-color: lightgray;
+    -fx-border-color: gray;
 }
 
 .jellyBeanEditable > .jellyBeanLabel:hover {

@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 
@@ -29,6 +30,7 @@ public class JellyBean extends HBox {
     private List<String> states;
     private int value = 0;
     private Consumer<JellyBean> onDelete;
+    private final Tooltip tooltip;
 
     private boolean isRemovable, isEditable;
 
@@ -45,6 +47,8 @@ public class JellyBean extends HBox {
         } catch (IOException e) {
             LOGGER.fatal("Impossible to load FXML for JellyBean", e);
         }
+
+        tooltip = new Tooltip();
 
         this.getStylesheets().add("css/components/results/levels.css");
         this.getStylesheets().add("css/components/results/boolean.css");
@@ -69,11 +73,9 @@ public class JellyBean extends HBox {
     @FXML
     public void onClickOnLabel(ActionEvent actionEvent) {
         // ReadOnly
-        if (!isEditable) {
-            return;
+        if (isEditable) {
+            changeState((value + 1) % states.size());
         }
-
-        changeState((value + 1) % states.size());
     }
 
     private void changeState(int state) {
@@ -86,6 +88,15 @@ public class JellyBean extends HBox {
             jbCross.getStyleClass().remove(before);
             jbLabel.getStyleClass().add(after);
             jbCross.getStyleClass().add(after);
+
+            String allStates = "";
+            for(String s : states)
+                allStates += s.equalsIgnoreCase(after)?", ["+s+"]":(", "+s);
+            allStates = allStates.substring(2).toUpperCase();
+
+            tooltip.setText("Current value: "+after.toUpperCase()+"\n"+
+                    "All states: " + allStates);
+            Tooltip.install(this, tooltip);
         });
     }
 
