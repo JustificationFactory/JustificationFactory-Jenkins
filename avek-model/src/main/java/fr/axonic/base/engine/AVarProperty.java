@@ -1,6 +1,6 @@
 package fr.axonic.base.engine;
 
-public enum AVarProperty {
+public enum AVarProperty implements AEntityProperty{
 
     VALUE,
     CODE,

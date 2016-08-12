@@ -371,7 +371,8 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 	 *             fr.axonic.validation procedure of this AVar (see
 	 *             {@link Verifiable#verify(boolean)}).
 	 */
-	public void setProperty(String propertyName, Object newValue) throws VerificationException {
+
+	public void setProperty(String propertyName, Object newValue) {
 
 		Object oldValue = getPropertyValue(propertyName);
 
@@ -389,7 +390,7 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 		} catch (VerificationException e) {
 
 			setPropertyValue(propertyName, oldValue);
-			throw e;
+			throw new RuntimeException(e);
 
 		}
 	}
