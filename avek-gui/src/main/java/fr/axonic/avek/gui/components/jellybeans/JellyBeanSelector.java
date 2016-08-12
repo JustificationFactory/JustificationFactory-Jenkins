@@ -101,7 +101,8 @@ public class JellyBeanSelector extends VBox {
             LOGGER.warn("Choice already added: " + choice.getKey());
             return;
         }
-        jellyBeanPane.addJellyBean(choice.getKey(), choice.getValue());
+        JellyBeanItem<String> item = new JellyBeanItem<>(choice.getKey(), choice.getValue());
+        jellyBeanPane.addJellyBean(item);
         updateJellyBeanChoice();
     }
 
@@ -144,7 +145,7 @@ public class JellyBeanSelector extends VBox {
         return jellyBeanPane;
     }
 
-    public Map<String, String> getSelected() {
+    public List<JellyBeanItem> getSelected() {
         return jellyBeanPane.getJellyBeans();
     }
 }

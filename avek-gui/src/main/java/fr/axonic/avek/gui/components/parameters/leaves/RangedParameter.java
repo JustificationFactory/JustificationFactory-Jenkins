@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
+import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
@@ -31,15 +32,17 @@ public class RangedParameter extends SensitiveParameter {
             T value = state.getValue();
             String strVal = value.toString();
 
+            List<Boolean> boolList = Arrays.asList(false, true);
+
+            JellyBeanItem<Boolean> item = new JellyBeanItem<>(strVal, boolList);
+            jellyBeanPane.addJellyBean(item);
+
             if(strVal.equals(paramValue.getValue().toString())) {
-                List<String> boolList = Arrays.asList("true", "false");
-                jellyBeanPane.addJellyBean(strVal, boolList);
-            } else {
-                List<String> boolList = Arrays.asList("false", "true");
-                jellyBeanPane.addJellyBean(strVal, boolList);
+                item.setState(true);
+                item.setEditable(false);
             }
-            jellyBeanPane.addJellyBeanListener(strVal, (newState) -> {
-                if (Boolean.getBoolean(newState)) {
+            item.addStateChangeListener((lastState, newState) -> {
+                if (newState) {
                     if (paramValue.getRange().contains(state)) {
                         paramValue.getRange().add(state);
                     }

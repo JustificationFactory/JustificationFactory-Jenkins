@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
+import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanSelector;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
@@ -97,7 +98,7 @@ public class EstablishEffectView extends AbstractView {
         outerResultsButton.setSelected(newState);
     }
 
-    public Map<String, String> getEffects() {
+    public List<JellyBeanItem> getEffects() {
         return jellyBeanSelector.getSelected();
     }
 }

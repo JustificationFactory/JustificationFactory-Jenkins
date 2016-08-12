@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 28/07/16.
@@ -26,14 +27,13 @@ public class JellyBeanPane extends HBox {
         this.getStylesheets().add("css/components/JellyBean.css");
     }
 
-    public void addJellyBean(String label, List<String> stateList) {
-        JellyBean jb = new JellyBean();
-        jb.setStates(stateList);
-        jb.setText(label);
+    public <T> void addJellyBean(JellyBeanItem<T> item) {
+        JellyBean<T> jb = new JellyBean<>();
+        jb.set(item);
 
         getChildren().add(jb);
 
-        jb.setEditable(areJellyBeansEditable);
+        item.setEditable(areJellyBeansEditable);
         if (onRemoveJellyBean != null) {
             jb.setOnDelete(this::removeJellyBean);
         }
@@ -42,7 +42,7 @@ public class JellyBeanPane extends HBox {
     private void removeJellyBean(JellyBean jbc) {
         getChildren().remove(jbc);
         if (onRemoveJellyBean != null) {
-            onRemoveJellyBean.accept(jbc.getText());
+            onRemoveJellyBean.accept(jbc.getItem().getText());
         }
     }
 
@@ -50,7 +50,7 @@ public class JellyBeanPane extends HBox {
         this.onRemoveJellyBean = function;
 
         for (Node n : getChildren()) {
-            JellyBean jb = (JellyBean) n;
+            JellyBean<?> jb = (JellyBean) n;
             jb.setOnDelete(function == null ? null : this::removeJellyBean);
         }
     }
@@ -60,13 +60,13 @@ public class JellyBeanPane extends HBox {
 
         for (Node n : getChildren()) {
             JellyBean jb = (JellyBean) n;
-            jb.setEditable(b);
+            jb.getItem().setEditable(b);
         }
     }
 
     boolean contains(String key) {
         for (Node n : getChildren()) {
-            if (((JellyBean) n).getText().equals(key)) {
+            if (((JellyBean) n).getItem().getText().equals(key)) {
                 return true;
             }
         }
@@ -75,7 +75,7 @@ public class JellyBeanPane extends HBox {
 
     public void remove(String key) {
         for (Node n : new ArrayList<>(getChildren())) {
-            if (((JellyBean) n).getText().equals(key)) {
+            if (((JellyBean) n).getItem().getText().equals(key)) {
                 getChildren().remove(n);
                 break;
             }
@@ -86,20 +86,9 @@ public class JellyBeanPane extends HBox {
      *
      * @return Map&lt;JellyBean's label, JellyBean's state&gt;
      */
-    public Map<String, String> getJellyBeans() {
-        Map<String, String> map = new HashMap<>();
-        for(Node n : getChildren())
-            map.put(((JellyBean)n).getText(),
-                    ((JellyBean)n).getState());
-
-        return map;
-    }
-
-    public void addJellyBeanListener(String s, Consumer<String> onChange) {
-        for(Node n : getChildren()) {
-            JellyBean jb  = (JellyBean) n;
-            if(jb.getText().equals(s))
-                jb.addListener(onChange);
-        }
+    public List<JellyBeanItem> getJellyBeans() {
+        return getChildren().stream()
+                            .map(n -> ((JellyBean) n).getItem())
+                            .collect(Collectors.toList());
     }
 }

@@ -8,6 +8,7 @@ import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
+import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.*;
 import fr.axonic.avek.model.MonitoredSystem;
@@ -127,7 +128,7 @@ public class Orchestrator {
                                     new Experimentation(
                                             INSTANCE.currentStimulation,
                                             INSTANCE.currentSubject),
-                                    toEffectList(currentView.getEffects())
+                                    effectsAsJBI(currentView.getEffects())
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
@@ -145,7 +146,7 @@ public class Orchestrator {
                                             new Experimentation(
                                                     INSTANCE.currentStimulation,
                                                     INSTANCE.currentSubject),
-                                    toEffectList(currentView.getEffects())
+                                    effectsAsJBI(currentView.getEffects())
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
@@ -156,13 +157,13 @@ public class Orchestrator {
         }
     }
 
-    private AList<Effect> toEffectList(Map<String, String> effectsAsMap) {
+    private AList<Effect> effectsAsJBI(List<JellyBeanItem> effectsAsJellyBeanItems) {
         final AList<Effect> effectList = new AList<>();
 
         EffectEnum[] eetab = EffectEnum.values();
-        for(String key : effectsAsMap.keySet()) {
+        for(JellyBeanItem key : effectsAsJellyBeanItems) {
             for (EffectEnum effectEnum : eetab) {
-                if(key.equals(effectEnum.toString())) {
+                if(key.getText().equals(effectEnum.toString())) {
                     try {
                         Effect effect = new Effect();
                         effect.setEffectValue(effectEnum);

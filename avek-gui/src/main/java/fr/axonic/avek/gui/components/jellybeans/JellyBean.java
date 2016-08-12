@@ -11,15 +11,12 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
 /**
  * Created by Nathaël N on 28/06/16.
  */
-public class JellyBean extends HBox {
+public class JellyBean<T> extends HBox {
     private final static Logger LOGGER = Logger.getLogger(JellyBean.class);
     private final static URL FXML
             = JellyBean.class.getClassLoader().getResource("fxml/components/JellyBean.fxml");
@@ -29,13 +26,11 @@ public class JellyBean extends HBox {
     @FXML
     private Button jbCross;
 
-    private List<String> states;
-    private int stateIndex = 0;
-    private final Set<Consumer<String>> onChangeObservers;
-    private Consumer<JellyBean> onDeleteObserver;
+    private Consumer<JellyBean<T>> onDeleteObserver;
     private final Tooltip tooltip;
 
-    private boolean isRemovable, isEditable;
+    private boolean isRemovable;
+    private JellyBeanItem<T> item;
 
     // should be public
     public JellyBean() {
@@ -51,7 +46,6 @@ public class JellyBean extends HBox {
             LOGGER.fatal("Impossible to load FXML for JellyBean", e);
         }
 
-        onChangeObservers = new HashSet<>();
         tooltip = new Tooltip();
 
         this.getStylesheets().add("css/components/results/levels.css");
@@ -63,7 +57,6 @@ public class JellyBean extends HBox {
     public void initialize() {
         jbLabel.getStyleClass().remove("button"); // remove base css
         jbCross.getStyleClass().remove("button");
-        setEditable(false);
         setRemovable(false);
     }
 
@@ -76,70 +69,48 @@ public class JellyBean extends HBox {
 
     @FXML
     public void onClickOnLabel(ActionEvent actionEvent) {
-        // ReadOnly
-        if (isEditable) {
-            setState((stateIndex + 1) % states.size());
-        }
+        item.nextState();
     }
 
-    private synchronized void setState(int state) {
-        String before = states.get(stateIndex).toLowerCase();
-        stateIndex = state;
-        String after = states.get(stateIndex).toLowerCase();
-        LOGGER.debug("State set to "+after);
+    private void onStateChanged(T lastState, T newState) {
+        final String strLastState = lastState.toString();
+        final String strNewState = newState.toString();
 
-
+        // Computing tooltip
         String allStates = "";
-        for(String s : states)
-            allStates += s.equalsIgnoreCase(after)?", ["+s+"]":(", "+s);
+        for(T s : item.getStates())
+            allStates += s.toString().equalsIgnoreCase(strNewState)?", ["+s+"]":(", "+s);
+
         allStates = allStates.substring(2).toUpperCase();
 
-        final String tooltipText = "Current state: " + after.toUpperCase() + "\n"
-                                 + "All states: " + allStates;
+        final String tooltipText = "Current state: " + strNewState.toUpperCase() + "\n"
+                + "All states: " + allStates;
+
+        // Computing style
         Platform.runLater(() -> {
-            jbLabel.getStyleClass().remove(before);
-            jbCross.getStyleClass().remove(before);
-            jbLabel.getStyleClass().add(after);
-            jbCross.getStyleClass().add(after);
+            jbLabel.getStyleClass().remove(strLastState.toLowerCase());
+            jbCross.getStyleClass().remove(strLastState.toLowerCase());
+            jbLabel.getStyleClass().add(strNewState.toLowerCase());
+            jbCross.getStyleClass().add(strNewState.toLowerCase());
 
             tooltip.setText(tooltipText);
             jbLabel.setTooltip(tooltip);
         });
-        for(Consumer<String> c : onChangeObservers) {
-            c.accept(this.getState());
+    }
+    private void onEditableChanged(boolean editable) {
+        getStyleClass().remove("jellyBeanEditable");
+        if (editable) {
+            getStyleClass().add("jellyBeanEditable");
         }
-    }
-
-
-    String getState() {
-        return states.get(stateIndex);
-    }
-
-    void setStates(List<String> states) {
-        this.states = states;
-        setState(0);
-    }
-
-    void setState(String state) {
-        this.stateIndex = states.indexOf(state);
-    }
-
-    public void setText(String text) {
-        jbLabel.setText(text);
-    }
-
-    public String getText() {
-        return jbLabel.getText();
     }
 
     @Override
     public String toString() {
-        return "JellyBean=" + getState();
+        return "JellyBean=" + item;
     }
 
-    void setOnDelete(Consumer<JellyBean> onDelete) {
+    void setOnDelete(Consumer<JellyBean<T>> onDelete) {
         this.onDeleteObserver = onDelete;
-        setEditable(onDelete != null);
         setRemovable(onDelete != null);
     }
 
@@ -149,16 +120,17 @@ public class JellyBean extends HBox {
         jbCross.setManaged(removable);
     }
 
-    void setEditable(boolean editable) {
-        isEditable = editable;
 
-        getStyleClass().remove("jellyBeanEditable");
-        if (editable) {
-            getStyleClass().add("jellyBeanEditable");
-        }
+    public void set(JellyBeanItem<T> item) {
+        this.item = item;
+        jbLabel.setText(item.getText());
+
+        item.addStateChangeListener(this::onStateChanged);
+        item.setEditableStateChangeListener(this::onEditableChanged);
+        item.setState(0);
     }
 
-    void addListener(Consumer<String> onStateChange) {
-        onChangeObservers.add(onStateChange);
+    public JellyBeanItem<T> getItem() {
+        return item;
     }
 }

@@ -2,6 +2,7 @@ package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
+import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
 import fr.axonic.avek.gui.model.DataBus;
@@ -52,11 +53,12 @@ public class GeneralizeView extends AbstractView {
 
         Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
         for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
-            List<String> ls = new ArrayList<>();
+            List<Object> ls = new ArrayList<>();
             for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
-                ls.add(ae.getValue().toString());
+                ls.add(ae.getValue());
             }
-            jellyBeanPane.addJellyBean(entry.getKey(), ls);
+            JellyBeanItem item = new JellyBeanItem<>(entry.getKey(), ls);
+            jellyBeanPane.addJellyBean(item);
         }
     }
 
@@ -156,7 +158,7 @@ public class GeneralizeView extends AbstractView {
         button.setSelected(false);
     }
 
-    public Map<String, String> getEffects() {
+    public List<JellyBeanItem> getEffects() {
         return jellyBeanPane.getJellyBeans();
     }
 }

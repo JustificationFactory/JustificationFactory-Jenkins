@@ -174,6 +174,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
     private void verifyGoodJellyBean(Pane jellyBeanPane, int i, String name) {
         assertTrue(jellyBeanPane.getChildren().get(i) instanceof JellyBean);
         JellyBean jb = (JellyBean) jellyBeanPane.getChildren().get(i);
-        assertEquals(name, jb.getText());
+        assertEquals(name, jb.getItem().getText());
     }
 }

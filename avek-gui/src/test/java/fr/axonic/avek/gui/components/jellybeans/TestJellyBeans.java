@@ -4,9 +4,11 @@ import fr.axonic.avek.gui.model.sample.ExampleState;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.validation.exception.VerificationException;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -24,12 +26,13 @@ public class TestJellyBeans extends ApplicationTest {
         UtilForTests.disableGraphics();
     }
 
-    private JellyBean jb;
+    private JellyBeanItem<ExampleState> jbi;
+    private JellyBean<ExampleState> jb;
     private Button jbText, jbCross;
 
     @Override
     public void start(Stage stage) throws IOException {
-        this.jb = new JellyBean();
+        this.jb = new JellyBean<>();
 
         Scene scene = new Scene(jb, 200, 200);
         stage.setScene(scene);
@@ -37,34 +40,35 @@ public class TestJellyBeans extends ApplicationTest {
 
         jbText = (Button) (jb.getChildren().get(0));
         jbCross = (Button) (jb.getChildren().get(1));
+    }
 
-        this.jb.setText("The Text");
+    @Before
+    public void before() throws Exception {
+        ConcurrentTaskManager ctm = new ConcurrentTaskManager();
+
+        jbi = new JellyBeanItem<>("TheText", Arrays.asList(ExampleState.values()));
+        ctm.runNowOnPlatform(() -> jb.set(jbi));
     }
 
     @Test
     public void testReadOnly() throws VerificationException {
-        List<String> list = new ArrayList<>();
-        Arrays.asList(ExampleState.values()).forEach((elem) -> list.add(elem.toString()));
+        this.jbi.setState(ExampleState.VERY_LOW);
+        jbi.setEditable(false);
 
-        this.jb.setStates(list);
-        this.jb.setState(ExampleState.VERY_LOW.toString());
-        // ReadOnly if not 'setOnDelete'
-        //this.jb.setOnDelete(this::calledOnDelete);
-
-        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState());
 
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState());
 
         clickOn(jbText); // Medium
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState());
 
         clickOn(jbText); // Very high
         clickOn(jbText); // Very Low
         clickOn(jbText); // low
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState());
 
         // try delete
         clickOn(jbCross);
@@ -83,29 +87,25 @@ public class TestJellyBeans extends ApplicationTest {
     @Test
     public void testStateChange() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
-        List<String> list = new ArrayList<>();
-        Arrays.asList(ExampleState.values()).forEach((elem) -> list.add(elem.toString()));
-
-        this.jb.setStates(list);
-        this.jb.setState(ExampleState.VERY_LOW.toString());
 
         ctm.runNowOnPlatform(() -> this.jb.setOnDelete(this::calledOnDelete));
+        jbi.setEditable(true);
 
-        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.LOW.toString(), jb.getState());
+        assertEquals(ExampleState.LOW, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
+        assertEquals(ExampleState.MEDIUM, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.HIGH.toString(), jb.getState());
+        assertEquals(ExampleState.HIGH, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_HIGH.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_HIGH, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW.toString(), jb.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.LOW.toString(), jb.getState());
+        assertEquals(ExampleState.LOW, jbi.getState());
         clickOn(jbText);
-        assertEquals(ExampleState.MEDIUM.toString(), jb.getState());
+        assertEquals(ExampleState.MEDIUM, jbi.getState());
 
         // try delete
         clickOn(jbCross);
@@ -119,7 +119,6 @@ public class TestJellyBeans extends ApplicationTest {
     }
 
     private final Set<JellyBean> calledDelete = new HashSet<>();
-
     private void calledOnDelete(JellyBean jellyBean) {
         calledDelete.add(jellyBean);
     }
