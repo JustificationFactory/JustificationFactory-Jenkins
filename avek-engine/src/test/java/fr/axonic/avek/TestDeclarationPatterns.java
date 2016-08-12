@@ -10,6 +10,7 @@ import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.engine.instance.evidence.*;
 import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class TestDeclarationPatterns {
 		// revoir avec la bonne stratgeie
 		Pattern establishProperty = new Pattern("EstablishProperty",ts, Arrays.asList(new EvidenceRoleType[] {rtExperimentation, rtResults}), conclusionEffectType);
 		
-		Evidence<Result> results0 = new Evidence<Result>("Result 0",new Result());
+		Evidence<Result> results0 = new Evidence<Result>("Result 0",new Result(new AList<>()));
 		Conclusion<Effect> effect0 = new Conclusion<Effect>("Effect 0",new Effect());
 		//Step step1 = treat.createStep(Arrays.asList(new Evidence[] {experimentation0,results0}), effect0);
 		

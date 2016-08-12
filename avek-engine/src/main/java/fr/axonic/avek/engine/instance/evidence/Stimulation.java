@@ -4,6 +4,8 @@ import fr.axonic.avek.engine.conclusion.Limit;
 import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVarHelper;
+import fr.axonic.base.engine.AVarProperty;
+import fr.axonic.base.engine.Format;
 import fr.axonic.validation.exception.VerificationException;
 
 import java.util.Arrays;
@@ -44,7 +46,7 @@ public class Stimulation extends Element implements Limit {
         this.waveform.setValue(waveform);
     }
     private void setWaveform(ARangedEnum<WaveformEnum> waveform) {
-        this.waveform = waveform;
+        setProperty(AVEKAStructureProperty.WAVEFORM.name(),waveform);
     }
 
     public WaveformParameter getWaveformParameter() {
@@ -52,7 +54,7 @@ public class Stimulation extends Element implements Limit {
     }
 
     public void setWaveformParameter(WaveformParameter waveformParameter) {
-        this.waveformParameter = waveformParameter;
+        setProperty(AVEKAStructureProperty.WAVEFORM_PARAMETER.name(),waveformParameter);
     }
 
     public StimulationScheduler getStimulationScheduler() {
@@ -60,8 +62,84 @@ public class Stimulation extends Element implements Limit {
     }
 
     public void setStimulationScheduler(StimulationScheduler stimulationScheduler) {
-        this.stimulationScheduler = stimulationScheduler;
+        setProperty(AVEKAStructureProperty.STIMULATION_SCHEDULER.name(),stimulationScheduler);
     }
+
+    protected Object getPropertyValue(String propertyName) {
+        Object result;
+        try {
+            switch (AVEKAStructureProperty.valueOf(propertyName)) {
+                case WAVEFORM_PARAMETER: {
+                    result = waveformParameter;
+                }
+                break;
+                case STIMULATION_SCHEDULER: {
+                    result = stimulationScheduler;
+                }
+                break;
+                case WAVEFORM: {
+                    result = waveform;
+                    break;
+                }
+                default: {
+                    result = super.getPropertyValue(propertyName);
+                }
+            }
+        }
+        catch (IllegalArgumentException e){
+            result=super.getPropertyValue(propertyName);
+        }
+
+        return result;
+    }
+
+    protected boolean isPropertyVerifiable(String propertyName) {
+        boolean result;
+        try{
+            switch (AVEKAStructureProperty.valueOf(propertyName)) {
+                case WAVEFORM_PARAMETER:
+                case STIMULATION_SCHEDULER:
+                case WAVEFORM:{
+                    result = true;
+                }
+                break;
+                default: {
+                    result = super.isPropertyVerifiable(propertyName);
+                }
+            }
+        }
+        catch (IllegalArgumentException e){
+            result = super.isPropertyVerifiable(propertyName);
+        }
+        return result;
+    }
+
+    protected void setPropertyValue(String propertyName, Object newPropertyValue) {
+        try {
+            switch (AVEKAStructureProperty.valueOf(propertyName)) {
+                case WAVEFORM: {
+                    waveform = (ARangedEnum<WaveformEnum>) newPropertyValue;
+                }
+                break;
+                case WAVEFORM_PARAMETER:
+                    waveformParameter = (WaveformParameter) newPropertyValue;
+                    break;
+                case STIMULATION_SCHEDULER: {
+                    stimulationScheduler = (StimulationScheduler) newPropertyValue;
+                }
+                break;
+
+                default: {
+                    super.setPropertyValue(propertyName, newPropertyValue);
+                }
+            }
+        }
+        catch (IllegalArgumentException e){
+            super.setPropertyValue(propertyName, newPropertyValue);
+        }
+
+    }
+
 
     @Override
     public String toString() {
