@@ -80,7 +80,7 @@ public class TestFileList extends ApplicationTest {
                 method.invoke(flv,
                         Collections.singletonList(
                                 new File("./temp/toto/titi.txt"))));
-        assertEquals(2, flv.getFileList().getItems().size());
+        assertEquals("Folder contains: "+flv.getFileList().getItems(), 2, flv.getFileList().getItems().size());
 
         // File not found
         LOGGER.error("[NOT AN ERROR] A deliberate action should show a ERROR message\n" +

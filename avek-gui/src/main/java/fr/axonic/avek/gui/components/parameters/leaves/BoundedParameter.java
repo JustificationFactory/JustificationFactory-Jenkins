@@ -2,6 +2,7 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
+import fr.axonic.validation.exception.VerificationException;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -26,10 +27,16 @@ public class BoundedParameter extends SensitiveParameter {
     private final TextField minEquivRange;
     private final TextField maxEquivRange;
 
-    public <T extends AVar & ContinuousAVar> BoundedParameter(int level, T paramValue) {
+    public <T extends AVar<U> & ContinuousAVar<U>, U> BoundedParameter(int level, T paramValue) {
         super(level, paramValue);
 
         generalizationPane = new HBox();
+
+        try {
+            paramValue.setMin(paramValue.getValue());
+        } catch(VerificationException ve) {
+            throw new RuntimeException();
+        }
 
         minEquivRange = new TextField(paramValue.getValue().toString());
         maxEquivRange = new TextField(paramValue.getValue().toString());
@@ -65,14 +72,14 @@ public class BoundedParameter extends SensitiveParameter {
                 switch(paramValue.getFormat().getType()) {
                     case NUMBER:
                         minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
-                        paramValue.setMin(Double.valueOf(newval));
+                        paramValue.setMin((U) Double.valueOf(newval));
                         break;
                     case DATE:
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                         minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
                         cal.setTime(textFormat.parse(newval));
-                        paramValue.setMax(cal);
+                        paramValue.setMax((U) cal);
                         break;
                     default:
                         throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
@@ -89,14 +96,14 @@ public class BoundedParameter extends SensitiveParameter {
                 switch(paramValue.getFormat().getType()) {
                     case NUMBER:
                         maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
-                        paramValue.setMax(Double.valueOf(newval));
+                        paramValue.setMax((U) Double.valueOf(newval));
                         break;
                     case DATE:
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                         maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
                         cal.setTime(textFormat.parse(newval));
-                        paramValue.setMax(cal);
+                        paramValue.setMax((U) cal);
                         break;
                     default:
                         throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);

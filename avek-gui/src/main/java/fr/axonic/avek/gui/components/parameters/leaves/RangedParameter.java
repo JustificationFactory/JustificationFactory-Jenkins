@@ -8,9 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Nathaël N on 21/07/16.
@@ -28,7 +26,7 @@ public class RangedParameter extends SensitiveParameter {
         generalizationPane.getChildren().add(jellyBeanPane);
 
         jellyBeanPane.setJellyBeansStateEditable(true);
-        for (U state : paramValue.getRange()) {
+        for (U state : new HashSet<>(paramValue.getRange())) {
             T value = state.getValue();
             String strVal = value.toString();
 
@@ -40,6 +38,8 @@ public class RangedParameter extends SensitiveParameter {
             if(strVal.equals(paramValue.getValue().toString())) {
                 item.setState(true);
                 item.setEditable(false);
+            } else {
+                paramValue.getRange().remove(state);
             }
             item.addStateChangeListener((lastState, newState) -> {
                 if (newState) {
