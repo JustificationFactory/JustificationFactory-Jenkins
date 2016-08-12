@@ -2,8 +2,7 @@ package fr.axonic.base;
 
 
 import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.Format;
-import fr.axonic.base.engine.FormatType;
+import fr.axonic.base.format.StringFormat;
 import fr.axonic.validation.Verify;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -17,10 +16,10 @@ public class AString extends AVar<String> {
     }
 
     public AString(String value) {
-        super(new Format(FormatType.STRING),value);
+        super(new StringFormat(),value);
     }
     public AString(String label, String value) {
-        super(label,new Format(FormatType.STRING), value);
+        super(label,new StringFormat(), value);
     }
 
     @Override

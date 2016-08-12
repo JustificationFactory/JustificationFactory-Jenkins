@@ -3,9 +3,11 @@ package fr.axonic.verification;
 
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.Format;
+import fr.axonic.base.format.BoundedNumberFormat;
+import fr.axonic.base.format.Format;
 import fr.axonic.base.engine.FormatType;
 import fr.axonic.validation.exception.ErrorVerifyException;
+import fr.axonic.validation.exception.RuntimeVerificationException;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
@@ -19,23 +21,23 @@ public class ANumberVerifierTest {
 
     @Test
     public void testGoodRangeVerifier() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         aNumber.setMax(10);
         aNumber.setMin(1);
 
         aNumber.setValue(5);
     }
 
-    @Test(expected = ErrorVerifyException.class)
+    @Test(expected = RuntimeVerificationException.class)
     public void testWrongRangeVerifier() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         aNumber.setMax(10);
         aNumber.setMin(1);
         aNumber.setValue(0);
     }
     @Test
     public void testGoodVerifier() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         aNumber.setMax(10);
         aNumber.setMin(1);
 
@@ -45,7 +47,7 @@ public class ANumberVerifierTest {
 
     @Test(expected = ErrorVerifyException.class)
     public void testWrongVerifier() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         try {
             aNumber.setMax(10);
             aNumber.setMin(1);
@@ -57,7 +59,7 @@ public class ANumberVerifierTest {
 
     @Test
     public void testGoodVerifier2() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         aNumber.setCode("test");
         aNumber.setPath("test.test");
         aNumber.setMax(10);
@@ -71,7 +73,7 @@ public class ANumberVerifierTest {
 
     @Test
     public void testGoodVerifier3() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         aNumber.setCode("test");
         aNumber.setPath("test.test");
         aNumber.setMax(10);

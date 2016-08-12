@@ -5,9 +5,11 @@ import fr.axonic.TestEnum;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.AVarHelper;
-import fr.axonic.base.engine.Format;
+import fr.axonic.base.format.Format;
 import fr.axonic.base.engine.FormatType;
+import fr.axonic.base.format.RangedEnumFormat;
 import fr.axonic.validation.exception.ErrorVerifyException;
+import fr.axonic.validation.exception.RuntimeVerificationException;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
@@ -23,16 +25,16 @@ public class AEnumVerifierTest {
 
     @Test
     public void testGoodRangeVerifier() throws VerificationException {
-        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new RangedEnumFormat());
         TestEnum[] range=TestEnum.values();
         range=Arrays.copyOfRange(range,0,2);
         aNumber.setRange(AVarHelper.transformToAVar(Arrays.asList(range)));
         aNumber.setValue(TestEnum.A);
     }
 
-    @Test(expected = ErrorVerifyException.class)
+    @Test(expected = RuntimeVerificationException.class)
     public void testWrongRangeVerifier() throws VerificationException {
-        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new RangedEnumFormat());
         TestEnum[] range=TestEnum.values();
         range=Arrays.copyOfRange(range,0,2);
         aNumber.setRange(AVarHelper.transformToAVar(Arrays.asList(range)));
@@ -40,7 +42,7 @@ public class AEnumVerifierTest {
     }
     @Test
     public void testGoodVerifier() throws VerificationException {
-        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new RangedEnumFormat());
         TestEnum[] range=TestEnum.values();
         range=Arrays.copyOfRange(range,0,2);
         aNumber.setRange(AVarHelper.transformToAVar(Arrays.asList(range)));
@@ -50,7 +52,7 @@ public class AEnumVerifierTest {
 
     @Test(expected = ErrorVerifyException.class)
     public void testWrongVerifier() throws VerificationException {
-        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new RangedEnumFormat());
         TestEnum[] range=TestEnum.values();
         range=Arrays.copyOfRange(range,0,2);
         try {
@@ -63,7 +65,7 @@ public class AEnumVerifierTest {
 
     @Test
     public void testGoodVerifier2() throws VerificationException {
-        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new RangedEnumFormat());
         aNumber.setCode("test");
         aNumber.setPath("test.test");
         aNumber.setRange(AVarHelper.transformToAVar(Arrays.asList(TestEnum.values())));
@@ -76,7 +78,7 @@ public class AEnumVerifierTest {
 
     @Test
     public void testGoodVerifier3() throws VerificationException {
-        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new Format(FormatType.RANGED_ENUM));
+        ARangedEnum<TestEnum> aNumber= (ARangedEnum<TestEnum>) AVar.create(new RangedEnumFormat());
         aNumber.setCode("test");
         aNumber.setPath("test.test");
         aNumber.setRange(AVarHelper.transformToAVar(Arrays.asList(TestEnum.values())));

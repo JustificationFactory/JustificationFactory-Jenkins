@@ -1,6 +1,7 @@
 package fr.axonic.base.engine;
 
 import fr.axonic.base.*;
+import fr.axonic.base.format.Format;
 import fr.axonic.observation.binding.BindingParametersException;
 import fr.axonic.observation.binding.BindingTypesException;
 import fr.axonic.observation.binding.BindingsBiDirectional;
@@ -9,6 +10,7 @@ import fr.axonic.observation.event.AEntityChangedEvent;
 import fr.axonic.observation.event.ChangedEventType;
 import fr.axonic.validation.Verifiable;
 import fr.axonic.validation.Verify;
+import fr.axonic.validation.exception.RuntimeVerificationException;
 import fr.axonic.validation.exception.VerificationException;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -38,50 +40,11 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 	private Format format;
 
 	public static AVar create(Format format) {
-
-		AVar result = null;
-
-		switch (format.getType()) {
-			case BOOLEAN: {
-				result = new ABoolean();
-			}
-			break;
-			case DATE: {
-				result = new ADate();
-			}
-			break;
-			case NUMBER: {
-				result = new ANumber();
-			}
-			break;
-			case RANGED_NUMBER: {
-				result = new AContinuousNumber();
-			}
-			break;
-			case RANGED_STRING: {
-				result = new ARangedString();
-			}
-			break;
-			case STRING: {
-				result = new AString();
-			}
-			break;
-			case ENUM: {
-				result = new AEnum<>();
-			}
-			break;
-			case RANGED_ENUM: {
-				result = new ARangedEnum<>();
-			}
-			break;
-			default: {
-				throw new IllegalArgumentException("Variable cannot be initialized. Unknown format.");
-			}
+		try {
+			return (AVar)format.getAVarType().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
-
-		result.setFormat(format);
-
-		return result;
 	}
 
 	protected AVar() {
@@ -123,8 +86,8 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 
 
 	@XmlTransient
-	public FormatType getType() {
-		return this.getFormat() == null ? null : this.getFormat().getType();
+	public Class getType() {
+		return this.getFormat() == null ? null : this.getFormat().getFormatType();
 	}
 
 	@Override
@@ -188,7 +151,8 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 
 	@Override
 	public AVar clone() throws CloneNotSupportedException {
-		AVar result = AVar.create(format);
+		AVar result = null;
+		result = AVar.create(format);
 
 		result.setCode(getCode());
 		result.setLabel(getLabel());
@@ -227,26 +191,8 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 	}
 
 	private <S extends AEntity> boolean isBindingCompatibleType(S entity){
-		switch (format.getType()){
-			case BOOLEAN:
-				return entity.getClass().equals(ABoolean.class);
-			case DATE:
-				return entity.getClass().equals(ADate.class);
-			case NUMBER:
-				return entity.getClass().equals(ANumber.class);
-			case RANGED_NUMBER:
-				return entity.getClass().equals(AContinuousNumber.class);
-			case RANGED_STRING:
-				return entity.getClass().equals(ARangedString.class);
-			case STRING:
-				return entity.getClass().equals(AString.class);
-			case ENUM:
-				return entity.getClass().equals(AEnum.class);
-			case RANGED_ENUM:
-				return entity.getClass().equals(ARangedEnum.class);
-			default:
-				return false;
-		}
+
+		return entity.getClass().equals(format.getAVarType());
 	}
 
 	@Override
@@ -390,7 +336,7 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 		} catch (VerificationException e) {
 
 			setPropertyValue(propertyName, oldValue);
-			throw new RuntimeException(e);
+			throw new RuntimeVerificationException(e);
 
 		}
 	}

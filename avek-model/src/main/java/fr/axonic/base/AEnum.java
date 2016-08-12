@@ -2,8 +2,7 @@ package fr.axonic.base;
 
 
 import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.Format;
-import fr.axonic.base.engine.FormatType;
+import fr.axonic.base.format.EnumFormat;
 import fr.axonic.validation.Verifiable;
 import fr.axonic.validation.Verify;
 import fr.axonic.validation.exception.VerificationException;
@@ -21,7 +20,7 @@ public class AEnum<T extends Enum<T>> extends AVar<T> implements Verifiable {
         this(null);
     }
     public AEnum(T value) {
-        super(new Format(FormatType.ENUM), value);
+        super(new EnumFormat(), value);
     }
 
 

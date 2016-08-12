@@ -77,7 +77,7 @@ public class DataBus {
         setMonitoredSystem(ms);
     }
 
-    static {
+    /**static {
         String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
         setExperimentParams((AList<AEntity>)Jsonifier.toAEntity(experimentParametersJson));
     }
@@ -97,5 +97,5 @@ public class DataBus {
         }
 
         setExperimentResults(expResMap);
-    }
+    }*/
 }

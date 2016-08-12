@@ -3,8 +3,9 @@ package fr.axonic.base;
 
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.AVarProperty;
-import fr.axonic.base.engine.Format;
+import fr.axonic.base.format.Format;
 import fr.axonic.base.engine.FormatType;
+import fr.axonic.base.format.NumberFormat;
 import fr.axonic.validation.Verifiable;
 import fr.axonic.validation.Verify;
 import fr.axonic.validation.exception.VerificationException;
@@ -22,10 +23,10 @@ public class ANumber extends AVar<Number> implements Verifiable {
     }
 
     public ANumber(Number value) {
-        super(new Format(FormatType.NUMBER), value);
+        super(new NumberFormat(), value);
     }
     public ANumber(String label, Number value) {
-        super(label,new Format(FormatType.NUMBER), value);
+        super(label,new NumberFormat(), value);
     }
 
     @Override

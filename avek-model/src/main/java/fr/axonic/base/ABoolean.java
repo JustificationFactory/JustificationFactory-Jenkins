@@ -3,7 +3,8 @@ package fr.axonic.base;
 
 
 import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.Format;
+import fr.axonic.base.format.BooleanFormat;
+import fr.axonic.base.format.Format;
 import fr.axonic.base.engine.FormatType;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,7 +17,7 @@ public class ABoolean extends AVar<Boolean> {
     }
 
     public ABoolean(String label, Boolean value) {
-        super(label, new Format(FormatType.BOOLEAN),value);
+        super(label, new BooleanFormat(),value);
     }
 
     public ABoolean(Boolean value) {

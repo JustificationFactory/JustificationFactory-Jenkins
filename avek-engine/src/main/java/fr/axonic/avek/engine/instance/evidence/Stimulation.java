@@ -4,8 +4,6 @@ import fr.axonic.avek.engine.conclusion.Limit;
 import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVarHelper;
-import fr.axonic.base.engine.AVarProperty;
-import fr.axonic.base.engine.Format;
 import fr.axonic.validation.exception.VerificationException;
 
 import java.util.Arrays;

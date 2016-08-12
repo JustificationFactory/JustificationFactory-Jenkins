@@ -1,5 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
+import fr.axonic.base.AContiniousDate;
+import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
 import fr.axonic.validation.exception.VerificationException;
@@ -69,19 +71,18 @@ public class BoundedParameter extends SensitiveParameter {
         minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
                 minEquivRange.getStyleClass().remove("bad-input");
-                switch(paramValue.getFormat().getType()) {
-                    case NUMBER:
-                        minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
-                        paramValue.setMin((U) Double.valueOf(newval));
-                        break;
-                    case DATE:
-                        Calendar cal = Calendar.getInstance();
-                        SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
-                        cal.setTime(textFormat.parse(newval));
-                        paramValue.setMax((U) cal);
-                        break;
-                    default:
+                if(paramValue.getFormat().getAVarType().equals(AContinuousNumber.class)) {
+                    minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
+                    paramValue.setMin((U) Double.valueOf(newval));
+                }
+                else if(paramValue.getFormat().getAVarType().equals(AContiniousDate.class)) {
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
+                    cal.setTime(textFormat.parse(newval));
+                    paramValue.setMax((U) cal);
+                }
+                else {
                         throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
                 }
                 minEquivRange.setTooltip(null); // If no error, remove tooltip
@@ -93,19 +94,18 @@ public class BoundedParameter extends SensitiveParameter {
         maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
                 maxEquivRange.getStyleClass().remove("bad-input");
-                switch(paramValue.getFormat().getType()) {
-                    case NUMBER:
-                        maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
-                        paramValue.setMax((U) Double.valueOf(newval));
-                        break;
-                    case DATE:
-                        Calendar cal = Calendar.getInstance();
-                        SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
-                        cal.setTime(textFormat.parse(newval));
-                        paramValue.setMax((U) cal);
-                        break;
-                    default:
+                if(paramValue.getFormat().getAVarType().equals(AContinuousNumber.class)) {
+                    maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
+                    paramValue.setMax((U) Double.valueOf(newval));
+                }
+                else if(paramValue.getFormat().getAVarType().equals(AContiniousDate.class)) {
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
+                    cal.setTime(textFormat.parse(newval));
+                    paramValue.setMax((U) cal);
+                }
+                else {
                         throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
                 }
                 maxEquivRange.setTooltip(null); // If no error, remove tooltip

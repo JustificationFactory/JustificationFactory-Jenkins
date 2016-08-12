@@ -2,8 +2,10 @@ package fr.axonic.base;
 
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.AVarProperty;
-import fr.axonic.base.engine.Format;
+import fr.axonic.base.format.BoundedNumberFormat;
+import fr.axonic.base.format.Format;
 import fr.axonic.base.engine.FormatType;
+import fr.axonic.base.format.NumberFormat;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
@@ -16,7 +18,7 @@ public class ANumberTest {
 
     @Test
     public void testValue() throws VerificationException {
-        ANumber aNumber= (ANumber) AVar.create(new Format(FormatType.NUMBER));
+        ANumber aNumber= (ANumber) AVar.create(new NumberFormat());
         aNumber.setValue(1.0);
         assertEquals(aNumber.getValue().intValue(),1);
         assertEquals(aNumber.getValue().floatValue(),1.0f,0);
@@ -26,7 +28,7 @@ public class ANumberTest {
 
     @Test
     public void testVerifiableProperties() throws VerificationException {
-        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber aNumber= (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         aNumber.setValue(1.0);
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.MIN.name()));
         assertTrue(aNumber.isPropertyVerifiable(AVarProperty.MAX.name()));
@@ -36,7 +38,7 @@ public class ANumberTest {
 
     @Test
     public void testClone() throws VerificationException, CloneNotSupportedException {
-        AVar aNumber= AVar.create(new Format(FormatType.NUMBER));
+        AVar aNumber= AVar.create(new NumberFormat());
         aNumber.setValue(1.0);
         AVar aNumber2=aNumber.clone();
         assertEquals(aNumber,aNumber2);

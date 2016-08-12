@@ -4,7 +4,8 @@ package fr.axonic.base;
 
 
 import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.Format;
+import fr.axonic.base.format.DateFormat;
+import fr.axonic.base.format.Format;
 import fr.axonic.base.engine.FormatType;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,10 +19,10 @@ public class ADate extends AVar<GregorianCalendar> {
     }
 
     public ADate(GregorianCalendar value) {
-        super(new Format(FormatType.DATE),value);
+        super(new DateFormat(),value);
     }
     public ADate(String label, GregorianCalendar value) {
-        super(label,new Format(FormatType.DATE), value);
+        super(label,new DateFormat(), value);
     }
 
     /**

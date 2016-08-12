@@ -2,6 +2,8 @@ package fr.axonic.base;
 
 
 import fr.axonic.base.engine.*;
+import fr.axonic.base.format.BoundedNumberFormat;
+import fr.axonic.base.format.Format;
 import fr.axonic.validation.Verify;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -75,7 +77,7 @@ public class AContinuousNumber extends ANumber implements ContinuousAVar<Number>
 
     @Override
     public AContinuousNumber clone() throws CloneNotSupportedException {
-        AContinuousNumber result = (AContinuousNumber) AVar.create(new Format(FormatType.RANGED_NUMBER));
+        AContinuousNumber result = (AContinuousNumber) AVar.create(new BoundedNumberFormat());
         result.setCode(getCode());
         result.setLabel(getLabel());
         result.setEditable(isEditable());
