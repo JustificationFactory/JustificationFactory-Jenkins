@@ -10,6 +10,7 @@ import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
@@ -84,7 +85,7 @@ public class PatternTest {
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
         Strategy ts = new TreatStrategy();
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new EvidenceRoleType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
-        Evidence<Result> result = new Evidence<Result>("Result 0", new Result());
+        Evidence<Result> result = new Evidence<Result>("Result 0", new Result(new AList<>()));
         Evidence<Subject> subject0 = new Evidence<Subject>("Subject 0",new Subject());
         EvidenceRole evResult0 = rtResult.create(result);
         EvidenceRole evSubject0 = rtSubject.create(subject0);

@@ -12,6 +12,7 @@ import fr.axonic.avek.engine.instance.strategy.GeneralizeStrategy;
 import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.validation.exception.VerificationException;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -23,6 +24,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     private Map<String,Pattern> patterns;
     private List<EvidenceRole> baseEvidences;
     private List<Step> steps;
+    private final static Logger LOGGER = Logger.getLogger(ArgumentationDiagramAPIImpl.class);
 
     private static ArgumentationDiagramAPIImpl INSTANCE;
 
@@ -59,6 +61,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     public void constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException {
         Step step=patterns.get(patternId).createStep(evidences,conclusion);
         steps.add(step);
+        LOGGER.info(step.getConclusion());
         EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
         baseEvidences.add(evidenceRoleType.create(step.getConclusion()));
     }

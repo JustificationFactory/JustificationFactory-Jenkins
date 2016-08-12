@@ -15,4 +15,12 @@ public class Evidence<T extends Element> {
     public T getElement(){
         return element;
     }
+
+    @Override
+    public String toString() {
+        return "Evidence{" +
+                "name='" + name + '\'' +
+                ", element=" + element +
+                '}';
+    }
 }
