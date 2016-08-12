@@ -39,7 +39,6 @@ public class EstablishEffectView extends AbstractView {
     protected void onLoad() {
         LOGGER.info("Loading EstablishEffectView...");
         super.load(FXML);
-        LOGGER.debug("EstablishEffectView loaded.");
     }
 
     @FXML
@@ -58,6 +57,7 @@ public class EstablishEffectView extends AbstractView {
             map.put(entry.getKey(), ls);
         }
         jellyBeanSelector.setJellyBeansChoice(map);
+        LOGGER.debug("EstablishEffectView loaded.");
     }
 
     @FXML

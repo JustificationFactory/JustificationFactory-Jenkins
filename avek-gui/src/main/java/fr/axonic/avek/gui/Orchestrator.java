@@ -18,9 +18,7 @@ import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
@@ -42,28 +40,29 @@ public class Orchestrator {
     private MainFrame frame;
     private List<Pattern> patternList;
     private List<EvidenceRole> evidences;
-    private FutureTask orchestratingProcess;
+    private final List<FutureTask> tasks;
 
     private Orchestrator() {
-        Map<String, ARangedEnum> map = new HashMap<>();
+        tasks = new ArrayList<>();
 
+        Map<String, ARangedEnum> map = new HashMap<>();
         for(EffectEnum effect : EffectEnum.values()) {
             map.put(effect.name(), effect.getState());
         }
-
         DataBus.setExperimentResults(map);
     }
 
     private void orchestrate() {
+        FutureTask ft = new FutureTask<>(() -> { this.setFollowingView(); return true; });
+        this.tasks.add(ft);
+
         frame.setView(loadingView);
         frame.hideStrategyButton();
 
-        FutureTask ft = new FutureTask<>(this::setFollowingView);
-        this.orchestratingProcess = ft;
         new Thread(ft).start();
     }
 
-    private boolean setFollowingView() throws VerificationException, WrongEvidenceException, ExecutionException, InterruptedException {
+    private void setFollowingView() throws VerificationException, WrongEvidenceException, ExecutionException, InterruptedException {
         ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
 
         // Constructing conclusion
@@ -83,7 +82,7 @@ public class Orchestrator {
 
         if (patternList.size() == 1) {
             if (setViewFromPattern(patternList.get(0))) {
-                return true;
+                return;
             }
         }
 
@@ -98,8 +97,7 @@ public class Orchestrator {
             ssv.setAvailableChoices(names);
         }
 
-        setViewTask.get(); // Wait for view completely set
-        return true;
+        tasks.add(setViewTask);
     }
 
     private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
@@ -122,8 +120,6 @@ public class Orchestrator {
                 try {
                     final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
 
-                    Map<String, String> effectsAsMap = currentView.getEffects();
-
                     adAPI.constructStep(INSTANCE.currentPattern.getId(),
                             INSTANCE.evidences,
                             new EstablishEffectConclusion(
@@ -131,7 +127,7 @@ public class Orchestrator {
                                     new Experimentation(
                                             INSTANCE.currentStimulation,
                                             INSTANCE.currentSubject),
-                                    toEffectList(effectsAsMap)
+                                    toEffectList(currentView.getEffects())
                             )));
                 } catch (WrongEvidenceException | StepBuildingException e) {
                     LOGGER.error("Impossible to constructStep");
@@ -227,29 +223,33 @@ public class Orchestrator {
     }
 
     private boolean setViewFromPattern(Pattern p) {
+        FutureTask ft = null;
         switch (p.getName()) {
             case "Treat":
                 TreatView tv = new TreatView();
                 currentView = tv;
-                Platform.runLater(() -> {
+                ft = new FutureTask<>(() -> {
                     frame.setView(tv);
                     frame.setStrategyButtonLabel("Treat");
+                    return true;
                 });
                 break;
             case "Establish Effect":
                 EstablishEffectView eev = new EstablishEffectView();
                 currentView = eev;
-                Platform.runLater(() -> {
+                ft = new FutureTask<>(() -> {
                     frame.setView(eev);
                     frame.setStrategyButtonLabel("Establish Effect");
+                    return true;
                 });
                 break;
             case "Generalize":
                 GeneralizeView gv = new GeneralizeView();
                 currentView = gv;
-                Platform.runLater(() -> {
+                ft = new FutureTask<>(() -> {
                     frame.setView(gv);
                     frame.setStrategyButtonLabel("Generalize");
+                    return true;
                 });
                 break;
             default:
@@ -257,6 +257,8 @@ public class Orchestrator {
                 return false;
         }
 
+        tasks.add(ft);
+        Platform.runLater(ft);
         currentPattern = p;
         return true;
     }
@@ -290,6 +292,10 @@ public class Orchestrator {
     }
 
     static void waitforOrchestrating() throws ExecutionException, InterruptedException {
-        INSTANCE.orchestratingProcess.get();
+        while(!INSTANCE.tasks.isEmpty()) {
+            FutureTask ft = INSTANCE.tasks.get(0);
+            ft.get();
+            INSTANCE.tasks.remove(ft);
+        }
     }
 }

@@ -94,7 +94,7 @@ public class JellyBean extends HBox {
             allStates += s.equalsIgnoreCase(after)?", ["+s+"]":(", "+s);
         allStates = allStates.substring(2).toUpperCase();
 
-        final String tooltipText = "Current stateIndex: " + after.toUpperCase() + "\n"
+        final String tooltipText = "Current state: " + after.toUpperCase() + "\n"
                                  + "All states: " + allStates;
         Platform.runLater(() -> {
             jbLabel.getStyleClass().remove(before);

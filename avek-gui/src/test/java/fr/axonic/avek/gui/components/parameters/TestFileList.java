@@ -42,6 +42,7 @@ public class TestFileList extends ApplicationTest {
 
     @Before
     public void before() throws IOException {
+        UtilForTests.deleteFileArchi();
         UtilForTests.createFileArchi();
     }
 
