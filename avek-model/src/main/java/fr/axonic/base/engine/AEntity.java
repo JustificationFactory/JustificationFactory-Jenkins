@@ -4,6 +4,7 @@ import fr.axonic.observation.AEntityListener;
 import fr.axonic.observation.binding.BindingParametersException;
 import fr.axonic.observation.binding.BindingTypesException;
 import fr.axonic.observation.event.*;
+import fr.axonic.validation.Verifiable;
 import fr.axonic.validation.exception.VerificationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,6 +116,39 @@ public abstract class AEntity{
                 throw new UnknownPropertyException();
             }
         }
+
+
+    }
+    /**
+     * Set the value of a property with a given property name. There are to
+     * cases:
+     * <ol>
+     * <li>The property is verifiable - the modification is performed in the
+     * following steps: the property value is changed internally, the method
+     * {@link Verifiable#verify(boolean)} is called. If the the modification is
+     * correct, the appropriate listeners are notified. Otherwise modification
+     * is reverted and the fr.axonic.validation exception is passed.</li>
+     * <li>The property is unverifiable</li>
+     * </ol>
+     *
+     * @param propertyName
+     *            A valid property of this AVar
+     * @param newValue
+     *            A new value of the property
+     * @throws VerificationException
+     *             The exception is thrown only for the verifiable properties in
+     *             case when their modification does not satisfy the
+     *             fr.axonic.validation procedure of this AVar (see
+     *             {@link Verifiable#verify(boolean)}).
+     */
+    public void setProperty(String propertyName, Object newValue){
+
+        Object oldValue = getPropertyValue(propertyName);
+
+        setPropertyValue(propertyName, newValue);
+
+        this.firePropertyChange(propertyName, oldValue, newValue);
+        this.fireEvent(new AEntityChangedEvent(ChangedEventType.CHANGED, this, propertyName, oldValue, newValue));
 
     }
 
