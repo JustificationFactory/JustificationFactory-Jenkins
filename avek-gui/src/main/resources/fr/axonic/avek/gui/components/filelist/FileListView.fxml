@@ -11,7 +11,7 @@
          onDragOver="#onDragOver">
 
     <stylesheets>
-        <URL value="@../../css/components/FileListView.css"/>
+        <URL value="@FileListView.css"/>
     </stylesheets>
 
     <ListView fx:id="fileList"/>

@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.view;
 
 import fr.axonic.avek.gui.util.UtilForTests;
+import fr.axonic.avek.gui.view.frame.MainFrame;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.testfx.framework.junit.ApplicationTest;

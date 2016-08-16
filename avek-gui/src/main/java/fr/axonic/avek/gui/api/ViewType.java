@@ -1,6 +1,10 @@
 package fr.axonic.avek.gui.api;
 
 import fr.axonic.avek.gui.view.*;
+import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
+import fr.axonic.avek.gui.view.generalize.GeneralizeView;
+import fr.axonic.avek.gui.view.strategyselection.StrategySelectionView;
+import fr.axonic.avek.gui.view.treat.TreatView;
 
 import java.util.Arrays;
 import java.util.List;

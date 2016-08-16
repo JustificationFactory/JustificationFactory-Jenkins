@@ -1,6 +1,7 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.view.strategyselection;
 
 import fr.axonic.avek.gui.Orchestrator;
+import fr.axonic.avek.gui.view.AbstractView;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class StrategySelectionView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
-    private final static String FXML = "fxml/views/StrategySelectionView.fxml";
+    private final static String FXML = "fr.axonic.avek.gui.view/strategyselection/StrategySelectionView.fxml";
 
     @FXML
     private Button submit;

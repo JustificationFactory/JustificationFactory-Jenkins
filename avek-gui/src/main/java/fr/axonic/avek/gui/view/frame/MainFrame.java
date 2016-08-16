@@ -1,6 +1,7 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.view.frame;
 
 import fr.axonic.avek.gui.Orchestrator;
+import fr.axonic.avek.gui.view.AbstractView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,7 @@ import java.net.URL;
 public class MainFrame extends BorderPane {
     private final static Logger LOGGER = Logger.getLogger(MainFrame.class);
     private final static URL FXML = MainFrame.class.getClassLoader()
-            .getResource("fxml/views/MainFrame.fxml");
+            .getResource("fr.axonic.avek.gui.view/frame/MainFrame.fxml");
 
     @FXML
     private Button btnStrategy;

@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class JellyBean<T> extends HBox {
     private final static Logger LOGGER = Logger.getLogger(JellyBean.class);
     private final static URL FXML
-            = JellyBean.class.getClassLoader().getResource("fxml/components/JellyBean.fxml");
+            = JellyBean.class.getClassLoader().getResource("fr/axonic/avek/gui/components/jellybeans/JellyBean.fxml");
 
     @FXML
     private Button jbLabel;
@@ -48,8 +48,8 @@ public class JellyBean<T> extends HBox {
 
         tooltip = new Tooltip();
 
-        this.getStylesheets().add("css/components/results/levels.css");
-        this.getStylesheets().add("css/components/results/boolean.css");
+        this.getStylesheets().add("fr/axonic/avek/gui/components/parameters/levels.css");
+        this.getStylesheets().add("fr/axonic/avek/gui/components/parameters/boolean.css");
         LOGGER.debug("Added css for JellyBean");
     }
 

@@ -1,10 +1,11 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.view.etablisheffect;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanSelector;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
 import javafx.event.ActionEvent;
@@ -14,8 +15,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +26,8 @@ import java.util.Map;
 
 public class EstablishEffectView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(EstablishEffectView.class);
-    private final static String FXML = "fxml/views/EstablishEffectView.fxml";
+
+    private final static String FXML = "fr.axonic.avek.gui.view/etablisheffect/EstablishEffectView.fxml";
 
     @FXML
     private JellyBeanSelector jellyBeanSelector;
@@ -62,26 +66,43 @@ public class EstablishEffectView extends AbstractView {
     }
 
     @FXML
+    private SplitPane fileListSplitPane;
+    @FXML
+    private BorderPane fileListPane;
+    @FXML
+    private ToggleButton outerFileListButton;
+
+    @FXML
+    public void onClickFileListViewButton(ActionEvent event) {
+        boolean newState = !fileListPane.isVisible();
+        if (newState) {
+            showPane(1, fileListPane,
+                    fileListSplitPane, outerFileListButton);
+        } else {
+            hidePane(fileListPane,
+                    fileListSplitPane, outerFileListButton);
+        }
+    }
+
+    @FXML
     private SplitPane monitoredSystemSplitPane;
     @FXML
     private BorderPane monitoredSystemPane;
     @FXML
     private ToggleButton outerMonitoredSystemButton;
-    private double[] memento = {};
 
     @FXML
     public void onClickMonitoredSystemButton(ActionEvent event) {
-        boolean newState = !monitoredSystemPane.isVisible();
-        if (newState) {
-            monitoredSystemSplitPane.getItems().add(0, monitoredSystemPane);
-            monitoredSystemPane.setVisible(true);
-            outerMonitoredSystemButton.setSelected(true);
-            monitoredSystemSplitPane.setDividerPositions(memento);
+        setMonitoredSystemVisible(!monitoredSystemPane.isVisible());
+    }
+
+    private void setMonitoredSystemVisible(boolean isVisible) {
+        if (isVisible) {
+            showPane(0, monitoredSystemPane,
+                    monitoredSystemSplitPane, outerMonitoredSystemButton);
         } else {
-            memento = monitoredSystemSplitPane.getDividerPositions();
-            monitoredSystemSplitPane.getItems().remove(monitoredSystemPane);
-            monitoredSystemPane.setVisible(false);
-            outerMonitoredSystemButton.setSelected(false);
+            hidePane(monitoredSystemPane,
+                    monitoredSystemSplitPane, outerMonitoredSystemButton);
         }
     }
 

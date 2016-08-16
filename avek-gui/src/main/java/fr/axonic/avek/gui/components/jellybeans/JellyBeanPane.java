@@ -24,7 +24,7 @@ public class JellyBeanPane extends HBox {
         setAlignment(Pos.CENTER);
         this.areJellyBeansEditable = false;
 
-        this.getStylesheets().add("css/components/JellyBean.css");
+        this.getStylesheets().add("fr/axonic/avek/gui/components/jellybeans/JellyBean.css");
     }
 
     public <T> void addJellyBean(JellyBeanItem<T> item) {

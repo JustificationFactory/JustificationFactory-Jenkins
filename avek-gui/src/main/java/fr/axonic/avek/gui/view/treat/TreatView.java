@@ -1,8 +1,9 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.view.treat;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.view.AbstractView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
 
 public class TreatView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(TreatView.class);
-    private final static String FXML = "fxml/views/TreatView.fxml";
+    private final static String FXML = "fr.axonic.avek.gui.view/treat/TreatView.fxml";
 
     @FXML
     private ParametersRoot parametersRoot;

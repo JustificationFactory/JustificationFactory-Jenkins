@@ -1,16 +1,19 @@
 package fr.axonic.avek.gui;
 
-import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
-import fr.axonic.avek.engine.Pattern;
-import fr.axonic.avek.engine.StepBuildingException;
-import fr.axonic.avek.engine.WrongEvidenceException;
+import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.model.UploadedFile;
 import fr.axonic.avek.gui.view.*;
+import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
+import fr.axonic.avek.gui.view.frame.MainFrame;
+import fr.axonic.avek.gui.view.generalize.GeneralizeView;
+import fr.axonic.avek.gui.view.strategyselection.StrategySelectionView;
+import fr.axonic.avek.gui.view.treat.TreatView;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
@@ -81,10 +84,8 @@ public class Orchestrator {
 
         setEvidencesInDataBus();
 
-        if (patternList.size() == 1) {
-            if (setViewFromPattern(patternList.get(0))) {
-                return;
-            }
+        if (patternList.size() == 1 && setViewFromPattern(patternList.get(0))) {
+            return;
         }
 
         StrategySelectionView ssv = new StrategySelectionView();
@@ -101,56 +102,76 @@ public class Orchestrator {
         tasks.add(setViewTask);
     }
 
+
+    private void constructTreatStep(ArgumentationDiagramAPI adAPI) {
+        LOGGER.debug("Constructing Treat step");
+        try {
+            adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                    INSTANCE.evidences,
+                    new ExperimentationConclusion(
+                            "Experimentation",
+                            INSTANCE.currentSubject,
+                            INSTANCE.currentStimulation));
+        } catch (WrongEvidenceException | StepBuildingException e) {
+            LOGGER.error("Impossible to constructStep");
+        }
+    }
+    private void constructEtablishEffectStep(ArgumentationDiagramAPI adAPI) {
+        LOGGER.debug("Constructing Establish effect step");
+        try {
+            final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
+
+            EstablishedEffect establishedEffect = new EstablishedEffect(
+                    new Experimentation(
+                            INSTANCE.currentStimulation,
+                            INSTANCE.currentSubject),
+                    effectsAsJBI(currentView.getEffects()));
+
+            EstablishEffectConclusion conclusion =
+                    new EstablishEffectConclusion(
+                            "Establish Effect",
+                            establishedEffect);
+
+            // TODO pass UploadedFile.uploadedFolder; in establishEffectConclusion
+
+            adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                    INSTANCE.evidences, conclusion);
+        } catch (WrongEvidenceException | StepBuildingException e) {
+            LOGGER.error("Impossible to constructStep");
+        }
+    }
+    private void constructGeneralizeStep(ArgumentationDiagramAPI adAPI) {
+        LOGGER.debug("Constructing Generalize step");
+        try {
+            final GeneralizeView currentView = (GeneralizeView) this.currentView;
+
+            // TODO pass UploadedFile.uploadedFolder; in GeneralizationConclusion
+
+            GeneralizationConclusion conclusion = new GeneralizationConclusion(
+                    "Generalization",
+                    new EstablishedEffect(
+                        new Experimentation(
+                                INSTANCE.currentStimulation,
+                                INSTANCE.currentSubject),
+                        effectsAsJBI(currentView.getEffects())
+            ));
+
+            adAPI.constructStep(INSTANCE.currentPattern.getId(),
+                    INSTANCE.evidences, conclusion);
+        } catch (WrongEvidenceException | StepBuildingException e) {
+            LOGGER.error("Impossible to constructStep");
+        }
+    }
     private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
         switch(currentPattern.getName()) {
             case "Treat":
-                LOGGER.debug("Constructing Treat step");
-                try {
-                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                            INSTANCE.evidences,
-                            new ExperimentationConclusion(
-                                    "Experimentation",
-                                    INSTANCE.currentSubject,
-                                    INSTANCE.currentStimulation));
-                } catch (WrongEvidenceException | StepBuildingException e) {
-                    LOGGER.error("Impossible to constructStep");
-                }
+                constructTreatStep(adAPI);
                 break;
             case "Establish Effect":
-                LOGGER.debug("Constructing Establish effect step");
-                try {
-                    final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
-
-                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                            INSTANCE.evidences,
-                            new EstablishEffectConclusion(
-                                    "Establish Effect",new EstablishedEffect(
-                                    new Experimentation(
-                                            INSTANCE.currentStimulation,
-                                            INSTANCE.currentSubject),
-                                    effectsAsJBI(currentView.getEffects())
-                            )));
-                } catch (WrongEvidenceException | StepBuildingException e) {
-                    LOGGER.error("Impossible to constructStep");
-                }
+                constructEtablishEffectStep(adAPI);
                 break;
             case "Generalize":
-                LOGGER.debug("Constructing Generalize step");
-                try {
-                    final GeneralizeView currentView = (GeneralizeView) this.currentView;
-
-                    adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                            INSTANCE.evidences,
-                            new GeneralizationConclusion(
-                                    "Generalization",new EstablishedEffect(
-                                            new Experimentation(
-                                                    INSTANCE.currentStimulation,
-                                                    INSTANCE.currentSubject),
-                                    effectsAsJBI(currentView.getEffects())
-                            )));
-                } catch (WrongEvidenceException | StepBuildingException e) {
-                    LOGGER.error("Impossible to constructStep");
-                }
+                constructGeneralizeStep(adAPI);
                 break;
             default:
                 LOGGER.error("Constructing \""+currentPattern.getName()+"\" not implemented");

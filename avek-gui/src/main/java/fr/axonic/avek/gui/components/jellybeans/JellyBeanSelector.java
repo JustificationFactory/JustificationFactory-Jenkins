@@ -26,8 +26,8 @@ import java.util.Map;
 public class JellyBeanSelector extends VBox {
     private static final Logger LOGGER = Logger.getLogger(JellyBeanSelector.class);
     private static final URL FXML
-            = JellyBeanSelector.class.getClassLoader().getResource("fxml/components/JellyBeansSelector.fxml");
-    private static final String CSS = "css/components/jellyBeanSelector.css";
+            = JellyBeanSelector.class.getClassLoader().getResource("fr/axonic/avek/gui/components/jellybeans/JellyBeansSelector.fxml");
+    private static final String CSS = "fr/axonic/avek/gui/components/jellybeans/jellyBeanSelector.css";
 
     @FXML
     private Button newExpEffectButton;

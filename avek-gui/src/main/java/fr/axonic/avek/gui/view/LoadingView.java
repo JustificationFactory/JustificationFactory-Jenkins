@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
  */
 public class LoadingView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(LoadingView.class);
-    private final static String FXML = "fxml/views/LoadingView.fxml";
+    private final static String FXML = "fr.axonic.avek.gui.view/LoadingView.fxml";
 
     @Override
     protected void onLoad() {

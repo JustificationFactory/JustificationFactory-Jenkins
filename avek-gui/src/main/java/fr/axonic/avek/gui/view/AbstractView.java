@@ -1,12 +1,17 @@
 package fr.axonic.avek.gui.view;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -20,7 +25,7 @@ public abstract class AbstractView extends BorderPane {
 
     private boolean loaded;
 
-    AbstractView() {
+    protected AbstractView() {
         loaded = false;
         orchestrator = new LinkedHashSet<>();
     }
@@ -56,6 +61,26 @@ public abstract class AbstractView extends BorderPane {
         } catch (IOException | RuntimeException e) {
             LOGGER.fatal("Impossible to load FXML", e);
         }
+    }
+
+
+
+    private final Map<SplitPane, double[]> mementos = new HashMap<>();
+
+    protected void showPane(int index, Pane pane, SplitPane splitPane, ToggleButton button) {
+        splitPane.getItems().add(index, pane);
+        pane.setVisible(true);
+        pane.setManaged(true);
+        button.setSelected(true);
+        splitPane.setDividerPositions(mementos.get(splitPane));
+    }
+
+    protected void hidePane(Pane pane, SplitPane splitPane, ToggleButton button) {
+        mementos.put(splitPane, splitPane.getDividerPositions());
+        splitPane.getItems().remove(pane);
+        pane.setVisible(false);
+        pane.setManaged(false);
+        button.setSelected(false);
     }
 
 }

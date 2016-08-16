@@ -11,7 +11,7 @@
          styleClass="out-pane">
 
     <stylesheets>
-        <URL value="@../../css/views/TreatView.css"/>
+        <URL value="@TreatView.css"/>
     </stylesheets>
 
     <left>

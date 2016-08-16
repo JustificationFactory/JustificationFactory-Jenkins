@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.view;
+package fr.axonic.avek.gui.view.generalize;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
@@ -6,6 +6,7 @@ import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
 import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 public class GeneralizeView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(GeneralizeView.class);
-    private final static String FXML = "fxml/views/GeneralizedView.fxml";
+    private final static String FXML = "fr.axonic.avek.gui.view/generalize/GeneralizeView.fxml";
 
     @FXML
     private JellyBeanPane jellyBeanPane;
@@ -137,25 +138,6 @@ public class GeneralizeView extends AbstractView {
         resultsPane.setVisible(isVisible);
         resultsPane.setManaged(isVisible);
         outerResultsButton.setSelected(isVisible);
-    }
-
-
-    private final Map<SplitPane, double[]> mementos = new HashMap<>();
-
-    private void showPane(int index, Pane pane, SplitPane splitPane, ToggleButton button) {
-        splitPane.getItems().add(index, pane);
-        pane.setVisible(true);
-        pane.setManaged(true);
-        button.setSelected(true);
-        splitPane.setDividerPositions(mementos.get(splitPane));
-    }
-
-    private void hidePane(Pane pane, SplitPane splitPane, ToggleButton button) {
-        mementos.put(splitPane, splitPane.getDividerPositions());
-        splitPane.getItems().remove(pane);
-        pane.setVisible(false);
-        pane.setManaged(false);
-        button.setSelected(false);
     }
 
     public List<JellyBeanItem> getEffects() {

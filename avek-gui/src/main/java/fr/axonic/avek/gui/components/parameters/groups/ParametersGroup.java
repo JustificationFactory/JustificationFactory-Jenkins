@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public abstract class ParametersGroup extends GridPane implements IExpParameter {
     private static final Logger LOGGER = Logger.getLogger(ParametersGroup.class);
-    private static final String CSS = "css/components/parameters.css";
+    private static final String CSS = "fr/axonic/avek/gui/components/parameters/parameters.css";
 
     protected final int level;
     private AList<AEntity> element;

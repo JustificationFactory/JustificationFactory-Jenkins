@@ -27,7 +27,7 @@ public class FileListView extends StackPane {
     private final static Logger LOGGER = Logger.getLogger(FileListView.class);
 
     private static final URL FXML
-            = FileListView.class.getClassLoader().getResource("fxml/components/FileListView.fxml");
+            = FileListView.class.getClassLoader().getResource("fr/axonic/avek/gui/components/filelist/FileListView.fxml");
 
     @FXML
     private ListView<UploadedFile> fileList;
