@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.components.parameters;
 
 import fr.axonic.avek.gui.util.LevelMark;
+import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -36,6 +37,9 @@ public class ExpParameterLeaf implements IExpParameter {
                 SimpleDateFormat df = new SimpleDateFormat();
                 df.applyPattern("dd/MM/yyyy HH:mm:ss");
                 this.paramValue.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+            } else if(paramValue instanceof AContinuousNumber) {
+                this.paramValue.setText(" : " + paramValue.getValue().toString()
+                        + " "+ ((AContinuousNumber)paramValue).getUnit());
             } else {
                 this.paramValue.setText(" : " + paramValue.getValue().toString());
             }

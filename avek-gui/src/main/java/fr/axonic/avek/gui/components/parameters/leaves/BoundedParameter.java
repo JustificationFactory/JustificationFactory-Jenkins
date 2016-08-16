@@ -71,11 +71,11 @@ public class BoundedParameter extends SensitiveParameter {
         minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
                 minEquivRange.getStyleClass().remove("bad-input");
-                if(paramValue.getFormat().getAVarType().equals(AContinuousNumber.class)) {
+                if(paramValue instanceof AContinuousNumber) {
                     minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
                     paramValue.setMin((U) Double.valueOf(newval));
                 }
-                else if(paramValue.getFormat().getAVarType().equals(AContiniousDate.class)) {
+                else if(paramValue instanceof AContiniousDate) {
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
@@ -83,7 +83,7 @@ public class BoundedParameter extends SensitiveParameter {
                     paramValue.setMax((U) cal);
                 }
                 else {
-                        throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
+                    throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
                 }
                 minEquivRange.setTooltip(null); // If no error, remove tooltip
             } catch (Exception e) {
@@ -94,11 +94,11 @@ public class BoundedParameter extends SensitiveParameter {
         maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
             try {
                 maxEquivRange.getStyleClass().remove("bad-input");
-                if(paramValue.getFormat().getAVarType().equals(AContinuousNumber.class)) {
+                if(paramValue instanceof AContinuousNumber) {
                     maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
                     paramValue.setMax((U) Double.valueOf(newval));
                 }
-                else if(paramValue.getFormat().getAVarType().equals(AContiniousDate.class)) {
+                else if(paramValue instanceof AContiniousDate) {
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
@@ -106,7 +106,7 @@ public class BoundedParameter extends SensitiveParameter {
                     paramValue.setMax((U) cal);
                 }
                 else {
-                        throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
+                    throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
                 }
                 maxEquivRange.setTooltip(null); // If no error, remove tooltip
             } catch (Exception e) {
