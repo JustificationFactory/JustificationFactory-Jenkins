@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 public class TreatView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(TreatView.class);
-    private final static String FXML = "fr.axonic.avek.gui.view/treat/TreatView.fxml";
+    private final static String FXML = "fr/axonic/avek/gui/view/treat/TreatView.fxml";
 
     @FXML
     private ParametersRoot parametersRoot;
@@ -35,6 +35,7 @@ public class TreatView extends AbstractView {
 
     @FXML
     private void initialize() {
+        // Getting data from Data bus
         monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
         parametersRoot.setAList(DataBus.getExperimentParams());
     }
@@ -45,21 +46,14 @@ public class TreatView extends AbstractView {
     private BorderPane monitoredSystemPane;
     @FXML
     private ToggleButton outerMonitoredSystemButton;
-    private double[] memento = {};
 
     @FXML
     public void onClickMonitoredSystemButton(ActionEvent event) {
         boolean newState = !monitoredSystemPane.isVisible();
         if (newState) {
-            monitoredSystemSplitPane.getItems().add(0, monitoredSystemPane);
-            outerMonitoredSystemButton.setSelected(true);
-            monitoredSystemPane.setVisible(true);
-            monitoredSystemSplitPane.setDividerPositions(memento);
+            showPane(0, monitoredSystemPane, monitoredSystemSplitPane, outerMonitoredSystemButton);
         } else {
-            memento = monitoredSystemSplitPane.getDividerPositions();
-            monitoredSystemSplitPane.getItems().remove(monitoredSystemPane);
-            outerMonitoredSystemButton.setSelected(false);
-            monitoredSystemPane.setVisible(false);
+            hidePane(monitoredSystemPane, monitoredSystemSplitPane, outerMonitoredSystemButton);
         }
     }
 

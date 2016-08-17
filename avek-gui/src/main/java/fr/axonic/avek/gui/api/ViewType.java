@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.api;
 
-import fr.axonic.avek.gui.view.*;
+import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
 import fr.axonic.avek.gui.view.generalize.GeneralizeView;
 import fr.axonic.avek.gui.view.strategyselection.StrategySelectionView;

@@ -1,18 +1,14 @@
 package fr.axonic.avek.gui.model;
 
-import com.google.gson.internal.LinkedTreeMap;
-import fr.axonic.avek.gui.model.json.Jsonifier;
-import fr.axonic.avek.gui.util.Util;
+import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.ADate;
-import fr.axonic.base.ANumber;
-import fr.axonic.base.ARangedEnum;
-import fr.axonic.base.AString;
+import fr.axonic.base.*;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,9 +35,21 @@ public class DataBus {
         INSTANCE.experimentParams = experimentParams;
     }
 
-    public static Map<String, ARangedEnum> getExperimentResults() {
-        return INSTANCE.experimentResults;
+    public static List<JellyBeanItem> getExperimentResults() {
+        List<JellyBeanItem> list = new ArrayList<>();
+
+        // Convert experiment results
+        for (Map.Entry<String, ARangedEnum> entry : INSTANCE.experimentResults.entrySet()) {
+            List<Object> ls = new ArrayList<>();
+            for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
+                ls.add(ae.getValue());
+            }
+            list.add(new JellyBeanItem<>(entry.getKey(), ls));
+        }
+
+        return list;
     }
+
     public static void setExperimentResults(Map<String, ARangedEnum> experimentResults) {
         INSTANCE.experimentResults = experimentResults;
     }
@@ -77,7 +85,9 @@ public class DataBus {
         setMonitoredSystem(ms);
     }
 
-    /**static {
+    /*
+
+    static {
         String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
         setExperimentParams((AList<AEntity>)Jsonifier.toAEntity(experimentParametersJson));
     }
@@ -97,5 +107,7 @@ public class DataBus {
         }
 
         setExperimentResults(expResMap);
-    }*/
+    }
+
+    */
 }

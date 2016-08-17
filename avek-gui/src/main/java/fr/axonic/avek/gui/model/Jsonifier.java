@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.model.json;
+package fr.axonic.avek.gui.model;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;

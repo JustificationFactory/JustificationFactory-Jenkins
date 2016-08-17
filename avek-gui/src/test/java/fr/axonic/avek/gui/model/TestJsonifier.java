@@ -1,7 +1,8 @@
-package fr.axonic.avek.gui.model.json;
+package fr.axonic.avek.gui.model;
 
-import fr.axonic.avek.gui.model.sample.BooleanState;
-import fr.axonic.avek.gui.model.sample.ExampleState;
+import fr.axonic.avek.gui.model.BooleanState;
+import fr.axonic.avek.gui.model.Jsonifier;
+import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.*;
 import fr.axonic.base.engine.AEntity;
@@ -73,6 +74,7 @@ public class TestJsonifier {
         assertEquals(oJson, o2Json);
     }
 
+    @Ignore
     @Test
     public void testAListOfAEntities() {
         AList<AEntity> aList = new AList<>();

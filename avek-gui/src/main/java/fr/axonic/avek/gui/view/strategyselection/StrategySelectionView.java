@@ -13,7 +13,7 @@ import java.util.List;
 
 public class StrategySelectionView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
-    private final static String FXML = "fr.axonic.avek.gui.view/strategyselection/StrategySelectionView.fxml";
+    private final static String FXML = "fr/axonic/avek/gui/view/strategyselection/StrategySelectionView.fxml";
 
     @FXML
     private Button submit;
@@ -32,12 +32,15 @@ public class StrategySelectionView extends AbstractView {
         Orchestrator.submitChoice(comboBox.getValue());
     }
 
+    /**
+     * Change choices available in the combo box of this selection view
+     * @param choices the list of choices available
+     */
     public void setAvailableChoices(List<String> choices) {
         try {
             comboBox.setItems(FXCollections.observableArrayList(choices));
         }catch(NullPointerException e) {
-            System.err.println("CHOICES="+choices);
-            e.printStackTrace();
+            LOGGER.error("An unknown error occurred. DEBUG: CHOICES="+choices, e);
         }
     }
 }

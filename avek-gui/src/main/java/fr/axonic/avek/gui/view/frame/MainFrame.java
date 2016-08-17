@@ -18,7 +18,7 @@ import java.net.URL;
 public class MainFrame extends BorderPane {
     private final static Logger LOGGER = Logger.getLogger(MainFrame.class);
     private final static URL FXML = MainFrame.class.getClassLoader()
-            .getResource("fr.axonic.avek.gui.view/frame/MainFrame.fxml");
+            .getResource("fr/axonic/avek/gui/view/frame/MainFrame.fxml");
 
     @FXML
     private Button btnStrategy;
@@ -46,7 +46,7 @@ public class MainFrame extends BorderPane {
     public void setView(AbstractView av) {
         if(!av.isLoaded())
             av.load();
-        setCenter(av); // remove abstract view currently loaded
+        setCenter(av); // remove abstract fr.axonic.avek.gui.view currently loaded
     }
 
     public void setStrategyButtonLabel(String strategyButtonLabel) {

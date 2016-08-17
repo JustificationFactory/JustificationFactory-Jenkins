@@ -1,10 +1,9 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
-import fr.axonic.avek.gui.model.sample.ExampleState;
+import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.validation.exception.VerificationException;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -13,7 +12,10 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

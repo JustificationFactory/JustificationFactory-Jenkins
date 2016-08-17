@@ -1,7 +1,8 @@
-package fr.axonic.avek.gui.model.structure;
+package fr.axonic.avek.gui.model;
 
 import com.sun.javafx.application.PlatformImpl;
 import fr.axonic.avek.gui.model.UploadedFile;
+import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.gui.util.UtilForTests;
 import org.junit.After;
 import org.junit.Before;
@@ -25,8 +26,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestUploadedFile {
     static {
-        PlatformImpl.startup(() -> {
-        });
+        PlatformImpl.startup(() -> {});
         UtilForTests.disableGraphics();
     }
 
@@ -37,10 +37,12 @@ public class TestUploadedFile {
 
     @Test
     public void testUploadedFile() throws IOException {
-        UploadedFile uf = new UploadedFile(new File("./temp/test.txt"));
+        File file = new File("./temp/test.txt");
+        UploadedFile uf = new UploadedFile(file);
 
-        assertEquals(new File("./temp/test.txt"), uf.getOriginal());
+        assertEquals(file, uf.getOriginal());
         assertEquals(31, uf.getSize());
+        assertEquals("The first line\nThe second line", Util.getFileContent(file));
 
         if (!waitingForUpload(uf)) {
             assertTrue("Waiting for more than 30s", false);
@@ -54,6 +56,7 @@ public class TestUploadedFile {
         File f = fileList.get(0);
         assertEquals("test.txt", f.getName());
         assertEquals(31, f.length());
+        assertEquals("The first line\nThe second line", Util.getFileContent(f));
         assertTrue(f.isFile());
     }
 

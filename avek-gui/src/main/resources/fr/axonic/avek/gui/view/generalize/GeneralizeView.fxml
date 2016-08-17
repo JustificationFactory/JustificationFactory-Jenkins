@@ -11,7 +11,7 @@
 <fx:root xmlns:fx="http://javafx.com/fxml"
          type="javafx.scene.layout.BorderPane"
          styleClass="out-pane">
-    <!-- fx:controller="fr.axonic.avek.gui.view.generalize.GeneralizeView
+    <!-- fx:controller="fr.axonic.avek.gui.fr.axonic.avek.gui.view.generalize.GeneralizeView
           -->
 
     <!-- ◧ ◨ ⬒ ⬓ -->

@@ -7,8 +7,8 @@ import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.gui.model.UploadedFile;
-import fr.axonic.avek.gui.view.*;
+import fr.axonic.avek.gui.view.AbstractView;
+import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
 import fr.axonic.avek.gui.view.frame.MainFrame;
 import fr.axonic.avek.gui.view.generalize.GeneralizeView;
@@ -22,7 +22,10 @@ import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
@@ -34,21 +37,23 @@ public class Orchestrator {
     private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
     private final static Orchestrator INSTANCE = new Orchestrator();
 
-
     private AbstractView currentView;
     private Pattern currentPattern;
     private Subject currentSubject;
     private Stimulation currentStimulation;
 
     private final LoadingView loadingView = new LoadingView();
+
     private MainFrame frame;
+
     private List<Pattern> patternList;
     private List<EvidenceRole> evidences;
-    private final List<FutureTask> tasks;
+    private final Stack<FutureTask> tasks;
 
     private Orchestrator() {
-        tasks = new ArrayList<>();
+        tasks = new Stack<>();
 
+        // Setting Experiment results to DataBus
         Map<String, ARangedEnum> map = new HashMap<>();
         for(EffectEnum effect : EffectEnum.values()) {
             map.put(effect.name(), effect.getState());
@@ -58,8 +63,9 @@ public class Orchestrator {
 
     private void orchestrate() {
         FutureTask ft = new FutureTask<>(() -> { this.setFollowingView(); return true; });
-        this.tasks.add(ft);
+        this.tasks.push(ft);
 
+        // Setting a loading view up while orchestrator compute for the next view
         frame.setView(loadingView);
         frame.hideStrategyButton();
 
@@ -72,22 +78,22 @@ public class Orchestrator {
         // Constructing conclusion
         if (currentPattern != null) {
             constructStep(adAPI);
+            currentPattern = null;
         }
 
-        evidences = null;
-        patternList = null;
-        currentPattern = null;
-
-        // Preparing following view
+        // Preparing for following view
         evidences = adAPI.getBaseEvidences();
         patternList = adAPI.getPossiblePatterns(evidences);
 
         setEvidencesInDataBus();
 
+        // If there is only one pattern available, setting the view to it
         if (patternList.size() == 1 && setViewFromPattern(patternList.get(0))) {
             return;
         }
 
+        // If there is more than one pattern available,
+        // setting a selection view for user to choose the one he want
         StrategySelectionView ssv = new StrategySelectionView();
         ssv.load();
 
@@ -99,7 +105,7 @@ public class Orchestrator {
             ssv.setAvailableChoices(names);
         }
 
-        tasks.add(setViewTask);
+        tasks.push(setViewTask);
     }
 
 
@@ -116,7 +122,7 @@ public class Orchestrator {
             LOGGER.error("Impossible to constructStep");
         }
     }
-    private void constructEtablishEffectStep(ArgumentationDiagramAPI adAPI) {
+    private void constructEstablishEffectStep(ArgumentationDiagramAPI adAPI) {
         LOGGER.debug("Constructing Establish effect step");
         try {
             final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
@@ -125,7 +131,7 @@ public class Orchestrator {
                     new Experimentation(
                             INSTANCE.currentStimulation,
                             INSTANCE.currentSubject),
-                    effectsAsJBI(currentView.getEffects()));
+                    jellyBeanItemsToEffectList(currentView.getEffects()));
 
             EstablishEffectConclusion conclusion =
                     new EstablishEffectConclusion(
@@ -153,7 +159,7 @@ public class Orchestrator {
                         new Experimentation(
                                 INSTANCE.currentStimulation,
                                 INSTANCE.currentSubject),
-                        effectsAsJBI(currentView.getEffects())
+                        jellyBeanItemsToEffectList(currentView.getEffects())
             ));
 
             adAPI.constructStep(INSTANCE.currentPattern.getId(),
@@ -164,21 +170,15 @@ public class Orchestrator {
     }
     private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
         switch(currentPattern.getName()) {
-            case "Treat":
-                constructTreatStep(adAPI);
-                break;
-            case "Establish Effect":
-                constructEtablishEffectStep(adAPI);
-                break;
-            case "Generalize":
-                constructGeneralizeStep(adAPI);
-                break;
+            case "Treat":            constructTreatStep(adAPI);          break;
+            case "Establish Effect": constructEstablishEffectStep(adAPI); break;
+            case "Generalize":       constructGeneralizeStep(adAPI);     break;
             default:
                 LOGGER.error("Constructing \""+currentPattern.getName()+"\" not implemented");
         }
     }
 
-    private AList<Effect> effectsAsJBI(List<JellyBeanItem> effectsAsJellyBeanItems) {
+    private AList<Effect> jellyBeanItemsToEffectList(List<JellyBeanItem> effectsAsJellyBeanItems) {
         final AList<Effect> effectList = new AList<>();
 
         EffectEnum[] eetab = EffectEnum.values();
@@ -245,55 +245,49 @@ public class Orchestrator {
     }
 
     private boolean setViewFromPattern(Pattern p) {
-        FutureTask ft = null;
+        AbstractView view;
+
+        // Selecting the right view depending on pattern
         switch (p.getName()) {
-            case "Treat":
-                TreatView tv = new TreatView();
-                currentView = tv;
-                ft = new FutureTask<>(() -> {
-                    frame.setView(tv);
-                    frame.setStrategyButtonLabel("Treat");
-                    return true;
-                });
-                break;
-            case "Establish Effect":
-                EstablishEffectView eev = new EstablishEffectView();
-                currentView = eev;
-                ft = new FutureTask<>(() -> {
-                    frame.setView(eev);
-                    frame.setStrategyButtonLabel("Establish Effect");
-                    return true;
-                });
-                break;
-            case "Generalize":
-                GeneralizeView gv = new GeneralizeView();
-                currentView = gv;
-                ft = new FutureTask<>(() -> {
-                    frame.setView(gv);
-                    frame.setStrategyButtonLabel("Generalize");
-                    return true;
-                });
-                break;
+            case "Treat":            view = new TreatView();           break;
+            case "Establish Effect": view = new EstablishEffectView(); break;
+            case "Generalize":       view = new GeneralizeView();      break;
             default:
                 LOGGER.warn("Pattern is unknown for View conversion: " + p);
                 return false;
         }
 
-        tasks.add(ft);
+        // Setting the view
+        currentView = view;
+        FutureTask ft = new FutureTask<>(() -> {
+            frame.setView(currentView);
+            frame.setStrategyButtonLabel("Treat");
+            return true;
+        });
+
+        tasks.push(ft);
         Platform.runLater(ft);
         currentPattern = p;
         return true;
     }
 
 
+    /**
+     * Ask the orchestrator to orchestrate this frame
+     * @param frame The Frame to orchestrate
+     */
     static void setFrame(MainFrame frame) {
         INSTANCE.frame = frame;
         INSTANCE.orchestrate();
     }
 
+    /**
+     * Called by Selection view to inform orchestrator about what choice was done
+     * @param value The choice selected by user
+     */
     public static void submitChoice(String value) {
+        // Finding the pattern users choose
         Pattern selectedPattern = null;
-
         for (Pattern p : INSTANCE.patternList) {
             if (p.getName().equals(value)) {
                 selectedPattern = p;
@@ -309,15 +303,25 @@ public class Orchestrator {
         }
     }
 
+    /**
+     * Call this method when user is validating data he send to the current view
+     */
     public static void onValidate() {
         INSTANCE.orchestrate();
     }
 
+    /**
+     * <b>Blocking method</b> that finish when orchestrator has all his tasks done
+     * @throws ExecutionException thrown if a task thrown an internal exception
+     * @throws InterruptedException thrown if a task was interrupted
+     */
     static void waitforOrchestrating() throws ExecutionException, InterruptedException {
+        // While there are tasks in the taskList
         while(!INSTANCE.tasks.isEmpty()) {
-            FutureTask ft = INSTANCE.tasks.get(0);
+            // Get oldest task from the list
+            FutureTask ft = INSTANCE.tasks.pop();
+            // Waiting for this task to end
             ft.get();
-            INSTANCE.tasks.remove(ft);
         }
     }
 }

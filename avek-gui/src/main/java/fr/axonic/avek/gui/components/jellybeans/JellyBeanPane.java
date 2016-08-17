@@ -5,9 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -64,18 +62,18 @@ public class JellyBeanPane extends HBox {
         }
     }
 
-    boolean contains(String key) {
+    boolean contains(JellyBeanItem jbi) {
         for (Node n : getChildren()) {
-            if (((JellyBean) n).getItem().getText().equals(key)) {
+            if (((JellyBean)n).getItem().equals(jbi)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void remove(String key) {
+    public void remove(String jbiName) {
         for (Node n : new ArrayList<>(getChildren())) {
-            if (((JellyBean) n).getItem().getText().equals(key)) {
+            if (((JellyBean) n).getItem().getText().equals(jbiName)) {
                 getChildren().remove(n);
                 break;
             }

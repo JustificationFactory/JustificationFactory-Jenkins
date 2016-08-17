@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class JellyBeanSelector extends VBox {
     @FXML
     private JellyBeanPane jellyBeanPane;
     @FXML
-    private ComboBox<Map.Entry<String, List<String>>> comboBoxJellyBean;
+    private ComboBox<JellyBeanItem> comboBoxJellyBean;
 
     // should be public
     public JellyBeanSelector() {
@@ -61,21 +60,21 @@ public class JellyBeanSelector extends VBox {
         updateJellyBeanChoice();
 
         comboBoxJellyBean.setConverter(
-                new StringConverter<Map.Entry<String, List<String>>>() {
-                    private final Map<String, Map.Entry<String, List<String>>> values = new HashMap<>();
+                new StringConverter<JellyBeanItem>() {
+                    private final Map<String, JellyBeanItem> values = new HashMap<>();
 
                     @Override
-                    public String toString(Map.Entry<String, List<String>> entry) {
+                    public String toString(JellyBeanItem entry) {
                         if (entry == null) {
                             return "";
                         } else {
-                            values.put(entry.getKey(), entry);
-                            return entry.getKey();
+                            values.put(entry.getText(), entry);
+                            return entry.getText();
                         }
                     }
 
                     @Override
-                    public Map.Entry<String, List<String>> fromString(String s) {
+                    public JellyBeanItem fromString(String s) {
                         try {
                             return values.get(s);
                         } catch (NumberFormatException e) {
@@ -92,17 +91,16 @@ public class JellyBeanSelector extends VBox {
 
     private void addJellyBean() {
         // Verify if JellyBean already created (this result is already selected)
-        Map.Entry<String, List<String>> choice = comboBoxJellyBean.getValue();
+        JellyBeanItem choice = comboBoxJellyBean.getValue();
         if (choice == null) {
             LOGGER.warn("Choice is null");
             return;
         }
-        if (jellyBeanPane.contains(choice.getKey())) {
-            LOGGER.warn("Choice already added: " + choice.getKey());
+        if (jellyBeanPane.contains(choice)) {
+            LOGGER.warn("Choice already added: " + choice.getText());
             return;
         }
-        JellyBeanItem<String> item = new JellyBeanItem<>(choice.getKey(), choice.getValue());
-        jellyBeanPane.addJellyBean(item);
+        jellyBeanPane.addJellyBean(choice);
         updateJellyBeanChoice();
     }
 
@@ -117,18 +115,18 @@ public class JellyBeanSelector extends VBox {
      */
     private void updateJellyBeanChoice() {
         comboBoxJellyBean.setCellFactory(
-                new Callback<ListView<Map.Entry<String, List<String>>>, ListCell<Map.Entry<String, List<String>>>>() {
+                new Callback<ListView<JellyBeanItem>, ListCell<JellyBeanItem>>() {
                     @Override
-                    public ListCell<Map.Entry<String, List<String>>> call(ListView<Map.Entry<String, List<String>>> param) {
-                        return new ListCell<Map.Entry<String, List<String>>>() {
+                    public ListCell<JellyBeanItem> call(ListView<JellyBeanItem> param) {
+                        return new ListCell<JellyBeanItem>() {
                             @Override
-                            public void updateItem(Map.Entry<String, List<String>> item, boolean empty) {
+                            public void updateItem(JellyBeanItem item, boolean empty) {
                                 super.updateItem(item, empty);
                                 if (item != null) {
-                                    setText(item.getKey());
+                                    setText(item.getText());
                                     getStyleClass().remove("selectedResult");
                                     getStyleClass().remove("notSelectedResult");
-                                    getStyleClass().add(jellyBeanPane.contains(item.getKey()) ? "selectedResult" : "notSelectedResult");
+                                    getStyleClass().add(jellyBeanPane.contains(item) ? "selectedResult" : "notSelectedResult");
                                 }
                             }
                         };
@@ -136,9 +134,9 @@ public class JellyBeanSelector extends VBox {
                 });
     }
 
-    public void setJellyBeansChoice(Map<String, List<String>> exprMap) {
+    public void setJellyBeansChoice(List<JellyBeanItem> exprMap) {
         this.comboBoxJellyBean.setItems(
-                FXCollections.observableArrayList(new ArrayList<>(exprMap.entrySet())));
+                FXCollections.observableArrayList(exprMap));
     }
 
     JellyBeanPane getJellyBeanPane() {

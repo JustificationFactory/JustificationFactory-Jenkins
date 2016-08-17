@@ -6,8 +6,6 @@ import fr.axonic.avek.gui.components.jellybeans.JellyBeanSelector;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.AbstractView;
-import fr.axonic.base.AEnum;
-import fr.axonic.base.ARangedEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,19 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EstablishEffectView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(EstablishEffectView.class);
 
-    private final static String FXML = "fr.axonic.avek.gui.view/etablisheffect/EstablishEffectView.fxml";
+    private final static String FXML = "fr/axonic/avek/gui/view/etablisheffect/EstablishEffectView.fxml";
 
     @FXML
     private JellyBeanSelector jellyBeanSelector;
@@ -52,16 +45,7 @@ public class EstablishEffectView extends AbstractView {
 
         parametersRoot.setAList(DataBus.getExperimentParams());
 
-        Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
-        Map<String, List<String>> map = new HashMap<>();
-        for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
-            List<String> ls = new ArrayList<>();
-            for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
-                ls.add(ae.getValue().toString());
-            }
-            map.put(entry.getKey(), ls);
-        }
-        jellyBeanSelector.setJellyBeansChoice(map);
+        jellyBeanSelector.setJellyBeansChoice(DataBus.getExperimentResults());
         LOGGER.debug("EstablishEffectView loaded.");
     }
 

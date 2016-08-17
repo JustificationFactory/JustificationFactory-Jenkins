@@ -7,23 +7,17 @@ import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.AbstractView;
-import fr.axonic.base.AEnum;
-import fr.axonic.base.ARangedEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GeneralizeView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(GeneralizeView.class);
-    private final static String FXML = "fr.axonic.avek.gui.view/generalize/GeneralizeView.fxml";
+    private final static String FXML = "fr/axonic/avek/gui/view/generalize/GeneralizeView.fxml";
 
     @FXML
     private JellyBeanPane jellyBeanPane;
@@ -49,17 +43,13 @@ public class GeneralizeView extends AbstractView {
 
     @FXML
     private void initialize() {
+        // Get data from Data bus
         parametersRoot.setAList(DataBus.getExperimentParams());
         monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
 
-        Map<String, ARangedEnum> expResMap = DataBus.getExperimentResults();
-        for (Map.Entry<String, ARangedEnum> entry : expResMap.entrySet()) {
-            List<Object> ls = new ArrayList<>();
-            for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
-                ls.add(ae.getValue());
-            }
-            JellyBeanItem item = new JellyBeanItem<>(entry.getKey(), ls);
-            jellyBeanPane.addJellyBean(item);
+        List<JellyBeanItem> list = DataBus.getExperimentResults();
+        for(JellyBeanItem jbi : list) {
+            jellyBeanPane.addJellyBean(jbi);
         }
     }
 

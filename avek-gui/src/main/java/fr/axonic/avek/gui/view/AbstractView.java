@@ -10,9 +10,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Nathaël N on 26/07/16.
@@ -20,33 +18,44 @@ import java.util.Set;
 public abstract class AbstractView extends BorderPane {
     private final static Logger LOGGER = Logger.getLogger(AbstractView.class);
 
-    private final Set<AbstractView> orchestrator;
-
-
+    // Is the view loaded ?
     private boolean loaded;
 
     protected AbstractView() {
-        loaded = false;
-        orchestrator = new LinkedHashSet<>();
+        loaded = false; // the view isn't loaded
     }
 
+    /**
+     * @return true if view was already loaded, false otherwise
+     */
     public boolean isLoaded() {
         return loaded;
     }
 
+    /**
+     * Load the view
+     */
     public final void load() {
-        if (loaded) {
-            return;
+        // If Already loaded, do nothing
+        if (!loaded) {
+            this.onLoad();
         }
-
-        this.onLoad();
     }
 
+    /**
+     * Called when AbstractView#load is done
+     */
     protected abstract void onLoad();
 
+    /**
+     * Load a FXML file
+     * @throws RuntimeException if called when view was already loaded
+     * @param path FXML file path
+     */
     protected final void load(String path) {
+        // If already loaded
         if (loaded) {
-            return;
+            throw new RuntimeException("Try to load an already loaded view\nFor object: "+toString()+"\nWith path:"+path);
         }
 
         URL fxml = getClass().getClassLoader().getResource(path);
@@ -60,13 +69,20 @@ public abstract class AbstractView extends BorderPane {
             loaded = true;
         } catch (IOException | RuntimeException e) {
             LOGGER.fatal("Impossible to load FXML", e);
+            throw new RuntimeException("Impossible to load FXML\nFor object: "+toString()+"\nWith path:"+path);
         }
     }
 
-
-
+    // inner-frames size memory (to have the same size before than after to be closed/reopened)
     private final Map<SplitPane, double[]> mementos = new HashMap<>();
 
+    /**
+     * Util to show a pane
+     * @param index Where the pane will be in his parent (1st position = '0', 2nd = '1'...)
+     * @param pane The pane to show
+     * @param splitPane The split pane where to show the pane
+     * @param button the toggle button that has for state the visibility of the pane
+     */
     protected void showPane(int index, Pane pane, SplitPane splitPane, ToggleButton button) {
         splitPane.getItems().add(index, pane);
         pane.setVisible(true);
@@ -75,6 +91,12 @@ public abstract class AbstractView extends BorderPane {
         splitPane.setDividerPositions(mementos.get(splitPane));
     }
 
+    /**
+     * Util to hide a pane
+     * @param pane The pane to show
+     * @param splitPane The split pane where to show the pane
+     * @param button the toggle button that has for state the visibility of the pane
+     */
     protected void hidePane(Pane pane, SplitPane splitPane, ToggleButton button) {
         mementos.put(splitPane, splitPane.getDividerPositions());
         splitPane.getItems().remove(pane);

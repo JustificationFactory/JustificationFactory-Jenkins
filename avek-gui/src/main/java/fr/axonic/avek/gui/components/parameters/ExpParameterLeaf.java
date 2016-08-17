@@ -62,7 +62,7 @@ public class ExpParameterLeaf implements IExpParameter {
     }
 
     public void setExpandable(Consumer<Boolean> onClickExpand) {
-        levelMark.setExpandable(onClickExpand);
+        levelMark.setOnExpand(onClickExpand);
     }
 
     public void setExpanded(boolean expanded) {
