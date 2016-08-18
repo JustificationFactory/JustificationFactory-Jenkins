@@ -10,16 +10,16 @@ public enum BooleanState implements AEnumItem{
 
     @Override
     public String getLabel() {
-        return null;
+        return name().toLowerCase();
     }
 
     @Override
     public String getCode() {
-        return null;
+        return "";
     }
 
     @Override
     public String getPath() {
-        return null;
+        return "";
     }
 }
