@@ -1,23 +1,29 @@
 package fr.axonic.base.format;
 
 import fr.axonic.base.AEnum;
+import fr.axonic.base.engine.AEnumItem;
 
 /**
  * Created by cduffau on 12/08/16.
  */
-public class EnumFormat extends Format<Enum, String> {
+public class EnumFormat<T extends Enum<T> & AEnumItem> extends Format<T, String> {
     public EnumFormat() {
-        super(AEnum.class, Enum.class);
+        // TODO : handle Enum.class
+        this(null);
+    }
+
+    public  EnumFormat(Class<T> tClass){
+        super(AEnum.class,tClass);
     }
 
 
     @Override
-    public String marshalValue(Enum value) {
+    public String marshalValue(T value) {
         return value.name();
     }
 
     @Override
-    public Enum unmarshalValue(String prettyFormat) {
-        return Enum.valueOf(getFormatType(), prettyFormat);
+    public T unmarshalValue(String prettyFormat) {
+        return (T) Enum.valueOf(getFormatType(), prettyFormat);
     }
 }

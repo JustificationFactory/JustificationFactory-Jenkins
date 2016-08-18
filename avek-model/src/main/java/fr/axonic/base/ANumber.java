@@ -3,8 +3,6 @@ package fr.axonic.base;
 
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.AVarProperty;
-import fr.axonic.base.format.Format;
-import fr.axonic.base.engine.FormatType;
 import fr.axonic.base.format.NumberFormat;
 import fr.axonic.validation.Verifiable;
 import fr.axonic.validation.Verify;

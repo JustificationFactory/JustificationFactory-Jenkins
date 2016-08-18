@@ -1,10 +1,10 @@
 package fr.axonic.base;
 
 
+import fr.axonic.TestEnum;
 import fr.axonic.base.engine.AStructure;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.format.*;
-import fr.axonic.base.engine.FormatType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -29,10 +29,10 @@ public class AVarTest {
         if(!(AVar.create(new DateFormat()) instanceof ADate)){
             fail();
         }
-        if(!(AVar.create(new EnumFormat()) instanceof AEnum)){
+        if(!(AVar.create(new EnumFormat<TestEnum>(TestEnum.class)) instanceof AEnum)){
             fail();
         }
-        if(!(AVar.create(new RangedEnumFormat()) instanceof ARangedEnum)){
+        if(!(AVar.create(new RangedEnumFormat<TestEnum>(TestEnum.class)) instanceof ARangedEnum)){
             fail();
         }
         if(!(AVar.create(new BoundedNumberFormat()) instanceof AContinuousNumber)){
@@ -53,7 +53,7 @@ public class AVarTest {
         if(!(AVar.create(new BoundedNumberFormat()) instanceof ANumber)){
             fail();
         }
-        if(!(AVar.create(new RangedEnumFormat()) instanceof AEnum)){
+        if(!(AVar.create(new RangedEnumFormat<TestEnum>(TestEnum.class)) instanceof AEnum)){
             fail();
         }
         if(!(AVar.create(new RangedStringFormat()) instanceof AString)){

@@ -125,7 +125,7 @@ public final class AVarHelper {
         return list.stream().filter(aVar -> aVar.getValue().equals(elt.getValue())).count() == 1;
     }
 
-    public static <T extends Enum<T>> AList<AEnum<T>> transformToAVar(List<Enum<T>> enums) throws VerificationException {
+    public static <T extends Enum<T> & AEnumItem> AList<AEnum<T>> transformToAVar(List<Enum<T>> enums) throws VerificationException {
         AList<AEnum<T>> alist=new AList<>();
         for(Enum enu : enums){
             AEnum<T> aEnum=new AEnum<>();

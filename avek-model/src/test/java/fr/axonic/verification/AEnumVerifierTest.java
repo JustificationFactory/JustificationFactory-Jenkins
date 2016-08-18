@@ -5,8 +5,6 @@ import fr.axonic.TestEnum;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.AVarHelper;
-import fr.axonic.base.format.Format;
-import fr.axonic.base.engine.FormatType;
 import fr.axonic.base.format.RangedEnumFormat;
 import fr.axonic.validation.exception.ErrorVerifyException;
 import fr.axonic.validation.exception.RuntimeVerificationException;

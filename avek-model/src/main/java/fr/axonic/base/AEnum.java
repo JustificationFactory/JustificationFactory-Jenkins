@@ -1,6 +1,7 @@
 package fr.axonic.base;
 
 
+import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.format.EnumFormat;
 import fr.axonic.validation.Verifiable;
@@ -13,14 +14,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by cduffau on 08/07/16.
  */
 @XmlRootElement
-public class AEnum<T extends Enum<T>> extends AVar<T> implements Verifiable {
+public class AEnum<T extends Enum<T> & AEnumItem> extends AVar<T> implements Verifiable {
 
 
     public AEnum(){
-        this(null);
+        super(new EnumFormat<>(),null);
     }
     public AEnum(T value) {
         super(new EnumFormat(), value);
+    }
+    public AEnum(Class<T> tClass, T value){
+        super(new EnumFormat<T>(tClass),value);
+    }
+    public AEnum(Class<T> tClass){
+        super(new EnumFormat<T>(tClass),null);
     }
 
 

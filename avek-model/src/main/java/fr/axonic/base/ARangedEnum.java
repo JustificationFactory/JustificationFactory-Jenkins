@@ -1,6 +1,7 @@
 package fr.axonic.base;
 
 
+import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVarProperty;
 import fr.axonic.base.engine.DiscretAVar;
@@ -13,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by cduffau on 11/07/16.
  */
 @XmlRootElement
-public class ARangedEnum<T extends Enum<T>> extends AEnum<T> implements DiscretAVar<AEnum<T>> {
+public class ARangedEnum<T extends Enum<T> & AEnumItem> extends AEnum<T> implements DiscretAVar<AEnum<T>> {
     AList<AEnum<T>> range;
 
     public ARangedEnum(T value) {

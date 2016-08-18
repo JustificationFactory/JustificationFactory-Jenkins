@@ -4,8 +4,6 @@ package fr.axonic.base;
 
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.format.BooleanFormat;
-import fr.axonic.base.format.Format;
-import fr.axonic.base.engine.FormatType;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

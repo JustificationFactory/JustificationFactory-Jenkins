@@ -4,8 +4,6 @@ package fr.axonic.verification;
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.format.BoundedNumberFormat;
-import fr.axonic.base.format.Format;
-import fr.axonic.base.engine.FormatType;
 import fr.axonic.validation.exception.ErrorVerifyException;
 import fr.axonic.validation.exception.RuntimeVerificationException;
 import fr.axonic.validation.exception.VerificationException;
