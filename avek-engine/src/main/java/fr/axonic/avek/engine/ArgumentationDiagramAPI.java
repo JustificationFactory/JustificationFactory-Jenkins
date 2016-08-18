@@ -16,7 +16,7 @@ public interface ArgumentationDiagramAPI {
 
     List<EvidenceRole> getBaseEvidences();
 
-    void constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException;
+    Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException;
 
     List<Step> getSteps();
 }

@@ -63,12 +63,13 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     }
 
     @Override
-    public void constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException {
+    public Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException {
         Step step=patterns.get(patternId).createStep(evidences,conclusion);
         steps.add(step);
         LOGGER.info(step.getConclusion());
         EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
         baseEvidences.add(evidenceRoleType.create(step.getConclusion()));
+        return step;
     }
 
     @Override
