@@ -23,10 +23,7 @@ import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
@@ -77,7 +74,9 @@ public class Orchestrator {
 
         // Preparing for following view
         evidences = adAPI.getBaseEvidences();
-        patternList = adAPI.getPossiblePatterns(evidences);
+        List<String> patternIds=adAPI.getPossiblePatterns(evidences);
+        patternList = new ArrayList<>();
+        patternIds.stream().forEach(s -> patternList.add(adAPI.getPattern(s)));
 
         setEvidencesInDataBus();
 

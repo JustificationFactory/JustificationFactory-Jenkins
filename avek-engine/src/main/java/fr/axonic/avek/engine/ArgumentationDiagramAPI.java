@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface ArgumentationDiagramAPI {
 
-    List<Pattern> getPossiblePatterns(List<EvidenceRole> evidenceRoles);
+    List<String> getPossiblePatterns(List<EvidenceRole> evidenceRoles);
+
+    Pattern getPattern(String patternId);
 
     List<EvidenceRole> getBaseEvidences();
 

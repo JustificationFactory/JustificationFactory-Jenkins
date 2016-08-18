@@ -42,14 +42,19 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     }
 
     @Override
-    public List<Pattern> getPossiblePatterns(List<EvidenceRole> evidenceRoles) {
-        List<Pattern> res=new ArrayList<>();
+    public List<String> getPossiblePatterns(List<EvidenceRole> evidenceRoles) {
+        List<String> res=new ArrayList<>();
         for(Pattern pattern : patterns.values()){
             if(pattern.applicable(evidenceRoles)){
-                res.add(pattern);
+                res.add(pattern.getId());
             }
         }
         return res;
+    }
+
+    @Override
+    public Pattern getPattern(String patternId) {
+        return patterns.get(patternId);
     }
 
     @Override
