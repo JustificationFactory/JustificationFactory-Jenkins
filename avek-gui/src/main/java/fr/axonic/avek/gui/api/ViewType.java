@@ -17,12 +17,12 @@ public enum ViewType {
     TREAT_VIEW(TreatView.class, ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS),
     ESTABLISH_EFFECT_VIEW(EstablishEffectView.class,ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS, ComponentType.EFFECTS),
     GENERALIZE_VIEW(GeneralizeView.class, ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS, ComponentType.EFFECTS),
-    STRATEGY_SELECTING_VIEW(StrategySelectionView.class,ComponentType.SELECTION);
+    STRATEGY_SELECTION_VIEW(StrategySelectionView.class,ComponentType.SELECTION);
 
     List<ComponentType> compatibleComponents;
-    Class viewClass;
+    Class<? extends AbstractView> viewClass;
 
-    <T extends AbstractView> ViewType( Class<T> viewClass, ComponentType ... compatibleComponents) {
+    ViewType( Class<? extends AbstractView> viewClass, ComponentType ... compatibleComponents) {
         this.compatibleComponents = Arrays.asList(compatibleComponents);
         this.viewClass = viewClass;
     }
@@ -31,7 +31,7 @@ public enum ViewType {
         return compatibleComponents;
     }
 
-    public Class getViewClass() {
+    public Class<? extends AbstractView> getViewClass() {
         return viewClass;
     }
 

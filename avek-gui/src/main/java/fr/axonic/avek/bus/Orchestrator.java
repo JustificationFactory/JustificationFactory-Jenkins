@@ -1,20 +1,14 @@
-package fr.axonic.avek.gui;
+package fr.axonic.avek.bus;
 
-import fr.axonic.avek.engine.*;
+import fr.axonic.avek.engine.ArgumentationDiagramAPI;
+import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
+import fr.axonic.avek.engine.Pattern;
+import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
-import fr.axonic.avek.engine.instance.conclusion.*;
-import fr.axonic.avek.engine.instance.evidence.Stimulation;
-import fr.axonic.avek.engine.instance.evidence.Subject;
-import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
-import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.gui.model.Jsonifier;
-import fr.axonic.avek.gui.view.AbstractView;
-import fr.axonic.avek.gui.view.LoadingView;
-import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
-import fr.axonic.avek.gui.view.frame.MainFrame;
-import fr.axonic.avek.gui.view.generalize.GeneralizeView;
-import fr.axonic.avek.gui.view.strategyselection.StrategySelectionView;
-import fr.axonic.avek.gui.view.treat.TreatView;
+import fr.axonic.avek.gui.api.ComponentType;
+import fr.axonic.avek.gui.api.GUIAPIImpl;
+import fr.axonic.avek.gui.api.GUIException;
+import fr.axonic.avek.gui.api.ViewType;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
@@ -36,62 +30,92 @@ import java.util.stream.Collectors;
  */
 public class Orchestrator {
     private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
-    private final static Orchestrator INSTANCE = new Orchestrator();
 
-    private AbstractView currentView;
+    private ViewType currentView;
     private Pattern currentPattern;
-    private Subject currentSubject;
-    private Stimulation currentStimulation;
-
-    private final LoadingView loadingView = new LoadingView();
-
-    private MainFrame frame;
+    //private Subject currentSubject;
+    //private Stimulation currentStimulation;
 
     private List<Pattern> patternList;
     private List<EvidenceRole> evidences;
     private final Stack<FutureTask> tasks;
 
-    private Orchestrator() {
+    private final ArgumentationDiagramAPI engineAPI;
+    private final GUIAPIImpl guiAPI;
+
+    private Orchestrator() throws VerificationException, WrongEvidenceException {
         tasks = new Stack<>();
+
+        engineAPI = ArgumentationDiagramAPIImpl.getInstance();
+        guiAPI = GUIAPIImpl.getInstance();
     }
 
-    private void orchestrate() {
-        FutureTask ft = new FutureTask<>(() -> { this.setFollowingView(); return true; });
-        this.tasks.push(ft);
+    private void orchestrate() throws GUIException, VerificationException, WrongEvidenceException {
+        guiAPI.showLoading(); // show loading while orchestrating because can last long
 
-        // Setting a loading view up while orchestrator compute for the next view
-        frame.setView(loadingView);
-        frame.hideStrategyButton();
+        computeNextPattern();
+        setEvidencesInDataBus();
 
-        new Thread(ft).start();
+        // If there is only one pattern available, setting the view to it
+        if (patternList.size() == 1) {
+            showViewFromPattern(patternList.get(0));
+        } else {
+            Map<ComponentType, Object> content = new HashMap<>();
+
+            // TODO fill content
+
+            guiAPI.show(ViewType.STRATEGY_SELECTION_VIEW, content);
+        }
     }
 
-    private void setFollowingView() throws VerificationException, WrongEvidenceException, ExecutionException, InterruptedException {
-        ArgumentationDiagramAPIImpl adAPI = ArgumentationDiagramAPIImpl.getInstance();
-
+    private void computeNextPattern() throws VerificationException, WrongEvidenceException {
         // Constructing conclusion
         if (currentPattern != null) {
-            constructStep(adAPI);
+            constructStep(engineAPI);
             currentPattern = null;
         }
 
         // Preparing for following view
-        evidences = adAPI.getBaseEvidences();
-        patternList = adAPI.getPossiblePatterns(evidences);
+        evidences = engineAPI.getBaseEvidences();
+        patternList = engineAPI.getPossiblePatterns(evidences);
+    }
 
-        setEvidencesInDataBus();
+    private void showViewFromPattern(Pattern p) throws GUIException {
+        ViewType viewType;
+        Map<ComponentType, Object> content = new HashMap<>();
 
-        // If there is only one pattern available, setting the view to it
-        if (patternList.size() == 1 && setViewFromPattern(patternList.get(0))) {
-            return;
+        // Selecting the right view depending on pattern
+        switch (p.getName()) {
+            case "Treat":
+                viewType = ViewType.TREAT_VIEW;
+                // TODO fill content
+                break;
+            case "Establish Effect":
+                viewType = ViewType.ESTABLISH_EFFECT_VIEW;
+                // TODO fill content
+                break;
+            case "Generalize":
+                viewType = ViewType.GENERALIZE_VIEW;
+                // TODO fill content
+                break;
+            default:
+                throw new RuntimeException("Pattern is unknown for ViewType conversion: "+ p);
         }
 
+        guiAPI.show(viewType, content);
+        currentView = viewType;
+        currentPattern = p;
+    }
+
+    // TODO ↓↓↓↓↓↓↓↓↓↓↓↓↓ All methods under this should be reviewed ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+    private void setFollowingView() throws VerificationException, WrongEvidenceException, ExecutionException, InterruptedException {
         // If there is more than one pattern available,
         // setting a selection view for user to choose the one he want
         StrategySelectionView ssv = new StrategySelectionView();
         ssv.load();
 
-        FutureTask setViewTask = new FutureTask<>(() -> { frame.setView(ssv); return true; });
+        FutureTask setViewTask = new FutureTask<>(() -> { GUIAPIImpl.getInstance().getFrame().setView(ssv); return true; });
         Platform.runLater(setViewTask);
 
         List<String> names = patternList.stream().map(Pattern::getName).collect(Collectors.toList());
@@ -125,7 +149,7 @@ public class Orchestrator {
                     new Experimentation(
                             INSTANCE.currentStimulation,
                             INSTANCE.currentSubject),
-                    jellyBeanItemsToEffectList(currentView.getEffects()));
+                    Bus.jellyBeanItemsToEffectList(currentView.getEffects()));
 
             EstablishEffectConclusion conclusion =
                     new EstablishEffectConclusion(
@@ -153,7 +177,7 @@ public class Orchestrator {
                         new Experimentation(
                                 INSTANCE.currentStimulation,
                                 INSTANCE.currentSubject),
-                        jellyBeanItemsToEffectList(currentView.getEffects())
+                        Bus.jellyBeanItemsToEffectList(currentView.getEffects())
             ));
 
             adAPI.constructStep(INSTANCE.currentPattern.getId(),
@@ -162,7 +186,7 @@ public class Orchestrator {
             LOGGER.error("Impossible to constructStep");
         }
     }
-    private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
+    private void constructStep(ArgumentationDiagramAPI adAPI) {
         switch(currentPattern.getName()) {
             case "Treat":            constructTreatStep(adAPI);          break;
             case "Establish Effect": constructEstablishEffectStep(adAPI); break;
@@ -172,42 +196,13 @@ public class Orchestrator {
         }
     }
 
-    private AList<Effect> jellyBeanItemsToEffectList(List<JellyBeanItem> effectsAsJellyBeanItems) {
-        final AList<Effect> effectList = new AList<>();
-
-        effectList.addAll(effectsAsJellyBeanItems
-                .stream()
-                .map(this::jellyBeanItemToEffect)
-                .collect(Collectors.toList()));
-
-        return effectList;
-    }
-    private Effect jellyBeanItemToEffect(JellyBeanItem jellyBeanItem) {
-        EffectEnum[] eetab = EffectEnum.values();
-
-        for (EffectEnum effectEnum : eetab) {
-            if(jellyBeanItem.getText().equals(effectEnum.toString())) {
-                try {
-                    Effect effect = new Effect();
-                    effectEnum.setStateValue((EffectStateEnum) jellyBeanItem.getState());
-                    effect.setEffectValue(effectEnum);
-                    return effect;
-                } catch (VerificationException e) {
-                    LOGGER.error("Impossible to add effect "+jellyBeanItem, e);
-                }
-            }
-        }
-
-        return null;
-    }
-
     private void setEvidencesInDataBus() {
         // Setting default Experiment results to Data bus
         Map<String, ARangedEnum> experimentsResults = new HashMap<>();
         for(EffectEnum effect : EffectEnum.values()) {
             experimentsResults.put(effect.name(), effect.getState());
         }
-        DataBus.setExperimentResults(experimentsResults);
+        Bus.setExperimentResults(experimentsResults);
 
 
         // Setting others data to Data bus
@@ -236,7 +231,7 @@ public class Orchestrator {
                         al.addAll(map.values());
                         ms.addCategory(al);
 
-                        DataBus.setMonitoredSystem(ms);
+                        Bus.setMonitoredSystem(ms);
                         break;
                     case "stimulation":
                         currentStimulation = (Stimulation) evidenceRole.getEvidence().getElement();
@@ -244,13 +239,13 @@ public class Orchestrator {
                         AList<AEntity> list = new AList<>();
                         list.setLabel("root");
                         list.addAll(currentStimulation.getFieldsContainer().values());
-                        DataBus.setExperimentParams(list);
+                        Bus.setExperimentParams(list);
                         break;
                     case "":
                         if(evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
                             LOGGER.debug("Got: "+evidenceRole);
                             EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
-                            DataBus.setExperimentResults(((EstablishedEffect)eec.getElement()).getEffects());
+                            Bus.setExperimentResults(((EstablishedEffect)eec.getElement()).getEffects());
                             break;
                         }
                     default:
@@ -262,42 +257,6 @@ public class Orchestrator {
         }
     }
 
-    private boolean setViewFromPattern(Pattern p) {
-        AbstractView view;
-
-        // Selecting the right view depending on pattern
-        switch (p.getName()) {
-            case "Treat":            view = new TreatView();           break;
-            case "Establish Effect": view = new EstablishEffectView(); break;
-            case "Generalize":       view = new GeneralizeView();      break;
-            default:
-                LOGGER.warn("Pattern is unknown for View conversion: " + p);
-                return false;
-        }
-
-        // Setting the view
-        currentView = view;
-        FutureTask ft = new FutureTask<>(() -> {
-            frame.setView(currentView);
-            frame.setStrategyButtonLabel("Treat");
-            return true;
-        });
-
-        tasks.push(ft);
-        Platform.runLater(ft);
-        currentPattern = p;
-        return true;
-    }
-
-
-    /**
-     * Ask the orchestrator to orchestrate this frame
-     * @param frame The Frame to orchestrate
-     */
-    static void setFrame(MainFrame frame) {
-        INSTANCE.frame = frame;
-        INSTANCE.orchestrate();
-    }
 
     /**
      * Called by Selection view to inform orchestrator about what choice was done
@@ -317,7 +276,7 @@ public class Orchestrator {
             LOGGER.warn("No pattern found with name: "+value);
         }
         else {
-            INSTANCE.setViewFromPattern(selectedPattern);
+            INSTANCE.showViewFromPattern(selectedPattern);
         }
     }
 
@@ -326,20 +285,5 @@ public class Orchestrator {
      */
     public static void onValidate() {
         INSTANCE.orchestrate();
-    }
-
-    /**
-     * <b>Blocking method</b> that finish when orchestrator has all his tasks done
-     * @throws ExecutionException thrown if a task thrown an internal exception
-     * @throws InterruptedException thrown if a task was interrupted
-     */
-    static void waitforOrchestrating() throws ExecutionException, InterruptedException {
-        // While there are tasks in the taskList
-        while(!INSTANCE.tasks.isEmpty()) {
-            // Get oldest task from the list
-            FutureTask ft = INSTANCE.tasks.pop();
-            // Waiting for this task to end
-            ft.get();
-        }
     }
 }

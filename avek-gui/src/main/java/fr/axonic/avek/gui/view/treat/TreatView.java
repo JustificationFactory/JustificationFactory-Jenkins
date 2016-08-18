@@ -2,7 +2,7 @@ package fr.axonic.avek.gui.view.treat;
 
 import fr.axonic.avek.gui.components.MonitoredSystemView;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
-import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.bus.Bus;
 import fr.axonic.avek.gui.view.AbstractView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,8 +36,8 @@ public class TreatView extends AbstractView {
     @FXML
     private void initialize() {
         // Getting data from Data bus
-        monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
-        parametersRoot.setAList(DataBus.getExperimentParams());
+        monitoredSystemView.setMonitoredSystem(Bus.getMonitoredSystem());
+        parametersRoot.setAList(Bus.getExperimentParams());
     }
 
     @FXML

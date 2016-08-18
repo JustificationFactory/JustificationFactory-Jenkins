@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui;
 
+import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.view.frame.MainFrame;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -28,6 +29,6 @@ public class Main extends Application {
         primaryStage.show();
         LOGGER.debug("MainFrame created.");
 
-        Orchestrator.setFrame(mainFrame);
+        GUIAPIImpl.setFrame(mainFrame);
     }
 }
