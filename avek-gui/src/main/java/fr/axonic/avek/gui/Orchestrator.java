@@ -7,6 +7,7 @@ import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.gui.model.Jsonifier;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
@@ -52,13 +53,6 @@ public class Orchestrator {
 
     private Orchestrator() {
         tasks = new Stack<>();
-
-        // Setting Experiment results to DataBus
-        Map<String, ARangedEnum> map = new HashMap<>();
-        for(EffectEnum effect : EffectEnum.values()) {
-            map.put(effect.name(), effect.getState());
-        }
-        DataBus.setExperimentResults(map);
     }
 
     private void orchestrate() {
@@ -181,25 +175,42 @@ public class Orchestrator {
     private AList<Effect> jellyBeanItemsToEffectList(List<JellyBeanItem> effectsAsJellyBeanItems) {
         final AList<Effect> effectList = new AList<>();
 
+        effectList.addAll(effectsAsJellyBeanItems
+                .stream()
+                .map(this::jellyBeanItemToEffect)
+                .collect(Collectors.toList()));
+
+        return effectList;
+    }
+    private Effect jellyBeanItemToEffect(JellyBeanItem jellyBeanItem) {
         EffectEnum[] eetab = EffectEnum.values();
-        for(JellyBeanItem key : effectsAsJellyBeanItems) {
-            for (EffectEnum effectEnum : eetab) {
-                if(key.getText().equals(effectEnum.toString())) {
-                    try {
-                        Effect effect = new Effect();
-                        effect.setEffectValue(effectEnum);
-                        effectList.add(effect);
-                    } catch (VerificationException e) {
-                        LOGGER.error("Impossible to add effect "+key, e);
-                    }
+
+        for (EffectEnum effectEnum : eetab) {
+            if(jellyBeanItem.getText().equals(effectEnum.toString())) {
+                try {
+                    Effect effect = new Effect();
+                    effectEnum.setStateValue((EffectStateEnum) jellyBeanItem.getState());
+                    effect.setEffectValue(effectEnum);
+                    return effect;
+                } catch (VerificationException e) {
+                    LOGGER.error("Impossible to add effect "+jellyBeanItem, e);
                 }
             }
         }
 
-        return effectList;
+        return null;
     }
 
     private void setEvidencesInDataBus() {
+        // Setting default Experiment results to Data bus
+        Map<String, ARangedEnum> experimentsResults = new HashMap<>();
+        for(EffectEnum effect : EffectEnum.values()) {
+            experimentsResults.put(effect.name(), effect.getState());
+        }
+        DataBus.setExperimentResults(experimentsResults);
+
+
+        // Setting others data to Data bus
         for(EvidenceRole evidenceRole : evidences) {
             try {
                 switch (evidenceRole.getRole()) {
@@ -235,6 +246,13 @@ public class Orchestrator {
                         list.addAll(currentStimulation.getFieldsContainer().values());
                         DataBus.setExperimentParams(list);
                         break;
+                    case "":
+                        if(evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
+                            LOGGER.debug("Got: "+evidenceRole);
+                            EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
+                            DataBus.setExperimentResults(((EstablishedEffect)eec.getElement()).getEffects());
+                            break;
+                        }
                     default:
                         LOGGER.warn("Unknown Evidence role \"" + evidenceRole.getRole() + "\" in " + evidenceRole);
                 }

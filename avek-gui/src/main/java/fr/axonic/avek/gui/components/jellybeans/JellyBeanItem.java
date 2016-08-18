@@ -45,7 +45,7 @@ public class JellyBeanItem <T> {
     public void setState(T state) {
         setState(states.indexOf(state));
     }
-    T getState() {
+    public T getState() {
         return states.get(currentStateIndex);
     }
 
@@ -56,8 +56,9 @@ public class JellyBeanItem <T> {
     }
 
     private Set<BiConsumer<T, T>> stateChangeListeners = new HashSet<>(); // LastValue, NewValue
-    public void addStateChangeListener(BiConsumer<T, T> method) {
-        stateChangeListeners.add(method);
+    public void addStateChangeListener(BiConsumer<T, T> listener) {
+        stateChangeListeners.add(listener);
+        listener.accept(getState(), getState());
     }
 
     private Consumer<Boolean> editableStateChangeListener;
@@ -70,5 +71,10 @@ public class JellyBeanItem <T> {
         if (editable) {
             setState((currentStateIndex + 1) % states.size());
         }
+    }
+
+    @Override
+    public String toString() {
+        return "JellyBeanItem{text="+text+", states="+states+", editable="+editable+", currentstate="+getState()+"}";
     }
 }

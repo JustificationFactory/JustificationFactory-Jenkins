@@ -73,6 +73,8 @@ public class JellyBean<T> extends HBox {
     }
 
     private void onStateChanged(T lastState, T newState) {
+        LOGGER.debug("State of "+item.getText()+" changed from "+lastState+" to "+newState);
+
         final String strLastState = lastState.toString();
         final String strNewState = newState.toString();
 
@@ -127,7 +129,6 @@ public class JellyBean<T> extends HBox {
 
         item.addStateChangeListener(this::onStateChanged);
         item.setEditableStateChangeListener(this::onEditableChanged);
-        item.setState(0);
     }
 
     public JellyBeanItem<T> getItem() {

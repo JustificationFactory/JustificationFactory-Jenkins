@@ -31,4 +31,9 @@ public class EvidenceRole {
 		}
 		return evidences;
 	}
+
+	@Override
+	public String toString() {
+		return "EvidenceRole{role="+role+", evidence="+evidence+"}";
+	}
 }

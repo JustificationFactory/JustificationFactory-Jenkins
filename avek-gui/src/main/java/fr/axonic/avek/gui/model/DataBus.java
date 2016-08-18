@@ -1,31 +1,36 @@
 package fr.axonic.avek.gui.model;
 
+import fr.axonic.avek.engine.instance.conclusion.Effect;
+import fr.axonic.avek.gui.Orchestrator;
+import fr.axonic.avek.gui.components.jellybeans.JellyBean;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.*;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVar;
+import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 28/07/16.
  */
 public class DataBus {
+    private final static Logger LOGGER = Logger.getLogger(DataBus.class);
     private static final DataBus INSTANCE = new DataBus();
 
     private MonitoredSystem monitoredSystem;
     private AList<AEntity> experimentParams;
-    private Map<String, ARangedEnum> experimentResults;
+    private List<JellyBeanItem> experimentResults;
 
     public static MonitoredSystem getMonitoredSystem() {
         return INSTANCE.monitoredSystem;
     }
     public static void setMonitoredSystem(MonitoredSystem monitoredSystem) {
         INSTANCE.monitoredSystem = monitoredSystem;
+        LOGGER.debug("Monitored system set to: "+monitoredSystem);
     }
 
     public static AList<AEntity> getExperimentParams() {
@@ -33,25 +38,40 @@ public class DataBus {
     }
     public static void setExperimentParams(AList<AEntity> experimentParams) {
         INSTANCE.experimentParams = experimentParams;
+        LOGGER.debug("Experiment parameters set to: "+experimentParams);
     }
 
     public static List<JellyBeanItem> getExperimentResults() {
-        List<JellyBeanItem> list = new ArrayList<>();
-
-        // Convert experiment results
-        for (Map.Entry<String, ARangedEnum> entry : INSTANCE.experimentResults.entrySet()) {
-            List<Object> ls = new ArrayList<>();
-            for (AEnum ae : new ArrayList<AEnum>(entry.getValue().getRange())) {
-                ls.add(ae.getValue());
-            }
-            list.add(new JellyBeanItem<>(entry.getKey(), ls));
-        }
-
-        return list;
+        return INSTANCE.experimentResults;
     }
 
+    public static void setExperimentResults(AList<Effect> experimentResults) {
+        Map<String, ARangedEnum> map = new LinkedHashMap<>();
+        for(Effect e : experimentResults) {
+            map.put(e.getEffectType().getValue().toString(), e.getEffectType().getValue().getState());
+        }
+        setExperimentResults(map);
+    }
     public static void setExperimentResults(Map<String, ARangedEnum> experimentResults) {
-        INSTANCE.experimentResults = experimentResults;
+        INSTANCE.experimentResults = new ArrayList<>();
+
+        // Convert experiment results
+        for (Map.Entry<String, ARangedEnum> entry : experimentResults.entrySet()) {
+            List<Object> ls = new ArrayList<AEnum>(entry.getValue().getRange())
+                    .stream()
+                    .map(AVar::getValue)
+                    .collect(Collectors.toList());
+            JellyBeanItem jb = new JellyBeanItem<>(entry.getKey(), ls);
+            INSTANCE.experimentResults.add(jb);
+
+            Object value = entry.getValue().getValue();
+            if(value != null) {
+                LOGGER.debug("ARangedEnum value= " + value);
+               jb.setState(entry.getValue().getValue());
+            }
+        }
+
+        LOGGER.debug("Experiment results set to: "+experimentResults);
     }
 
     // MOCK
