@@ -6,19 +6,39 @@ import fr.axonic.base.engine.AEnumItem;
  * Created by cduffau on 09/08/16.
  */
 public enum WaveformEnum implements AEnumItem{
-    RECTANGULAR, SINUS, RAMP;
+    RECTANGULAR("rectangular","Rectangular"), SINUS("sinus","Sinus"), RAMP("ramp","Ramp");
+    private String code, path, label;
+
+    WaveformEnum(String code, String label) {
+        this.code = code;
+        this.path = "fr.axonic.stimulation.waveform";
+        this.label = label;
+    }
+
+    private void setCode(String code) {
+        this.code = code;
+    }
+
+    private void setPath(String path) {
+        this.path = path;
+    }
+
+    private void setLabel(String label) {
+        this.label = label;
+    }
+
     @Override
     public String getLabel() {
-        return null;
+        return label;
     }
 
     @Override
     public String getCode() {
-        return null;
+        return code;
     }
 
     @Override
     public String getPath() {
-        return null;
+        return path;
     }
 }

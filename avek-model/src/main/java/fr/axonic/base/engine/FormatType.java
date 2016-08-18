@@ -1,6 +1,6 @@
 package fr.axonic.base.engine;
 
-public enum FormatType implements AEnumItem{
+public enum FormatType{
     UNKNOWN,
     STRING,
     NUMBER,
@@ -10,19 +10,4 @@ public enum FormatType implements AEnumItem{
     DATE,
     BOOLEAN,
     ENUM;
-
-    @Override
-    public String getLabel() {
-        return null;
-    }
-
-    @Override
-    public String getCode() {
-        return null;
-    }
-
-    @Override
-    public String getPath() {
-        return null;
-    }
 }

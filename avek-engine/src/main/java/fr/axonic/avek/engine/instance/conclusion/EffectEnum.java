@@ -11,15 +11,18 @@ import java.util.Arrays;
  * Created by cduffau on 04/08/16.
  */
 public enum EffectEnum implements AEnumItem{
-    EFFICIENT(EffectStateEnum.values()), UNDESIRABLE(EffectStateEnum.values()), STRONGLY_UNDESIRABLE(EffectStateEnum.values()), UNKNOWN(EffectStateEnum.UNKNOWN);
+    EFFICIENT("efficient","Efficient",EffectStateEnum.values()), UNDESIRABLE("undesirable","Undesirable",EffectStateEnum.values()), STRONGLY_UNDESIRABLE("stronglyUndesirable","Strongly Undesirable",EffectStateEnum.values()), UNKNOWN("unknown","Unknown",EffectStateEnum.UNKNOWN);
 
-
+    private String code, path, label;
     public ARangedEnum<EffectStateEnum> state;
 
-    EffectEnum(EffectStateEnum ... effectStateEnums ){
+    EffectEnum(String code, String label, EffectStateEnum ... effectStateEnums ){
+        this.code = code;
+        this.path = "fr.axonic.effectType";
+        this.label = label;
         state=new ARangedEnum<>();
         state.setLabel("Effect State");
-        state.setPath("fr.axonic.effectType");
+        state.setPath("fr.axonic.effectType."+code);
         state.setCode("state");
         try {
             state.setRange(AVarHelper.transformToAVar(Arrays.asList(effectStateEnums)));
@@ -39,18 +42,30 @@ public enum EffectEnum implements AEnumItem{
         this.state.setValue(state);
     }
 
+    private void setCode(String code) {
+        this.code = code;
+    }
+
+    private void setPath(String path) {
+        this.path = path;
+    }
+
+    private void setLabel(String label) {
+        this.label = label;
+    }
+
     @Override
     public String getLabel() {
-        return null;
+        return label;
     }
 
     @Override
     public String getCode() {
-        return null;
+        return code;
     }
 
     @Override
     public String getPath() {
-        return null;
+        return path;
     }
 }
