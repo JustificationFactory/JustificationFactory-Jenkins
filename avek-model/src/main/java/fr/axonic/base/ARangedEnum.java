@@ -17,7 +17,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ARangedEnum<T extends Enum<T> & AEnumItem> extends AEnum<T> implements DiscretAVar<AEnum<T>> {
     private AList<AEnum<T>> range;
 
-    private ARangedEnum() {
+    /**
+     * NEVER USE THIS CONSTRUCTOR (except if you set immediatly the format after)
+     */
+    @Deprecated
+    public ARangedEnum() {
         super();
     }
 
