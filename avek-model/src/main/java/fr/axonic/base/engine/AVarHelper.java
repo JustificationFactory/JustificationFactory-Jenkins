@@ -128,7 +128,7 @@ public final class AVarHelper {
     public static <T extends Enum<T> & AEnumItem> AList<AEnum<T>> transformToAVar(List<Enum<T>> enums) throws VerificationException {
         AList<AEnum<T>> alist=new AList<>();
         for(Enum enu : enums){
-            AEnum<T> aEnum=new AEnum<>();
+            AEnum<T> aEnum=new AEnum(enu.getClass());
             aEnum.setValue((T) enu);
             alist.add(aEnum);
         }

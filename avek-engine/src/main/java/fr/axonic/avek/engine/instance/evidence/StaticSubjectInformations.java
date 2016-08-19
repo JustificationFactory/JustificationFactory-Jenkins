@@ -23,7 +23,7 @@ public class StaticSubjectInformations extends AStructure{
         this.setCode("static");
         this.setPath("fr.axonic.subject");
 
-        gender=new ARangedEnum<>();
+        gender=new ARangedEnum<>(Gender.class);
         gender.setLabel("Gender");
         gender.setCode("gender");
         gender.setPath("fr.axonic.subject.static");

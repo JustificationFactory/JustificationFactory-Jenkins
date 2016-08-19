@@ -17,10 +17,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AEnum<T extends Enum<T> & AEnumItem> extends AVar<T> implements Verifiable {
 
 
-    public AEnum(){
+    protected AEnum(){
         super(new EnumFormat<>(),null);
     }
-    public AEnum(T value) {
+    protected AEnum(T value) {
         super(new EnumFormat(), value);
     }
     public AEnum(Class<T> tClass, T value){

@@ -24,7 +24,7 @@ public class Stimulation extends Element implements Limit {
         super();
         this.stimulationScheduler = stimulationScheduler;
         this.waveformParameter = waveformParameter;
-        this.waveform=new ARangedEnum<>();
+        this.waveform=new ARangedEnum<>(WaveformEnum.class);
         waveform.setLabel("Waveform");
         waveform.setCode("waveform");
         waveform.setRange(AVarHelper.transformToAVar(Arrays.asList(WaveformEnum.values())));

@@ -20,7 +20,7 @@ public enum EffectEnum implements AEnumItem{
         this.code = code;
         this.path = "fr.axonic.effectType";
         this.label = label;
-        state=new ARangedEnum<>();
+        state=new ARangedEnum<>(EffectStateEnum.class);
         state.setLabel("Effect State");
         state.setPath("fr.axonic.effectType."+code);
         state.setCode("state");

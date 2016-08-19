@@ -24,7 +24,7 @@ public class PathologySubjectInformations extends AStructure{
         this.setPath("fr.axonic.subject");
         this.setCode("pathology");
 
-        obesityType=new ARangedEnum<>();
+        obesityType=new ARangedEnum<>(ObesityType.class);
         obesityType.setLabel("Obesity Type");
         obesityType.setCode("obesityType");
         obesityType.setPath("fr.axonic.subject.pathology");
