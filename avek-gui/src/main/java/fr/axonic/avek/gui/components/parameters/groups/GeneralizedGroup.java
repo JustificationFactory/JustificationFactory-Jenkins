@@ -9,30 +9,20 @@ import fr.axonic.base.engine.*;
 /**
  * Created by Nathaël N on 13/07/16.
  */
-public abstract class GeneralizedGroup extends ParametersGroup {
+abstract class GeneralizedGroup extends ParametersGroup {
 
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
      */
     GeneralizedGroup(final int level) {
         super(level);
-
-        /*
-		[ checkbox ][ Levelmark ][ Title Value               ][ Generalization ]
-		     []          ↓       Main ParametersGrid's title
-			 []          |↓      ParametersGrid's title
-			 []          ||      A subelement : value         ...
-			 []          ||      A subelement : value         ...
-			 []          |       Another element : value      ...
-		 */
     }
-
-    public GeneralizedGroup(int level, SimpleParameter simpleParameter) {
+    GeneralizedGroup(int level, SimpleParameter simpleParameter) {
         super(level, simpleParameter);
     }
 
     @Override
-    protected void addCategory(AList<AEntity> aList) {
+    protected void addCategory(AList aList) {
         GeneralizedGroup subCategory = new GeneralizedCategory(level + 1, aList);
 
         // Adding to the GUI

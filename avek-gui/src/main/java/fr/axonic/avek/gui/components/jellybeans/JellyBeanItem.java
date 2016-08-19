@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
 import fr.axonic.base.engine.AEnumItem;
-import org.apache.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -13,8 +12,6 @@ import java.util.function.Consumer;
  * Created by Nathaël N on 12/08/16.
  */
 public class JellyBeanItem <T> {
-    private final static Logger LOGGER = Logger.getLogger(JellyBeanItem.class);
-
     private final AEnumItem id;
     private final List<T> states;
     private int currentStateIndex;
@@ -37,7 +34,7 @@ public class JellyBeanItem <T> {
 
     public String getText() { return id.getLabel(); }
 
-    void setState(int id) {
+    private void setState(int id) {
         T lastState = getState();
         this.currentStateIndex = id;
         T newState = getState();

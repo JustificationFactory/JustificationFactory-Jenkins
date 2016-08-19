@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,7 +29,7 @@ public class RangedParameter extends SensitiveParameter {
         jellyBeanPane = new JellyBeanPane();
         generalizationPane.getChildren().add(jellyBeanPane);
 
-        jellyBeanPane.setJellyBeansStateEditable(true);
+        jellyBeanPane.setAllJellyBeansEditable(true);
 
         // For each states of stateList
         // Copying stateList before, because will be edited

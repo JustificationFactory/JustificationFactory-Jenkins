@@ -1,5 +1,7 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
+import fr.axonic.base.engine.AEnumItem;
+import fr.axonic.base.engine.AVar;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -79,13 +81,30 @@ public class JellyBean<T> extends HBox {
         final String strNewState = newState.toString();
 
         // Computing tooltip
+        String currentState = "";
         String allStates = "";
-        for(T s : item.getStates())
-            allStates += s.toString().equalsIgnoreCase(strNewState)?", ["+s+"]":(", "+s);
+        for(T s : item.getStates()) {
 
-        allStates = allStates.substring(2).toUpperCase();
+            // Obtaining the right label
+            String label;
+            if(s instanceof AVar) {
+                label = ((AVar)s).getLabel();
+            }else if(s instanceof AEnumItem) {
+                label = ((AEnumItem)s).getLabel();
+            }else {
+                label = s.toString();
+            }
 
-        final String tooltipText = "Current state: " + strNewState.toUpperCase() + "\n"
+            // Setting currentState and AllStates strings
+            if(s.equals(newState)) {
+                currentState = label;
+                allStates += ", ["+label+"]";
+            }else {
+                allStates += ", "+label;
+            }
+        }
+        allStates = allStates.substring(2); // remove the first ", " of the String
+        final String tooltipText = "Current state: " + currentState + "\n"
                 + "All states: " + allStates;
 
         // Computing style
@@ -131,7 +150,7 @@ public class JellyBean<T> extends HBox {
         item.setEditableStateChangeListener(this::onEditableChanged);
     }
 
-    public JellyBeanItem<T> getItem() {
+    JellyBeanItem<T> getItem() {
         return item;
     }
 }

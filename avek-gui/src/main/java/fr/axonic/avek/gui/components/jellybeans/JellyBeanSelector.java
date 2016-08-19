@@ -57,7 +57,7 @@ public class JellyBeanSelector extends VBox {
     @FXML
     protected void initialize() {
         jellyBeanPane.onRemoveJellyBean(this::onRemoveJellyBean);
-        jellyBeanPane.setJellyBeansStateEditable(true);
+        jellyBeanPane.setAllJellyBeansEditable(true);
         updateJellyBeanChoice();
 
         comboBoxJellyBean.setConverter(

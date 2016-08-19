@@ -2,15 +2,13 @@ package fr.axonic.avek.gui.components.parameters.groups;
 
 import fr.axonic.avek.gui.components.parameters.ExpParameterLeaf;
 import fr.axonic.base.AString;
-import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
-import javafx.scene.Node;
 
 /**
  * Created by Nathaël N on 21/07/16.
  */
 class ParametersCategory extends ParametersGroup {
-    ParametersCategory(int level, AList<AEntity> list) {
+    ParametersCategory(int level, AList list) {
         super(level, new ExpParameterLeaf(level, new AString(list.getLabel(), "")));
 
         // Generating GUI component
@@ -22,13 +20,12 @@ class ParametersCategory extends ParametersGroup {
     }
 
     private void onClickExpand(boolean isExpanded) {
-        for (Node n : getChildren()) {
-            if (getCategoryTitle().getElements().contains(n)) {
-                continue;
-            }
-
-            n.setVisible(isExpanded);
-            n.setManaged(isExpanded);
-        }
+        this.getChildren()
+                .stream()
+                .filter(n -> !getCategoryTitle().getElements().contains(n))
+                .forEach(n -> {
+                    n.setVisible(isExpanded);
+                    n.setManaged(isExpanded);
+        });
     }
 }

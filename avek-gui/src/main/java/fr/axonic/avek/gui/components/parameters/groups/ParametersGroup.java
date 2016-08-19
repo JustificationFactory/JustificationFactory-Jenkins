@@ -20,7 +20,6 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     private static final String CSS = "fr/axonic/avek/gui/components/parameters/parameters.css";
 
     protected final int level;
-    private AList<AEntity> element;
     private final List<IExpParameter> subElements;
     private final ExpParameterLeaf title;
 
@@ -38,15 +37,6 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
             title.getLabelTitle().getStyleClass().add("category-title");
         }
 
-		/*
-        [ Levelmark ][ Title & value            ]
-		     ↓       Main ParametersGrid's title
-			 |↓      ParametersGrid's title
-			 ||      A subelement : value
-			 ||      A subelement : value
-			 |       Another element : value
-		 */
-
         LOGGER.info("Adding parameters.css");
         this.getStylesheets().add(CSS);
 
@@ -63,25 +53,16 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
 
         if(aEntity instanceof AStructure) {
             addCategory(AVarHelper.transformAStructureToAList((AStructure) aEntity));
-        }
-		/*if(aEntity instanceof AList<AEntity>)
-			addCategory(aEntity);
-		else if(aEntity instanceof AVar)
-			addLeaf(aEntity);*/
-		else {
-		    try {
-                addCategory((AList<AEntity>) aEntity);
-            } catch (ClassCastException cce) {
-                try {
-                    addLeaf((AVar) aEntity); // throws ClassCastException if not a AVar
-                }catch(Exception e) {
-                    LOGGER.error("Impossible cast object to AVar: "+aEntity, e);
-                }
-            }
+        } else if(aEntity instanceof AList) {
+            addCategory((AList) aEntity);
+        } else if(aEntity instanceof AVar) {
+            addLeaf((AVar) aEntity); // throws ClassCastException if not a AVar
+        } else {
+            LOGGER.error("Impossible cast object to AStruct, AList or AVar: "+aEntity);
         }
     }
 
-    protected void addCategory(AList<AEntity> aList) {
+    protected void addCategory(AList aList) {
         ParametersGroup subCategory = new ParametersCategory(level + 1, aList);
 
         // Adding to the GUI
@@ -105,9 +86,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
         subElements.add(subParam);
     }
 
-    public void setAList(AList<AEntity> list) {
-        this.element = list;
-
+    public void setAList(AList<?> list) {
         subElements.clear();
         getChildren().clear();
 
@@ -116,7 +95,7 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
             title.getElements().forEach(getChildren()::add);
             subElements.add(title);
         }
-        element.getList().forEach(this::addParameter);
+        list.getList().forEach(this::addParameter);
     }
 
     @Override

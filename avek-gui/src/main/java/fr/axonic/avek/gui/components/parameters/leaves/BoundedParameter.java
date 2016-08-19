@@ -24,6 +24,7 @@ import java.util.Set;
  */
 public class BoundedParameter extends SensitiveParameter {
     private final static Logger LOGGER = Logger.getLogger(BoundedParameter.class);
+    public static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     private final HBox generalizationPane;
     private final TextField minEquivRange;
@@ -52,7 +53,7 @@ public class BoundedParameter extends SensitiveParameter {
         // Pretty print if values are dates
         if(paramValue.getValue() instanceof Calendar) {
             SimpleDateFormat df = new SimpleDateFormat();
-            df.applyPattern("dd/MM/yyyy HH:mm:ss");
+            df.applyPattern(DATE_FORMAT);
             minEquivRange.setText(df.format(((Calendar)paramValue.getMin()).getTime()));
             maxEquivRange.setText(df.format(((Calendar)paramValue.getMax()).getTime()));
         }
@@ -72,11 +73,12 @@ public class BoundedParameter extends SensitiveParameter {
                 }
                 else if(paramValue instanceof AContiniousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
-                    minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
+
+                    minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '31/12/2016 23:59:59'"));
 
                     // Setting the minimum value of parameter (will throw exception if bad input)
                     Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    SimpleDateFormat textFormat = new SimpleDateFormat(DATE_FORMAT);
                     cal.setTime(textFormat.parse(newval));
                     paramValue.setMax((U) cal);
                 }
@@ -109,11 +111,11 @@ public class BoundedParameter extends SensitiveParameter {
                 }
                 else if(paramValue instanceof AContiniousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
-                    maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
+                    maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '31/12/2016 23:59:59'"));
 
                     // Setting the maximum value of parameter (will throw exception if bad input)
                     Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    SimpleDateFormat textFormat = new SimpleDateFormat(DATE_FORMAT);
                     cal.setTime(textFormat.parse(newval));
                     paramValue.setMax((U) cal);
                 }

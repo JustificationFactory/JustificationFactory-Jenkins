@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  * Created by Nathaël N on 28/07/16.
  */
 public class JellyBeanPane extends HBox {
-
     private Consumer<AEnumItem> onRemoveJellyBean;
     private boolean areJellyBeansEditable;
 
@@ -54,12 +53,11 @@ public class JellyBeanPane extends HBox {
         }
     }
 
-    public void setJellyBeansStateEditable(boolean b) {
+    public void setAllJellyBeansEditable(boolean b) {
         this.areJellyBeansEditable = b;
 
         for (Node n : getChildren()) {
-            JellyBean jb = (JellyBean) n;
-            jb.getItem().setEditable(b);
+            ((JellyBean) n).getItem().setEditable(b);
         }
     }
 
@@ -76,7 +74,6 @@ public class JellyBeanPane extends HBox {
         for (Node n : new ArrayList<>(getChildren())) {
             if (((JellyBean) n).getItem().getIdentifier().equals(jbiName)) {
                 getChildren().remove(n);
-                break;
             }
         }
     }
@@ -89,12 +86,5 @@ public class JellyBeanPane extends HBox {
         return getChildren().stream()
                             .map(n -> ((JellyBean) n).getItem())
                             .collect(Collectors.toList());
-    }
-
-
-    public void setAsDisabled(boolean disabled) {
-        this.setDisable(disabled);
-        for(Node n : getChildren())
-            n.setDisable(disabled);
     }
 }

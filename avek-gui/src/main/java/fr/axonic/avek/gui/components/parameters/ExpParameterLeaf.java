@@ -36,7 +36,7 @@ public class ExpParameterLeaf implements IExpParameter {
             if(paramValue.getValue() instanceof Calendar) {
                 SimpleDateFormat df = new SimpleDateFormat();
                 df.applyPattern("dd/MM/yyyy HH:mm:ss");
-                this.paramValue.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+                this.paramValue.setText(" : " + df.format(((Calendar)paramValue.getValue()).getTime()));
             } else if(paramValue instanceof AContinuousNumber) {
                 this.paramValue.setText(" : " + paramValue.getValue().toString()
                         + " "+ ((AContinuousNumber)paramValue).getUnit());
