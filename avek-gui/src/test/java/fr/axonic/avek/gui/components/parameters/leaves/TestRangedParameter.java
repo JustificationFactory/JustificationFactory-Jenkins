@@ -1,17 +1,15 @@
-package fr.axonic.avek.gui.components.parameters;
+package fr.axonic.avek.gui.components.parameters.leaves;
 
 import com.sun.javafx.application.PlatformImpl;
-import fr.axonic.avek.engine.instance.conclusion.EffectEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
-import fr.axonic.avek.gui.components.parameters.leaves.RangedParameter;
+import fr.axonic.avek.gui.util.TestEnum;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -34,17 +32,17 @@ public class TestRangedParameter {
 
     private ARangedEnum aRangedEnum;
 	private RangedParameter rangedParameter;
-    private Map<EffectEnum, JellyBeanItem<Boolean>> jellyBeanItems;
+    private Map<TestEnum, JellyBeanItem<Boolean>> jellyBeanItems;
 
     @Before
 	public void before() throws IOException, VerificationException, NoSuchFieldException, IllegalAccessException {
-        aRangedEnum =new ARangedEnum<>(EffectEnum.class);
+        aRangedEnum =new ARangedEnum<>(TestEnum.class);
         aRangedEnum.setLabel("Effect Type");
         aRangedEnum.setCode("effectType");
         aRangedEnum.setPath("fr.axonic");
-        aRangedEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(EffectEnum.values())));
+        aRangedEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(TestEnum.values())));
 
-        aRangedEnum.setValue(EffectEnum.UNDESIRABLE);
+        aRangedEnum.setValue(TestEnum.B);
 
 		rangedParameter = new RangedParameter(2, aRangedEnum);
 
@@ -56,53 +54,49 @@ public class TestRangedParameter {
         JellyBeanPane jellyBeanPane = (JellyBeanPane) jellyBeanPaneField.get(rangedParameter);
         jellyBeanItems = new HashMap<>();
         for(JellyBeanItem item : jellyBeanPane.getJellyBeans()) {
-            jellyBeanItems.put(EffectEnum.valueOf(item.getText()), item);
+            jellyBeanItems.put((TestEnum) item.getIdentifier(), item);
         }
     }
 
-    @Ignore
     @Test
     public void testNoEdition() throws VerificationException {
         assertEquals(1, aRangedEnum.getRange().size());
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                    new AEnum<>(EffectEnum.class, EffectEnum.UNDESIRABLE)));
+                    new AEnum<>(TestEnum.class, TestEnum.B)));
     }
 
-    @Ignore
     @Test
     public void testWithClicks() throws VerificationException, NoSuchFieldException, IllegalAccessException {
-        jellyBeanItems.get(EffectEnum.EFFICIENT).setState(true);
+        jellyBeanItems.get(TestEnum.A).setState(true);
         assertEquals(2, aRangedEnum.getRange().size());
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNDESIRABLE)));
+                new AEnum<>(TestEnum.class, TestEnum.A)));
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.EFFICIENT)));
+                new AEnum<>(TestEnum.class, TestEnum.B)));
 
+        jellyBeanItems.get(TestEnum.D).setState(true);
         assertEquals(3, aRangedEnum.getRange().size());
-        jellyBeanItems.get(EffectEnum.UNKNOWN).setState(true);
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNDESIRABLE)));
+                new AEnum<>(TestEnum.class, TestEnum.A)));
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.EFFICIENT)));
+                new AEnum<>(TestEnum.class, TestEnum.B)));
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNKNOWN)));
+                new AEnum<>(TestEnum.class, TestEnum.D)));
 
+        jellyBeanItems.get(TestEnum.A).setState(false);
         assertEquals(2, aRangedEnum.getRange().size());
-        jellyBeanItems.get(EffectEnum.EFFICIENT).setState(false);
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNDESIRABLE)));
+                new AEnum<>(TestEnum.class, TestEnum.B)));
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNKNOWN)));
+                new AEnum<>(TestEnum.class, TestEnum.D)));
 
+        jellyBeanItems.get(TestEnum.C).setState(true);
         assertEquals(3, aRangedEnum.getRange().size());
-        jellyBeanItems.get(EffectEnum.STRONGLY_UNDESIRABLE).setState(true);
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNDESIRABLE)));
+                new AEnum<>(TestEnum.class, TestEnum.B)));
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.STRONGLY_UNDESIRABLE)));
+                new AEnum<>(TestEnum.class, TestEnum.C)));
         assertTrue(AVarHelper.containsByValue(aRangedEnum.getRange(),
-                new AEnum<>(EffectEnum.class, EffectEnum.UNKNOWN)));
+                new AEnum<>(TestEnum.class, TestEnum.D)));
     }
-
-
 }

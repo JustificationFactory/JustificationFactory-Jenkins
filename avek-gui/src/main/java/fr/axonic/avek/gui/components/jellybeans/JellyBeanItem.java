@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
+import fr.axonic.base.engine.AEnumItem;
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
@@ -14,13 +15,13 @@ import java.util.function.Consumer;
 public class JellyBeanItem <T> {
     private final static Logger LOGGER = Logger.getLogger(JellyBeanItem.class);
 
+    private final AEnumItem id;
     private final List<T> states;
     private int currentStateIndex;
-    private final String text;
     private boolean editable;
 
-    public JellyBeanItem(String text, List<T> states) {
-        this.text = text;
+    public JellyBeanItem(AEnumItem id, List<T> states) {
+        this.id = id;
         this.states = states;
         //this.editable = true;
         setState(0);
@@ -30,9 +31,11 @@ public class JellyBeanItem <T> {
         return states;
     }
 
-    public String getText() {
-        return text;
+    public AEnumItem getIdentifier() {
+        return id;
     }
+
+    public String getText() { return id.getLabel(); }
 
     void setState(int id) {
         T lastState = getState();
@@ -75,6 +78,6 @@ public class JellyBeanItem <T> {
 
     @Override
     public String toString() {
-        return "JellyBeanItem{text="+text+", states="+states+", editable="+editable+", currentstate="+getState()+"}";
+        return "JellyBeanItem{id="+id+", states="+states+", editable="+editable+", currentstate="+getState()+"}";
     }
 }

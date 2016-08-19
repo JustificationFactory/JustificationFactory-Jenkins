@@ -119,12 +119,14 @@ public class Orchestrator {
         try {
             final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
 
+            List<JellyBeanItem> jellyBeanItems = currentView.getEffects();
+            AList<Effect> effects = jellyBeanItemsToEffectList(jellyBeanItems);
+
             EstablishedEffect establishedEffect = new EstablishedEffect(
                     new Experimentation(
                             INSTANCE.currentStimulation,
                             INSTANCE.currentSubject),
-                    jellyBeanItemsToEffectList(currentView.getEffects()));
-
+                    effects);
             EstablishEffectConclusion conclusion =
                     new EstablishEffectConclusion(
                             "Establish Effect",
@@ -162,29 +164,25 @@ public class Orchestrator {
     }
     private void constructStep(ArgumentationDiagramAPIImpl adAPI) {
         switch(currentPattern.getName()) {
-            case "Treat":            constructTreatStep(adAPI);          break;
+            case "Treat":            constructTreatStep(adAPI);           break;
             case "Establish Effect": constructEstablishEffectStep(adAPI); break;
-            case "Generalize":       constructGeneralizeStep(adAPI);     break;
+            case "Generalize":       constructGeneralizeStep(adAPI);      break;
             default:
                 LOGGER.error("Constructing \""+currentPattern.getName()+"\" not implemented");
         }
     }
 
     private AList<Effect> jellyBeanItemsToEffectList(List<JellyBeanItem> effectsAsJellyBeanItems) {
-        final AList<Effect> effectList = new AList<>();
-
-        effectList.addAll(effectsAsJellyBeanItems
+        return effectsAsJellyBeanItems
                 .stream()
                 .map(this::jellyBeanItemToEffect)
-                .collect(Collectors.toList()));
-
-        return effectList;
+                .collect(Collectors.toCollection(AList::new));
     }
     private Effect jellyBeanItemToEffect(JellyBeanItem jellyBeanItem) {
         EffectEnum[] eetab = EffectEnum.values();
 
         for (EffectEnum effectEnum : eetab) {
-            if(jellyBeanItem.getText().equals(effectEnum.toString())) {
+            if(jellyBeanItem.getIdentifier().equals(effectEnum)) {
                 try {
                     Effect effect = new Effect();
                     effectEnum.setStateValue((EffectStateEnum) jellyBeanItem.getState());
@@ -196,14 +194,15 @@ public class Orchestrator {
             }
         }
 
+        LOGGER.error("Impossible to add effect "+jellyBeanItem);
         return null;
     }
 
     private void setEvidencesInDataBus() {
         // Setting default Experiment results to Data bus
-        Map<String, ARangedEnum> experimentsResults = new HashMap<>();
+        Map<EffectEnum, ARangedEnum> experimentsResults = new HashMap<>();
         for(EffectEnum effect : EffectEnum.values()) {
-            experimentsResults.put(effect.name(), effect.getState());
+            experimentsResults.put(effect, effect.getState());
         }
         DataBus.setExperimentResults(experimentsResults);
 

@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
+import fr.axonic.base.engine.AEnumItem;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -64,12 +65,12 @@ public class JellyBeanSelector extends VBox {
                     private final Map<String, JellyBeanItem> values = new HashMap<>();
 
                     @Override
-                    public String toString(JellyBeanItem entry) {
-                        if (entry == null) {
+                    public String toString(JellyBeanItem jellyBeanItem) {
+                        if (jellyBeanItem == null) {
                             return "";
                         } else {
-                            values.put(entry.getText(), entry);
-                            return entry.getText();
+                            values.put(jellyBeanItem.getText(), jellyBeanItem);
+                            return jellyBeanItem.getText();
                         }
                     }
 
@@ -97,14 +98,14 @@ public class JellyBeanSelector extends VBox {
             return;
         }
         if (jellyBeanPane.contains(choice)) {
-            LOGGER.warn("Choice already added: " + choice.getText());
+            LOGGER.warn("Choice already added: " + choice.getIdentifier());
             return;
         }
         jellyBeanPane.addJellyBean(choice);
         updateJellyBeanChoice();
     }
 
-    private void onRemoveJellyBean(String effectName) {
+    private void onRemoveJellyBean(AEnumItem effectName) {
         jellyBeanPane.remove(effectName);
         updateJellyBeanChoice();
     }

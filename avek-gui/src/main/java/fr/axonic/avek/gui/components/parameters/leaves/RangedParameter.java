@@ -2,6 +2,7 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
+import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
 import javafx.scene.Node;
@@ -20,7 +21,7 @@ public class RangedParameter extends SensitiveParameter {
     private final HBox generalizationPane;
     private final JellyBeanPane jellyBeanPane;
 
-    public <T, U extends AVar<T> & DiscretAVar<U>>
+    public <T extends AEnumItem, U extends AVar<T> & DiscretAVar<U>>
     RangedParameter(int level, U paramValue) {
         super(level, paramValue);
 
@@ -35,7 +36,7 @@ public class RangedParameter extends SensitiveParameter {
 
             List<Boolean> boolList = Arrays.asList(false, true);
 
-            JellyBeanItem<Boolean> item = new JellyBeanItem<>(strVal, boolList);
+            JellyBeanItem<Boolean> item = new JellyBeanItem<>(value, boolList);
             jellyBeanPane.addJellyBean(item);
 
             if(strVal.equals(paramValue.getValue().toString())) {
@@ -47,7 +48,7 @@ public class RangedParameter extends SensitiveParameter {
             item.addStateChangeListener((lastState, newState) -> {
                 if (!newState) {
                     paramValue.getRange().remove(state);
-                }else if (paramValue.getRange().contains(state)) {
+                }else if (!paramValue.getRange().contains(state)) {
                     paramValue.getRange().add(state);
                 }
             });

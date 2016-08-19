@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.model;
 
 import fr.axonic.avek.engine.instance.conclusion.Effect;
+import fr.axonic.avek.engine.instance.conclusion.EffectEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.*;
@@ -44,17 +45,17 @@ public class DataBus {
     }
 
     public static void setExperimentResults(AList<Effect> experimentResults) {
-        Map<String, ARangedEnum> map = new LinkedHashMap<>();
+        Map<EffectEnum, ARangedEnum> map = new LinkedHashMap<>();
         for(Effect e : experimentResults) {
-            map.put(e.getEffectType().getValue().getLabel(), e.getEffectType().getValue().getState());
+            map.put(e.getEffectType().getValue(), e.getEffectType().getValue().getState());
         }
         setExperimentResults(map);
     }
-    public static void setExperimentResults(Map<String, ARangedEnum> experimentResults) {
+    public static void setExperimentResults(Map<EffectEnum, ARangedEnum> experimentResults) {
         INSTANCE.experimentResults = new ArrayList<>();
 
         // Convert experiment results
-        for (Map.Entry<String, ARangedEnum> entry : experimentResults.entrySet()) {
+        for (Map.Entry<EffectEnum, ARangedEnum> entry : experimentResults.entrySet()) {
             List<Object> ls = new ArrayList<AEnum>(entry.getValue().getRange())
                     .stream()
                     .map(AVar::getValue)

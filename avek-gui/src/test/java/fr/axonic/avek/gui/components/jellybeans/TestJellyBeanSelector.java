@@ -4,6 +4,7 @@ import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.ARangedEnum;
+import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
@@ -48,7 +49,17 @@ public class TestJellyBeanSelector extends ApplicationTest {
             aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
 
             List<String> ls = aEnum.getRange().stream().map(AEnum::toString).collect(Collectors.toList());
-            itemList.add(new JellyBeanItem<>("AE" + i, ls));
+
+            final String label = "AE" + i;
+            itemList.add(new JellyBeanItem<>(new AEnumItem() {
+                @Override
+                public String getLabel() {
+                    return label;
+                }
+
+                @Override public String getCode() {return null;}
+                @Override public String getPath() {return null;}
+            }, ls));
         }
 
         // Fill experiment sample list

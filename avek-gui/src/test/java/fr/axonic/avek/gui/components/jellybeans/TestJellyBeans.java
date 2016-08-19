@@ -3,6 +3,7 @@ package fr.axonic.avek.gui.components.jellybeans;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.gui.util.UtilForTests;
+import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -48,7 +49,15 @@ public class TestJellyBeans extends ApplicationTest {
     public void before() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
-        jbi = new JellyBeanItem<>("TheText", Arrays.asList(ExampleState.values()));
+        jbi = new JellyBeanItem<>(new AEnumItem() {
+            @Override
+            public String getLabel() {
+                return "The text";
+            }
+
+            @Override public String getCode() {return null;}
+            @Override public String getPath() {return null;}
+        }, Arrays.asList(ExampleState.values()));
         ctm.runNowOnPlatform(() -> jb.set(jbi));
     }
 

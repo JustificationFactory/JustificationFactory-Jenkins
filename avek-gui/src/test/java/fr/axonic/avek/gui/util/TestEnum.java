@@ -3,28 +3,16 @@ package fr.axonic.avek.gui.util;
 import fr.axonic.base.engine.AEnumItem;
 
 /**
- * Created by cduffau on 29/07/16.
+ * Created by cduffau on 09/08/16.
  */
 public enum TestEnum implements AEnumItem{
-    A("a","A test"),B("b","B test"),C("c","C test"),D("d","D test");
+    A("a","A"), B("b", "B"), C("c","C"), D("d","D");
 
     private String code, path, label;
 
     TestEnum(String code, String label) {
         this.code = code;
-        this.path = "fr.test";
-        this.label = label;
-    }
-
-    private void setCode(String code) {
-        this.code = code;
-    }
-
-    private void setPath(String path) {
-        this.path = path;
-    }
-
-    private void setLabel(String label) {
+        this.path = "fr.axonic.avek.gui.util";
         this.label = label;
     }
 
@@ -42,7 +30,4 @@ public enum TestEnum implements AEnumItem{
     public String getPath() {
         return path;
     }
-
-
-
 }
