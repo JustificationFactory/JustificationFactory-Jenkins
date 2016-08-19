@@ -17,15 +17,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ARangedEnum<T extends Enum<T> & AEnumItem> extends AEnum<T> implements DiscretAVar<AEnum<T>> {
     private AList<AEnum<T>> range;
 
-    public ARangedEnum(T value) {
-        super(value);
+    private ARangedEnum() {
+        super();
     }
 
-    public ARangedEnum() {
-    }
     public ARangedEnum(Class<T> tClass) {
         super(tClass);
     }
+    public ARangedEnum(Class<T> tClass, T value) {
+        super(tClass,value);
+    }
+
 
     @Override
     public AList<AEnum<T>> getRange() {

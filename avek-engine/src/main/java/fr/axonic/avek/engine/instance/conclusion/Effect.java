@@ -13,7 +13,7 @@ public class Effect extends Element {
 
     public Effect() throws VerificationException {
         super();
-        effectType =new ARangedEnum<>();
+        effectType =new ARangedEnum<>(EffectEnum.class);
         effectType.setLabel("Effect Type");
         effectType.setCode("effectType");
         effectType.setPath("fr.axonic");
