@@ -141,9 +141,8 @@ public class BoundedParameter extends SensitiveParameter {
         maxEquivRange.setMaxWidth(width);
 
         // Adding text fields to pane
-        generalizationPane.getChildren().add(new Label("min:"));
         generalizationPane.getChildren().add(minEquivRange);
-        generalizationPane.getChildren().add(new Label(" - max:"));
+        generalizationPane.getChildren().add(new Label(" - "));
         generalizationPane.getChildren().add(maxEquivRange);
 
         // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass
