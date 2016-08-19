@@ -90,4 +90,11 @@ public class JellyBeanPane extends HBox {
                             .map(n -> ((JellyBean) n).getItem())
                             .collect(Collectors.toList());
     }
+
+
+    public void setAsDisabled(boolean disabled) {
+        this.setDisable(disabled);
+        for(Node n : getChildren())
+            n.setDisable(disabled);
+    }
 }

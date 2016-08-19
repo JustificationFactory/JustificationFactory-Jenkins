@@ -5,6 +5,7 @@ import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,36 +23,46 @@ public class RangedParameter extends SensitiveParameter {
     private final JellyBeanPane jellyBeanPane;
 
     public <T extends AEnumItem, U extends AVar<T> & DiscretAVar<U>>
-    RangedParameter(int level, U paramValue) {
-        super(level, paramValue);
+    RangedParameter(int level, final U stateList) {
+        super(level, stateList);
 
         generalizationPane = new HBox();
         jellyBeanPane = new JellyBeanPane();
         generalizationPane.getChildren().add(jellyBeanPane);
 
         jellyBeanPane.setJellyBeansStateEditable(true);
-        for (U state : new HashSet<>(paramValue.getRange())) {
+
+        // For each states of stateList
+        // Copying stateList before, because will be edited
+        for (final U state : new HashSet<>(stateList.getRange())) {
             T value = state.getValue();
             String strVal = value.toString();
 
-            List<Boolean> boolList = Arrays.asList(false, true);
-
-            JellyBeanItem<Boolean> item = new JellyBeanItem<>(value, boolList);
+            // Each states can be set as True or False for generalization
+            JellyBeanItem<Boolean> item = new JellyBeanItem<>(value, Arrays.asList(false, true));
             jellyBeanPane.addJellyBean(item);
 
-            if(strVal.equals(paramValue.getValue().toString())) {
+            if(strVal.equals(stateList.getValue().toString())) {
+                // this state cannot be checked 'false' at generalization
+                // because it is the value used for the experimentation
                 item.setState(true);
                 item.setEditable(false);
             } else {
-                paramValue.getRange().remove(state);
+                // this state is removed from the stateList
+                // because isn't checked 'true' at generalization
+                stateList.getRange().remove(state);
+
+                // If user click on the jelly bean of this state
+                // this state will be added to stateList
+                // otherwise it will be removed from
+                item.addStateChangeListener((lastState, newState) -> {
+                    if (!newState) {
+                        stateList.getRange().remove(state);
+                    }else if (!stateList.getRange().contains(state)) {
+                        stateList.getRange().add(state);
+                    }
+                });
             }
-            item.addStateChangeListener((lastState, newState) -> {
-                if (!newState) {
-                    paramValue.getRange().remove(state);
-                }else if (!paramValue.getRange().contains(state)) {
-                    paramValue.getRange().add(state);
-                }
-            });
         }
 
         // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass
@@ -59,6 +70,15 @@ public class RangedParameter extends SensitiveParameter {
         // GridPane.setColumnIndex(this.paramTitle, 2);
         // GridPane.setColumnIndex(this.paramValue, 3);
         GridPane.setColumnIndex(generalizationPane, 4);
+    }
+
+    @Override
+    protected void onClickMarkedUtil(ActionEvent event) {
+        super.onClickMarkedUtil(event);
+
+        boolean b = markedUtil.isSelected();
+        // if unchecked, so disable component edition
+        jellyBeanPane.setDisable(!b);
     }
 
     @Override

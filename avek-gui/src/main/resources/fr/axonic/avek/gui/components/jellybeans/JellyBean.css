@@ -2,6 +2,9 @@
     -fx-padding: 2px;
     -fx-alignment: CENTER;
 }
+.jellyBean:disabled {
+    -fx-opacity: 50%;
+}
 
 .jellyBeanLabel {
     -fx-border-radius: 2;

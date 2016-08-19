@@ -264,9 +264,15 @@ public class Orchestrator {
 
         // Selecting the right view depending on pattern
         switch (p.getName()) {
-            case "Treat":            view = new TreatView();           break;
-            case "Establish Effect": view = new EstablishEffectView(); break;
-            case "Generalize":       view = new GeneralizeView();      break;
+            case "Treat":
+                view = new TreatView();
+                break;
+            case "Establish Effect":
+                view = new EstablishEffectView();
+                break;
+            case "Generalize":
+                view = new GeneralizeView();
+                break;
             default:
                 LOGGER.warn("Pattern is unknown for View conversion: " + p);
                 return false;
@@ -276,7 +282,7 @@ public class Orchestrator {
         currentView = view;
         FutureTask ft = new FutureTask<>(() -> {
             frame.setView(currentView);
-            frame.setStrategyButtonLabel("Treat");
+            frame.setStrategyButtonLabel(p.getName());
             return true;
         });
 

@@ -34,21 +34,103 @@ public class BoundedParameter extends SensitiveParameter {
 
         generalizationPane = new HBox();
 
+        // For default, set generalization min and max equals to current value
         try {
-            paramValue.setMin(paramValue.getValue());
+            if(paramValue.getMin() == null)
+                paramValue.setMin(paramValue.getValue());
+
+            if(paramValue.getMax() == null)
+                paramValue.setMax(paramValue.getValue());
         } catch(VerificationException ve) {
             throw new RuntimeException();
         }
 
-        minEquivRange = new TextField(paramValue.getValue().toString());
-        maxEquivRange = new TextField(paramValue.getValue().toString());
-        // Pretty print dates
+        // Write default values in text fields
+        minEquivRange = new TextField(paramValue.getMin().toString());
+        maxEquivRange = new TextField(paramValue.getMax().toString());
+
+        // Pretty print if values are dates
         if(paramValue.getValue() instanceof Calendar) {
             SimpleDateFormat df = new SimpleDateFormat();
             df.applyPattern("dd/MM/yyyy HH:mm:ss");
-            minEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
-            maxEquivRange.setText(df.format(((Calendar)paramValue.getValue()).getTime()));
+            minEquivRange.setText(df.format(((Calendar)paramValue.getMin()).getTime()));
+            maxEquivRange.setText(df.format(((Calendar)paramValue.getMax()).getTime()));
         }
+
+        // When minimum (in text field) is edited by user
+        // check-it and write it in red if value not respecting format
+        // else save-it in parameter if is a correct value
+        minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
+            try {
+                // remove style of bad input, doing nothing if last value wasn't bad
+                minEquivRange.getStyleClass().remove("bad-input");
+                if(paramValue instanceof AContinuousNumber) {
+                    // Setting tooltip in case of error (will be removed if correct input)
+                    minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
+                    // Setting the minimum value of parameter (will throw exception if bad input)
+                    paramValue.setMin((U) Double.valueOf(newval));
+                }
+                else if(paramValue instanceof AContiniousDate) {
+                    // Setting tooltip in case of error (will be removed if correct input)
+                    minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
+
+                    // Setting the minimum value of parameter (will throw exception if bad input)
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    cal.setTime(textFormat.parse(newval));
+                    paramValue.setMax((U) cal);
+                }
+                else {
+                    // RuntimeException because it isn't user fault but a developer problem
+                    throw new RuntimeException("Unknown type for bounded parameter: "+paramValue.getClass()+" for "+paramValue);
+                }
+
+                // If no exception thrown, input was correct, so removing tooltip
+                minEquivRange.setTooltip(null);
+            } catch (Exception e) {
+                // Input wasn't correct
+                minEquivRange.getStyleClass().add("bad-input");
+                LOGGER.warn(e.getMessage());
+            }
+        });
+
+        // When maximum (in text field) is edited by user
+        // check-it and write it in red if value not respecting format
+        // else save-it in parameter if is a correct value
+        maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
+            try {
+                // remove style of bad input, doing nothing if last value wasn't bad
+                maxEquivRange.getStyleClass().remove("bad-input");
+                if(paramValue instanceof AContinuousNumber) {
+                    // Setting tooltip in case of error (will be removed if correct input)
+                    maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
+                    // Setting the maximum value of parameter (will throw exception if bad input)
+                    paramValue.setMax((U) Double.valueOf(newval));
+                }
+                else if(paramValue instanceof AContiniousDate) {
+                    // Setting tooltip in case of error (will be removed if correct input)
+                    maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
+
+                    // Setting the maximum value of parameter (will throw exception if bad input)
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    cal.setTime(textFormat.parse(newval));
+                    paramValue.setMax((U) cal);
+                }
+                else {
+                    // RuntimeException because it isn't user fault but a developer problem
+                    throw new RuntimeException("Unknown type for bounded parameter: "+paramValue.getClass()+" for "+paramValue);
+                }
+
+                // If no exception thrown, input was correct, so removing tooltip
+                maxEquivRange.setTooltip(null); // If no error, remove tooltip
+            } catch (Exception e) {
+                // Input wasn't correct
+                maxEquivRange.getStyleClass().add("bad-input");
+                LOGGER.warn(e.getMessage());
+            }
+        });
+
 
         // Compute boxes size
         final double width = new Text(paramValue.getValue().toString()+"___")
@@ -58,8 +140,10 @@ public class BoundedParameter extends SensitiveParameter {
         minEquivRange.setMaxWidth(width);
         maxEquivRange.setMaxWidth(width);
 
+        // Adding text fields to pane
+        generalizationPane.getChildren().add(new Label("min:"));
         generalizationPane.getChildren().add(minEquivRange);
-        generalizationPane.getChildren().add(new Label(" - "));
+        generalizationPane.getChildren().add(new Label(" - max:"));
         generalizationPane.getChildren().add(maxEquivRange);
 
         // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass
@@ -68,52 +152,6 @@ public class BoundedParameter extends SensitiveParameter {
         // GridPane.setColumnIndex(this.paramValue, 3);
         GridPane.setColumnIndex(generalizationPane, 4);
 
-        minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
-            try {
-                minEquivRange.getStyleClass().remove("bad-input");
-                if(paramValue instanceof AContinuousNumber) {
-                    minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
-                    paramValue.setMin((U) Double.valueOf(newval));
-                }
-                else if(paramValue instanceof AContiniousDate) {
-                    Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
-                    cal.setTime(textFormat.parse(newval));
-                    paramValue.setMax((U) cal);
-                }
-                else {
-                    throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
-                }
-                minEquivRange.setTooltip(null); // If no error, remove tooltip
-            } catch (Exception e) {
-                minEquivRange.getStyleClass().add("bad-input");
-                LOGGER.warn(e.getMessage());
-            }
-        });
-        maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
-            try {
-                maxEquivRange.getStyleClass().remove("bad-input");
-                if(paramValue instanceof AContinuousNumber) {
-                    maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
-                    paramValue.setMax((U) Double.valueOf(newval));
-                }
-                else if(paramValue instanceof AContiniousDate) {
-                    Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat textFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '2016/12/31 23:59:59'"));
-                    cal.setTime(textFormat.parse(newval));
-                    paramValue.setMax((U) cal);
-                }
-                else {
-                    throw new Exception("Cannot cast "+paramValue+", "+oldval+" > "+newval);
-                }
-                maxEquivRange.setTooltip(null); // If no error, remove tooltip
-            } catch (Exception e) {
-                maxEquivRange.getStyleClass().add("bad-input");
-                LOGGER.warn(e.getMessage());
-            }
-        });
     }
 
     @Override
@@ -121,8 +159,9 @@ public class BoundedParameter extends SensitiveParameter {
         super.onClickMarkedUtil(event);
 
         boolean b = markedUtil.isSelected();
-        minEquivRange.setDisable(!b);
-        maxEquivRange.setDisable(!b);
+        // if unchecked, so disable component edition
+        for(Node n : generalizationPane.getChildren())
+            n.setDisable(!b);
     }
 
     @Override
