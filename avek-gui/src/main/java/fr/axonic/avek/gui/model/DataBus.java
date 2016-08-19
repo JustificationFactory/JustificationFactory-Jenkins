@@ -1,8 +1,6 @@
 package fr.axonic.avek.gui.model;
 
 import fr.axonic.avek.engine.instance.conclusion.Effect;
-import fr.axonic.avek.gui.Orchestrator;
-import fr.axonic.avek.gui.components.jellybeans.JellyBean;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.*;
@@ -48,7 +46,7 @@ public class DataBus {
     public static void setExperimentResults(AList<Effect> experimentResults) {
         Map<String, ARangedEnum> map = new LinkedHashMap<>();
         for(Effect e : experimentResults) {
-            map.put(e.getEffectType().getValue().toString(), e.getEffectType().getValue().getState());
+            map.put(e.getEffectType().getValue().getLabel(), e.getEffectType().getValue().getState());
         }
         setExperimentResults(map);
     }

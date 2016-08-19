@@ -45,12 +45,10 @@ public class RangedParameter extends SensitiveParameter {
                 paramValue.getRange().remove(state);
             }
             item.addStateChangeListener((lastState, newState) -> {
-                if (newState) {
-                    if (paramValue.getRange().contains(state)) {
-                        paramValue.getRange().add(state);
-                    }
-                }else {
+                if (!newState) {
                     paramValue.getRange().remove(state);
+                }else if (paramValue.getRange().contains(state)) {
+                    paramValue.getRange().add(state);
                 }
             });
         }

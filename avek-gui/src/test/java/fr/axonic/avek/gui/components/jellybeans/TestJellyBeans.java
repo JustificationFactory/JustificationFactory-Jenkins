@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
-import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
+import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;

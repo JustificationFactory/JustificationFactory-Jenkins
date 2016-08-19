@@ -122,7 +122,7 @@ public final class AVarHelper {
     }
 
     public static <T extends AVar> boolean containsByValue(AList<T> list, T elt){
-        return list.stream().filter(aVar -> aVar.getValue().equals(elt.getValue())).count() == 1;
+        return list.stream().filter(aVar -> aVar.getValue().equals(elt.getValue())).count() >= 1;
     }
 
     public static <T extends Enum<T> & AEnumItem> AList<AEnum<T>> transformToAVar(List<Enum<T>> enums) throws VerificationException {

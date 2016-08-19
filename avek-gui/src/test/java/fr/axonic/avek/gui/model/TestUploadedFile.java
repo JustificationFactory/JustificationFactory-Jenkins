@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.model;
 
 import com.sun.javafx.application.PlatformImpl;
-import fr.axonic.avek.gui.model.UploadedFile;
 import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.gui.util.UtilForTests;
 import org.junit.After;

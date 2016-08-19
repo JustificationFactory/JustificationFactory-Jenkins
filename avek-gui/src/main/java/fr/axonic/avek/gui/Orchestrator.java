@@ -7,7 +7,6 @@ import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.DataBus;
-import fr.axonic.avek.gui.model.Jsonifier;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;

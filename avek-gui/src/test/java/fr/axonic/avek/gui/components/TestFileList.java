@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.components.parameters;
+package fr.axonic.avek.gui.components;
 
 import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
