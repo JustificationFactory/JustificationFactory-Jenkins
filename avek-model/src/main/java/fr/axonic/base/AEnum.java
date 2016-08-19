@@ -16,8 +16,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AEnum<T extends Enum<T> & AEnumItem> extends AVar<T> implements Verifiable {
 
-
-    protected AEnum(){
+    /**
+     * NEVER USE THIS CONSTRUCTOR (except if you set immediatly the format after)
+     */
+    @Deprecated
+    public AEnum(){
         super(new EnumFormat<>(),null);
     }
     protected AEnum(T value) {

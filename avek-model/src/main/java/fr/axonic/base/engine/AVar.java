@@ -41,7 +41,10 @@ public /*abstract*/ class AVar<T> extends AElement implements Comparable<AVar>, 
 
 	public static AVar create(Format format) {
 		try {
-			return (AVar)format.getAVarType().newInstance();
+			AVar aVar =(AVar)format.getAVarType().newInstance();
+			aVar.setFormat(format);
+			return aVar;
+
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
