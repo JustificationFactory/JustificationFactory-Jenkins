@@ -44,7 +44,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
         List<JellyBeanItem> itemList = new ArrayList<>();
         for (int i = 1; i <= 30; i++) {
             ExampleState val = ExampleState.values()[0];
-            ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(val);
+            ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.class, val);
             aEnum.setDefaultValue(ExampleState.MEDIUM);
             aEnum.setRange(AVarHelper.transformToAVar(Arrays.asList(ExampleState.values())));
 

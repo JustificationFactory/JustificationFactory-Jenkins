@@ -40,7 +40,7 @@ public class TestJsonifier {
 
         Jsonifier<ARangedEnum> jsonifier = new Jsonifier<>(ARangedEnum.class);
 
-        ARangedEnum<ExampleState> rangedEnumState = new ARangedEnum<>(ExampleState.MEDIUM);
+        ARangedEnum<ExampleState> rangedEnumState = new ARangedEnum<>(ExampleState.class, ExampleState.MEDIUM);
         ARangedEnum o2 = jsonifier.fromJson(Jsonifier.toJson(rangedEnumState));
         assertEquals(rangedEnumState.getValue().toString(), o2.getValue().toString());
         assertEquals(rangedEnumState.getRange(), o2.getRange());
@@ -54,7 +54,7 @@ public class TestJsonifier {
         cat1.setLabel("Cat1");
         ms.addCategory(cat1);
 
-        ARangedEnum<BooleanState> rangedEnumBool = new ARangedEnum<>(BooleanState.FALSE);
+        ARangedEnum<BooleanState> rangedEnumBool = new ARangedEnum<>(BooleanState.class, BooleanState.FALSE);
         o2 = jsonifier.fromJson(Jsonifier.toJson(rangedEnumBool));
         assertEquals(rangedEnumBool.getValue().toString(), o2.getValue().toString());
         assertEquals(rangedEnumBool.getRange(), o2.getRange());
