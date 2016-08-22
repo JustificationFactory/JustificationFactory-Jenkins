@@ -60,6 +60,8 @@ public class JellyBean<T> extends HBox {
         jbLabel.getStyleClass().remove("button"); // remove base css
         jbCross.getStyleClass().remove("button");
         setRemovable(false);
+
+        this.setMinWidth(this.getPrefWidth());
     }
 
     @FXML

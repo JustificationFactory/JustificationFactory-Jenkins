@@ -12,20 +12,18 @@ class ParametersCategory extends ParametersGroup {
         super(level, new ExpParameterLeaf(level, new AString(list.getLabel(), "")));
 
         // Generating GUI component
-        setColumnSpan(this, 3);
-
         getCategoryTitle().setExpandable(this::onClickExpand);
 
         super.setAList(list);
     }
 
     private void onClickExpand(boolean isExpanded) {
-        this.getChildren()
+        getChildren()
                 .stream()
-                .filter(n -> !getCategoryTitle().getElements().contains(n))
+                .filter(n -> !getCategoryTitle().getParameterLine().equals(n))
                 .forEach(n -> {
                     n.setVisible(isExpanded);
                     n.setManaged(isExpanded);
-        });
+                });
     }
 }

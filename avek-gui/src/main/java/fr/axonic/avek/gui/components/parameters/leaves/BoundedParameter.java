@@ -1,5 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
+import fr.axonic.avek.gui.components.parameters.MyNode;
+import fr.axonic.avek.gui.components.parameters.ParameterLine;
 import fr.axonic.base.AContiniousDate;
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
@@ -17,7 +19,6 @@ import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Set;
 
 /**
  * Created by Nathaël N on 21/07/16.
@@ -135,19 +136,23 @@ public class BoundedParameter extends SensitiveParameter {
 
 
         // Compute boxes size
-        final double width = new Text(paramValue.getValue().toString()+"___")
+        final double width = new Text(minEquivRange.getText()+"___")
                 .getLayoutBounds().getWidth() // This big is the Text in the TextField (+ 3 char length)
                 + minEquivRange.getPadding().getLeft() + minEquivRange.getPadding().getRight(); // Add the padding of the TextField
 
         minEquivRange.setMaxWidth(width);
         maxEquivRange.setMaxWidth(width);
+        minEquivRange.setMinWidth(width);
+        maxEquivRange.setMinWidth(width);
+        minEquivRange.setPrefWidth(width);
+        maxEquivRange.setPrefWidth(width);
 
         // Adding text fields to pane
         generalizationPane.getChildren().add(minEquivRange);
         generalizationPane.getChildren().add(new Label(" - "));
         generalizationPane.getChildren().add(maxEquivRange);
 
-        // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass
+        // GridPane.setColumnIndex(markedUtil, 0);
         // GridPane.setColumnIndex(levelMark, 1);
         // GridPane.setColumnIndex(this.paramTitle, 2);
         // GridPane.setColumnIndex(this.paramValue, 3);
@@ -166,10 +171,18 @@ public class BoundedParameter extends SensitiveParameter {
     }
 
     @Override
-    public Set<Node> getElements() {
-        Set<Node> elts = super.getElements();
-        elts.add(generalizationPane);
+    public ParameterLine getParameterLine() {
+        if(parameterLine == null) {
+            ParameterLine p = super.getParameterLine();
 
-        return elts;
+            // Already done by superclass
+            //p.addNode(new MyNode(markedUtil), "MARKED_UTIL", 0);
+            //p.addNode(new MyNode(levelMark, paramTitle), "TITLE", 1);
+            //p.addNode(new MyNode(new Label(" : "), ":", 2);
+            //p.addNode(new MyNode(paramValue), "VALUE", 3);
+            p.addNode(new MyNode(generalizationPane), "GENERALIZATION", 4);
+        }
+
+        return super.getParameterLine();
     }
 }

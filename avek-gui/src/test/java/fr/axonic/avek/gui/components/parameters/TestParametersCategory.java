@@ -44,22 +44,22 @@ public class TestParametersCategory extends ApplicationTest {
 
         AList<AEntity> list = new AList<>();
         list.setLabel("Root");
+        assertEquals(0, pp.getChildren().size());
 
         list.add(new ANumber("LabelText", 42.31));
         ctm.runNowOnPlatform(() -> pp.setAList(list));
-
-        assertEquals(4, pp.getChildren().size());
+        assertEquals(1, pp.getChildren().size());
 
         list.add(new ABoolean("Boolbool", true));
         ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(4 + 4, pp.getChildren().size());
+        assertEquals(2, pp.getChildren().size());
 
         list.add(new ADate("Datedate", new GregorianCalendar()));
         ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(4 + 4 + 4, pp.getChildren().size());
+        assertEquals(3, pp.getChildren().size());
 
         list.add(new AString("Strstr", "LaString"));
         ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(4 + 4 + 4 + 4, pp.getChildren().size());
+        assertEquals(4, pp.getChildren().size());
     }
 }

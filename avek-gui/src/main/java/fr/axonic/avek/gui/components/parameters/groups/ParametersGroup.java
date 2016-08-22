@@ -2,34 +2,27 @@ package fr.axonic.avek.gui.components.parameters.groups;
 
 import fr.axonic.avek.gui.components.parameters.ExpParameterLeaf;
 import fr.axonic.avek.gui.components.parameters.IExpParameter;
+import fr.axonic.avek.gui.components.parameters.MyNode;
+import fr.axonic.avek.gui.components.parameters.ParameterLine;
 import fr.axonic.base.engine.*;
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Nathaël N on 13/07/16.
  */
-public abstract class ParametersGroup extends GridPane implements IExpParameter {
+public abstract class ParametersGroup extends VBox implements IExpParameter {
     private static final Logger LOGGER = Logger.getLogger(ParametersGroup.class);
     private static final String CSS = "fr/axonic/avek/gui/components/parameters/parameters.css";
 
     protected final int level;
-    private final List<IExpParameter> subElements;
     private final ExpParameterLeaf title;
-
 
     ParametersGroup(final int level) { this(level, null); }
     /**
      * @param level Deep level of this parameter grid (= his parent level+1)
      */
     ParametersGroup(final int level, ExpParameterLeaf title) {
-        subElements = new ArrayList<>();
         this.level = level;
 
         this.title = title;
@@ -50,7 +43,6 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
      *                            nor a AList (of AList and AVar)
      */
     private void addParameter(AEntity aEntity) {
-
         if(aEntity instanceof AStructure) {
             addCategory(AVarHelper.transformAStructureToAList((AStructure) aEntity));
         } else if(aEntity instanceof AList) {
@@ -74,35 +66,33 @@ public abstract class ParametersGroup extends GridPane implements IExpParameter 
     }
 
     final void addExpParameter(IExpParameter subParam) {
-        int rowIndex = subElements.size();
-
         // Adding graphical elements to the GUI
-        for (Node n : subParam.getElements()) {
-            GridPane.setRowIndex(n, rowIndex);
-            this.getChildren().add(n);
-        }
+        this.getChildren().add(subParam.getParameterLine());
 
-        // Adding to the list
-        subElements.add(subParam);
+        ParameterLine.computeSizes();
     }
 
     public void setAList(AList<?> list) {
-        subElements.clear();
         getChildren().clear();
 
         // Adding sub elements
-        if(title != null) {
-            title.getElements().forEach(getChildren()::add);
-            subElements.add(title);
+        if(title != null) { // Reset the title
+            this.getChildren().add(title.getParameterLine());
         }
+
+        // Set children
         list.getList().forEach(this::addParameter);
     }
 
+    private ParameterLine parameterLine;
     @Override
-    public Set<Node> getElements() {
-        Set<Node> s = new HashSet<>();
-        s.add(this);
-        return s;
+    public ParameterLine getParameterLine() {
+        if(parameterLine == null) {
+            parameterLine = new ParameterLine();
+            parameterLine.addNode(new MyNode(this), "GROUP", 0);
+        }
+
+        return parameterLine;
     }
 
     ExpParameterLeaf getCategoryTitle() {

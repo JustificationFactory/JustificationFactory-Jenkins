@@ -13,8 +13,6 @@ class GeneralizedCategory extends GeneralizedGroup {
         super(level, new SimpleParameter(level, new AString(list.getLabel(), "")));
 
         // Generating GUI component
-        setColumnSpan(this, 5);
-
         getCategoryTitle().setExpandable(this::onClickExpand);
         ((SimpleParameter)getCategoryTitle())
                 .setOnClickMarkedUtil((b) -> getCategoryTitle().setExpanded((boolean)b));
@@ -23,12 +21,12 @@ class GeneralizedCategory extends GeneralizedGroup {
     }
 
     private void onClickExpand(boolean isExpanded) {
-        this.getChildren()
+        getChildren()
                 .stream()
-                .filter(n -> !getCategoryTitle().getElements().contains(n))
+                .filter(n -> !getCategoryTitle().getParameterLine().equals(n))
                 .forEach(n -> {
                     n.setVisible(isExpanded);
                     n.setManaged(isExpanded);
-        });
+                });
     }
 }

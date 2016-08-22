@@ -99,8 +99,10 @@ public class TestJellyBeans extends ApplicationTest {
     public void testStateChange() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
 
-        ctm.runNowOnPlatform(() -> this.jb.setOnDelete(this::calledOnDelete));
-        jbi.setEditable(true);
+        ctm.runNowOnPlatform(() -> {
+            this.jb.setOnDelete(this::calledOnDelete);
+            jbi.setEditable(true);
+        });
 
         assertEquals(ExampleState.VERY_LOW, jbi.getState());
         clickOn(jbText);

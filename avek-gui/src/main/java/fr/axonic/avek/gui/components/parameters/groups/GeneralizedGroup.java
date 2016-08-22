@@ -17,8 +17,8 @@ abstract class GeneralizedGroup extends ParametersGroup {
     GeneralizedGroup(final int level) {
         super(level);
     }
-    GeneralizedGroup(int level, SimpleParameter simpleParameter) {
-        super(level, simpleParameter);
+    GeneralizedGroup(int level, SimpleParameter categoryTitle) {
+        super(level, categoryTitle);
     }
 
     @Override
