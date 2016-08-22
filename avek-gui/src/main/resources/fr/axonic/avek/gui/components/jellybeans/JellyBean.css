@@ -1,6 +1,5 @@
 .jellyBean {
     -fx-padding: 2px;
-    -fx-alignment: CENTER;
 }
 .jellyBean:disabled {
     -fx-opacity: 50%;

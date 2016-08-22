@@ -2,14 +2,9 @@ package fr.axonic.avek.gui.components.parameters;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -25,7 +20,6 @@ public class ParameterLine extends GridPane {
 
     public ParameterLine() {
         getStyleClass().add("parameter-line");
-        setStyle("-fx-padding: 1px 0");
     }
 
     public void addNode(MyNode n, String type, int columnIndex) {

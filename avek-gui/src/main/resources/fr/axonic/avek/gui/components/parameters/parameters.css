@@ -28,3 +28,10 @@
 .bad-input {
     -fx-text-fill: red;
 }
+
+.parameter-line {
+    -fx-padding: 1px 0;
+}
+.my-node {
+    -fx-padding: 0 5px 0 0;
+}

@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
  */
 public class MyNode extends HBox {
     public MyNode(Node ... nodes) {
+        this.getStyleClass().add("my-node");
         this.getChildren().addAll(nodes);
     }
 
