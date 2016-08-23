@@ -25,7 +25,7 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane-transparent">
+        <SplitPane fx:id="monitoredSystemSplitPane">
             <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="in-pane">
                 <top>
                     <BorderPane styleClass="title-pane">
@@ -120,14 +120,14 @@
                 <right>
                     <BorderPane styleClass="out-pane">
                         <top>
-                            <VBox styleClass="pane-transparent">
-                                <Group styleClass="pane-transparent">
+                            <VBox>
+                                <Group>
                                     <ToggleButton fx:id="outerResultsButton"
                                                   text="Results ⬓" rotate="90"
                                                   onAction="#onClickResultsButton"
                                                   selected="true"/>
                                 </Group>
-                                <Group styleClass="pane-transparent">
+                                <Group>
                                     <ToggleButton fx:id="outerFileListButton"
                                                   text="Files ⬓" rotate="90"
                                                   onAction="#onClickFileListViewButton"

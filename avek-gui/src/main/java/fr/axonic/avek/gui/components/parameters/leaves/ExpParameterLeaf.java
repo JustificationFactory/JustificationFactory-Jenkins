@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

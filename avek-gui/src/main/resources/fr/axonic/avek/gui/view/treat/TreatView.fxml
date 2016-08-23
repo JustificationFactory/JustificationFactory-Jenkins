@@ -23,7 +23,7 @@
         </Group>
     </left>
     <center>
-        <SplitPane fx:id="monitoredSystemSplitPane" styleClass="pane-transparent">
+        <SplitPane fx:id="monitoredSystemSplitPane">
             <BorderPane fx:id="monitoredSystemPane" maxWidth="300" styleClass="in-pane">
                 <top>
                     <BorderPane styleClass="title-pane">

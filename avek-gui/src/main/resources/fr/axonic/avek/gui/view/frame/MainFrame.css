@@ -56,10 +56,6 @@
     -fx-background-color: #5995B3; /* Darker2 */
 }
 
-.pane-transparent, .pane-transparent:focused {
-    -fx-background-color: transparent;
-}
-
 .strategy-button {
     -fx-background-color: #CFDEE6; /* Brighter2 */
     -fx-border-color: #5995B3; /* Darker2 */
@@ -88,14 +84,6 @@
     -fx-background-color: white;
 }
 
-.in-pane-in .viewport {
-    -fx-background-color: white; /* Brighter2 */
-}
-
-.in-pane-in {
-    -fx-border-color: #73A6BF; /* Darker1, same as TextArea/Buttons */
-}
-
 .title-text {
     -fx-font-size: 14;
     -fx-text-fill: #106395;
@@ -110,11 +98,6 @@
 
 .titled-pane .content .viewport {
     -fx-background-color: white;
-}
-
-.b-history {
-    -fx-fit-to-width: true;
-    -fx-pref-width: 99999;
 }
 
 .inner-hide-button {

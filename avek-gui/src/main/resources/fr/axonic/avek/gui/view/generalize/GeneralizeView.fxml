@@ -146,14 +146,14 @@
                 <right>
                     <BorderPane styleClass="out-pane">
                         <top>
-                            <VBox styleClass="pane-transparent">
-                                <Group styleClass="pane-transparent">
+                            <VBox>
+                                <Group>
                                     <ToggleButton fx:id="outerResultsButton"
                                                   text="Results ⬓" rotate="90"
                                                   onAction="#onClickResultsButton"
                                                   selected="true"/>
                                 </Group>
-                                <Group styleClass="pane-transparent">
+                                <Group>
                                     <ToggleButton fx:id="outerFileListButton"
                                                   text="Files ⬓" rotate="90"
                                                   onAction="#onClickFileListViewButton"
@@ -162,7 +162,7 @@
                             </VBox>
                         </top>
                         <bottom>
-                            <Group styleClass="pane-transparent">
+                            <Group>
                                 <ToggleButton fx:id="outerCommentsButton"
                                               text="Comments ⬓" rotate="90"
                                               onAction="#onClickCommentsButton"

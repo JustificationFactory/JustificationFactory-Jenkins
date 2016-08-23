@@ -24,24 +24,27 @@
     -fx-background-color: #0001;
 }
 
+/* Set some gap between rows and columns */
 .parameter-root {
     -fx-vgap: 1px;
-    -fx-hgap: 2px;
+    -fx-hgap: 1px;
 }
-.parameter-margin {
-    -fx-min-width: 3px; /* if little screen */
-    -fx-max-width: 23px;
-    -fx-pref-width: 23px;
-}
+
+/* Align component in grid */
 .parameter-root > * {
     -fx-alignment: center-left;
 }
+
+/* Align text-fields with RangedParameters JellyBean panes */
 .parameter-root .text-field {
     -fx-border-insets: 0 0 0 2px; /* left 1px */
     -fx-background-insets: 0 0 0 2px;
 }
 .parameter-root > * {
     -fx-min-height: 24px;
+}
+.parameter-root .check-box {
+    -fx-padding: 0 -5px 0 0;
 }
 
 .bad-input {

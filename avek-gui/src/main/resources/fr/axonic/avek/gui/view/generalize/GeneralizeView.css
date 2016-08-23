@@ -20,6 +20,8 @@
 }
 
 .b-history {
+    -fx-fit-to-width: true;
+    -fx-pref-width: 99999;
     -fx-background-color: #ADCAD9;
     -fx-border-insets: 1px;
     -fx-background-insets: 1px;
@@ -32,4 +34,12 @@
 .center-pane-group {
     -fx-border-color: #4285A6; /* Darker3, same as Dividers */
     -fx-border-width: 0 1px 1px 0;
+}
+
+.in-pane-in .viewport {
+    -fx-background-color: white; /* Brighter2 */
+}
+
+.in-pane-in {
+    -fx-border-color: #73A6BF; /* Darker1, same as TextArea/Buttons */
 }
