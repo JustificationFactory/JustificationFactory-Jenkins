@@ -2,17 +2,17 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
-import fr.axonic.avek.gui.components.parameters.MyNode;
-import fr.axonic.avek.gui.components.parameters.ParameterLine;
 import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Nathaël N on 21/07/16.
@@ -64,11 +64,12 @@ public class RangedParameter extends SensitiveParameter {
             }
         }
 
-        // GridPane.setColumnIndex(markedUtil, 0); // Already done by superclass
+        // GridPane.setColumnIndex(markedUtil, 0); // Done in superclass
         // GridPane.setColumnIndex(levelMark, 1);
-        // GridPane.setColumnIndex(this.paramTitle, 2);
-        // GridPane.setColumnIndex(this.paramValue, 3);
-        GridPane.setColumnIndex(generalizationPane, 4);
+        // GridPane.setColumnIndex(paramTitle, 2);
+        // GridPane.setColumnIndex(separator, 3);
+        // GridPane.setColumnIndex(paramValue, 4);
+        GridPane.setColumnIndex(generalizationPane, 5);
     }
 
     @Override
@@ -80,19 +81,11 @@ public class RangedParameter extends SensitiveParameter {
         jellyBeanPane.setDisable(!b);
     }
 
+
     @Override
-    public ParameterLine getParameterLine() {
-        if(parameterLine == null) {
-            ParameterLine p = super.getParameterLine();
-
-            // Already done by superclass
-            //p.addNode(new MyNode(markedUtil), "MARKED_UTIL", 0);
-            //p.addNode(new MyNode(levelMark, paramTitle), "TITLE", 1);
-            //p.addNode(new MyNode(new Label(" : "), ":", 2);
-            //p.addNode(new MyNode(paramValue), "VALUE", 3);
-            p.addNode(new MyNode(generalizationPane), "GENERALIZATION", 4);
-        }
-
-        return super.getParameterLine();
+    public List<Node> getNodeLine() {
+        List<Node> list = super.getNodeLine();
+        list.add(generalizationPane);
+        return list;
     }
 }

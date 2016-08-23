@@ -1,6 +1,5 @@
-package fr.axonic.avek.gui.components.parameters;
+package fr.axonic.avek.gui.components.parameters.groups;
 
-import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.base.ABoolean;
@@ -22,18 +21,16 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Nathaël N on 11/07/16.
  */
-public class TestParametersCategory extends ApplicationTest {
-    static {
-        UtilForTests.disableGraphics();
-    }
+public class TestGeneralizedRoot extends ApplicationTest {
+    static { UtilForTests.disableGraphics(); }
 
-    private GeneralizedRoot pp;
+    private GeneralizedRoot gRoot;
 
     @Override
     public void start(Stage stage) throws IOException {
-        this.pp = new GeneralizedRoot();
+        this.gRoot = new GeneralizedRoot();
 
-        Scene scene = new Scene(pp, 500, 300);
+        Scene scene = new Scene(gRoot, 500, 300);
         stage.setScene(scene);
         stage.show();
     }
@@ -44,22 +41,23 @@ public class TestParametersCategory extends ApplicationTest {
 
         AList<AEntity> list = new AList<>();
         list.setLabel("Root");
-        assertEquals(0, pp.getChildren().size());
+        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        assertEquals(1, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new ANumber("LabelText", 42.31));
-        ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(1, pp.getChildren().size());
+        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        assertEquals(2, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new ABoolean("Boolbool", true));
-        ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(2, pp.getChildren().size());
+        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        assertEquals(3, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new ADate("Datedate", new GregorianCalendar()));
-        ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(3, pp.getChildren().size());
+        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        assertEquals(4, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new AString("Strstr", "LaString"));
-        ctm.runNowOnPlatform(() -> pp.setAList(list));
-        assertEquals(4, pp.getChildren().size());
+        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        assertEquals(5, gRoot.getParametersCategory().getNodes().size());
     }
 }

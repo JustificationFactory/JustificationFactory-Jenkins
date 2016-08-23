@@ -1,7 +1,5 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
-import fr.axonic.avek.gui.components.parameters.MyNode;
-import fr.axonic.avek.gui.components.parameters.ParameterLine;
 import fr.axonic.base.AContiniousDate;
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
@@ -19,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Nathaël N on 21/07/16.
@@ -152,12 +151,12 @@ public class BoundedParameter extends SensitiveParameter {
         generalizationPane.getChildren().add(new Label(" - "));
         generalizationPane.getChildren().add(maxEquivRange);
 
-        // GridPane.setColumnIndex(markedUtil, 0);
+        // GridPane.setColumnIndex(markedUtil, 0); // Done in superclass
         // GridPane.setColumnIndex(levelMark, 1);
-        // GridPane.setColumnIndex(this.paramTitle, 2);
-        // GridPane.setColumnIndex(this.paramValue, 3);
-        GridPane.setColumnIndex(generalizationPane, 4);
-
+        // GridPane.setColumnIndex(paramTitle, 2);
+        // GridPane.setColumnIndex(separator, 3);
+        // GridPane.setColumnIndex(paramValue, 4);
+        GridPane.setColumnIndex(generalizationPane, 5);
     }
 
     @Override
@@ -171,18 +170,9 @@ public class BoundedParameter extends SensitiveParameter {
     }
 
     @Override
-    public ParameterLine getParameterLine() {
-        if(parameterLine == null) {
-            ParameterLine p = super.getParameterLine();
-
-            // Already done by superclass
-            //p.addNode(new MyNode(markedUtil), "MARKED_UTIL", 0);
-            //p.addNode(new MyNode(levelMark, paramTitle), "TITLE", 1);
-            //p.addNode(new MyNode(new Label(" : "), ":", 2);
-            //p.addNode(new MyNode(paramValue), "VALUE", 3);
-            p.addNode(new MyNode(generalizationPane), "GENERALIZATION", 4);
-        }
-
-        return super.getParameterLine();
+    public List<Node> getNodeLine() {
+        List<Node> list = super.getNodeLine();
+        list.add(generalizationPane);
+        return list;
     }
 }

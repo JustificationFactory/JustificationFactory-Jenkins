@@ -1,12 +1,12 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
-import fr.axonic.avek.gui.components.parameters.ExpParameterLeaf;
-import fr.axonic.avek.gui.components.parameters.MyNode;
-import fr.axonic.avek.gui.components.parameters.ParameterLine;
 import fr.axonic.base.engine.AVar;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.GridPane;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -16,12 +16,18 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
     CheckBox markedUtil;
     private Consumer<Boolean> onClickMarkedUtil;
 
-    SensitiveParameter(int level, AVar paramValue) {
-        super(level, paramValue);
+    SensitiveParameter(int level, AVar var) {
+        super(level, var);
 
         markedUtil = new CheckBox();
         markedUtil.setSelected(true);
         markedUtil.setOnAction(this::onClickMarkedUtil);
+
+        GridPane.setColumnIndex(markedUtil, 0);
+        GridPane.setColumnIndex(levelMark, 1); // was 0
+        GridPane.setColumnIndex(paramTitle, 2); // was 1
+        GridPane.setColumnIndex(separator, 3); // was 2
+        GridPane.setColumnIndex(paramValue, 4); // was 3
     }
 
     protected void onClickMarkedUtil(ActionEvent event) {
@@ -40,14 +46,9 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
     }
 
     @Override
-    public ParameterLine getParameterLine() {
-        if(parameterLine == null) {
-            ParameterLine p = super.getParameterLine();
-            MyNode node = new MyNode(markedUtil);
-            markedUtil.setMinWidth(20);
-            p.addNode(node, "MARKED_UTIL", 0);
-        }
-
-        return super.getParameterLine();
+    public List<Node> getNodeLine() {
+        List<Node> list = super.getNodeLine();
+        list.add(markedUtil);
+        return list;
     }
 }

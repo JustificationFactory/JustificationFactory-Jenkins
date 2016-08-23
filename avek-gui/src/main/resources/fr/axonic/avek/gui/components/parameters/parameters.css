@@ -30,8 +30,8 @@
 }
 
 .parameter-line {
-    -fx-padding: 1px 0;
+    -fx-hgap: 15px;
 }
 .my-node {
-    -fx-padding: 0 5px 0 0;
+    /*-fx-padding: 0 15px 0 0;*/
 }
