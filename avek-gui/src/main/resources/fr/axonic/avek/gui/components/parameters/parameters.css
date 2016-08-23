@@ -5,24 +5,38 @@
 
 .levelmark-line {
     -fx-background-color: #8FB8CC; /* default pastel blue */
-    -fx-pref-width: 10px;
+    -fx-pref-width: 12px; /* blue bar will do (prefWidth-borderInsets)px */
     -fx-fit-to-height: true;
-    -fx-background-insets: 0px 4px;
-    -fx-border-insets: 0px 4px;
+    -fx-border-insets: 0px 5px;
+    -fx-background-insets: 0px 5px; /* equals to border insets */
 }
 
+.levelmark-arrow {
+    -fx-alignment: center-right;
+}
 .levelmark-arrow * {
     -fx-text-fill: #8FB8CC; /* default pastel blue */
-    -fx-pref-width: 6px;
+    -fx-width: 12px; /* equals to levelmark-line width */
+    -fx-text-alignment: center;
 }
 
 .hide-button {
     -fx-background-color: #0001;
 }
 
-.parameter-group {
+.parameter-root {
     -fx-vgap: 1px;
-    -fx-hgap: 2px;
+    -fx-hgap: 10px;
+}
+.parameter-root > * {
+    -fx-alignment: center-left;
+}
+.parameter-root .text-field {
+    -fx-border-insets: 0 0 0 1px; /* left 1px */
+    -fx-background-insets: 0 0 0 1px;
+}
+.parameter-root > * {
+    -fx-min-height: 24px;
 }
 
 .bad-input {

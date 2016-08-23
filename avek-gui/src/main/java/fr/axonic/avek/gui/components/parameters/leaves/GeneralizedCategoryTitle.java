@@ -10,7 +10,7 @@ public class GeneralizedCategoryTitle extends SensitiveParameter {
     public GeneralizedCategoryTitle(int level, String label) {
         super(level, new AString(label,""));
 
-        GridPane.setColumnSpan(paramTitle, 3); // span on [Title|:|Value]
+        GridPane.setColumnSpan(paneTitle, 3); // span on [levelMark Title|:|Value]
         paramTitle.getStyleClass().add("category-title");
     }
 }

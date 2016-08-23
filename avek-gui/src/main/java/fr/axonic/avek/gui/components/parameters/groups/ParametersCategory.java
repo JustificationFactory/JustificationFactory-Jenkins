@@ -4,10 +4,13 @@ import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.CategoryTitle;
 import fr.axonic.avek.gui.components.parameters.leaves.ExpParameterLeaf;
 import fr.axonic.base.engine.*;
+import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
+import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,12 +32,20 @@ class ParametersCategory implements IExpParameter {
         this.children = new ArrayList<>();
     }
 
+    private final HashMap<Node, Double> sizeMemory = new HashMap<>();
     private void onClickExpand(boolean isExpanded) {
         children.forEach(lineList -> lineList.getNodes()
                 .forEach(nodeList -> nodeList
                         .forEach(node -> {
-                                node.setVisible(isExpanded);
-                                node.setManaged(isExpanded);
+                            /*ScaleTransition transition =
+                                    new ScaleTransition(Duration.millis(500), node);
+                            transition.setToY(isExpanded?1:0);
+                            transition.setOnFinished(e -> {*/
+                                 node.setVisible(isExpanded);
+                                 node.setManaged(isExpanded);
+                            /*});
+                            transition.play();*/
+
         })));
     }
 

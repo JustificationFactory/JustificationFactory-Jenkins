@@ -152,11 +152,10 @@ public class BoundedParameter extends SensitiveParameter {
         generalizationPane.getChildren().add(maxEquivRange);
 
         // GridPane.setColumnIndex(markedUtil, 0); // Done in superclass
-        // GridPane.setColumnIndex(levelMark, 1);
-        // GridPane.setColumnIndex(paramTitle, 2);
-        // GridPane.setColumnIndex(separator, 3);
-        // GridPane.setColumnIndex(paramValue, 4);
-        GridPane.setColumnIndex(generalizationPane, 5);
+        // GridPane.setColumnIndex(paneTitle, 1);
+        // GridPane.setColumnIndex(separator, 2);
+        // GridPane.setColumnIndex(paramValue, 3);
+        GridPane.setColumnIndex(generalizationPane, 4);
     }
 
     @Override

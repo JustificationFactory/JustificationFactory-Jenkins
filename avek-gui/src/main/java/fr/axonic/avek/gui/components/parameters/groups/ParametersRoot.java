@@ -27,7 +27,7 @@ public class ParametersRoot extends GridPane {
         LOGGER.info("Adding parameters.css");
         this.getStylesheets().add(CSS);
 
-        getStyleClass().add("parameter-group");
+        getStyleClass().add("parameter-root");
     }
 
     public void setAList(AList<?> list) {

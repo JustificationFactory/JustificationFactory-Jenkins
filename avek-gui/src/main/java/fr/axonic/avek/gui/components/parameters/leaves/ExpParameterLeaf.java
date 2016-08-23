@@ -7,6 +7,7 @@ import fr.axonic.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
  */
 public class ExpParameterLeaf implements IExpParameter {
     // GUI Component
+    final HBox paneTitle;
     final Label paramTitle;
     final Label paramValue;
     final LevelMark levelMark;
@@ -45,18 +47,18 @@ public class ExpParameterLeaf implements IExpParameter {
             }
         }
 
+        paneTitle = new HBox();
+        paneTitle.getChildren().setAll(levelMark, paramTitle);
         separator = new Label(":");
-        GridPane.setColumnIndex(levelMark, 0);
-        GridPane.setColumnIndex(paramTitle, 1);
-        GridPane.setColumnIndex(separator, 2);
-        GridPane.setColumnIndex(paramValue, 3);
+        GridPane.setColumnIndex(paneTitle, 0);
+        GridPane.setColumnIndex(separator, 1);
+        GridPane.setColumnIndex(paramValue, 2);
     }
 
 
     protected List<Node> getNodeLine() {
         List<Node> nodes = new ArrayList<>();
-        nodes.add(levelMark);
-        nodes.add(paramTitle);
+        nodes.add(paneTitle);
 
         if(!paramValue.getText().isEmpty()) {
             nodes.add(separator);

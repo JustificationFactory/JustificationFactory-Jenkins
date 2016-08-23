@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 public class LevelMark extends HBox {
     private static final String LINE = "levelmark-line";
     private static final String ARROW = "levelmark-arrow";
+    private static final String CSS = "levelmark";
     private static final int ROTATE_DURATION = 500; // ms
 
     private Consumer<Boolean> onClickExpand;
@@ -33,6 +34,7 @@ public class LevelMark extends HBox {
         recalculate();
 
         GridPane.setVgrow(this, Priority.ALWAYS);
+        getStyleClass().add(CSS);
     }
 
     /**
@@ -77,7 +79,7 @@ public class LevelMark extends HBox {
 
         // If is expandable, so add an arrow
         if (expandable) {
-            Pane p = new Pane();
+            HBox p = new HBox();
             p.getStyleClass().add(ARROW);
             this.getChildren().add(p);
 
