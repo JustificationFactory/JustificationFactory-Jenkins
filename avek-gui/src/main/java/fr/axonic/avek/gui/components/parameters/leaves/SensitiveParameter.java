@@ -23,6 +23,7 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
         markedUtil.setSelected(true);
         markedUtil.setOnAction(this::onClickMarkedUtil);
 
+        // set style
         GridPane.setColumnIndex(markedUtil, 0);
         GridPane.setColumnIndex(paneTitle, 1); // was 0
         GridPane.setColumnIndex(separator, 2); // was 1

@@ -5,7 +5,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import org.apache.log4j.Logger;
 
-import java.util.BitSet;
 import java.util.List;
 
 /**

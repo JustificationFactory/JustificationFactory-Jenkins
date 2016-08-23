@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,10 +29,12 @@ public class ExpParameterLeaf implements IExpParameter {
 
     public ExpParameterLeaf(int level, AVar var) {
         // Init elements
-        this.paramTitle = new Label(var.getLabel());
-        this.paramValue = new Label();
-
         levelMark = new LevelMark(level);
+        paramTitle = new Label(var.getLabel());
+        paramValue = new Label();
+        separator = new Label(":");
+        paneTitle = new HBox();
+        paneTitle.getChildren().setAll(levelMark, paramTitle);
 
         if(var.getValue() != null && !var.getValue().toString().equals("")) {
             // Pretty print dates
@@ -47,9 +50,11 @@ public class ExpParameterLeaf implements IExpParameter {
             }
         }
 
-        paneTitle = new HBox();
-        paneTitle.getChildren().setAll(levelMark, paramTitle);
-        separator = new Label(":");
+        // set css
+        paneTitle.getStyleClass().add( "param-panetitle");
+        separator.getStyleClass().add( "param-separator");
+        paramValue.getStyleClass().add("param-value");
+
         GridPane.setColumnIndex(paneTitle, 0);
         GridPane.setColumnIndex(separator, 1);
         GridPane.setColumnIndex(paramValue, 2);

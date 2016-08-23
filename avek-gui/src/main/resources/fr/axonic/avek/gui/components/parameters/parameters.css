@@ -26,14 +26,19 @@
 
 .parameter-root {
     -fx-vgap: 1px;
-    -fx-hgap: 10px;
+    -fx-hgap: 2px;
+}
+.parameter-margin {
+    -fx-min-width: 3px; /* if little screen */
+    -fx-max-width: 23px;
+    -fx-pref-width: 23px;
 }
 .parameter-root > * {
     -fx-alignment: center-left;
 }
 .parameter-root .text-field {
-    -fx-border-insets: 0 0 0 1px; /* left 1px */
-    -fx-background-insets: 0 0 0 1px;
+    -fx-border-insets: 0 0 0 2px; /* left 1px */
+    -fx-background-insets: 0 0 0 2px;
 }
 .parameter-root > * {
     -fx-min-height: 24px;
@@ -43,9 +48,12 @@
     -fx-text-fill: red;
 }
 
-.parameter-line {
-    -fx-hgap: 15px;
+.param-panetitle {
+    -fx-padding: 0 50px 0 0;
 }
-.my-node {
-    /*-fx-padding: 0 15px 0 0;*/
+.param-separator {
+    -fx-padding: 0 70px 0 0;
+}
+.param-value {
+    -fx-padding: 0 40px 0 0;
 }

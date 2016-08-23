@@ -4,9 +4,7 @@ import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.avek.gui.components.parameters.leaves.CategoryTitle;
 import fr.axonic.avek.gui.components.parameters.leaves.ExpParameterLeaf;
 import fr.axonic.base.engine.*;
-import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
-import javafx.util.Duration;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
