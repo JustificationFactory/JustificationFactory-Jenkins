@@ -56,6 +56,7 @@ public class DataBus {
 
         // Convert experiment results
         for (Map.Entry<EffectEnum, ARangedEnum> entry : experimentResults.entrySet()) {
+            @SuppressWarnings({"unchecked", "Convert2Diamond"})
             List<Object> ls = new ArrayList<AEnum>(entry.getValue().getRange())
                     .stream()
                     .map(AVar::getValue)
@@ -66,7 +67,8 @@ public class DataBus {
             Object value = entry.getValue().getValue();
             if(value != null) {
                 LOGGER.debug("ARangedEnum value= " + value);
-               jb.setState(entry.getValue().getValue());
+                //noinspection unchecked
+                jb.setState(entry.getValue().getValue());
             }
         }
 

@@ -12,15 +12,15 @@ import org.apache.log4j.Logger;
 /**
  * Created by Nathaël N on 12/07/16.
  */
-public class Jsonifier<T> {
+class Jsonifier<T> {
     private static final Logger LOGGER = Logger.getLogger(Jsonifier.class);
     private final Class<T> tClass;
 
-    public Jsonifier(Class<T> tClass) {
+    Jsonifier(Class<T> tClass) {
         this.tClass = tClass;
     }
 
-    public static String toJson(Object o) {
+    static String toJson(Object o) {
         LOGGER.debug("Object to JSON:" + o);
         return correct(new GsonBuilder()
                 .setPrettyPrinting()
@@ -28,18 +28,19 @@ public class Jsonifier<T> {
                 .toJson(o));
     }
 
-    public T fromJson(String s) {
+    T fromJson(String s) {
         LOGGER.debug("Creating new " + tClass.getTypeName() + " from Json");
         return new GsonBuilder()
                 .create()
                 .fromJson(s, tClass);
     }
 
-    public static String fromAEntity(AEntity entity) {
+    static String fromAEntity(AEntity entity) {
         JsonObject json = new JsonObject();
         json.addProperty("class_name", entity.getClass().getCanonicalName());
 
         if (entity instanceof AList) {
+            @SuppressWarnings("unchecked")
             AList<AEntity> list = (AList<AEntity>) entity;
             JsonArray array = new JsonArray();
 
@@ -58,7 +59,7 @@ public class Jsonifier<T> {
         return new GsonBuilder().setPrettyPrinting().create().toJson(json);
     }
 
-    public static AEntity toAEntity(String src) {
+    static AEntity toAEntity(String src) {
         JsonObject element = new JsonParser().parse(src).getAsJsonObject();
         String type = element.get("class_name").getAsString();
 
@@ -67,6 +68,7 @@ public class Jsonifier<T> {
             AList alAE = new AList();
 
             for (int i = 0; i < list.size(); i++) {
+                //noinspection unchecked
                 alAE.add(toAEntity(list.get(i).toString()));
             }
 
@@ -91,8 +93,7 @@ public class Jsonifier<T> {
     }
 
     private static String correct(String json) {
-        String s = json.replaceAll("([0-9]*)\\.0([^0-9])", "$1$2");
-        return s;
+        return json.replaceAll("([0-9]*)\\.0([^0-9])", "$1$2");
     }
 
 }

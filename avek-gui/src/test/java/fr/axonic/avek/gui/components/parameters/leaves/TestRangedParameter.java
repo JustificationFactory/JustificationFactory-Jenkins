@@ -34,6 +34,7 @@ public class TestRangedParameter {
 	private RangedParameter rangedParameter;
     private Map<TestEnum, JellyBeanItem<Boolean>> jellyBeanItems;
 
+    @SuppressWarnings("unchecked")
     @Before
 	public void before() throws IOException, VerificationException, NoSuchFieldException, IllegalAccessException {
         aRangedEnum =new ARangedEnum<>(TestEnum.class);
@@ -58,6 +59,7 @@ public class TestRangedParameter {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testNoEdition() throws VerificationException {
         assertEquals(1, aRangedEnum.getRange().size());
@@ -65,6 +67,7 @@ public class TestRangedParameter {
                     new AEnum<>(TestEnum.class, TestEnum.B)));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testWithClicks() throws VerificationException, NoSuchFieldException, IllegalAccessException {
         jellyBeanItems.get(TestEnum.A).setState(true);

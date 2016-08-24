@@ -48,7 +48,7 @@ public class TestSubjectData extends ApplicationTest {
         MonitoredSystem ms1 = new MonitoredSystem(new AString("id","42A"));
 
         AList<AEntity> category1 = new AList<>(
-            new AString("a string", "strval1"),
+            new AString("a string", "strVal1"),
             new ANumber("an integer", 123456789),
             new ANumber("a double", 12345.6789),
             new ADate("a date", new GregorianCalendar()));
@@ -66,18 +66,20 @@ public class TestSubjectData extends ApplicationTest {
 
         TitledPane tp = monitoredSystemView.getPanes().get(0);
         ScrollPane sp = (ScrollPane) tp.getContent();
+        @SuppressWarnings("unchecked") 
         ListView<Label> vb = (ListView<Label>) sp.getContent();
         assertEquals(4, vb.getItems().size());
 
         tp = monitoredSystemView.getPanes().get(1);
         sp = (ScrollPane) tp.getContent();
+        //noinspection unchecked
         vb = (ListView<Label>) sp.getContent();
         assertEquals(2, vb.getItems().size());
 
         MonitoredSystem ms2 = new MonitoredSystem(new AString("id","21B"));
 
         category1 = new AList<>(
-            new AString("a string", "strval1"),
+            new AString("a string", "strVal1"),
             new ANumber("an integer", 123456789),
             new ADate("a date", new GregorianCalendar()));
         category1.setLabel("Category 1");
@@ -99,16 +101,19 @@ public class TestSubjectData extends ApplicationTest {
 
         tp = monitoredSystemView.getPanes().get(0);
         sp = (ScrollPane) tp.getContent();
+        //noinspection unchecked
         vb = (ListView<Label>) sp.getContent();
         assertEquals(3, vb.getItems().size());
 
         tp = monitoredSystemView.getPanes().get(1);
         sp = (ScrollPane) tp.getContent();
+        //noinspection unchecked
         vb = (ListView<Label>) sp.getContent();
         assertEquals(3, vb.getItems().size());
 
         tp = monitoredSystemView.getPanes().get(2);
         sp = (ScrollPane) tp.getContent();
+        //noinspection unchecked
         vb = (ListView<Label>) sp.getContent();
         assertEquals(0, vb.getItems().size());
     }

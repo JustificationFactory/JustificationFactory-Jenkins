@@ -55,7 +55,7 @@ public class JellyBeanItem <T> {
             editableStateChangeListener.accept(editable);
     }
 
-    private Set<BiConsumer<T, T>> stateChangeListeners = new HashSet<>(); // LastValue, NewValue
+    private final Set<BiConsumer<T, T>> stateChangeListeners = new HashSet<>(); // LastValue, NewValue
     public void addStateChangeListener(BiConsumer<T, T> listener) {
         stateChangeListeners.add(listener);
         listener.accept(getState(), getState());
@@ -75,6 +75,6 @@ public class JellyBeanItem <T> {
 
     @Override
     public String toString() {
-        return "JellyBeanItem{id="+id+", states="+states+", editable="+editable+", currentstate="+getState()+"}";
+        return "JellyBeanItem{id="+id+", states="+states+", editable="+editable+", current state="+getState()+"}";
     }
 }

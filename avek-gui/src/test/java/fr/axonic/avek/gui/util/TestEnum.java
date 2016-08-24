@@ -8,7 +8,9 @@ import fr.axonic.base.engine.AEnumItem;
 public enum TestEnum implements AEnumItem{
     A("a","A"), B("b", "B"), C("c","C"), D("d","D");
 
-    private String code, path, label;
+    private final String code;
+    private final String path;
+    private final String label;
 
     TestEnum(String code, String label) {
         this.code = code;

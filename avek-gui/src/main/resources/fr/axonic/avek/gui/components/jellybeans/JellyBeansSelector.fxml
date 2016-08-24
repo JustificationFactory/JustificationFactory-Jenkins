@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox">
     <HBox>
-        <ComboBox fx:id="comboBoxJellyBean" onHiding="#onSelectorHidding" minWidth="100" prefWidth="1e8"/>
+        <ComboBox fx:id="comboBoxJellyBean" onHiding="#onSelectorHiding" minWidth="100" prefWidth="1e8"/>
         <Button fx:id="newExpEffectButton" minWidth="50" text="+"/>
     </HBox>
     <JellyBeanPane styleClass="jellyBeanPane" fx:id="jellyBeanPane" prefWidth="1e8"/>

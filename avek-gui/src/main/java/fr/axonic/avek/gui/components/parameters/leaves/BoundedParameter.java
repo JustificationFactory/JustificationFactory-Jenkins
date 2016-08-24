@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class BoundedParameter extends SensitiveParameter {
     private final static Logger LOGGER = Logger.getLogger(BoundedParameter.class);
-    public static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     private final HBox generalizationPane;
     private final TextField minEquivRange;
@@ -61,7 +61,7 @@ public class BoundedParameter extends SensitiveParameter {
         // When minimum (in text field) is edited by user
         // check-it and write it in red if value not respecting format
         // else save-it in parameter if is a correct value
-        minEquivRange.textProperty().addListener((observable, oldval, newval) -> {
+        minEquivRange.textProperty().addListener((observable, oldVal, newVal) -> {
             try {
                 // remove style of bad input, doing nothing if last value wasn't bad
                 minEquivRange.getStyleClass().remove("bad-input");
@@ -69,7 +69,8 @@ public class BoundedParameter extends SensitiveParameter {
                     // Setting tooltip in case of error (will be removed if correct input)
                     minEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
                     // Setting the minimum value of parameter (will throw exception if bad input)
-                    paramValue.setMin((U) Double.valueOf(newval));
+                    //noinspection unchecked
+                    paramValue.setMin((U) Double.valueOf(newVal));
                 }
                 else if(paramValue instanceof AContiniousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
@@ -79,7 +80,8 @@ public class BoundedParameter extends SensitiveParameter {
                     // Setting the minimum value of parameter (will throw exception if bad input)
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat textFormat = new SimpleDateFormat(DATE_FORMAT);
-                    cal.setTime(textFormat.parse(newval));
+                    cal.setTime(textFormat.parse(newVal));
+                    //noinspection unchecked
                     paramValue.setMax((U) cal);
                 }
                 else {
@@ -99,7 +101,7 @@ public class BoundedParameter extends SensitiveParameter {
         // When maximum (in text field) is edited by user
         // check-it and write it in red if value not respecting format
         // else save-it in parameter if is a correct value
-        maxEquivRange.textProperty().addListener((observable, oldval, newval) -> {
+        maxEquivRange.textProperty().addListener((observable, oldVal, newVal) -> {
             try {
                 // remove style of bad input, doing nothing if last value wasn't bad
                 maxEquivRange.getStyleClass().remove("bad-input");
@@ -107,7 +109,8 @@ public class BoundedParameter extends SensitiveParameter {
                     // Setting tooltip in case of error (will be removed if correct input)
                     maxEquivRange.setTooltip(new Tooltip("NUMBER required\nexample: '12345.6789'"));
                     // Setting the maximum value of parameter (will throw exception if bad input)
-                    paramValue.setMax((U) Double.valueOf(newval));
+                    //noinspection unchecked
+                    paramValue.setMax((U) Double.valueOf(newVal));
                 }
                 else if(paramValue instanceof AContiniousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
@@ -116,7 +119,8 @@ public class BoundedParameter extends SensitiveParameter {
                     // Setting the maximum value of parameter (will throw exception if bad input)
                     Calendar cal = Calendar.getInstance();
                     SimpleDateFormat textFormat = new SimpleDateFormat(DATE_FORMAT);
-                    cal.setTime(textFormat.parse(newval));
+                    cal.setTime(textFormat.parse(newVal));
+                    //noinspection unchecked
                     paramValue.setMax((U) cal);
                 }
                 else {

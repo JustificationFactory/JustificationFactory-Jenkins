@@ -21,18 +21,18 @@ public class TestOrchestrator extends ApplicationTest {
     public void test() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
         ctm.runNowOnPlatform(() -> Orchestrator.setFrame(new MainFrame()));
-        Orchestrator.waitforOrchestrating();
+        Orchestrator.waitForOrchestrating();
         assertTrue("Application cannot be launched", true);
         Orchestrator.onValidate(); // Click on Strategy button ("Treat")
-        Orchestrator.waitforOrchestrating();
+        Orchestrator.waitForOrchestrating();
         Orchestrator.submitChoice("Establish Effect");
-        Orchestrator.waitforOrchestrating();
+        Orchestrator.waitForOrchestrating();
         Orchestrator.onValidate();
-        Orchestrator.waitforOrchestrating();
+        Orchestrator.waitForOrchestrating();
         Orchestrator.submitChoice("Generalize");
-        Orchestrator.waitforOrchestrating();
+        Orchestrator.waitForOrchestrating();
         Orchestrator.onValidate();
-        Orchestrator.waitforOrchestrating();
+        Orchestrator.waitForOrchestrating();
         assertTrue(true);
     }
 

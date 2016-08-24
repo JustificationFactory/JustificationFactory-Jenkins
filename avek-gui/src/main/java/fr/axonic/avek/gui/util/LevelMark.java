@@ -58,6 +58,9 @@ public class LevelMark extends HBox {
      * @param expanded answer the question "Will the LevelMark be expanded ?"
      */
     public void setExpanded(boolean expanded) {
+        if (!expandable) {
+            return;
+        }
         this.expanded = expanded;
         onClickExpand.accept(expanded);
 

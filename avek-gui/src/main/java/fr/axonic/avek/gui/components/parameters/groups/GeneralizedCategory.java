@@ -25,16 +25,18 @@ class GeneralizedCategory extends ParametersCategory {
 
     @Override
     protected ExpParameterLeaf getNewLeaf(AVar aVar) {
-        return myGetLeaf(aVar);
+        return generateLeaf(aVar);
     }
 
     private <T extends AVar<V> & ContinuousAVar<V>,
              U extends AVar<W> & DiscretAVar<U>,
              W extends AEnumItem,
-             V> ExpParameterLeaf myGetLeaf(AVar<V> aVar) {
+             V> ExpParameterLeaf generateLeaf(AVar<V> aVar) {
         if(aVar instanceof ContinuousAVar) {
+            //noinspection unchecked
             return new BoundedParameter(level + 1, (T) aVar);
         } else if(aVar instanceof DiscretAVar) {
+            //noinspection unchecked
             return new RangedParameter(level + 1, (U) aVar);
         } else {
             return new SimpleParameter(level + 1, aVar);

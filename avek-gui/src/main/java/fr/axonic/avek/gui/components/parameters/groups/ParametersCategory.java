@@ -69,7 +69,7 @@ class ParametersCategory implements IExpParameter {
     private void addCategory(AList list) {
         children.add(getNewCategory(list));
     }
-    protected ParametersCategory getNewCategory(AList aList) {
+    ParametersCategory getNewCategory(AList aList) {
         ParametersCategory subCategory = new ParametersCategory(level + 1);
         subCategory.setAList(aList);
 
@@ -79,12 +79,12 @@ class ParametersCategory implements IExpParameter {
     private void addLeaf(AVar aVar) {
         children.add(getNewLeaf(aVar));
     }
-    protected ExpParameterLeaf getNewLeaf(AVar aVar) {
+    ExpParameterLeaf getNewLeaf(AVar aVar) {
         return new ExpParameterLeaf(level + 1, aVar);
     }
 
 
-    protected ExpParameterLeaf generateTitle(String text) {
+    ExpParameterLeaf generateTitle(String text) {
         return new CategoryTitle(level, text);
     }
     public final void setAList(AList<?> list) {

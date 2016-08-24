@@ -38,7 +38,7 @@ public class MainFrame extends BorderPane {
     }
 
     @FXML
-    private void onClicStrategyButton(ActionEvent event) {
+    private void onClickStrategyButton(ActionEvent event) {
         Orchestrator.onValidate();
     }
 

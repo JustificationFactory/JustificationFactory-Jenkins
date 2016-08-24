@@ -60,7 +60,7 @@ public class ExpParameterLeaf implements IExpParameter {
     }
 
 
-    protected List<Node> getNodeLine() {
+    List<Node> getNodeLine() {
         List<Node> nodes = new ArrayList<>();
         nodes.add(paneTitle);
 

@@ -86,7 +86,7 @@ public class JellyBeanSelector extends VBox {
     }
 
     @FXML
-    void onSelectorHidding(Event event) {
+    void onSelectorHiding(Event event) {
         addJellyBean();
     }
 
@@ -111,7 +111,7 @@ public class JellyBeanSelector extends VBox {
     }
 
     /**
-     * Set Combobox entries for already selected sample to 'selectedResult' style, and others to 'notSelectedResult'
+     * Set Combo box entries for already selected sample to 'selectedResult' style, and others to 'notSelectedResult'
      * (typically, set selected sample entries in a grey color, and let the others black)
      */
     private void updateJellyBeanChoice() {

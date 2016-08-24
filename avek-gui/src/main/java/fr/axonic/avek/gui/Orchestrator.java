@@ -75,7 +75,7 @@ public class Orchestrator {
         evidences = adAPI.getBaseEvidences();
         List<String> patternIds=adAPI.getPossiblePatterns(evidences);
         patternList = new ArrayList<>();
-        patternIds.stream().forEach(s -> patternList.add(adAPI.getPattern(s)));
+        patternIds.forEach(s -> patternList.add(adAPI.getPattern(s)));
 
         setEvidencesInDataBus();
 
@@ -336,7 +336,7 @@ public class Orchestrator {
      * @throws ExecutionException thrown if a task thrown an internal exception
      * @throws InterruptedException thrown if a task was interrupted
      */
-    static void waitforOrchestrating() throws ExecutionException, InterruptedException {
+    static void waitForOrchestrating() throws ExecutionException, InterruptedException {
         // While there are tasks in the taskList
         while(!INSTANCE.tasks.isEmpty()) {
             // Get oldest task from the list

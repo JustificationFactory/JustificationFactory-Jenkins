@@ -15,7 +15,7 @@
     </stylesheets>
 
     <top>
-        <BorderPane styleClass="top, out-pane">
+        <BorderPane styleClass="out-pane">
             <left>
                 <VBox alignment="CENTER" style="-fx-border-width: 5px; -fx-border-color: transparent">
                     <ImageView fitHeight="45"
@@ -37,7 +37,7 @@
     <bottom>
         <HBox alignment="CENTER" styleClass="out-pane">
             <Button fx:id="btnStrategy" mnemonicParsing="false"
-                    onAction="#onClicStrategyButton"
+                    onAction="#onClickStrategyButton"
                     text="Strategy" maxWidth="Infinity"
                     styleClass="strategy-button"/>
         </HBox>

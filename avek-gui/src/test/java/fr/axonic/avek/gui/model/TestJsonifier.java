@@ -107,6 +107,7 @@ public class TestJsonifier {
 
 
     private <T> void test(T o) {
+        @SuppressWarnings("unchecked")
         T o2 = new Jsonifier<>((Class<T>) o.getClass()).fromJson(Jsonifier.toJson(o));
         assertEquals(o, o2);
     }

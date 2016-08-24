@@ -92,7 +92,7 @@ public class UploadedFile {
 
         uploadedBytes = getSize();
         if (listener != null) {
-            Platform.runLater(listener::run);
+            Platform.runLater(listener);
         }
 
         uploading = false;
@@ -118,7 +118,7 @@ public class UploadedFile {
                 uploadedBytes += bytesRead;
 
                 if (listener != null) {
-                    Platform.runLater(listener::run);
+                    Platform.runLater(listener);
                 }
             }
 

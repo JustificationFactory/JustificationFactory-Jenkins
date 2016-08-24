@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  * Created by Nathaël N on 21/07/16.
  */
 abstract class SensitiveParameter extends ExpParameterLeaf {
-    CheckBox markedUtil;
+    final CheckBox markedUtil;
     private Consumer<Boolean> onClickMarkedUtil;
 
     SensitiveParameter(int level, AVar var) {
@@ -30,7 +30,7 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
         GridPane.setColumnIndex(paramValue, 3); // was 2
     }
 
-    protected void onClickMarkedUtil(ActionEvent event) {
+    void onClickMarkedUtil(ActionEvent event) {
         boolean b = markedUtil.isSelected();
 
         paramTitle.setDisable(!b);
@@ -39,6 +39,7 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
         if (onClickMarkedUtil != null) {
             onClickMarkedUtil.accept(b);
         }
+        levelMark.setExpanded(b);
     }
 
     public void setOnClickMarkedUtil(Consumer<Boolean> onClickMarkedUtil) {
@@ -46,7 +47,7 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
     }
 
     @Override
-    public List<Node> getNodeLine() {
+    protected List<Node> getNodeLine() {
         List<Node> list = super.getNodeLine();
         list.add(markedUtil);
         return list;
