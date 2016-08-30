@@ -1,4 +1,4 @@
-package fr.axonic.avek.gui.components;
+package fr.axonic.avek.gui.components.monitoredsystem;
 
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ADate;

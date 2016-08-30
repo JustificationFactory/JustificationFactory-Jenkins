@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.subjects;
 
-import fr.axonic.avek.gui.components.MonitoredSystemView;
+import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.model.MonitoredSystem;

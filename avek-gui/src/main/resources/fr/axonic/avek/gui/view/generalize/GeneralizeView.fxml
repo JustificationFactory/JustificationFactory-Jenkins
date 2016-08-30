@@ -2,7 +2,7 @@
 
 <?import fr.axonic.avek.gui.components.filelist.FileListView?>
 <?import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane?>
-<?import fr.axonic.avek.gui.components.MonitoredSystemView?>
+<?import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView?>
 <?import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>

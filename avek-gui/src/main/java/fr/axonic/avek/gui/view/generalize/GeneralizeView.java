@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.generalize;
 
-import fr.axonic.avek.gui.components.MonitoredSystemView;
+import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;

@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.treat;
 
-import fr.axonic.avek.gui.components.MonitoredSystemView;
+import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
 import fr.axonic.avek.gui.model.DataBus;
 import fr.axonic.avek.gui.view.AbstractView;
