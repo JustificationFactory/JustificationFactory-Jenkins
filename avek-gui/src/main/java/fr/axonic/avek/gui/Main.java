@@ -1,7 +1,11 @@
 package fr.axonic.avek.gui;
 
+import fr.axonic.avek.bus.Orchestrator;
+import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
+import fr.axonic.avek.gui.api.GUIException;
 import fr.axonic.avek.gui.view.frame.MainFrame;
+import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,7 +21,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, WrongEvidenceException, GUIException, VerificationException {
         LOGGER.debug("Loading MainFrame...");
 
         primaryStage.setTitle("#AVEK analyzer");
@@ -29,6 +33,7 @@ public class Main extends Application {
         primaryStage.show();
         LOGGER.debug("MainFrame created.");
 
-        GUIAPIImpl.setFrame(mainFrame);
+        GUIAPIImpl.getInstance().setFrame(mainFrame);
+        new Orchestrator(GUIAPIImpl.getInstance());
     }
 }

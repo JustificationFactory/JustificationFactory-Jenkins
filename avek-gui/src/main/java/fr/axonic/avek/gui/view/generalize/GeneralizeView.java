@@ -1,12 +1,17 @@
 package fr.axonic.avek.gui.view.generalize;
 
+import fr.axonic.avek.gui.api.ComponentType;
+import fr.axonic.avek.gui.api.GUIAPI;
+import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
-import fr.axonic.avek.bus.Bus;
+import fr.axonic.avek.bus.DataTranslator;
 import fr.axonic.avek.gui.view.AbstractView;
+import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -43,12 +48,14 @@ public class GeneralizeView extends AbstractView {
 
     @FXML
     private void initialize() {
-        // Get data from Data bus
-        parametersRoot.setAList(Bus.getExperimentParams());
-        monitoredSystemView.setMonitoredSystem(Bus.getMonitoredSystem());
+        GUIAPIImpl guiapi = GUIAPIImpl.getInstance();
 
-        List<JellyBeanItem> list = Bus.getExperimentResults();
-        for(JellyBeanItem jbi : list) {
+        // Get data from Data bus
+        parametersRoot.setAList((AList<?>) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
+        monitoredSystemView.setMonitoredSystem((MonitoredSystem) guiapi.getData(ComponentType.MONITORED_SYSTEM));
+        List<JellyBeanItem> effects = (List<JellyBeanItem>) guiapi.getData(ComponentType.EFFECTS);
+
+        for(JellyBeanItem jbi : effects) {
             jellyBeanPane.addJellyBean(jbi);
         }
     }

@@ -4,11 +4,7 @@ import fr.axonic.avek.engine.instance.conclusion.Effect;
 import fr.axonic.avek.engine.instance.conclusion.EffectEnum;
 import fr.axonic.avek.engine.instance.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
-import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.*;
-import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
-import fr.axonic.base.engine.AVar;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
@@ -18,8 +14,8 @@ import java.util.stream.Collectors;
 /**
  * Created by Nathaël N on 28/07/16.
  */
-public class Bus {
-    private final static Logger LOGGER = Logger.getLogger(Bus.class);
+public class DataTranslator {
+    private final static Logger LOGGER = Logger.getLogger(DataTranslator.class);
 
 
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
@@ -29,7 +25,7 @@ public class Bus {
 
         effectList.addAll(effectsAsJellyBeanItems
                 .stream()
-                .map(Bus::jellyBeanItemToEffect)
+                .map(DataTranslator::jellyBeanItemToEffect)
                 .collect(Collectors.toList()));
 
         return effectList;

@@ -5,18 +5,20 @@ import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.frame.MainFrame;
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  * Created by cduffau on 12/08/16.
  */
-public class GUIAPIImpl implements GUIAPI {
+public class GUIAPIImpl extends GUIAPI {
     private final static Logger LOGGER = Logger.getLogger(GUIAPIImpl.class);
     private final static GUIAPIImpl INSTANCE = new GUIAPIImpl();
 
     private final LoadingView loadingView = new LoadingView();
-    private MainFrame frame;
     private Map<ComponentType, Object> content;
+    private MainFrame frame;
 
 
     public static GUIAPIImpl getInstance() {
@@ -59,28 +61,22 @@ public class GUIAPIImpl implements GUIAPI {
         }
     }
 
+    @Override
+    public void onStrategyValidated() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Strategy", null);
+        setChanged();
+        notifyObservers(data);
+        LOGGER.debug("Strategy validated, " + countObservers()+" observer(s) notified");
+    }
+
     public Object getData(ComponentType type) {
         return content.get(type);
     }
 
-
-
-
-
-
-
-
-
-
-    // TODO ------------ DEPRECATED --------------------------
-
-    @Deprecated
-    public LoadingView getLoadingView() {
-        return loadingView;
-    }
-
-    @Deprecated
-    public MainFrame getFrame() {
-        return frame;
+    public void onSubmitPatternChoice(String patternName) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Pattern", patternName);
+        notifyObservers(data);
     }
 }

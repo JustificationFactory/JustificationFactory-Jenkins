@@ -3,62 +3,56 @@ package fr.axonic.avek.bus;
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
+import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
-import fr.axonic.avek.gui.api.ComponentType;
-import fr.axonic.avek.gui.api.GUIAPIImpl;
-import fr.axonic.avek.gui.api.GUIException;
-import fr.axonic.avek.gui.api.ViewType;
+import fr.axonic.avek.gui.api.*;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
-import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
-import fr.axonic.avek.gui.view.generalize.GeneralizeView;
-import fr.axonic.avek.gui.view.strategyselection.StrategySelectionView;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
-import javafx.application.Platform;
 import org.apache.log4j.Logger;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 04/08/16.
  */
-public class Orchestrator {
+public class Orchestrator implements Observer {
     private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
 
     private ViewType currentView;
-    private Pattern currentPattern;
-    //private Subject currentSubject;
-    //private Stimulation currentStimulation;
+    private String currentPatternId;
+    private Subject currentSubject;
+    private Stimulation currentStimulation;
 
-    private List<String> patternList;
+    private List<String> patternNamesList;
     private List<EvidenceRole> evidences;
     private final Stack<FutureTask> tasks;
 
     private final ArgumentationDiagramAPI engineAPI;
-    private final GUIAPIImpl guiAPI;
+    private final GUIAPI guiAPI;
 
-    private Orchestrator() throws VerificationException, WrongEvidenceException {
+    public Orchestrator(GUIAPI guiapi) throws VerificationException, WrongEvidenceException, GUIException {
         tasks = new Stack<>();
 
         engineAPI = ArgumentationDiagramAPIImpl.getInstance();
-        guiAPI = GUIAPIImpl.getInstance();
+        guiAPI = guiapi;
+        guiapi.addObserver(this);
+        
+        this.orchestrate();
     }
 
     private void orchestrate() throws GUIException, VerificationException, WrongEvidenceException {
         guiAPI.showLoading(); // show loading while orchestrating because can last long
 
         computeNextPattern();
-        setEvidencesInDataBus();
 
         // If there is only one pattern available, setting the view to it
-        if (patternList.size() == 1) {
-            showViewFromPattern(engineAPI.getPattern(patternList.get(0)));
+        if (patternNamesList.size() == 1) {
+            showViewFromPattern(patternNamesList.get(0));
         } else {
             Map<ComponentType, Object> content = new HashMap<>();
 
@@ -70,153 +64,52 @@ public class Orchestrator {
 
     private void computeNextPattern() throws VerificationException, WrongEvidenceException {
         // Constructing conclusion
-        if (currentPattern != null) {
-            constructStep(engineAPI);
-            currentPattern = null;
+        if (currentPatternId != null) {
+            constructStep();
+            currentPatternId = null;
         }
 
         // Preparing for following view
         evidences = engineAPI.getBaseEvidences();
-        patternList = engineAPI.getPossiblePatterns(evidences);
+        patternNamesList = engineAPI.getPossiblePatterns(evidences);
     }
 
-    private void showViewFromPattern(Pattern p) throws GUIException {
+    private void showViewFromPattern(String patternName) throws GUIException {
         ViewType viewType;
-        Map<ComponentType, Object> content = new HashMap<>();
+        Map<ComponentType, Object> content = setDataFromEvidence();
+
+        patternName = engineAPI.getPattern(patternName).getName();
 
         // Selecting the right view depending on pattern
-        switch (p.getName()) {
+        switch (patternName) {
             case "Treat":
                 viewType = ViewType.TREAT_VIEW;
-                // TODO fill content
                 break;
             case "Establish Effect":
                 viewType = ViewType.ESTABLISH_EFFECT_VIEW;
-                // TODO fill content
                 break;
             case "Generalize":
                 viewType = ViewType.GENERALIZE_VIEW;
-                // TODO fill content
                 break;
             default:
-                throw new RuntimeException("Pattern is unknown for ViewType conversion: " + p);
+                throw new RuntimeException("Pattern is unknown for ViewType conversion: " + patternName);
         }
 
         guiAPI.show(viewType, content);
         currentView = viewType;
-        currentPattern = p;
-    }
-
-    // TODO ↓↓↓↓↓↓↓↓↓↓↓↓↓ All methods under this should be reviewed ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-    private void setFollowingView() throws VerificationException, WrongEvidenceException, ExecutionException, InterruptedException {
-        // If there is more than one pattern available,
-        // setting a selection view for user to choose the one he want
-        StrategySelectionView ssv = new StrategySelectionView();
-        ssv.load();
-
-        FutureTask setViewTask = new FutureTask<>(() -> {
-            GUIAPIImpl.getInstance().getFrame().setView(ssv);
-            return true;
-        });
-        Platform.runLater(setViewTask);
-
-        List<String> names = patternList.stream().collect(Collectors.toList());
-        if (names != null) {
-            ssv.setAvailableChoices(names);
-        }
-
-        tasks.push(setViewTask);
+        currentPatternId = patternName;
     }
 
 
-    private void constructTreatStep(ArgumentationDiagramAPI adAPI) {
-        LOGGER.debug("Constructing Treat step");
-        try {
-            adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                    INSTANCE.evidences,
-                    new ExperimentationConclusion(
-                            "Experimentation",
-                            INSTANCE.currentSubject,
-                            INSTANCE.currentStimulation));
-        } catch (WrongEvidenceException | StepBuildingException e) {
-            LOGGER.error("Impossible to constructStep");
-        }
-    }
+    private Map<ComponentType, Object> setDataFromEvidence() {
+        Map<ComponentType, Object> content = new HashMap<>();
 
-    private void constructEstablishEffectStep(ArgumentationDiagramAPI adAPI) {
-        LOGGER.debug("Constructing Establish effect step");
-        try {
-            final EstablishEffectView currentView = (EstablishEffectView) this.currentView;
-
-            List<JellyBeanItem> jellyBeanItems = currentView.getEffects();
-            AList<Effect> effects = jellyBeanItemsToEffectList(jellyBeanItems);
-
-            EstablishedEffect establishedEffect = new EstablishedEffect(
-                    new Experimentation(
-                            INSTANCE.currentStimulation,
-                            INSTANCE.currentSubject),
-                    effects);
-            EstablishEffectConclusion conclusion =
-                    new EstablishEffectConclusion(
-                            "Establish Effect",
-                            establishedEffect);
-
-            // TODO pass UploadedFile.uploadedFolder; in establishEffectConclusion
-
-            adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                    INSTANCE.evidences, conclusion);
-        } catch (WrongEvidenceException | StepBuildingException e) {
-            LOGGER.error("Impossible to constructStep");
-        }
-    }
-
-    private void constructGeneralizeStep(ArgumentationDiagramAPI adAPI) {
-        LOGGER.debug("Constructing Generalize step");
-        try {
-            final GeneralizeView currentView = (GeneralizeView) this.currentView;
-
-            // TODO pass UploadedFile.uploadedFolder; in GeneralizationConclusion
-
-            GeneralizationConclusion conclusion = new GeneralizationConclusion(
-                    "Generalization",
-                    new EstablishedEffect(
-                            new Experimentation(
-                                    INSTANCE.currentStimulation,
-                                    INSTANCE.currentSubject),
-                            Bus.jellyBeanItemsToEffectList(currentView.getEffects())
-                    ));
-
-            adAPI.constructStep(INSTANCE.currentPattern.getId(),
-                    INSTANCE.evidences, conclusion);
-        } catch (WrongEvidenceException | StepBuildingException e) {
-            LOGGER.error("Impossible to constructStep");
-        }
-    }
-
-    private void constructStep(ArgumentationDiagramAPI adAPI) {
-        switch (currentPattern.getName()) {
-            case "Treat":
-                constructTreatStep(adAPI);
-                break;
-            case "Establish Effect":
-                constructEstablishEffectStep(adAPI);
-                break;
-            case "Generalize":
-                constructGeneralizeStep(adAPI);
-                break;
-            default:
-                LOGGER.error("Constructing \"" + currentPattern.getName() + "\" not implemented");
-        }
-    }
-
-    private void setEvidencesInDataBus() {
         // Setting default Experiment results to Data bus
-        Map<EffectEnum, ARangedEnum> experimentsResults = new HashMap<>();
+        Map<EffectEnum, ARangedEnum> effects = new HashMap<>();
         for (EffectEnum effect : EffectEnum.values()) {
-            experimentsResults.put(effect, effect.getState());
+            effects.put(effect, effect.getState());
         }
-        Bus.setExperimentResults(experimentsResults);
+        content.put(ComponentType.EFFECTS, effects);
 
 
         // Setting others data to Data bus
@@ -245,7 +138,7 @@ public class Orchestrator {
                         al.addAll(map.values());
                         ms.addCategory(al);
 
-                        Bus.setMonitoredSystem(ms);
+                        content.put(ComponentType.MONITORED_SYSTEM, ms);
                         break;
                     case "stimulation":
                         currentStimulation = (Stimulation) evidenceRole.getEvidence().getElement();
@@ -253,13 +146,15 @@ public class Orchestrator {
                         AList<AEntity> list = new AList<>();
                         list.setLabel("root");
                         list.addAll(currentStimulation.getFieldsContainer().values());
-                        Bus.setExperimentParams(list);
+
+                        content.put(ComponentType.EXPERIMENTATION_PARAMETERS, list);
                         break;
                     case "":
                         if (evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
                             LOGGER.debug("Got: " + evidenceRole);
                             EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
-                            Bus.setExperimentResults(((EstablishedEffect) eec.getElement()).getEffects());
+
+                            content.put(ComponentType.EFFECTS, ((EstablishedEffect) eec.getElement()).getEffects());
                             break;
                         }
                     default:
@@ -269,34 +164,133 @@ public class Orchestrator {
                 LOGGER.error("Impossible to treat Evidence role: " + evidenceRole, e);
             }
         }
+        return content;
     }
 
-    /**
-     * Called by Selection view to inform orchestrator about what choice was done
-     *
-     * @param value The choice selected by user
-     */
-    public static void submitChoice(String value) {
-        // Finding the pattern users choose
-        Pattern selectedPattern = null;
-        for (Pattern p : INSTANCE.patternList) {
-            if (p.getName().equals(value)) {
-                selectedPattern = p;
+    private void constructStep() {
+        // Obtaining data
+        List<ComponentType> s = currentView.getCompatibleComponents();
+        Map<ComponentType, Object> data = new HashMap<>();
+
+        for(ComponentType type : s) {
+            data.put(type, guiAPI.getData(type));
+        }
+
+        // constructing step
+        switch (currentPatternId) {
+            case "Treat":
+                constructTreatStep();
                 break;
+            case "Establish Effect":
+                constructEstablishEffectStep(data);
+                break;
+            case "Generalize":
+                constructGeneralizeStep(data);
+                break;
+            default:
+                LOGGER.error("Constructing \"" + currentPatternId + "\" not implemented");
+        }
+    }
+
+    private void constructTreatStep() {
+        LOGGER.debug("Constructing Treat step");
+        try {
+            engineAPI.constructStep(currentPatternId,
+                    evidences,
+                    new ExperimentationConclusion(
+                            "Experimentation",
+                            currentSubject,
+                            currentStimulation));
+        } catch (WrongEvidenceException | StepBuildingException e) {
+            LOGGER.error("Impossible to constructStep");
+        }
+    }
+
+    private void constructEstablishEffectStep(Map<ComponentType, Object> data) {
+        LOGGER.debug("Constructing Establish effect step");
+        try {
+            AList<Effect> effects = DataTranslator.jellyBeanItemsToEffectList((List<JellyBeanItem>) data.get(ComponentType.EFFECTS));
+
+            EstablishedEffect establishedEffect =
+                    new EstablishedEffect(
+                        new Experimentation(currentStimulation, currentSubject),
+                        effects);
+
+            EstablishEffectConclusion conclusion =
+                    new EstablishEffectConclusion(
+                            "Establish Effect",
+                            establishedEffect);
+
+            // TODO pass UploadedFile.uploadedFolder; in establishEffectConclusion
+
+            engineAPI.constructStep(currentPatternId, evidences, conclusion);
+        } catch (WrongEvidenceException | StepBuildingException e) {
+            LOGGER.error("Impossible to constructStep");
+        }
+    }
+
+    private void constructGeneralizeStep(Map<ComponentType, Object> data) {
+        LOGGER.debug("Constructing Generalize step");
+        try {
+            // TODO pass UploadedFile.uploadedFolder; in GeneralizationConclusion
+            AList<Effect> effects = DataTranslator.jellyBeanItemsToEffectList((List<JellyBeanItem>) data.get(ComponentType.EFFECTS));
+
+            GeneralizationConclusion conclusion = new GeneralizationConclusion(
+                    "Generalization",
+                    new EstablishedEffect(
+                            new Experimentation(
+                                    currentStimulation,
+                                    currentSubject),
+                            effects
+                    ));
+
+            engineAPI.constructStep(currentPatternId, evidences, conclusion);
+        } catch (WrongEvidenceException | StepBuildingException e) {
+            LOGGER.error("Impossible to constructStep");
+        }
+    }
+
+
+    /**
+     *
+     * @param o Should be a GUIAPI
+     * @param arg Should be a Map&lt;String, Object&gt;
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        LOGGER.debug("Received notify !");
+
+        if(!o.equals(guiAPI)) {
+            throw new RuntimeException("Update get not from current used GUI API");
+        }
+        GUIAPI api = (GUIAPI) o;
+        Map<String, Object> data = (Map<String, Object>) arg;
+
+        for(Map.Entry<String,Object> entry : data.entrySet()) {
+            switch (entry.getKey()) {
+                case "Pattern" : // When user selected pattern strategy he wants clicking on submit button of selection view
+                    String selectedPatternName = (String) entry.getValue();
+
+                    if(patternNamesList.contains(selectedPatternName)) {
+                        try {
+                            showViewFromPattern(selectedPatternName);
+                        } catch (GUIException e) {
+                            LOGGER.error("Unknown error occurred while showing view", e);
+                        }
+                    } else {
+                        LOGGER.warn("No pattern found with name: " + selectedPatternName);
+                    }
+                    break;
+                case "Strategy" : // When user validate data he wrote clicking on strategy button
+                    try {
+                        orchestrate();
+                    } catch (GUIException | VerificationException | WrongEvidenceException e) {
+                        LOGGER.error("Unknown error occurred while orchestrating", e);
+                    }
+                    break;
+                default:
+                    throw new RuntimeException("No rule existing for name: " + entry.getKey());
             }
         }
-
-        if (selectedPattern == null) {
-            LOGGER.warn("No pattern found with name: " + value);
-        } else {
-            INSTANCE.showViewFromPattern(selectedPattern);
-        }
-    }
-
-    /**
-     * Call this method when user is validating data he send to the current view
-     */
-    public static void onValidate() {
-        INSTANCE.orchestrate();
     }
 }

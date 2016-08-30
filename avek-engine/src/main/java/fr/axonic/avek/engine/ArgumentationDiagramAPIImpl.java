@@ -21,9 +21,9 @@ import java.util.*;
  */
 public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
 
-    private Map<String,Pattern> patterns;
-    private List<EvidenceRole> baseEvidences;
-    private List<Step> steps;
+    private final Map<String,Pattern> patterns = new HashMap<>();
+    private final List<EvidenceRole> baseEvidences = new ArrayList<>();
+    private final List<Step> steps;
     private final static Logger LOGGER = Logger.getLogger(ArgumentationDiagramAPIImpl.class);
 
     private static ArgumentationDiagramAPIImpl INSTANCE;
@@ -78,7 +78,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     }
 
     private void initPatterns(){
-        patterns=new HashMap<>();
+        patterns.clear();
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
@@ -105,7 +105,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
 
     }
     private void initBaseEvidences() throws VerificationException, WrongEvidenceException {
-        baseEvidences=new ArrayList<>();
+        baseEvidences.clear();
 
         WaveformParameter waveformParameter=new WaveformParameter();
         waveformParameter.setAmplitudeValue(1000.1);

@@ -1,5 +1,8 @@
 package fr.axonic.avek.gui.api;
 
+import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.engine.AList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,7 +10,7 @@ import java.util.List;
  * Created by cduffau on 12/08/16.
  */
 public enum ComponentType {
-    MONITORED_SYSTEM, EFFECTS, EXPERIMENTATION_PARAMETERS, COMMENTS, COMPLEMENTARY_FILES, SELECTION;
+    MONITORED_SYSTEM(MonitoredSystem.class), EFFECTS, EXPERIMENTATION_PARAMETERS(AList.class), COMMENTS(String.class), COMPLEMENTARY_FILES, SELECTION;
 
     private List<Class> compatibleObjects;
 

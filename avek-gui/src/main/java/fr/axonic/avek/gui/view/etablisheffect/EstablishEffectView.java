@@ -1,11 +1,15 @@
 package fr.axonic.avek.gui.view.etablisheffect;
 
+import fr.axonic.avek.gui.api.ComponentType;
+import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanSelector;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
-import fr.axonic.avek.bus.Bus;
+import fr.axonic.avek.bus.DataTranslator;
 import fr.axonic.avek.gui.view.AbstractView;
+import fr.axonic.avek.model.MonitoredSystem;
+import fr.axonic.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -41,11 +45,13 @@ public class EstablishEffectView extends AbstractView {
 
     @FXML
     private void initialize() {
-        monitoredSystemView.setMonitoredSystem(Bus.getMonitoredSystem());
+        GUIAPIImpl guiapi = GUIAPIImpl.getInstance();
 
-        parametersRoot.setAList(Bus.getExperimentParams());
+        monitoredSystemView.setMonitoredSystem((MonitoredSystem) guiapi.getData(ComponentType.MONITORED_SYSTEM));
 
-        jellyBeanSelector.setJellyBeansChoice(Bus.getExperimentResults());
+        parametersRoot.setAList((AList<?>) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
+
+        jellyBeanSelector.setJellyBeansChoice((List<JellyBeanItem>) guiapi.getData(ComponentType.EFFECTS));
         LOGGER.debug("EstablishEffectView loaded.");
     }
 
