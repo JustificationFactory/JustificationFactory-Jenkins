@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui;
 
+import fr.axonic.avek.bus.Orchestrator;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.avek.gui.view.frame.MainFrame;

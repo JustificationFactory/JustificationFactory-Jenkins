@@ -1,24 +1,30 @@
-package fr.axonic.avek.gui.model;
+package fr.axonic.avek.bus;
 
 import fr.axonic.avek.engine.instance.conclusion.Effect;
 import fr.axonic.avek.engine.instance.conclusion.EffectEnum;
+import fr.axonic.avek.engine.instance.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.*;
+import fr.axonic.base.AEnum;
+import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
+import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 28/07/16.
  */
-public class DataBus {
-    private final static Logger LOGGER = Logger.getLogger(DataBus.class);
-    private static final DataBus INSTANCE = new DataBus();
+public class DataBusOld {
+    private final static Logger LOGGER = Logger.getLogger(DataBusOld.class);
+    private static final DataBusOld INSTANCE = new DataBusOld();
 
     private MonitoredSystem monitoredSystem;
     private AList<AEntity> experimentParams;
@@ -74,61 +80,4 @@ public class DataBus {
 
         LOGGER.debug("Experiment results set to: "+experimentResults);
     }
-
-    // MOCK
-    static {
-        //String monitoredSystemJson = Util.getFileContent("json/MonitoredSystemFile.json");
-        //return new Jsonifier<>(MonitoredSystem.class).fromJson(monitoredSystemJson);
-
-        MonitoredSystem ms = new MonitoredSystem(new AString("id", "42X"));
-
-        AList<AEntity> staticList = new AList<>(
-                new ANumber("Id", 42),
-                new ANumber("Age", 25),
-                new ANumber("Sex", 1));
-        staticList.setLabel("Static");
-        ms.addCategory(staticList);
-
-        AList<AEntity> pathologicList = new AList<>(
-                new AString("Pathology", "OVERWEIGHT"),
-                new ADate("Beginning", new GregorianCalendar()),
-                new AString("Type", "Gynoid"));
-        pathologicList.setLabel("Pathologic");
-        ms.addCategory(pathologicList);
-
-        AList<AEntity> dynamicList = new AList<>(
-                new ANumber("Size", 123.45),
-                new ANumber("Weight", 67),
-                new ANumber("IMC", 67d / (1.2345 * 1.2345)));
-        dynamicList.setLabel("Dynamic");
-        ms.addCategory(dynamicList);
-
-        setMonitoredSystem(ms);
-    }
-
-    /*
-
-    static {
-        String experimentParametersJson = Util.getFileContent("json/parametersFile.json");
-        setExperimentParams((AList<AEntity>)Jsonifier.toAEntity(experimentParametersJson));
-    }
-
-    static {
-        String experimentResultsJson = Util.getFileContent("json/resultEnum1.json");
-
-        Map<String, LinkedTreeMap> map1 =
-                new Jsonifier<>(HashMap.class)
-                        .fromJson(experimentResultsJson);
-
-        Map<String, ARangedEnum> expResMap = new HashMap<>();
-        for (Map.Entry<String, LinkedTreeMap> entry : map1.entrySet()) {
-            expResMap.put(entry.getKey(),
-                    new Jsonifier<>(ARangedEnum.class)
-                            .fromJson(Jsonifier.toJson(entry.getValue())));
-        }
-
-        setExperimentResults(expResMap);
-    }
-
-    */
 }

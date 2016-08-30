@@ -4,7 +4,7 @@ import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanSelector;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
-import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.bus.Bus;
 import fr.axonic.avek.gui.view.AbstractView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,11 +41,11 @@ public class EstablishEffectView extends AbstractView {
 
     @FXML
     private void initialize() {
-        monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
+        monitoredSystemView.setMonitoredSystem(Bus.getMonitoredSystem());
 
-        parametersRoot.setAList(DataBus.getExperimentParams());
+        parametersRoot.setAList(Bus.getExperimentParams());
 
-        jellyBeanSelector.setJellyBeansChoice(DataBus.getExperimentResults());
+        jellyBeanSelector.setJellyBeansChoice(Bus.getExperimentResults());
         LOGGER.debug("EstablishEffectView loaded.");
     }
 

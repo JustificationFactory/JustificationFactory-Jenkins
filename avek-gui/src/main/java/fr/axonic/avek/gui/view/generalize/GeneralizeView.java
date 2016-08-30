@@ -5,7 +5,7 @@ import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
-import fr.axonic.avek.gui.model.DataBus;
+import fr.axonic.avek.bus.Bus;
 import fr.axonic.avek.gui.view.AbstractView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,10 +44,10 @@ public class GeneralizeView extends AbstractView {
     @FXML
     private void initialize() {
         // Get data from Data bus
-        parametersRoot.setAList(DataBus.getExperimentParams());
-        monitoredSystemView.setMonitoredSystem(DataBus.getMonitoredSystem());
+        parametersRoot.setAList(Bus.getExperimentParams());
+        monitoredSystemView.setMonitoredSystem(Bus.getMonitoredSystem());
 
-        List<JellyBeanItem> list = DataBus.getExperimentResults();
+        List<JellyBeanItem> list = Bus.getExperimentResults();
         for(JellyBeanItem jbi : list) {
             jellyBeanPane.addJellyBean(jbi);
         }

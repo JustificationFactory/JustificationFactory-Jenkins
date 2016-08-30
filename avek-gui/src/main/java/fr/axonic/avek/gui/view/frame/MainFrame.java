@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.view.frame;
 
-import fr.axonic.avek.gui.Orchestrator;
+import fr.axonic.avek.bus.Orchestrator;
 import fr.axonic.avek.gui.view.AbstractView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
