@@ -3,6 +3,8 @@ package fr.axonic.avek.gui.api;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.frame.MainFrame;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -19,19 +21,11 @@ public class GUIAPIImpl extends GUIAPI {
     private final LoadingView loadingView = new LoadingView();
     private Map<ComponentType, Object> content;
     private MainFrame frame;
+    private ViewType viewType;
 
 
     public static GUIAPIImpl getInstance() {
         return INSTANCE;
-    }
-
-
-    /**
-     * Ask the orchestrator to orchestrate this frame
-     * @param frame The Frame to orchestrate
-     */
-    public void setFrame(MainFrame frame) {
-        this.frame = frame;
     }
 
     /**
@@ -44,6 +38,8 @@ public class GUIAPIImpl extends GUIAPI {
 
     @Override
     public void show(ViewType viewType, Map<ComponentType, Object> content) throws GUIException {
+        this.viewType = viewType;
+
         if (!viewType.isContentCompatible(content)) {
             throw new GUIException("Wrong content for " + viewType);
         }
@@ -55,19 +51,16 @@ public class GUIAPIImpl extends GUIAPI {
             AbstractView view = viewType.getViewClass().newInstance();
             view.load();
             frame.setView(view);
-            frame.setStrategyButtonLabel("Treat");
+
+            if(viewType == ViewType.STRATEGY_SELECTION_VIEW) {
+                frame.hideStrategyButton();
+            }
+            else {
+                frame.setStrategyButtonLabel(viewType.name());
+            }
         } catch (InstantiationException | IllegalAccessException e) {
             LOGGER.error("Cannot instantiate "+viewType, e);
         }
-    }
-
-    @Override
-    public void onStrategyValidated() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("Strategy", null);
-        setChanged();
-        notifyObservers(data);
-        LOGGER.debug("Strategy validated, " + countObservers()+" observer(s) notified");
     }
 
     public Object getData(ComponentType type) {
@@ -77,6 +70,31 @@ public class GUIAPIImpl extends GUIAPI {
     public void onSubmitPatternChoice(String patternName) {
         Map<String, Object> data = new HashMap<>();
         data.put("Pattern", patternName);
+        setChanged();
+        notifyObservers(data);
+    }
+
+    public void initializeFrame(Stage primaryStage) {
+        LOGGER.debug("Loading MainFrame...");
+
+        primaryStage.setTitle("#AVEK analyzer");
+
+        this.frame = new MainFrame();
+        Scene s = new Scene(frame);
+        primaryStage.setScene(s);
+
+        primaryStage.show();
+
+        LOGGER.debug("MainFrame created.");
+    }
+
+
+    public void onStrategySubmitted() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Strategy", null);
+        data.put("ViewType", viewType);
+        data.put("Content", content);
+        setChanged();
         notifyObservers(data);
     }
 }

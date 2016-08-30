@@ -1,8 +1,10 @@
 package fr.axonic.avek.gui.view.strategyselection;
 
 import fr.axonic.avek.bus.Orchestrator;
+import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.view.AbstractView;
+import fr.axonic.avek.gui.view.frame.MainFrame;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,11 +35,9 @@ public class StrategySelectionView extends AbstractView {
         GUIAPIImpl.getInstance().onSubmitPatternChoice(comboBox.getValue());
     }
 
-    /**
-     * Change choices available in the combo box of this selection view
-     * @param choices the list of choices available
-     */
-    public void setAvailableChoices(List<String> choices) {
+    @FXML
+    public void initialize() {
+        List<String> choices = (List<String>) GUIAPIImpl.getInstance().getData(ComponentType.SELECTION);
         try {
             comboBox.setItems(FXCollections.observableArrayList(choices));
         }catch(NullPointerException e) {

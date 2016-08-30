@@ -30,6 +30,17 @@ public class DataTranslator {
 
         return effectList;
     }
+    public static List<JellyBeanItem> effectListToJellyBeanItems(List<EffectEnum> effectAsAList) {
+        final List<JellyBeanItem> effectList = new ArrayList<>();
+
+        effectList.addAll(effectAsAList
+                .stream()
+                .map(DataTranslator::effectToJellyBeanItem)
+                .collect(Collectors.toList()));
+
+        return effectList;
+    }
+
     private static Effect jellyBeanItemToEffect(JellyBeanItem jellyBeanItem) {
         EffectEnum[] eetab = EffectEnum.values();
 
@@ -47,5 +58,10 @@ public class DataTranslator {
         }
 
         return null;
+    }
+
+    public static JellyBeanItem effectToJellyBeanItem(EffectEnum effectEnum) {
+        JellyBeanItem jbi = new JellyBeanItem(effectEnum, effectEnum.state.getRange());
+        return jbi;
     }
 }

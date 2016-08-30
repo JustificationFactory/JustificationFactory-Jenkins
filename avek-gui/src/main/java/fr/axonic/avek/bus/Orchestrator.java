@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nathaël N on 04/08/16.
@@ -24,11 +25,11 @@ public class Orchestrator implements Observer {
     private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
 
     private ViewType currentView;
-    private String currentPatternId;
+    private Pattern currentPattern;
     private Subject currentSubject;
     private Stimulation currentStimulation;
 
-    private List<String> patternNamesList;
+    private final List<Pattern> patternList;
     private List<EvidenceRole> evidences;
     private final Stack<FutureTask> tasks;
 
@@ -37,6 +38,7 @@ public class Orchestrator implements Observer {
 
     public Orchestrator(GUIAPI guiapi) throws VerificationException, WrongEvidenceException, GUIException {
         tasks = new Stack<>();
+        patternList = new ArrayList<>();
 
         engineAPI = ArgumentationDiagramAPIImpl.getInstance();
         guiAPI = guiapi;
@@ -46,42 +48,40 @@ public class Orchestrator implements Observer {
     }
 
     private void orchestrate() throws GUIException, VerificationException, WrongEvidenceException {
-        guiAPI.showLoading(); // show loading while orchestrating because can last long
-
         computeNextPattern();
 
         // If there is only one pattern available, setting the view to it
-        if (patternNamesList.size() == 1) {
-            showViewFromPattern(patternNamesList.get(0));
+        if (patternList.size() == 1) {
+            showViewFromPattern(patternList.get(0));
         } else {
             Map<ComponentType, Object> content = new HashMap<>();
 
-            // TODO fill content
+            content.put(ComponentType.SELECTION,
+                    (List)(patternList.stream()
+                            .map(Pattern::getName)
+                            .collect(Collectors.toList())));
 
             guiAPI.show(ViewType.STRATEGY_SELECTION_VIEW, content);
         }
     }
 
     private void computeNextPattern() throws VerificationException, WrongEvidenceException {
-        // Constructing conclusion
-        if (currentPatternId != null) {
-            constructStep();
-            currentPatternId = null;
-        }
-
         // Preparing for following view
         evidences = engineAPI.getBaseEvidences();
-        patternNamesList = engineAPI.getPossiblePatterns(evidences);
+        patternList.clear();
+        patternList.addAll(
+                engineAPI.getPossiblePatterns(evidences)
+                        .stream()
+                        .map(engineAPI::getPattern)
+                        .collect(Collectors.toList()));
     }
 
-    private void showViewFromPattern(String patternName) throws GUIException {
+    private void showViewFromPattern(Pattern pattern) throws GUIException {
         ViewType viewType;
-        Map<ComponentType, Object> content = setDataFromEvidence();
-
-        patternName = engineAPI.getPattern(patternName).getName();
+        Map<ComponentType, Object> content = getDataFromEvidence();
 
         // Selecting the right view depending on pattern
-        switch (patternName) {
+        switch (pattern.getName()) {
             case "Treat":
                 viewType = ViewType.TREAT_VIEW;
                 break;
@@ -92,16 +92,16 @@ public class Orchestrator implements Observer {
                 viewType = ViewType.GENERALIZE_VIEW;
                 break;
             default:
-                throw new RuntimeException("Pattern is unknown for ViewType conversion: " + patternName);
+                throw new RuntimeException("Pattern is unknown for ViewType conversion: " + pattern);
         }
 
         guiAPI.show(viewType, content);
         currentView = viewType;
-        currentPatternId = patternName;
+        currentPattern = pattern;
     }
 
 
-    private Map<ComponentType, Object> setDataFromEvidence() {
+    private Map<ComponentType, Object> getDataFromEvidence() {
         Map<ComponentType, Object> content = new HashMap<>();
 
         // Setting default Experiment results to Data bus
@@ -109,7 +109,7 @@ public class Orchestrator implements Observer {
         for (EffectEnum effect : EffectEnum.values()) {
             effects.put(effect, effect.getState());
         }
-        content.put(ComponentType.EFFECTS, effects);
+        content.put(ComponentType.EFFECTS, DataTranslator.effectListToJellyBeanItems(Arrays.asList(EffectEnum.values())));
 
 
         // Setting others data to Data bus
@@ -167,17 +167,9 @@ public class Orchestrator implements Observer {
         return content;
     }
 
-    private void constructStep() {
-        // Obtaining data
-        List<ComponentType> s = currentView.getCompatibleComponents();
-        Map<ComponentType, Object> data = new HashMap<>();
-
-        for(ComponentType type : s) {
-            data.put(type, guiAPI.getData(type));
-        }
-
+    private void constructStep(Map<ComponentType, Object> data) {
         // constructing step
-        switch (currentPatternId) {
+        switch (currentPattern.getName()) {
             case "Treat":
                 constructTreatStep();
                 break;
@@ -188,14 +180,14 @@ public class Orchestrator implements Observer {
                 constructGeneralizeStep(data);
                 break;
             default:
-                LOGGER.error("Constructing \"" + currentPatternId + "\" not implemented");
+                LOGGER.error("Constructing \"" + currentPattern + "\" not implemented");
         }
     }
 
     private void constructTreatStep() {
         LOGGER.debug("Constructing Treat step");
         try {
-            engineAPI.constructStep(currentPatternId,
+            engineAPI.constructStep(currentPattern.getId(),
                     evidences,
                     new ExperimentationConclusion(
                             "Experimentation",
@@ -223,7 +215,7 @@ public class Orchestrator implements Observer {
 
             // TODO pass UploadedFile.uploadedFolder; in establishEffectConclusion
 
-            engineAPI.constructStep(currentPatternId, evidences, conclusion);
+            engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);
         } catch (WrongEvidenceException | StepBuildingException e) {
             LOGGER.error("Impossible to constructStep");
         }
@@ -244,7 +236,7 @@ public class Orchestrator implements Observer {
                             effects
                     ));
 
-            engineAPI.constructStep(currentPatternId, evidences, conclusion);
+            engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);
         } catch (WrongEvidenceException | StepBuildingException e) {
             LOGGER.error("Impossible to constructStep");
         }
@@ -266,14 +258,23 @@ public class Orchestrator implements Observer {
         GUIAPI api = (GUIAPI) o;
         Map<String, Object> data = (Map<String, Object>) arg;
 
+
+        boolean strategyFlag = false;
+        Map<ComponentType, Object> content = null;
+
         for(Map.Entry<String,Object> entry : data.entrySet()) {
             switch (entry.getKey()) {
-                case "Pattern" : // When user selected pattern strategy he wants clicking on submit button of selection view
+                case "Pattern": // When user selected pattern strategy he wants clicking on submit button of selection view
                     String selectedPatternName = (String) entry.getValue();
 
-                    if(patternNamesList.contains(selectedPatternName)) {
+                    Optional<Pattern> pattern =
+                            patternList.stream()
+                                .filter(p -> p.getName().equals(selectedPatternName))
+                                .findAny();
+
+                    if(pattern.isPresent()) {
                         try {
-                            showViewFromPattern(selectedPatternName);
+                            showViewFromPattern(pattern.get());
                         } catch (GUIException e) {
                             LOGGER.error("Unknown error occurred while showing view", e);
                         }
@@ -281,15 +282,26 @@ public class Orchestrator implements Observer {
                         LOGGER.warn("No pattern found with name: " + selectedPatternName);
                     }
                     break;
-                case "Strategy" : // When user validate data he wrote clicking on strategy button
-                    try {
-                        orchestrate();
-                    } catch (GUIException | VerificationException | WrongEvidenceException e) {
-                        LOGGER.error("Unknown error occurred while orchestrating", e);
-                    }
+                case "Strategy": // When user validate data he wrote clicking on strategy button
+                    strategyFlag = true;
                     break;
+                case "Content":
+                    content = (Map<ComponentType, Object>) data.get("Content");
+                    break;
+                case "ViewType": break;
                 default:
                     throw new RuntimeException("No rule existing for name: " + entry.getKey());
+            }
+        }
+
+        if(strategyFlag) {
+            try {
+                // Constructing conclusion
+                constructStep(content);
+
+                orchestrate();
+            } catch (GUIException | VerificationException | WrongEvidenceException e) {
+                LOGGER.error("Unknown error occurred while orchestrating", e);
             }
         }
     }

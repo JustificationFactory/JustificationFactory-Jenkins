@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public enum ViewType {
     TREAT_VIEW(TreatView.class, ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS/*, ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS*/),
-    ESTABLISH_EFFECT_VIEW(EstablishEffectView.class,ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS, ComponentType.EFFECTS),
-    GENERALIZE_VIEW(GeneralizeView.class, ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS, ComponentType.EFFECTS),
+    ESTABLISH_EFFECT_VIEW(EstablishEffectView.class,ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, /*ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS,*/ ComponentType.EFFECTS),
+    GENERALIZE_VIEW(GeneralizeView.class, ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, /*ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS,*/ ComponentType.EFFECTS),
     STRATEGY_SELECTION_VIEW(StrategySelectionView.class,ComponentType.SELECTION);
 
     private final static Logger LOGGER = Logger.getLogger(ViewType.class);

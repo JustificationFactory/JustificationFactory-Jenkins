@@ -40,7 +40,7 @@ public class MainFrame extends BorderPane {
 
     @FXML
     private void onClickStrategyButton(ActionEvent event) {
-        GUIAPIImpl.getInstance().onStrategyValidated();
+        GUIAPIImpl.getInstance().onStrategySubmitted();
     }
 
 

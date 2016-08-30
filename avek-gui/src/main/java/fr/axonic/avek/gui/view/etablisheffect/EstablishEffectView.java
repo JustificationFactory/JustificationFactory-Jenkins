@@ -51,6 +51,8 @@ public class EstablishEffectView extends AbstractView {
 
         parametersRoot.setAList((AList<?>) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
 
+
+
         jellyBeanSelector.setJellyBeansChoice((List<JellyBeanItem>) guiapi.getData(ComponentType.EFFECTS));
         LOGGER.debug("EstablishEffectView loaded.");
     }
