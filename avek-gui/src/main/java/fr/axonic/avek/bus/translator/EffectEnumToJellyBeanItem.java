@@ -1,12 +1,10 @@
 package fr.axonic.avek.bus.translator;
 
-import fr.axonic.avek.engine.instance.conclusion.Effect;
 import fr.axonic.avek.engine.instance.conclusion.EffectEnum;
 import fr.axonic.avek.engine.instance.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.AEnum;
-import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
 import org.apache.log4j.Logger;
 
@@ -35,11 +33,11 @@ class EffectEnumToJellyBeanItem extends DataTranslator<List<EffectEnum>, GUIEffe
     }
 
     private JellyBeanItem effectToJellyBeanItem(EffectEnum effectEnum) {
-        List<EffectStateEnum> list =
-                effectEnum.getState().getRange().getList()
-                        .stream()
-                        .map(AVar::getValue)
-                        .collect(Collectors.toList());
+        List<EffectStateEnum> list = new ArrayList<>();
+
+        for(AEnum<EffectStateEnum> s : effectEnum.getState().getRange().getList()) {
+            list.add(s.getValue());
+        }
 
         return new JellyBeanItem<>(effectEnum, list);
     }

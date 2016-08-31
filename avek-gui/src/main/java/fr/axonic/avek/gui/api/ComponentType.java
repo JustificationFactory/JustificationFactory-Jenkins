@@ -3,7 +3,6 @@ package fr.axonic.avek.gui.api;
 import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.engine.AList;
 
 import java.util.Arrays;
 import java.util.List;

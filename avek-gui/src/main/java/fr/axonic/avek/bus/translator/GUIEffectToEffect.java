@@ -9,13 +9,11 @@ import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
-import java.util.List;
-
 /**
  * Created by Nathaël N on 28/07/16.
  */
-class JellyBeanItemToEffect extends DataTranslator<GUIEffect, AList<Effect>> {
-    private final static Logger LOGGER = Logger.getLogger(JellyBeanItemToEffect.class);
+class GUIEffectToEffect extends DataTranslator<GUIEffect, AList<Effect>> {
+    private final static Logger LOGGER = Logger.getLogger(GUIEffectToEffect.class);
 
     @Override
     protected AList<Effect> translate(GUIEffect effectsAsJellyBeanItems) {

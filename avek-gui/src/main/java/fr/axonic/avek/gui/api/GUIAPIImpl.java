@@ -37,6 +37,8 @@ public class GUIAPIImpl extends GUIAPI {
 
     @Override
     public void show(final String name, final ViewType viewType, Map<ComponentType, Object> content) throws GUIException {
+        this.showLoading();
+
         this.viewType = viewType;
 
         if (!viewType.isContentCompatible(content)) {
@@ -53,8 +55,7 @@ public class GUIAPIImpl extends GUIAPI {
 
             if(viewType == ViewType.STRATEGY_SELECTION_VIEW) {
                 frame.hideStrategyButton();
-            }
-            else {
+            } else {
                 frame.setStrategyButtonLabel(name);
             }
         } catch (InstantiationException | IllegalAccessException e) {

@@ -9,7 +9,6 @@ import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.engine.AList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

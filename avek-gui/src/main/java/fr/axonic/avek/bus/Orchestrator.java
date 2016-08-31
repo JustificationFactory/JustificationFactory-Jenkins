@@ -203,7 +203,7 @@ public class Orchestrator implements Observer {
     private void constructEstablishEffectStep(Map<ComponentType, Object> data) {
         LOGGER.debug("Constructing Establish effect step");
         try {
-            AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine((GUIEffect) data.get(ComponentType.EFFECTS));
+            AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
 
             EstablishedEffect establishedEffect =
                     new EstablishedEffect(
