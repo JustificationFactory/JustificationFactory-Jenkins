@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
 
 /**
  * Created by cduffau on 12/08/16.
@@ -37,7 +36,7 @@ public class GUIAPIImpl extends GUIAPI {
     }
 
     @Override
-    public void show(ViewType viewType, Map<ComponentType, Object> content) throws GUIException {
+    public void show(final String name, final ViewType viewType, Map<ComponentType, Object> content) throws GUIException {
         this.viewType = viewType;
 
         if (!viewType.isContentCompatible(content)) {
@@ -56,7 +55,7 @@ public class GUIAPIImpl extends GUIAPI {
                 frame.hideStrategyButton();
             }
             else {
-                frame.setStrategyButtonLabel(viewType.name());
+                frame.setStrategyButtonLabel(name);
             }
         } catch (InstantiationException | IllegalAccessException e) {
             LOGGER.error("Cannot instantiate "+viewType, e);

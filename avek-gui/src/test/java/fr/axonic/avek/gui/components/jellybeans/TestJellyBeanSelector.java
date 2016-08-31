@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
+import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.avek.gui.util.ExampleState;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.base.AEnum;
@@ -41,7 +42,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
 
-        List<JellyBeanItem> itemList = new ArrayList<>();
+        GUIEffect effect = new GUIEffect();
         for (int i = 1; i <= 30; i++) {
             ExampleState val = ExampleState.values()[0];
             ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.class, val);
@@ -51,7 +52,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
             List<String> ls = aEnum.getRange().stream().map(AEnum::toString).collect(Collectors.toList());
 
             final String label = "AE" + i;
-            itemList.add(new JellyBeanItem<>(new AEnumItem() {
+            effect.add(new JellyBeanItem<>(new AEnumItem() {
                 @Override
                 public String getLabel() {
                     return label;
@@ -63,7 +64,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
         }
 
         // Fill experiment sample list
-        jbs.setJellyBeansChoice(itemList);
+        jbs.setJellyBeansChoice(effect);
         jellyBeanPane = jbs.getJellyBeanPane();
     }
 

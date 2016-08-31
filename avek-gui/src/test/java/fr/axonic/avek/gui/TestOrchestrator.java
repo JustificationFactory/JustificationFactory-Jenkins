@@ -1,14 +1,6 @@
 package fr.axonic.avek.gui;
 
-import fr.axonic.avek.bus.Orchestrator;
-import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
-import fr.axonic.avek.gui.view.frame.MainFrame;
-import javafx.stage.Stage;
-import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Nathaël N on 11/08/16.

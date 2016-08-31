@@ -2,11 +2,11 @@ package fr.axonic.avek.gui.view.etablisheffect;
 
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
-import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
-import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanSelector;
+import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.parameters.groups.ParametersRoot;
-import fr.axonic.avek.bus.DataTranslator;
+import fr.axonic.avek.gui.model.GUIEffect;
+import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AList;
@@ -18,8 +18,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
-
-import java.util.List;
 
 public class EstablishEffectView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(EstablishEffectView.class);
@@ -49,11 +47,11 @@ public class EstablishEffectView extends AbstractView {
 
         monitoredSystemView.setMonitoredSystem((MonitoredSystem) guiapi.getData(ComponentType.MONITORED_SYSTEM));
 
-        parametersRoot.setAList((AList<?>) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
+        parametersRoot.setData((GUIExperimentParameter) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
 
 
 
-        jellyBeanSelector.setJellyBeansChoice((List<JellyBeanItem>) guiapi.getData(ComponentType.EFFECTS));
+        jellyBeanSelector.setJellyBeansChoice((GUIEffect) guiapi.getData(ComponentType.EFFECTS));
         LOGGER.debug("EstablishEffectView loaded.");
     }
 
@@ -111,8 +109,8 @@ public class EstablishEffectView extends AbstractView {
         outerResultsButton.setSelected(newState);
     }
 
-    public List<JellyBeanItem> getEffects() {
-        return jellyBeanSelector.getSelected();
+    public GUIEffect getEffects() {
+        return new GUIEffect(jellyBeanSelector.getSelected());
     }
 }
 

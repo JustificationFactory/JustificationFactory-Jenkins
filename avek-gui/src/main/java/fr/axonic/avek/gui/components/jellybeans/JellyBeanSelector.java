@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
+import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.engine.AEnumItem;
 import javafx.collections.FXCollections;
 import javafx.event.Event;

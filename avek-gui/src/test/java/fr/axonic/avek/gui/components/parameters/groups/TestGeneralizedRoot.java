@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.groups;
 
+import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import fr.axonic.base.ABoolean;
@@ -41,23 +42,23 @@ public class TestGeneralizedRoot extends ApplicationTest {
 
         AList<AEntity> list = new AList<>();
         list.setLabel("Root");
-        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        ctm.runNowOnPlatform(() -> gRoot.setData(new GUIExperimentParameter(list)));
         assertEquals(1, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new ANumber("LabelText", 42.31));
-        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        ctm.runNowOnPlatform(() -> gRoot.setData(new GUIExperimentParameter(list)));
         assertEquals(2, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new ABoolean("Boolbool", true));
-        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        ctm.runNowOnPlatform(() -> gRoot.setData(new GUIExperimentParameter(list)));
         assertEquals(3, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new ADate("Datedate", new GregorianCalendar()));
-        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        ctm.runNowOnPlatform(() -> gRoot.setData(new GUIExperimentParameter(list)));
         assertEquals(4, gRoot.getParametersCategory().getNodes().size());
 
         list.add(new AString("Strstr", "LaString"));
-        ctm.runNowOnPlatform(() -> gRoot.setAList(list));
+        ctm.runNowOnPlatform(() -> gRoot.setData(new GUIExperimentParameter(list)));
         assertEquals(5, gRoot.getParametersCategory().getNodes().size());
     }
 }

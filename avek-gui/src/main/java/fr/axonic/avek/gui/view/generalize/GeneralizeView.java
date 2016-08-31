@@ -1,14 +1,14 @@
 package fr.axonic.avek.gui.view.generalize;
 
 import fr.axonic.avek.gui.api.ComponentType;
-import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
-import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.filelist.FileListView;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
+import fr.axonic.avek.gui.components.monitoredsystem.MonitoredSystemView;
 import fr.axonic.avek.gui.components.parameters.groups.GeneralizedRoot;
-import fr.axonic.avek.bus.DataTranslator;
+import fr.axonic.avek.gui.model.GUIEffect;
+import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AList;
@@ -17,8 +17,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
-
-import java.util.List;
 
 public class GeneralizeView extends AbstractView {
     private final static Logger LOGGER = Logger.getLogger(GeneralizeView.class);
@@ -51,9 +49,9 @@ public class GeneralizeView extends AbstractView {
         GUIAPIImpl guiapi = GUIAPIImpl.getInstance();
 
         // Get data from Data bus
-        parametersRoot.setAList((AList<?>) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
+        parametersRoot.setData((GUIExperimentParameter) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
         monitoredSystemView.setMonitoredSystem((MonitoredSystem) guiapi.getData(ComponentType.MONITORED_SYSTEM));
-        List<JellyBeanItem> effects = (List<JellyBeanItem>) guiapi.getData(ComponentType.EFFECTS);
+        GUIEffect effects = (GUIEffect) guiapi.getData(ComponentType.EFFECTS);
 
         for(JellyBeanItem jbi : effects) {
             jellyBeanPane.addJellyBean(jbi);
@@ -137,8 +135,8 @@ public class GeneralizeView extends AbstractView {
         outerResultsButton.setSelected(isVisible);
     }
 
-    public List<JellyBeanItem> getEffects() {
-        return jellyBeanPane.getJellyBeans();
+    public GUIEffect getEffects() {
+        return new GUIEffect(jellyBeanPane.getJellyBeans());
     }
 }
 

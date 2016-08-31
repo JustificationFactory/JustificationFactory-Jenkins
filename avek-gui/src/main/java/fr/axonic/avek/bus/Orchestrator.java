@@ -1,14 +1,18 @@
 package fr.axonic.avek.bus;
 
+import fr.axonic.avek.bus.translator.DataTranslator;
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
-import fr.axonic.avek.gui.api.*;
-import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
+import fr.axonic.avek.gui.api.ComponentType;
+import fr.axonic.avek.gui.api.GUIAPI;
+import fr.axonic.avek.gui.api.GUIException;
+import fr.axonic.avek.gui.api.ViewType;
+import fr.axonic.avek.gui.model.GUIEffect;
+import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.model.MonitoredSystem;
-import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
@@ -61,7 +65,7 @@ public class Orchestrator implements Observer {
                             .map(Pattern::getName)
                             .collect(Collectors.toList())));
 
-            guiAPI.show(ViewType.STRATEGY_SELECTION_VIEW, content);
+            guiAPI.show("Selection", ViewType.STRATEGY_SELECTION_VIEW, content);
         }
     }
 
@@ -78,7 +82,10 @@ public class Orchestrator implements Observer {
 
     private void showViewFromPattern(Pattern pattern) throws GUIException {
         ViewType viewType;
+
         Map<ComponentType, Object> content = getDataFromEvidence();
+        Map<ComponentType, Object> newContent = new HashMap<>();
+        content.forEach((k, v) -> newContent.put(k, DataTranslator.translateForGUI(v)));
 
         // Selecting the right view depending on pattern
         switch (pattern.getName()) {
@@ -95,7 +102,7 @@ public class Orchestrator implements Observer {
                 throw new RuntimeException("Pattern is unknown for ViewType conversion: " + pattern);
         }
 
-        guiAPI.show(viewType, content);
+        guiAPI.show(pattern.getName(), viewType, newContent);
         currentView = viewType;
         currentPattern = pattern;
     }
@@ -105,12 +112,7 @@ public class Orchestrator implements Observer {
         Map<ComponentType, Object> content = new HashMap<>();
 
         // Setting default Experiment results to Data bus
-        Map<EffectEnum, ARangedEnum> effects = new HashMap<>();
-        for (EffectEnum effect : EffectEnum.values()) {
-            effects.put(effect, effect.getState());
-        }
-        content.put(ComponentType.EFFECTS, DataTranslator.effectListToJellyBeanItems(Arrays.asList(EffectEnum.values())));
-
+        content.put(ComponentType.EFFECTS, Arrays.asList(EffectEnum.values()));
 
         // Setting others data to Data bus
         for (EvidenceRole evidenceRole : evidences) {
@@ -147,7 +149,7 @@ public class Orchestrator implements Observer {
                         list.setLabel("root");
                         list.addAll(currentStimulation.getFieldsContainer().values());
 
-                        content.put(ComponentType.EXPERIMENTATION_PARAMETERS, list);
+                        content.put(ComponentType.EXPERIMENTATION_PARAMETERS, new GUIExperimentParameter(list));
                         break;
                     case "":
                         if (evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
@@ -201,7 +203,7 @@ public class Orchestrator implements Observer {
     private void constructEstablishEffectStep(Map<ComponentType, Object> data) {
         LOGGER.debug("Constructing Establish effect step");
         try {
-            AList<Effect> effects = DataTranslator.jellyBeanItemsToEffectList((List<JellyBeanItem>) data.get(ComponentType.EFFECTS));
+            AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine((GUIEffect) data.get(ComponentType.EFFECTS));
 
             EstablishedEffect establishedEffect =
                     new EstablishedEffect(
@@ -225,7 +227,7 @@ public class Orchestrator implements Observer {
         LOGGER.debug("Constructing Generalize step");
         try {
             // TODO pass UploadedFile.uploadedFolder; in GeneralizationConclusion
-            AList<Effect> effects = DataTranslator.jellyBeanItemsToEffectList((List<JellyBeanItem>) data.get(ComponentType.EFFECTS));
+            AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
 
             GeneralizationConclusion conclusion = new GeneralizationConclusion(
                     "Generalization",
@@ -250,8 +252,6 @@ public class Orchestrator implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        LOGGER.debug("Received notify !");
-
         if(!o.equals(guiAPI)) {
             throw new RuntimeException("Update get not from current used GUI API");
         }
@@ -284,9 +284,11 @@ public class Orchestrator implements Observer {
                     break;
                 case "Strategy": // When user validate data he wrote clicking on strategy button
                     strategyFlag = true;
+                    LOGGER.debug("Strategy flag raised");
                     break;
                 case "Content":
                     content = (Map<ComponentType, Object>) data.get("Content");
+                    LOGGER.debug("Content set to "+content);
                     break;
                 case "ViewType": break;
                 default:

@@ -1,10 +1,8 @@
 package fr.axonic.avek.gui.view.strategyselection;
 
-import fr.axonic.avek.bus.Orchestrator;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.view.AbstractView;
-import fr.axonic.avek.gui.view.frame.MainFrame;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

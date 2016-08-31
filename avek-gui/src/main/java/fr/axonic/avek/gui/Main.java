@@ -4,12 +4,9 @@ import fr.axonic.avek.bus.Orchestrator;
 import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.api.GUIException;
-import fr.axonic.avek.gui.view.frame.MainFrame;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 

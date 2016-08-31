@@ -69,7 +69,7 @@ public abstract class AbstractView extends BorderPane {
             loaded = true;
         } catch (IOException | RuntimeException e) {
             LOGGER.fatal("Impossible to load FXML", e);
-            throw new RuntimeException("Impossible to load FXML\nFor object: "+toString()+"\nWith path:"+path);
+            throw new RuntimeException("Impossible to load FXML\nFor "+toString()+"\nWith path:"+path);
         }
     }
 

@@ -1,17 +1,18 @@
 package fr.axonic.avek.gui.api;
 
+import fr.axonic.avek.gui.model.GUIEffect;
+import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AList;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by cduffau on 12/08/16.
  */
 public enum ComponentType {
-    MONITORED_SYSTEM(MonitoredSystem.class), EFFECTS(List.class), EXPERIMENTATION_PARAMETERS(AList.class), COMMENTS(String.class), COMPLEMENTARY_FILES, SELECTION(List.class);
+    MONITORED_SYSTEM(MonitoredSystem.class), EFFECTS(GUIEffect.class), EXPERIMENTATION_PARAMETERS(GUIExperimentParameter.class), COMMENTS(String.class), COMPLEMENTARY_FILES, SELECTION(List.class);
 
     private List<Class> compatibleObjects;
 

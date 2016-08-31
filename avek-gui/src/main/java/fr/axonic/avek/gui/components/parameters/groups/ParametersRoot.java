@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.groups;
 
-import fr.axonic.base.engine.AList;
+import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import org.apache.log4j.Logger;
@@ -29,12 +29,12 @@ public class ParametersRoot extends GridPane {
         getStyleClass().add("parameter-root");
     }
 
-    public void setAList(AList<?> list) {
+    public void setData(GUIExperimentParameter expParam) {
         // Empty current display
         getChildren().clear();
 
         // Compute category
-        parameters.setAList(list);
+        parameters.setAList(expParam.getAList());
 
         // Set display
         List<List<Node>> nodes = parameters.getNodes();
@@ -48,7 +48,7 @@ public class ParametersRoot extends GridPane {
         }
     }
 
-    public ParametersCategory getParametersCategory() {
+    ParametersCategory getParametersCategory() {
         return parameters;
     }
 }

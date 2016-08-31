@@ -75,6 +75,6 @@ public class JellyBeanItem <T> {
 
     @Override
     public String toString() {
-        return "JellyBeanItem{id="+id+", states="+states+", editable="+editable+", current state="+getState()+"}";
+        return "JellyBeanItem{'"+id+"' state:'"+getState()+"'" +(!editable?" readonly}":"}");
     }
 }
