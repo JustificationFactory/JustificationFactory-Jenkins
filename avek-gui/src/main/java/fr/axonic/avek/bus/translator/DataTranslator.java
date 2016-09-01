@@ -13,8 +13,8 @@ public abstract class DataTranslator<T,S> {
     private static HashSet<DataTranslator> toEngine = new HashSet<>();
 
     static {
-        toGUI.add(new EffectEnumToJellyBeanItem());
-        toGUI.add(new EffectToJellyBeanItem());
+        toGUI.add(new EffectEnumToGuiEffect());
+        toGUI.add(new EffectToGuiEffect());
         toEngine.add(new GUIEffectToEffect());
     }
 

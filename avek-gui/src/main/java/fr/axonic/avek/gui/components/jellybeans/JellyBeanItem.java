@@ -2,9 +2,8 @@ package fr.axonic.avek.gui.components.jellybeans;
 
 import fr.axonic.base.engine.AEnumItem;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -77,4 +76,6 @@ public class JellyBeanItem <T> {
     public String toString() {
         return "JellyBeanItem{'"+id+"' state:'"+getState()+"'" +(!editable?" readonly}":"}");
     }
+
+
 }

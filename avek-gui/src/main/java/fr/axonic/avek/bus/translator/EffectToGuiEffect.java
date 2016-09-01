@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 /**
  * Created by Nathaël N on 28/07/16.
  */
-class EffectToJellyBeanItem extends DataTranslator<AList<Effect>, GUIEffect> {
-    private final static Logger LOGGER = Logger.getLogger(EffectToJellyBeanItem.class);
+class EffectToGuiEffect extends DataTranslator<AList<Effect>, GUIEffect> {
+    private final static Logger LOGGER = Logger.getLogger(EffectToGuiEffect.class);
 
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
 
@@ -33,13 +33,15 @@ class EffectToJellyBeanItem extends DataTranslator<AList<Effect>, GUIEffect> {
     }
 
     private JellyBeanItem effectToJellyBeanItem(Effect effectEnum) {
-        LOGGER.debug("Converting effect to jellyBeanItem: "+effectEnum);
+        /*LOGGER.debug("Converting effect to jellyBeanItem: "+effectEnum);
 
         List<EffectStateEnum> list = new ArrayList<>();
-        for(AEnum ae : effectEnum.getEffectType().getValue().getState().getRange()) {
-            list.add((EffectStateEnum) ae.getValue());
-        }
+        for(AEnum<EffectStateEnum> ae :
+                effectEnum.getEffectType().getValue().getState().getRange()) {
+            list.add(ae.getValue());
+        }*/
 
-        return new JellyBeanItem<>(effectEnum.getEffectType().getValue(), list);
+        return new JellyBeanItem<>(effectEnum.getEffectType().getValue(),
+                effectEnum.getEffectType().getRange());
     }
 }

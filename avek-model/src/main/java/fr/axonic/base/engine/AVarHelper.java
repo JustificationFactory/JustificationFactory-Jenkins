@@ -130,6 +130,7 @@ public final class AVarHelper {
         for(Enum enu : enums){
             AEnum<T> aEnum=new AEnum(enu.getClass());
             aEnum.setValue((T) enu);
+            aEnum.setLabel(((T)enu).getLabel());
             alist.add(aEnum);
         }
         return alist;

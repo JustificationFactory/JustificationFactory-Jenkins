@@ -5,7 +5,6 @@ import fr.axonic.avek.engine.instance.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.AEnum;
-import fr.axonic.base.engine.AVar;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ import java.util.stream.Collectors;
 /**
  * Created by Nathaël N on 28/07/16.
  */
-class EffectEnumToJellyBeanItem extends DataTranslator<List<EffectEnum>, GUIEffect> {
-    private final static Logger LOGGER = Logger.getLogger(EffectEnumToJellyBeanItem.class);
+class EffectEnumToGuiEffect extends DataTranslator<List<EffectEnum>, GUIEffect> {
+    private final static Logger LOGGER = Logger.getLogger(EffectEnumToGuiEffect.class);
 
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
 
