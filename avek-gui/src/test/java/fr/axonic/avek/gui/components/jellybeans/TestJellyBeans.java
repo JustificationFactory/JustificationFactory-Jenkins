@@ -29,8 +29,8 @@ public class TestJellyBeans extends ApplicationTest {
         UtilForTests.disableGraphics();
     }
 
-    private JellyBeanItem<ExampleState> jbi;
-    private JellyBean<ExampleState> jb;
+    private JellyBeanItem<AEnumItem, ExampleState> jbi;
+    private JellyBean<AEnumItem, ExampleState> jb;
     private Button jbText, jbCross;
 
     @Override
@@ -66,20 +66,20 @@ public class TestJellyBeans extends ApplicationTest {
         this.jbi.setState(ExampleState.VERY_LOW);
         jbi.setEditable(false);
 
-        assertEquals(ExampleState.VERY_LOW, jbi.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState().getObject());
 
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW, jbi.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState().getObject());
 
         clickOn(jbText); // Medium
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW, jbi.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState().getObject());
 
         clickOn(jbText); // Very high
         clickOn(jbText); // Very Low
         clickOn(jbText); // low
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW, jbi.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState().getObject());
 
         // try delete
         clickOn(jbCross);
@@ -104,21 +104,21 @@ public class TestJellyBeans extends ApplicationTest {
             jbi.setEditable(true);
         });
 
-        assertEquals(ExampleState.VERY_LOW, jbi.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.LOW, jbi.getState());
+        assertEquals(ExampleState.LOW, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.MEDIUM, jbi.getState());
+        assertEquals(ExampleState.MEDIUM, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.HIGH, jbi.getState());
+        assertEquals(ExampleState.HIGH, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_HIGH, jbi.getState());
+        assertEquals(ExampleState.VERY_HIGH, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.VERY_LOW, jbi.getState());
+        assertEquals(ExampleState.VERY_LOW, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.LOW, jbi.getState());
+        assertEquals(ExampleState.LOW, jbi.getState().getObject());
         clickOn(jbText);
-        assertEquals(ExampleState.MEDIUM, jbi.getState());
+        assertEquals(ExampleState.MEDIUM, jbi.getState().getObject());
 
         // try delete
         clickOn(jbCross);

@@ -13,25 +13,31 @@ import java.util.function.Function;
 public class ItemFormat<T,U> extends ItemStateFormat<T> {
     final List<ItemStateFormat<U>> states = new ArrayList<>();
 
-    final Collection<U> originalCollection;
-
     ItemFormat(final T linkedObject, final Collection<U> states) {
         super(linkedObject);
-        originalCollection = states;
-
-        for(U state : originalCollection) {
+        for(U state : states) {
             this.states.add(new ItemStateFormat<>(state));
         }
     }
 
-    public void setGetStateLabelMethod(Function<U,String> getStateLabelMethod) {
+    public void setGetStateLabelMethod(Function<U,String> getLabelMethod) {
         for(ItemStateFormat<U> state : states) {
-            state.setGetLabelMethod(getStateLabelMethod);
+            state.setGetLabelMethod(getLabelMethod);
+        }
+    }
+    public void setGetStateValueMethod(Function<U,String> getValueMethod) {
+        for(ItemStateFormat<U> state : states) {
+            state.setGetValueMethod(getValueMethod);
         }
     }
 
-    public Collection<ItemStateFormat<U>> getStates() {
-        return Collections.unmodifiableCollection(states);
+    public List<ItemStateFormat<U>> getStates() {
+        return states;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemFormat{'"+getLabel()+"'/'"+getValue()+"}";
     }
 }
 

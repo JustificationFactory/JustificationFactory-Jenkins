@@ -38,7 +38,7 @@ public class RangedParameter extends SensitiveParameter {
             String strVal = value.toString();
 
             // Each states can be set as True or False for generalization
-            JellyBeanItem<Boolean> item = new JellyBeanItem<>(value, Arrays.asList(false, true));
+            JellyBeanItem<T,Boolean> item = new JellyBeanItem<>(value, Arrays.asList(false, true));
             jellyBeanPane.addJellyBean(item);
 
             if(strVal.equals(stateList.getValue().toString())) {
@@ -55,7 +55,7 @@ public class RangedParameter extends SensitiveParameter {
                 // this state will be added to stateList
                 // otherwise it will be removed from
                 item.addStateChangeListener((lastState, newState) -> {
-                    if (!newState) {
+                    if (!newState.getObject()) {
                         stateList.getRange().remove(state);
                     }else if (!stateList.getRange().contains(state)) {
                         stateList.getRange().add(state);

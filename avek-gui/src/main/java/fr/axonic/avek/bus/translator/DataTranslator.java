@@ -2,6 +2,8 @@ package fr.axonic.avek.bus.translator;
 
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -15,7 +17,7 @@ public abstract class DataTranslator<T,S> {
     static {
         toGUI.add(new EffectEnumToGuiEffect());
         toGUI.add(new EffectToGuiEffect());
-        toEngine.add(new GUIEffectToEffect());
+        //toEngine.add(new GUIEffectToEffect());
     }
 
     protected abstract S translate(T t);
@@ -35,11 +37,20 @@ public abstract class DataTranslator<T,S> {
                 LOGGER.debug("Translated using "+translator.getClass().getSimpleName());
                 return ret;
             }catch(ClassCastException ignored) {
+                LOGGER.debug("ClassCastException thrown : "+ignored.getLocalizedMessage());
                 // Cannot translateForGUI using this translator
             }
         }
 
-        LOGGER.debug("Not translated "+object.getClass().getSimpleName());
+        LOGGER.debug("Not translated "+object.getClass()+" using "+destination);
         return object;
+    }
+
+    @Override
+    public String toString() {
+        return "DataTranslator<"
+                + Arrays.toString(((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments())
+                +">";
     }
 }

@@ -1,51 +1,58 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
-import fr.axonic.base.engine.AEnumItem;
-
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
  * Created by Nathaël N on 12/08/16.
  */
-public class JellyBeanItem <T> {
-    private final AEnumItem id;
-    private final List<T> states;
-    private int currentStateIndex;
+public class JellyBeanItem<T,U> {
+    private final ItemFormat<T,U> itemFormat;
+    private ItemStateFormat<U> currentState;
     private boolean editable;
 
-    public JellyBeanItem(AEnumItem id, List<T> states) {
-        this.id = id;
-        this.states = states;
-        //this.editable = true;
-        setState(0);
+    public JellyBeanItem(final T linkedObject, final Collection<U> states) {
+        itemFormat = new ItemFormat<>(linkedObject, states);
+        this.editable = false;
+        setState(getStates().get(0));
     }
 
-    List<T> getStates() {
-        return states;
+    // Getters  //  //  //
+
+    public T getIdentifier() {
+        return itemFormat.getObject();
+    }
+    public String getText() {
+        return itemFormat.getLabel();
+    }
+    public List<ItemStateFormat<U>> getStates() {
+        return itemFormat.getStates();
+    }
+    public ItemStateFormat<U> getState() {
+        return currentState;
     }
 
-    public AEnumItem getIdentifier() {
-        return id;
-    }
+    // Setters  //  //  //
 
-    public String getText() { return id.getLabel(); }
+    public void setState(U state) {
+        for(ItemStateFormat<U> isfu : getStates()) {
+            if(isfu.getObject().equals(state)) {
+                setState(isfu);
+                return;
+            }
+        }
 
-    private void setState(int id) {
-        T lastState = getState();
-        this.currentStateIndex = id;
-        T newState = getState();
+        throw new RuntimeException("Tried to set state to a value out of range");
+    }
+    private void setState(ItemStateFormat<U> isfu) {
+        ItemStateFormat<U> before = currentState;
+        currentState = isfu;
 
-        for(BiConsumer<T,T> listener : stateChangeListeners)
-            listener.accept(lastState, newState);
-    }
-    public void setState(T state) {
-        setState(states.indexOf(state));
-    }
-    public T getState() {
-        return states.get(currentStateIndex);
+        stateChangeListeners.forEach(listener -> listener.accept(before, isfu));
     }
 
     public void setEditable(boolean editable) {
@@ -54,8 +61,10 @@ public class JellyBeanItem <T> {
             editableStateChangeListener.accept(editable);
     }
 
-    private final Set<BiConsumer<T, T>> stateChangeListeners = new HashSet<>(); // LastValue, NewValue
-    public void addStateChangeListener(BiConsumer<T, T> listener) {
+    //  Listeners   //  //  //
+
+    private final Set<BiConsumer<ItemStateFormat<U>, ItemStateFormat<U>>> stateChangeListeners = new HashSet<>(); // LastValue, NewValue
+    public void addStateChangeListener(BiConsumer<ItemStateFormat<U>, ItemStateFormat<U>> listener) {
         stateChangeListeners.add(listener);
         listener.accept(getState(), getState());
     }
@@ -65,17 +74,24 @@ public class JellyBeanItem <T> {
         editableStateChangeListener = method;
     }
 
+    //  Active methods  //  //  //
+
     void nextState() {
-        // ReadOnly
         if (editable) {
-            setState((currentStateIndex + 1) % states.size());
+            int currentStateIndex = getStates().indexOf(currentState);
+            setState(getStates().get((currentStateIndex + 1) % itemFormat.getStates().size()));
         }
+        // else nothing because readonly
     }
+
+    //  Overridden   //  //  //
 
     @Override
     public String toString() {
-        return "JellyBeanItem{'"+id+"' state:'"+getState()+"'" +(!editable?" readonly}":"}");
+        return "JellyBeanItem{"+itemFormat+" state:'"+getState()+"'" +(!editable?" readonly}":"}");
     }
 
-
+    public ItemFormat<T,U> getFormat() {
+        return itemFormat;
+    }
 }

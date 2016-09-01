@@ -1,13 +1,14 @@
 package fr.axonic.avek.bus.translator;
 
+import com.sun.org.apache.bcel.internal.generic.LOOKUPSWITCH;
 import fr.axonic.avek.engine.instance.conclusion.EffectEnum;
 import fr.axonic.avek.engine.instance.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.AEnum;
+import fr.axonic.base.engine.AEntity;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +33,14 @@ class EffectEnumToGuiEffect extends DataTranslator<List<EffectEnum>, GUIEffect> 
     }
 
     private JellyBeanItem effectToJellyBeanItem(EffectEnum effectEnum) {
-        List<EffectStateEnum> list = new ArrayList<>();
+        JellyBeanItem<EffectEnum, AEnum<EffectStateEnum>> jbi
+                = new JellyBeanItem<>(effectEnum, effectEnum.getState().getRange());
 
-        for(AEnum<EffectStateEnum> s : effectEnum.getState().getRange().getList()) {
-            list.add(s.getValue());
-        }
+        jbi.getFormat().setGetLabelMethod(EffectEnum::getLabel);
+        jbi.getFormat().setGetStateLabelMethod(AEntity::getLabel);
+        jbi.getFormat().setGetStateValueMethod(a -> a.getValue().toString());
 
-        return new JellyBeanItem<>(effectEnum, list);
+        return jbi;
     }
 
 }

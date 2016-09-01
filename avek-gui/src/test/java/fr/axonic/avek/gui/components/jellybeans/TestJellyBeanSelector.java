@@ -51,7 +51,8 @@ public class TestJellyBeanSelector extends ApplicationTest {
             List<String> ls = aEnum.getRange().stream().map(AEnum::toString).collect(Collectors.toList());
 
             final String label = "AE" + i;
-            effect.add(new JellyBeanItem<>(new AEnumItem() {
+
+            JellyBeanItem<AEnumItem,String> jbi = new JellyBeanItem<>(new AEnumItem() {
                 @Override
                 public String getLabel() {
                     return label;
@@ -59,7 +60,11 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
                 @Override public String getCode() {return null;}
                 @Override public String getPath() {return null;}
-            }, ls));
+            }, ls);
+            jbi.getFormat().setGetLabelMethod(AEnumItem::getLabel);
+            jbi.getFormat().setGetValueMethod(AEnumItem::getLabel);
+
+            effect.add(jbi);
         }
 
         // Fill experiment sample list

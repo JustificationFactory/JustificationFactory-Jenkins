@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
-import fr.axonic.base.engine.AEnumItem;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -105,7 +104,7 @@ public class JellyBeanSelector extends VBox {
         updateJellyBeanChoice();
     }
 
-    private void onRemoveJellyBean(AEnumItem effectName) {
+    private void onRemoveJellyBean(Object effectName) {
         jellyBeanPane.remove(effectName);
         updateJellyBeanChoice();
     }

@@ -32,7 +32,7 @@ public class TestRangedParameter {
 
     private ARangedEnum aRangedEnum;
 	private RangedParameter rangedParameter;
-    private Map<TestEnum, JellyBeanItem<Boolean>> jellyBeanItems;
+    private Map<TestEnum, JellyBeanItem<TestEnum, Boolean>> jellyBeanItems;
 
     @SuppressWarnings("unchecked")
     @Before

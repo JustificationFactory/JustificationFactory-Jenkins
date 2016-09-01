@@ -1,7 +1,5 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
-import java.lang.reflect.Method;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -32,5 +30,15 @@ public class ItemStateFormat<T> {
     }
     public String getValue() {
         return getValueMethod.apply(linkedObject);
+    }
+
+    public T getObject() {
+        return linkedObject;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ItemStateFormat{'"+getLabel()+"'/'"+getValue()+"'}";
     }
 }

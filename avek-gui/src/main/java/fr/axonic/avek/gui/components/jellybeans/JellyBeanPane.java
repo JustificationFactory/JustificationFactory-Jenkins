@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
-import fr.axonic.base.engine.AEnumItem;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
  * Created by Nathaël N on 28/07/16.
  */
 public class JellyBeanPane extends HBox {
-    private Consumer<AEnumItem> onRemoveJellyBean;
+    private Consumer<Object> onRemoveJellyBean;
     private boolean areJellyBeansEditable;
 
     public JellyBeanPane() {
@@ -25,8 +24,8 @@ public class JellyBeanPane extends HBox {
         this.getStylesheets().add("fr/axonic/avek/gui/components/jellybeans/JellyBean.css");
     }
 
-    public <T> void addJellyBean(JellyBeanItem<T> item) {
-        JellyBean<T> jb = new JellyBean<>();
+    public <T,U> void addJellyBean(JellyBeanItem<T,U> item) {
+        JellyBean<T,U> jb = new JellyBean<>();
         jb.set(item);
 
         getChildren().add(jb);
@@ -44,11 +43,11 @@ public class JellyBeanPane extends HBox {
         }
     }
 
-    void onRemoveJellyBean(Consumer<AEnumItem> function) {
+    void onRemoveJellyBean(Consumer<Object> function) {
         this.onRemoveJellyBean = function;
 
         for (Node n : getChildren()) {
-            JellyBean<?> jb = (JellyBean) n;
+            JellyBean<?,?> jb = (JellyBean) n;
             jb.setOnDelete(function == null ? null : this::removeJellyBean);
         }
     }
@@ -70,7 +69,7 @@ public class JellyBeanPane extends HBox {
         return false;
     }
 
-    void remove(AEnumItem jbiName) {
+    void remove(Object jbiName) {
         for (Node n : new ArrayList<>(getChildren())) {
             if (((JellyBean) n).getItem().getIdentifier().equals(jbiName)) {
                 getChildren().remove(n);

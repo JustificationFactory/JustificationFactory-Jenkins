@@ -15,6 +15,7 @@ import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
@@ -31,6 +32,7 @@ public class Orchestrator implements Observer {
     private ViewType currentView;
     private Pattern currentPattern;
     private Subject currentSubject;
+    private AList<Effect> currentEffects;
     private Stimulation currentStimulation;
 
     private final List<Pattern> patternList;
@@ -108,10 +110,28 @@ public class Orchestrator implements Observer {
     }
 
 
+    private AList<Effect> generateEffectList() {
+        try {
+            List<Effect> list = new ArrayList<>();
+            for (EffectEnum effectEnum : EffectEnum.values()) {
+                Effect effect = new Effect();
+                effect.setEffectValue(effectEnum);
+                list.add(effect);
+            }
+
+            AList<Effect> alist = new AList<>();
+            alist.addAll(list);
+
+            return alist;
+        }catch (VerificationException e) {
+            throw new RuntimeException("Impossible to make AList<Effect>", e);
+        }
+    }
     private Map<ComponentType, Object> getDataFromEvidence() {
         Map<ComponentType, Object> content = new HashMap<>();
 
         // Setting default Experiment results to Data bus
+        currentEffects = generateEffectList();
         content.put(ComponentType.EFFECTS, Arrays.asList(EffectEnum.values()));
 
         // Setting others data to Data bus
@@ -156,7 +176,8 @@ public class Orchestrator implements Observer {
                             LOGGER.debug("Got: " + evidenceRole);
                             EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
 
-                            content.put(ComponentType.EFFECTS, ((EstablishedEffect) eec.getElement()).getEffects());
+                            currentEffects = ((EstablishedEffect) eec.getElement()).getEffects();
+                            content.put(ComponentType.EFFECTS, currentEffects);
                             break;
                         }
                     default:
@@ -203,12 +224,12 @@ public class Orchestrator implements Observer {
     private void constructEstablishEffectStep(Map<ComponentType, Object> data) {
         LOGGER.debug("Constructing Establish effect step");
         try {
-            AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
+            //AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
 
             EstablishedEffect establishedEffect =
                     new EstablishedEffect(
                         new Experimentation(currentStimulation, currentSubject),
-                        effects);
+                        currentEffects);
 
             EstablishEffectConclusion conclusion =
                     new EstablishEffectConclusion(
@@ -226,8 +247,9 @@ public class Orchestrator implements Observer {
     private void constructGeneralizeStep(Map<ComponentType, Object> data) {
         LOGGER.debug("Constructing Generalize step");
         try {
+
             // TODO pass UploadedFile.uploadedFolder; in GeneralizationConclusion
-            AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
+            //AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
 
             GeneralizationConclusion conclusion = new GeneralizationConclusion(
                     "Generalization",
@@ -235,7 +257,7 @@ public class Orchestrator implements Observer {
                             new Experimentation(
                                     currentStimulation,
                                     currentSubject),
-                            effects
+                            currentEffects
                     ));
 
             engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);

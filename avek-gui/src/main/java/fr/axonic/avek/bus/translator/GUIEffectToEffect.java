@@ -38,7 +38,7 @@ class GUIEffectToEffect extends DataTranslator<GUIEffect, AList<Effect>> {
             if(jellyBeanItem.getText().equals(effectEnum.getLabel())) {
                 try {
                     Effect effect = new Effect();
-                    effectEnum.setStateValue((EffectStateEnum) jellyBeanItem.getState());
+                    effectEnum.setStateValue((EffectStateEnum) jellyBeanItem.getState().getObject());
                     effect.setEffectValue(effectEnum);
                     return effect;
                 } catch (VerificationException e) {
