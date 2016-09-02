@@ -3,6 +3,7 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.avek.gui.util.LevelMark;
 import fr.axonic.base.AContinuousNumber;
+import fr.axonic.base.engine.AElement;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -82,13 +83,4 @@ public class ExpParameterLeaf implements IExpParameter {
     public void setExpandable(Consumer<Boolean> onClickExpand) {
         levelMark.setOnExpand(onClickExpand);
     }
-
-    public void setExpanded(boolean expanded) {
-        levelMark.setExpanded(expanded);
-    }
-
-    public Label getLabelTitle() {
-        return paramTitle;
-    }
-
 }

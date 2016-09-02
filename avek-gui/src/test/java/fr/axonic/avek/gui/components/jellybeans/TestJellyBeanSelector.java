@@ -52,7 +52,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
             final String label = "AE" + i;
 
-            JellyBeanItem<AEnumItem,String> jbi = new JellyBeanItem<>(new AEnumItem() {
+            JellyBeanItem<AEnumItem,String,String> jbi = new JellyBeanItemSimple<>(new AEnumItem() {
                 @Override
                 public String getLabel() {
                     return label;
@@ -61,8 +61,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
                 @Override public String getCode() {return null;}
                 @Override public String getPath() {return null;}
             }, ls);
-            jbi.getFormat().setGetLabelMethod(AEnumItem::getLabel);
-            jbi.getFormat().setGetValueMethod(AEnumItem::getLabel);
+            jbi.setGetLabelMethod(AEnumItem::getLabel);
 
             effect.add(jbi);
         }
@@ -189,6 +188,6 @@ public class TestJellyBeanSelector extends ApplicationTest {
     private void verifyGoodJellyBean(Pane jellyBeanPane, int i, String name) {
         assertTrue(jellyBeanPane.getChildren().get(i) instanceof JellyBean);
         JellyBean jb = (JellyBean) jellyBeanPane.getChildren().get(i);
-        assertEquals(name, jb.getItem().getText());
+        assertEquals(name, jb.getJellyBeanItem().getLabel());
     }
 }

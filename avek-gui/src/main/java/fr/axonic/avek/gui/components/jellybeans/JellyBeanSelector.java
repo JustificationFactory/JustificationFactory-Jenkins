@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,8 +71,8 @@ public class JellyBeanSelector extends VBox {
                         if (jellyBeanItem == null) {
                             return "";
                         } else {
-                            values.put(jellyBeanItem.getText(), jellyBeanItem);
-                            return jellyBeanItem.getText();
+                            values.put(jellyBeanItem.getLabel(), jellyBeanItem);
+                            return jellyBeanItem.getLabel();
                         }
                     }
 
@@ -101,7 +100,7 @@ public class JellyBeanSelector extends VBox {
             return;
         }
         if (jellyBeanPane.contains(choice)) {
-            LOGGER.warn("Choice already added: " + choice.getIdentifier());
+            LOGGER.warn("Choice already added: " + choice.getLinkedObject());
             return;
         }
         jellyBeanPane.addJellyBean(choice);
@@ -111,7 +110,7 @@ public class JellyBeanSelector extends VBox {
 
     private void onRemoveJellyBean(JellyBean effectName) {
         jellyBeanPane.remove(effectName);
-        jellyBeanChoice.remove(effectName.getItem());
+        jellyBeanChoice.remove(effectName.getJellyBeanItem());
         updateJellyBeanChoice();
     }
 
@@ -129,7 +128,7 @@ public class JellyBeanSelector extends VBox {
                             public void updateItem(JellyBeanItem item, boolean empty) {
                                 super.updateItem(item, empty);
                                 if (item != null) {
-                                    setText(item.getText());
+                                    setText(item.getLabel());
                                     getStyleClass().remove("selectedResult");
                                     getStyleClass().remove("notSelectedResult");
                                     getStyleClass().add(jellyBeanPane.contains(item) ? "selectedResult" : "notSelectedResult");
@@ -148,9 +147,5 @@ public class JellyBeanSelector extends VBox {
 
     JellyBeanPane getJellyBeanPane() {
         return jellyBeanPane;
-    }
-
-    public List<JellyBeanItem> getSelected() {
-        return jellyBeanPane.getJellyBeans();
     }
 }

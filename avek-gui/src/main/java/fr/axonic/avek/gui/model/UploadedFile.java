@@ -74,9 +74,10 @@ public class UploadedFile {
         final Stack<File> stack = new Stack<>();
         stack.push(origin);
 
-        do {
+        while (!stack.isEmpty()) {
             File pop = stack.pop();
             if (pop.isDirectory()) {
+                //noinspection ConstantConditions
                 for (File f : pop.listFiles()) {
                     stack.push(f);
                 }
@@ -84,7 +85,7 @@ public class UploadedFile {
                 final String fileName = pop.getPath().replace(originPath, uploadPath);
                 doUploadOneFile(pop, new File(fileName), bufSize);
             }
-        } while (!stack.isEmpty());
+        }
 
         if (uploaded.isDirectory()) {
             LOGGER.info("All json treated for " + uploaded);
@@ -153,17 +154,18 @@ public class UploadedFile {
         Stack<File> stack = new Stack<>();
         stack.push(origin);
 
-        do {
+        while (!stack.isEmpty()) {
             File pop = stack.pop();
 
             if (pop.isDirectory()) {
+                //noinspection ConstantConditions
                 for (File f : pop.listFiles()) {
                     stack.push(f);
                 }
             } else if (pop.isFile()) {
                 size += pop.length();
             }
-        } while (!stack.isEmpty());
+        }
 
         LOGGER.debug("Size calculated: " + NumberFormat.getInstance().format(size) + " bytes for " + origin.getName());
 

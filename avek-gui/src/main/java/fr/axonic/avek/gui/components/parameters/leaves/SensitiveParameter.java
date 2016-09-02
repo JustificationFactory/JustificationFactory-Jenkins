@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.base.engine.AVar;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -14,14 +15,19 @@ import java.util.function.Consumer;
  */
 abstract class SensitiveParameter extends ExpParameterLeaf {
     final CheckBox markedUtil;
-    private Consumer<Boolean> onClickMarkedUtil;
+    private final AVar aVar;
 
     SensitiveParameter(int level, AVar var) {
         super(level, var);
 
+        this.aVar = var;
+
         markedUtil = new CheckBox();
+        markedUtil.setOnAction(event -> setSelected(markedUtil.isSelected()));
+
+        //TODO not working correctly: checkbox unchecked ok, but text not disabled
+        // Platform.runLater(() -> markedUtil.setSelected(var.isMandatory()));
         markedUtil.setSelected(true);
-        markedUtil.setOnAction(this::onClickMarkedUtil);
 
         // set style
         GridPane.setColumnIndex(markedUtil, 0);
@@ -30,26 +36,18 @@ abstract class SensitiveParameter extends ExpParameterLeaf {
         GridPane.setColumnIndex(paramValue, 3); // was 2
     }
 
-    void onClickMarkedUtil(ActionEvent event) {
-        boolean b = markedUtil.isSelected();
-
-        paramTitle.setDisable(!b);
-        paramValue.setDisable(!b);
-        levelMark.setDisable(!b);
-        if (onClickMarkedUtil != null) {
-            onClickMarkedUtil.accept(b);
-        }
-        levelMark.setExpanded(b);
-    }
-
-    public void setOnClickMarkedUtil(Consumer<Boolean> onClickMarkedUtil) {
-        this.onClickMarkedUtil = onClickMarkedUtil;
-    }
-
     @Override
-    protected List<Node> getNodeLine() {
+    List<Node> getNodeLine() {
         List<Node> list = super.getNodeLine();
         list.add(markedUtil);
         return list;
+    }
+
+    protected void setSelected(boolean b) {
+        aVar.setMandatory(b);
+        paramTitle.setDisable(!b);
+        paramValue.setDisable(!b);
+        levelMark.setDisable(!b);
+        levelMark.setExpanded(b);
     }
 }

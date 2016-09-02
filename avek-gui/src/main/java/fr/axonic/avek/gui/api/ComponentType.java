@@ -13,7 +13,7 @@ import java.util.List;
 public enum ComponentType {
     MONITORED_SYSTEM(MonitoredSystem.class), EFFECTS(GUIEffect.class), EXPERIMENTATION_PARAMETERS(GUIExperimentParameter.class), COMMENTS(String.class), COMPLEMENTARY_FILES, SELECTION(List.class);
 
-    private List<Class> compatibleObjects;
+    private final List<Class> compatibleObjects;
 
     ComponentType(Class ... compatibleObjects) {
         this.compatibleObjects = Arrays.asList(compatibleObjects);

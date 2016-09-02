@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
-import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
+import fr.axonic.avek.gui.components.jellybeans.JellyBeanItemSimple;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVar;
@@ -38,7 +38,19 @@ public class RangedParameter extends SensitiveParameter {
             String strVal = value.toString();
 
             // Each states can be set as True or False for generalization
-            JellyBeanItem<T,Boolean> item = new JellyBeanItem<>(value, Arrays.asList(false, true));
+            JellyBeanItemSimple<T,Boolean> item = new JellyBeanItemSimple<>(value, Arrays.asList(false, true));
+            item.setGetLabelMethod(T::getLabel);
+            item.setSetStateMethod((lastState, newState) -> {
+                // If user click on the jelly bean of this state
+                // this state will be added to stateList
+                // otherwise it will be removed from
+                if (!newState) {
+                    stateList.getRange().remove(state);
+                }else if (!stateList.getRange().contains(state)) {
+                    stateList.getRange().add(state);
+                }
+            });
+
             jellyBeanPane.addJellyBean(item);
 
             if(strVal.equals(stateList.getValue().toString())) {
@@ -50,17 +62,6 @@ public class RangedParameter extends SensitiveParameter {
                 // this state is removed from the stateList
                 // because isn't checked 'true' at generalization
                 stateList.getRange().remove(state);
-
-                // If user click on the jelly bean of this state
-                // this state will be added to stateList
-                // otherwise it will be removed from
-                item.addStateChangeListener((lastState, newState) -> {
-                    if (!newState.getObject()) {
-                        stateList.getRange().remove(state);
-                    }else if (!stateList.getRange().contains(state)) {
-                        stateList.getRange().add(state);
-                    }
-                });
             }
         }
 
@@ -72,8 +73,8 @@ public class RangedParameter extends SensitiveParameter {
     }
 
     @Override
-    protected void onClickMarkedUtil(ActionEvent event) {
-        super.onClickMarkedUtil(event);
+    protected void setSelected(boolean selected) {
+        super.setSelected(selected);
 
         boolean b = markedUtil.isSelected();
         // if unchecked, so disable component edition

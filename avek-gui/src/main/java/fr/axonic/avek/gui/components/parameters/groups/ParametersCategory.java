@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,7 +29,6 @@ class ParametersCategory implements IExpParameter {
         this.children = new ArrayList<>();
     }
 
-    private final HashMap<Node, Double> sizeMemory = new HashMap<>();
     private void onClickExpand(boolean isExpanded) {
         children.forEach(lineList -> lineList.getNodes()
                 .forEach(nodeList -> nodeList

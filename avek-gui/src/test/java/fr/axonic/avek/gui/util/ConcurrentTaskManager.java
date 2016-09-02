@@ -61,6 +61,7 @@ public class ConcurrentTaskManager {
         running.add(ft);
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean runNowOnPlatform(Runnable r) throws Exception {
         return runNowOnPlatform(() -> {
             r.run();
@@ -78,28 +79,13 @@ public class ConcurrentTaskManager {
         return ft.get();
     }
 
-    public void runLaterOnPlatform(Runnable r) throws Exception {
-        run(r, true);
-    }
-
-    public <V> void runLaterOnPlatform(Callable<V> c) throws Exception {
-        run(c, true);
-    }
-
-    public void runLaterOnThread(Runnable r) throws Exception {
-        run(r, false);
-    }
-
-    public <V> void runLaterOnThread(Callable<V> c) throws Exception {
-        run(c, false);
-    }
-
     public void waitForTasks() throws ExecutionException, InterruptedException {
         for (FutureTask ft : running) {
             waitForTask(ft);
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private Object waitForTask(FutureTask ft) throws ExecutionException, InterruptedException {
         Object value = ft.get();
         running.remove(ft);

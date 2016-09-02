@@ -18,7 +18,6 @@ import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
 import java.util.*;
-import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
 public class Orchestrator implements Observer {
     private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
 
-    private ViewType currentView;
     private Pattern currentPattern;
     private Subject currentSubject;
     private AList<Effect> currentEffects;
@@ -35,13 +33,11 @@ public class Orchestrator implements Observer {
 
     private final List<Pattern> patternList;
     private List<EvidenceRole> evidences;
-    private final Stack<FutureTask> tasks;
 
     private final ArgumentationDiagramAPI engineAPI;
     private final GUIAPI guiAPI;
 
     public Orchestrator(GUIAPI guiapi) throws VerificationException, WrongEvidenceException, GUIException {
-        tasks = new Stack<>();
         patternList = new ArrayList<>();
 
         engineAPI = ArgumentationDiagramAPIImpl.getInstance();
@@ -69,7 +65,7 @@ public class Orchestrator implements Observer {
         }
     }
 
-    private void computeNextPattern() throws VerificationException, WrongEvidenceException {
+    private void computeNextPattern() {
         // Preparing for following view
         evidences = engineAPI.getBaseEvidences();
         patternList.clear();
@@ -103,7 +99,6 @@ public class Orchestrator implements Observer {
         }
 
         guiAPI.show(pattern.getName(), viewType, newContent);
-        currentView = viewType;
         currentPattern = pattern;
     }
 
@@ -195,10 +190,10 @@ public class Orchestrator implements Observer {
                 constructTreatStep();
                 break;
             case "Establish Effect":
-                constructEstablishEffectStep(data);
+                constructEstablishEffectStep();
                 break;
             case "Generalize":
-                constructGeneralizeStep(data);
+                constructGeneralizeStep();
                 break;
             default:
                 LOGGER.error("Constructing \"" + currentPattern + "\" not implemented");
@@ -219,7 +214,7 @@ public class Orchestrator implements Observer {
         }
     }
 
-    private void constructEstablishEffectStep(Map<ComponentType, Object> data) {
+    private void constructEstablishEffectStep() {
         LOGGER.debug("Constructing Establish effect step");
         try {
             //AList<Effect> effects = (AList<Effect>) DataTranslator.translateForEngine(data.get(ComponentType.EFFECTS));
@@ -242,7 +237,7 @@ public class Orchestrator implements Observer {
         }
     }
 
-    private void constructGeneralizeStep(Map<ComponentType, Object> data) {
+    private void constructGeneralizeStep() {
         LOGGER.debug("Constructing Generalize step");
         try {
 
@@ -275,7 +270,7 @@ public class Orchestrator implements Observer {
         if(!o.equals(guiAPI)) {
             throw new RuntimeException("Update get not from current used GUI API");
         }
-        GUIAPI api = (GUIAPI) o;
+        @SuppressWarnings("unchecked")
         Map<String, Object> data = (Map<String, Object>) arg;
 
 
@@ -307,6 +302,7 @@ public class Orchestrator implements Observer {
                     LOGGER.debug("Strategy flag raised");
                     break;
                 case "Content":
+                    //noinspection unchecked
                     content = (Map<ComponentType, Object>) data.get("Content");
                     LOGGER.debug("Content set to "+content);
                     break;

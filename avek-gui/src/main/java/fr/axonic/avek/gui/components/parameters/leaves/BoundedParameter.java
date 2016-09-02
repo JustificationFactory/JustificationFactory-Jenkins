@@ -163,8 +163,8 @@ public class BoundedParameter extends SensitiveParameter {
     }
 
     @Override
-    protected void onClickMarkedUtil(ActionEvent event) {
-        super.onClickMarkedUtil(event);
+    protected void setSelected(boolean selected) {
+        super.setSelected(selected);
 
         boolean b = markedUtil.isSelected();
         // if unchecked, so disable component edition

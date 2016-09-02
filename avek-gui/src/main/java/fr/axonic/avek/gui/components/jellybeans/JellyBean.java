@@ -16,7 +16,8 @@ import java.util.function.Consumer;
 /**
  * Created by Nathaël N on 28/06/16.
  */
-public class JellyBean<T,U> extends HBox {
+@SuppressWarnings("WeakerAccess")
+public class JellyBean<T,U,V> extends HBox {
     private final static Logger LOGGER = Logger.getLogger(JellyBean.class);
     private final static URL FXML
             = JellyBean.class.getClassLoader().getResource("fr/axonic/avek/gui/components/jellybeans/JellyBean.fxml");
@@ -26,11 +27,11 @@ public class JellyBean<T,U> extends HBox {
     @FXML
     private Button jbCross;
 
-    private Consumer<JellyBean<T,U>> onDeleteObserver;
+    private Consumer<JellyBean> onDeleteObserver;
     private final Tooltip tooltip;
 
     private boolean isRemovable;
-    private JellyBeanItem<T,U> item;
+    private JellyBeanItem<T,U,V> jellyBeanItem;
 
     // should be public
     public JellyBean() {
@@ -71,28 +72,15 @@ public class JellyBean<T,U> extends HBox {
 
     @FXML
     public void onClickOnLabel(ActionEvent actionEvent) {
-        item.nextState();
+        jellyBeanItem.nextState();
     }
 
-    private void onStateChanged(ItemStateFormat<U> lastState, ItemStateFormat<U> newState) {
-        LOGGER.debug("State of '"+item.getText()+"' changed from '"+lastState.getValue()+"' to '"+newState.getValue()+"'");
-
+    private void onStateChanged(U lastState, U newState) {
         // Computing tooltip
-        String allStates = "";
-        for(ItemStateFormat<U> s : item.getStates()) {
-            if(s.equals(newState)) {
-                allStates += ", ["+s.getLabel()+"]";
-            }else {
-                allStates += ", "+s.getLabel();
-            }
-        }
-        allStates = allStates.substring(2); // remove the first ", " of the String
-        final String tooltipText = "Current state: " + newState.getLabel() + "\n"
-                + "All states: " + allStates;
+        final String tooltipText = jellyBeanItem.toPrettyString();
 
-
-        final String strLastState = lastState.getValue().toLowerCase();
-        final String strNewState = newState.getValue().toLowerCase();
+        final String strLastState = jellyBeanItem.getStateCode(lastState).toLowerCase();
+        final String strNewState = jellyBeanItem.getStateCode(newState).toLowerCase();
         // Computing style
         Platform.runLater(() -> {
             jbLabel.getStyleClass().remove(strLastState);
@@ -113,10 +101,10 @@ public class JellyBean<T,U> extends HBox {
 
     @Override
     public String toString() {
-        return "JellyBean=" + item;
+        return "JellyBean=" + jellyBeanItem;
     }
 
-    void setOnDelete(Consumer<JellyBean<T,U>> onDelete) {
+    void setOnDelete(Consumer<JellyBean> onDelete) {
         this.onDeleteObserver = onDelete;
         setRemovable(onDelete != null);
     }
@@ -128,15 +116,15 @@ public class JellyBean<T,U> extends HBox {
     }
 
 
-    public void set(JellyBeanItem<T,U> item) {
-        this.item = item;
-        jbLabel.setText(item.getText());
+    public void set(JellyBeanItem<T,U,V> item) {
+        this.jellyBeanItem = item;
+        jbLabel.setText(item.getLabel());
 
         item.addStateChangeListener(this::onStateChanged);
         item.setEditableStateChangeListener(this::onEditableChanged);
     }
 
-    JellyBeanItem<T,U> getItem() {
-        return item;
+    JellyBeanItem<T,U,V> getJellyBeanItem() {
+        return jellyBeanItem;
     }
 }

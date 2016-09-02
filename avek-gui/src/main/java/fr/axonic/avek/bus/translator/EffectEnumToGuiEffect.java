@@ -5,7 +5,7 @@ import fr.axonic.avek.engine.instance.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.AEnum;
-import fr.axonic.base.engine.AEntity;
+import fr.axonic.base.engine.AVar;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
@@ -34,17 +34,17 @@ class EffectEnumToGuiEffect extends DataTranslator<List<EffectEnum>, GUIEffect> 
             }
 
 
-            JellyBeanItem<EffectEnum, AEnum<EffectStateEnum>> jbi
+            JellyBeanItem<EffectEnum, EffectStateEnum, AEnum<EffectStateEnum>> jbi
                     = new JellyBeanItem<>(effectEnum, effectEnum.getState().getRange());
 
-            jbi.getFormat().setGetLabelMethod(EffectEnum::getLabel);
-            jbi.getFormat().setGetStateLabelMethod(AEntity::getLabel);
-            jbi.getFormat().setGetStateValueMethod(a -> a.getValue().toString());
-            jbi.addStateChangeListener((lastState, newState) -> {
+            jbi.setGetLabelMethod(EffectEnum::getLabel);
+            jbi.setGetStateLabelMethod(EffectStateEnum::getLabel);
+            jbi.setGetStateFromItemListMethod(AVar::getValue);
+            jbi.setSetStateMethod((effect, newState) -> {
                 try {
-                    effectEnum.setStateValue(newState.getObject().getValue());
+                    effect.getState().setValue(newState);
                 } catch (VerificationException e) {
-                    LOGGER.error("Impossible to change state of effectEnum", e);
+                    LOGGER.error("Cannot set state "+newState+" to "+effect, e);
                 }
             });
             if(stateAsAEnum != null) {

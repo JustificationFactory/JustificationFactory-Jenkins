@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.model;
 
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -9,8 +8,6 @@ import java.util.*;
  * Created by nathael on 31/08/16.
  */
 public class GUIEffect<T> {
-    private final static Logger LOGGER = Logger.getLogger(GUIEffect.class);
-
     private final Collection<T> bindCollection;
     private final Set<JellyBeanItem> addedItems = new LinkedHashSet<>();
     private final Map<JellyBeanItem, Runnable> onAddBindings = new HashMap<>();

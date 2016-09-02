@@ -35,6 +35,7 @@ public class StrategySelectionView extends AbstractView {
 
     @FXML
     public void initialize() {
+        @SuppressWarnings("unchecked")
         List<String> choices = (List<String>) GUIAPIImpl.getInstance().getData(ComponentType.SELECTION);
         try {
             comboBox.setItems(FXCollections.observableArrayList(choices));

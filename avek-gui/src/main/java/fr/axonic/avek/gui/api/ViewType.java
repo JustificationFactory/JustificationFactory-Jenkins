@@ -21,8 +21,8 @@ public enum ViewType {
     STRATEGY_SELECTION_VIEW(StrategySelectionView.class,ComponentType.SELECTION);
 
     private final static Logger LOGGER = Logger.getLogger(ViewType.class);
-    List<ComponentType> compatibleComponents;
-    Class<? extends AbstractView> viewClass;
+    private final List<ComponentType> compatibleComponents;
+    private final Class<? extends AbstractView> viewClass;
 
     ViewType( Class<? extends AbstractView> viewClass, ComponentType ... compatibleComponents) {
         this.compatibleComponents = Arrays.asList(compatibleComponents);

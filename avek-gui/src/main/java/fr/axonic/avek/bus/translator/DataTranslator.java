@@ -11,13 +11,12 @@ import java.util.HashSet;
  */
 public abstract class DataTranslator<T,S> {
     private final static Logger LOGGER = Logger.getLogger(DataTranslator.class);
-    private static HashSet<DataTranslator> toGUI = new HashSet<>();
-    private static HashSet<DataTranslator> toEngine = new HashSet<>();
+    private static final HashSet<DataTranslator> toGUI = new HashSet<>();
+    private static final HashSet<DataTranslator> toEngine = new HashSet<>();
 
     static {
         toGUI.add(new EffectEnumToGuiEffect());
         toGUI.add(new EffectToGuiEffect());
-        //toEngine.addAndBind(new GUIEffectToEffect());
     }
 
     protected abstract S translate(T t);
@@ -33,6 +32,7 @@ public abstract class DataTranslator<T,S> {
     private static Object translateFor(Object object, HashSet<DataTranslator> destination) {
         for(DataTranslator translator : destination) {
             try {
+                @SuppressWarnings("unchecked")
                 Object ret = translator.translate(object);
                 LOGGER.debug("Translated using "+translator.getClass().getSimpleName());
                 return ret;

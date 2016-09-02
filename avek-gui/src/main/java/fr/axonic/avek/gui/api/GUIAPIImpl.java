@@ -30,7 +30,7 @@ public class GUIAPIImpl extends GUIAPI {
     /**
      * Setting a loading view up while orchestrator compute for the next view
      */
-    public void showLoading() {
+    private void showLoading() {
         frame.setView(loadingView);
         frame.hideStrategyButton();
     }

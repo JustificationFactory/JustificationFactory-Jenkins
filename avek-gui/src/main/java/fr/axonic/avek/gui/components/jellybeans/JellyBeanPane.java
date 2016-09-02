@@ -24,8 +24,8 @@ public class JellyBeanPane extends HBox {
         this.getStylesheets().add("fr/axonic/avek/gui/components/jellybeans/JellyBean.css");
     }
 
-    public <T,U> void addJellyBean(JellyBeanItem<T,U> item) {
-        JellyBean<T,U> jb = new JellyBean<>();
+    public <T,U,V> void addJellyBean(JellyBeanItem<T,U,V> item) {
+        JellyBean<T,U,V> jb = new JellyBean<>();
         jb.set(item);
 
         getChildren().add(jb);
@@ -47,7 +47,7 @@ public class JellyBeanPane extends HBox {
         this.onRemoveJellyBean = function;
 
         for (Node n : getChildren()) {
-            JellyBean<?,?> jb = (JellyBean) n;
+            JellyBean<?,?,?> jb = (JellyBean) n;
             jb.setOnDelete(function == null ? null : this::removeJellyBean);
         }
     }
@@ -56,13 +56,13 @@ public class JellyBeanPane extends HBox {
         this.areJellyBeansEditable = b;
 
         for (Node n : getChildren()) {
-            ((JellyBean) n).getItem().setEditable(b);
+            ((JellyBean) n).getJellyBeanItem().setEditable(b);
         }
     }
 
     boolean contains(JellyBeanItem jbi) {
         for (Node n : getChildren()) {
-            if (((JellyBean)n).getItem().equals(jbi)) {
+            if (((JellyBean)n).getJellyBeanItem().equals(jbi)) {
                 return true;
             }
         }
@@ -70,20 +70,18 @@ public class JellyBeanPane extends HBox {
     }
 
     void remove(Object jbiName) {
-        for (Node n : new ArrayList<>(getChildren())) {
-            if (((JellyBean) n).getItem().getIdentifier().equals(jbiName)) {
-                getChildren().remove(n);
-            }
-        }
+        new ArrayList<>(getChildren())
+                .stream()
+                .filter(n -> ((JellyBean) n)
+                        .getJellyBeanItem()
+                        .getLinkedObject()
+                        .equals(jbiName))
+                .forEach(n -> getChildren().remove(n));
     }
 
-    /**
-     *
-     * @return Map&lt;JellyBean's label, JellyBean's state&gt;
-     */
-    public List<JellyBeanItem> getJellyBeans() {
+    public List<JellyBeanItem> getJellyBeanItems() {
         return getChildren().stream()
-                            .map(n -> ((JellyBean) n).getItem())
+                            .map(n -> ((JellyBean) n).getJellyBeanItem())
                             .collect(Collectors.toList());
     }
 }

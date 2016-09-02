@@ -31,8 +31,7 @@ public class TestRangedParameter {
     }
 
     private ARangedEnum aRangedEnum;
-	private RangedParameter rangedParameter;
-    private Map<TestEnum, JellyBeanItem<TestEnum, Boolean>> jellyBeanItems;
+    private Map<TestEnum, JellyBeanItem<TestEnum,Boolean,Boolean>> jellyBeanItems;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -45,7 +44,7 @@ public class TestRangedParameter {
 
         aRangedEnum.setValue(TestEnum.B);
 
-		rangedParameter = new RangedParameter(2, aRangedEnum);
+        RangedParameter rangedParameter = new RangedParameter(2, aRangedEnum);
 
         // jellyBeanPane is private > set accessible from here
         Field jellyBeanPaneField = RangedParameter.class.getDeclaredField("jellyBeanPane");
@@ -54,8 +53,8 @@ public class TestRangedParameter {
         // Get jellyBeans...
         JellyBeanPane jellyBeanPane = (JellyBeanPane) jellyBeanPaneField.get(rangedParameter);
         jellyBeanItems = new HashMap<>();
-        for(JellyBeanItem item : jellyBeanPane.getJellyBeans()) {
-            jellyBeanItems.put((TestEnum) item.getIdentifier(), item);
+        for(JellyBeanItem item : jellyBeanPane.getJellyBeanItems()) {
+            jellyBeanItems.put((TestEnum) item.getLinkedObject(), item);
         }
     }
 
