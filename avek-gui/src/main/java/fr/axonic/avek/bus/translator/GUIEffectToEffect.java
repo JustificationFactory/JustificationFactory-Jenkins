@@ -12,14 +12,14 @@ import org.apache.log4j.Logger;
 /**
  * Created by Nathaël N on 28/07/16.
  */
-class GUIEffectToEffect extends DataTranslator<GUIEffect, AList<Effect>> {
+class GUIEffectToEffect extends DataTranslator<GUIEffect<?>, AList<Effect>> {
     private final static Logger LOGGER = Logger.getLogger(GUIEffectToEffect.class);
 
     @Override
-    protected AList<Effect> translate(GUIEffect effectsAsJellyBeanItems) {
+    protected AList<Effect> translate(GUIEffect<?> effectsAsJellyBeanItems) {
         final AList<Effect> effectList = new AList<>();
 
-        for(JellyBeanItem jbi : effectsAsJellyBeanItems) {
+        for(JellyBeanItem jbi : effectsAsJellyBeanItems.getJellyBeanItemList()) {
             effectList.add(jellyBeanItemToEffect(jbi));
         }
 
@@ -42,7 +42,7 @@ class GUIEffectToEffect extends DataTranslator<GUIEffect, AList<Effect>> {
                     effect.setEffectValue(effectEnum);
                     return effect;
                 } catch (VerificationException e) {
-                    LOGGER.error("Impossible to add effect "+jellyBeanItem, e);
+                    LOGGER.error("Impossible to addAndBind effect "+jellyBeanItem, e);
                 }
             }
         }

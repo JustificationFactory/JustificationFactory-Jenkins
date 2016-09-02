@@ -80,7 +80,7 @@ public class LevelMark extends HBox {
             this.getChildren().add(p);
         }
 
-        // If is expandable, so add an arrow
+        // If is expandable, so addAndBind an arrow
         if (expandable) {
             HBox p = new HBox();
             p.getStyleClass().add(ARROW);

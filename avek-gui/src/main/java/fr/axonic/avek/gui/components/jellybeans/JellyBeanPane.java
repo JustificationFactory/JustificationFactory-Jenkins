@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Created by Nathaël N on 28/07/16.
  */
 public class JellyBeanPane extends HBox {
-    private Consumer<Object> onRemoveJellyBean;
+    private Consumer<JellyBean> onRemoveJellyBean;
     private boolean areJellyBeansEditable;
 
     public JellyBeanPane() {
@@ -39,11 +39,11 @@ public class JellyBeanPane extends HBox {
     private void removeJellyBean(JellyBean jbc) {
         getChildren().remove(jbc);
         if (onRemoveJellyBean != null) {
-            onRemoveJellyBean.accept(jbc.getItem().getIdentifier());
+            onRemoveJellyBean.accept(jbc);
         }
     }
 
-    void onRemoveJellyBean(Consumer<Object> function) {
+    void onRemoveJellyBean(Consumer<JellyBean> function) {
         this.onRemoveJellyBean = function;
 
         for (Node n : getChildren()) {

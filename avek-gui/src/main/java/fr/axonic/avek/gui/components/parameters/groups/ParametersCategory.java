@@ -49,8 +49,8 @@ class ParametersCategory implements IExpParameter {
 
 
     /**
-     * @param aEntity The AVar to add as a Experiment parameter,
-     *                or the AList to add as a Experiment parameter sub group
+     * @param aEntity The AVar to addAndBind as a Experiment parameter,
+     *                or the AList to addAndBind as a Experiment parameter sub group
      * @throws ClassCastException is the parameter is not a AVar
      *                            nor a AList (of AList and AVar)
      */

@@ -10,12 +10,10 @@ import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIException;
 import fr.axonic.avek.gui.api.ViewType;
-import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
-import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
@@ -132,7 +130,7 @@ public class Orchestrator implements Observer {
 
         // Setting default Experiment results to Data bus
         currentEffects = generateEffectList();
-        content.put(ComponentType.EFFECTS, Arrays.asList(EffectEnum.values()));
+        content.put(ComponentType.EFFECTS, currentEffects);
 
         // Setting others data to Data bus
         for (EvidenceRole evidenceRole : evidences) {
@@ -173,7 +171,7 @@ public class Orchestrator implements Observer {
                         break;
                     case "":
                         if (evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
-                            LOGGER.debug("Got: " + evidenceRole);
+                            LOGGER.error("Got: " + evidenceRole);
                             EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
 
                             currentEffects = ((EstablishedEffect) eec.getElement()).getEffects();

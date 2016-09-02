@@ -48,8 +48,6 @@ public class EstablishEffectView extends AbstractView {
 
         parametersRoot.setData((GUIExperimentParameter) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
 
-
-
         jellyBeanSelector.setJellyBeansChoice((GUIEffect) guiapi.getData(ComponentType.EFFECTS));
         LOGGER.debug("EstablishEffectView loaded.");
     }
@@ -106,10 +104,6 @@ public class EstablishEffectView extends AbstractView {
         resultsPane.setVisible(newState);
         resultsPane.setManaged(newState);
         outerResultsButton.setSelected(newState);
-    }
-
-    public GUIEffect getEffects() {
-        return new GUIEffect(jellyBeanSelector.getSelected());
     }
 }
 

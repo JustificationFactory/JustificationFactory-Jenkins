@@ -17,7 +17,7 @@ public abstract class DataTranslator<T,S> {
     static {
         toGUI.add(new EffectEnumToGuiEffect());
         toGUI.add(new EffectToGuiEffect());
-        //toEngine.add(new GUIEffectToEffect());
+        //toEngine.addAndBind(new GUIEffectToEffect());
     }
 
     protected abstract S translate(T t);

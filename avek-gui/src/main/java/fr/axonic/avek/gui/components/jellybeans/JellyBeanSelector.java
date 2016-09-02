@@ -1,5 +1,7 @@
 package fr.axonic.avek.gui.components.jellybeans;
 
+import fr.axonic.avek.gui.model.GUIEffect;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -34,6 +36,8 @@ public class JellyBeanSelector extends VBox {
     private JellyBeanPane jellyBeanPane;
     @FXML
     private ComboBox<JellyBeanItem> comboBoxJellyBean;
+
+    private GUIEffect jellyBeanChoice;
 
     // should be public
     public JellyBeanSelector() {
@@ -86,7 +90,7 @@ public class JellyBeanSelector extends VBox {
 
     @FXML
     void onSelectorHiding(Event event) {
-        addJellyBean();
+        Platform.runLater(this::addJellyBean);
     }
 
     private void addJellyBean() {
@@ -101,11 +105,13 @@ public class JellyBeanSelector extends VBox {
             return;
         }
         jellyBeanPane.addJellyBean(choice);
+        jellyBeanChoice.add(choice);
         updateJellyBeanChoice();
     }
 
-    private void onRemoveJellyBean(Object effectName) {
+    private void onRemoveJellyBean(JellyBean effectName) {
         jellyBeanPane.remove(effectName);
+        jellyBeanChoice.remove(effectName.getItem());
         updateJellyBeanChoice();
     }
 
@@ -134,9 +140,10 @@ public class JellyBeanSelector extends VBox {
                 });
     }
 
-    public void setJellyBeansChoice(List<JellyBeanItem> exprMap) {
+    public void setJellyBeansChoice(GUIEffect<?> exprMap) {
+        jellyBeanChoice = exprMap;
         this.comboBoxJellyBean.setItems(
-                FXCollections.observableArrayList(exprMap));
+                FXCollections.observableArrayList(exprMap.getJellyBeanItemList()));
     }
 
     JellyBeanPane getJellyBeanPane() {

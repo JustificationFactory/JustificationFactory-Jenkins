@@ -59,7 +59,7 @@ public class GUIAPIImpl extends GUIAPI {
                 frame.setStrategyButtonLabel(name);
             }
         } catch (InstantiationException | IllegalAccessException e) {
-            LOGGER.error("Cannot instantiate "+viewType, e);
+            throw new RuntimeException("Cannot instantiate "+viewType, e);
         }
     }
 

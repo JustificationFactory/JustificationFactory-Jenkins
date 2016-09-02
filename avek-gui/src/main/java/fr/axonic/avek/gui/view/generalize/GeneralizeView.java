@@ -50,9 +50,9 @@ public class GeneralizeView extends AbstractView {
         // Get data from Data bus
         parametersRoot.setData((GUIExperimentParameter) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
         monitoredSystemView.setMonitoredSystem((MonitoredSystem) guiapi.getData(ComponentType.MONITORED_SYSTEM));
-        GUIEffect effects = (GUIEffect) guiapi.getData(ComponentType.EFFECTS);
+        GUIEffect<?> effects = (GUIEffect) guiapi.getData(ComponentType.EFFECTS);
 
-        for(JellyBeanItem jbi : effects) {
+        for(JellyBeanItem jbi : effects.getJellyBeanItemList()) {
             jellyBeanPane.addJellyBean(jbi);
         }
     }
@@ -132,10 +132,6 @@ public class GeneralizeView extends AbstractView {
         resultsPane.setVisible(isVisible);
         resultsPane.setManaged(isVisible);
         outerResultsButton.setSelected(isVisible);
-    }
-
-    public GUIEffect getEffects() {
-        return new GUIEffect(jellyBeanPane.getJellyBeans());
     }
 }
 

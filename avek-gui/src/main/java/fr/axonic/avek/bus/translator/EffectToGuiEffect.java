@@ -10,8 +10,6 @@ import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import org.apache.log4j.Logger;
 
-import java.util.stream.Collectors;
-
 /**
  * Created by Nathaël N on 28/07/16.
  */
@@ -21,26 +19,28 @@ class EffectToGuiEffect extends DataTranslator<AList<Effect>, GUIEffect> {
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
 
     @Override
-    protected GUIEffect translate(AList<Effect> effectAsAList) {
-        final GUIEffect effectList = new GUIEffect();
+    protected GUIEffect translate(AList<Effect> effectAList) {
+        final GUIEffect guiEffect = new GUIEffect<>(effectAList);
 
-        effectList.addAll(effectAsAList
-                .stream()
-                .map(this::effectToJellyBeanItem)
-                .collect(Collectors.toList()));
+        for(Effect effect : effectAList) {
+            JellyBeanItem<EffectEnum, AEnum<EffectStateEnum>> jbi
+                    = new JellyBeanItem<>(effect.getEffectType().getValue(),
+                    effect.getEffectType().getValue().getState().getRange());
 
-        return effectList;
-    }
+            jbi.getFormat().setGetLabelMethod(EffectEnum::getLabel);
+            jbi.getFormat().setGetStateLabelMethod(AEntity::getLabel);
+            jbi.getFormat().setGetStateValueMethod(a -> a.getValue().toString());
 
-    private JellyBeanItem effectToJellyBeanItem(Effect effect) {
-        JellyBeanItem<EffectEnum, AEnum<EffectStateEnum>> jbi
-                = new JellyBeanItem<>(effect.getEffectType().getValue(),
-                effect.getEffectType().getValue().getState().getRange());
+            guiEffect.addAndBind(jbi,
+                    () -> {
+                        if (!effectAList.contains(effect)) {
+                            effectAList.add(effect);
+                        }
+                    },
+                    ()-> effectAList.remove(effect));
+        }
 
-        jbi.getFormat().setGetLabelMethod(EffectEnum::getLabel);
-        jbi.getFormat().setGetStateLabelMethod(AEntity::getLabel);
-        jbi.getFormat().setGetStateValueMethod(a -> a.getValue().toString());
-
-        return jbi;
+        effectAList.clear();
+        return guiEffect;
     }
 }

@@ -41,7 +41,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
 
-        GUIEffect effect = new GUIEffect();
+        GUIEffect effect = new GUIEffect<>();
         for (int i = 1; i <= 30; i++) {
             ExampleState val = ExampleState.values()[0];
             ARangedEnum<ExampleState> aEnum = new ARangedEnum<>(ExampleState.class, val);
@@ -76,7 +76,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
     public void testSelectItem() {
         assertEquals(0, jellyBeanPane.getChildren().size());
 
-        // Try to add 'null'
+        // Try to addAndBind 'null'
         clickOn("#comboBoxJellyBean")
                 .push(KeyCode.ENTER);
         assertEquals(0, jellyBeanPane.getChildren().size());
@@ -136,7 +136,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
     @Test
     public void testRemoveBean() {
-        // add 'Effect 5'
+        // addAndBind 'Effect 5'
         clickOn("#comboBoxJellyBean")
                 .push(KeyCode.DOWN)
                 .push(KeyCode.DOWN)
@@ -172,7 +172,7 @@ public class TestJellyBeanSelector extends ApplicationTest {
         verifyGoodJellyBean(jellyBeanPane, 0, "AE5");
         verifyGoodJellyBean(jellyBeanPane, 1, "AE3");
 
-        // Re-add 'Effect 7'
+        // Re-addAndBind 'Effect 7'
         clickOn("#comboBoxJellyBean")
                 .push(KeyCode.DOWN)
                 .push(KeyCode.DOWN)
