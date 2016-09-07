@@ -30,7 +30,12 @@
                 </Label>
             </center>
             <right>
-                <Button text="?"/>
+                <HBox>
+                    <Button fx:id="btnGraph" mnemonicParsing="false"
+                        onAction="#onClickGraphButton"
+                        text="Show Graph"/>
+                    <Button text="?"/>
+                </HBox>
             </right>
         </BorderPane>
     </top>

@@ -86,5 +86,10 @@
             <version>1.8.0_20</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>fr.axonic.avek</groupId>
+            <artifactId>avek-graph</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

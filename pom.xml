@@ -11,6 +11,7 @@
         <module>avek-engine</module>
         <module>avek-gui</module>
         <module>avek-model</module>
+        <module>avek-graph</module>
     </modules>
 
     <properties>
