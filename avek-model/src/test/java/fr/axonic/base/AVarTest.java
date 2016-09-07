@@ -2,7 +2,6 @@ package fr.axonic.base;
 
 
 import fr.axonic.TestEnum;
-import fr.axonic.base.engine.AStructure;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.format.*;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class AVarTest {
         if(!(AVar.create(new BoundedNumberFormat()) instanceof AContinuousNumber)){
             fail();
         }
-        if(!(AVar.create(new BoundedDateFormat()) instanceof AContiniousDate)){
+        if(!(AVar.create(new BoundedDateFormat()) instanceof AContinuousDate)){
             fail();
         }
         if(!(AVar.create(new RangedStringFormat()) instanceof ARangedString)){

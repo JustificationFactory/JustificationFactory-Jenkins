@@ -1,11 +1,10 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
-import fr.axonic.base.AContiniousDate;
+import fr.axonic.base.AContinuousDate;
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
 import fr.axonic.validation.exception.VerificationException;
-import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,8 +26,8 @@ public class BoundedParameter extends SensitiveParameter {
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     private final HBox generalizationPane;
-    private final TextField minEquivRange;
-    private final TextField maxEquivRange;
+    final TextField minEquivRange;
+    final TextField maxEquivRange;
 
     public <T extends AVar<U> & ContinuousAVar<U>, U> BoundedParameter(int level, T paramValue) {
         super(level, paramValue);
@@ -72,7 +71,7 @@ public class BoundedParameter extends SensitiveParameter {
                     //noinspection unchecked
                     paramValue.setMin((U) Double.valueOf(newVal));
                 }
-                else if(paramValue instanceof AContiniousDate) {
+                else if(paramValue instanceof AContinuousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
 
                     minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '31/12/2016 23:59:59'"));
@@ -94,7 +93,7 @@ public class BoundedParameter extends SensitiveParameter {
             } catch (Exception e) {
                 // Input wasn't correct
                 minEquivRange.getStyleClass().add("bad-input");
-                LOGGER.warn(e.getMessage());
+                LOGGER.warn(e.getMessage()+" ("+minEquivRange.getText()+")");
             }
         });
 
@@ -112,7 +111,7 @@ public class BoundedParameter extends SensitiveParameter {
                     //noinspection unchecked
                     paramValue.setMax((U) Double.valueOf(newVal));
                 }
-                else if(paramValue instanceof AContiniousDate) {
+                else if(paramValue instanceof AContinuousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
                     maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '31/12/2016 23:59:59'"));
 
@@ -133,7 +132,7 @@ public class BoundedParameter extends SensitiveParameter {
             } catch (Exception e) {
                 // Input wasn't correct
                 maxEquivRange.getStyleClass().add("bad-input");
-                LOGGER.warn(e.getMessage());
+                LOGGER.warn(e.getMessage()+" ("+maxEquivRange.getText()+")");
             }
         });
 

@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by cduffau on 09/08/16.
  */
-public class AContiniousDate extends ADate implements ContinuousAVar<GregorianCalendar> {
+public class AContinuousDate extends ADate implements ContinuousAVar<GregorianCalendar> {
 
     private GregorianCalendar min, max;
 

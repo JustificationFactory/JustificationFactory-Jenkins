@@ -30,11 +30,9 @@ import org.jgrapht.ext.JGraphModelAdapter;
  */
 public class ArgumentationDiagram extends JFrame {
 
-    private static final Logger LOGGER = Logger.getLogger(ArgumentationDiagram.class);
-
     private final SimpleGraph<String, MyEdge> graph;
 
-    public ArgumentationDiagram(Step step) {
+    private ArgumentationDiagram(Step step) {
         graph = new SimpleGraph<>(MyEdge.class);
         set(step);
 
@@ -54,7 +52,6 @@ public class ArgumentationDiagram extends JFrame {
         new Thread(() -> new ArgumentationDiagram(step)).start();
     }
 
-    private Map<Integer, String> vertexes = new HashMap<>();
     private void set(Step step) {
         String conclusion = "Conclusion";
         String strategy = step.getPattern().getName();
@@ -72,10 +69,10 @@ public class ArgumentationDiagram extends JFrame {
         }
     }
 
-    public class MyEdge extends DefaultEdge {
+    private class MyEdge extends DefaultEdge {
         private String text;
 
-        public MyEdge(String s) {
+        MyEdge(String s) {
             this.text = "";
         }
 

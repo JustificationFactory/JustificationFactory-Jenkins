@@ -1,7 +1,6 @@
 package fr.axonic.base.format;
 
-import fr.axonic.base.AContiniousDate;
-import fr.axonic.base.engine.AVar;
+import fr.axonic.base.AContinuousDate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +14,7 @@ public class BoundedDateFormat extends BoundedFormat<GregorianCalendar,String>{
     private static SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public BoundedDateFormat() {
-        super(AContiniousDate.class, GregorianCalendar.class);
+        super(AContinuousDate.class, GregorianCalendar.class);
     }
 
     @Override

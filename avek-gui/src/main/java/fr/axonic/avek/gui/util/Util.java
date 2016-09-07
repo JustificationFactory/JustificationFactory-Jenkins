@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.util;
 
+import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -25,16 +26,5 @@ public abstract class Util {
             LOGGER.error("Impossible to get file content for " + f, e);
         }
         return res.substring(1); // Ignore first line break
-    }
-    public static String getFileContent(String path) {
-        try {
-            File f = new File(Util.class.getClassLoader()
-                    .getResource(path).toURI());
-
-            return getFileContent(f);
-        } catch (URISyntaxException | NullPointerException e) {
-            LOGGER.error("Impossible to find file at " + path, e);
-        }
-        return null;
     }
 }

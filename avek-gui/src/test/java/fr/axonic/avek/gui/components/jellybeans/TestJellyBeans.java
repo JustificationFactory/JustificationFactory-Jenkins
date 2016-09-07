@@ -43,6 +43,8 @@ public class TestJellyBeans extends ApplicationTest {
 
         jbText = (Button) (jb.getChildren().get(0));
         jbCross = (Button) (jb.getChildren().get(1));
+
+        assert jbText != null && jbCross != null;
     }
 
     @Before

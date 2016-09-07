@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.instance.evidence;
 
-import fr.axonic.base.AContiniousDate;
+import fr.axonic.base.AContinuousDate;
 import fr.axonic.base.ADate;
 import fr.axonic.base.engine.AStructure;
 import fr.axonic.validation.exception.VerificationException;
@@ -12,18 +12,18 @@ import java.util.GregorianCalendar;
  */
 public class StimulationScheduler extends AStructure {
 
-    private AContiniousDate from, to;
+    private AContinuousDate from, to;
 
     public StimulationScheduler() {
         super();
         this.setLabel("Stimulation Scheduler");
         this.setCode("scheduler");
         this.setPath("fr.axonic.stimulation");
-        from=new AContiniousDate();
+        from=new AContinuousDate();
         from.setLabel("From");
         from.setPath("fr.axonic.stimulation.scheduler");
         from.setCode("from");
-        to=new AContiniousDate();
+        to=new AContinuousDate();
         to.setLabel("To");
         to.setPath("fr.axonic.stimulation.scheduler");
         to.setCode("to");
@@ -34,7 +34,7 @@ public class StimulationScheduler extends AStructure {
         return from;
     }
 
-    private void setFrom(AContiniousDate from) {
+    private void setFrom(AContinuousDate from) {
         this.from = from;
     }
 
@@ -46,7 +46,7 @@ public class StimulationScheduler extends AStructure {
         return to;
     }
 
-    private void setTo(AContiniousDate to) {
+    private void setTo(AContinuousDate to) {
         this.to = to;
     }
 
