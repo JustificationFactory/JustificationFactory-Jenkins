@@ -4,7 +4,6 @@ import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
 import fr.axonic.avek.engine.Step;
 import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.graph.ArgumentationDiagram;
-import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.validation.exception.VerificationException;

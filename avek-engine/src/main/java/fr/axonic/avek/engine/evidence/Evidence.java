@@ -23,4 +23,8 @@ public class Evidence<T extends Element> {
                 ", element=" + element +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
 }

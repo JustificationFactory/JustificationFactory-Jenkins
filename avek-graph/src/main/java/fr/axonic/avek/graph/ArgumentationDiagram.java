@@ -53,7 +53,7 @@ public class ArgumentationDiagram extends JFrame {
     }
 
     private void set(Step step) {
-        String conclusion = "Conclusion";
+        String conclusion =   step.getConclusion().getName();
         String strategy = step.getPattern().getName();
 
         graph.addVertex(conclusion);
@@ -62,7 +62,7 @@ public class ArgumentationDiagram extends JFrame {
         graph.addEdge(strategy, conclusion, e);
 
         for(EvidenceRole evidence : step.getEvidences()) {
-            String name = evidence.getRole();
+            String name = evidence.getEvidence().getName();
             graph.addVertex(name);
             e = new MyEdge("");
             graph.addEdge(name, strategy, e);

@@ -1,6 +1,5 @@
 package fr.axonic.avek.gui.util;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
 import java.io.File;

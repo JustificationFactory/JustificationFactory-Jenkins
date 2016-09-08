@@ -20,7 +20,7 @@
                 <VBox alignment="CENTER" style="-fx-border-width: 5px; -fx-border-color: transparent">
                     <ImageView fitHeight="45"
                                preserveRatio="true">
-                        <Image url="@../LogoI3S.png"/>
+                        <Image url="@../LogoAXONIC.png"/>
                     </ImageView>
                 </VBox>
             </left>
