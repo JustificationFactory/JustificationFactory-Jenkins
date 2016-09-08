@@ -37,7 +37,6 @@ public abstract class DataTranslator<T,S> {
                 LOGGER.debug("Translated using "+translator.getClass().getSimpleName());
                 return ret;
             }catch(ClassCastException ignored) {
-                LOGGER.debug("ClassCastException thrown : "+ignored.getLocalizedMessage());
                 // Cannot translateForGUI using this translator
             }
         }

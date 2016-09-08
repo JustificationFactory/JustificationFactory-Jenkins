@@ -7,14 +7,18 @@ import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
 import org.jgrapht.ext.JGraphModelAdapter;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
 
 import javax.swing.*;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by nathael on 07/09/16.
@@ -23,15 +27,16 @@ public class ArgumentationDiagram extends JFrame {
     private final static Logger LOGGER = Logger.getLogger(ArgumentationDiagram.class);
 
     private final Map<Object, MyVertex> nodes;
-    private final SimpleDirectedGraph<MyVertex, DefaultEdge> graph;
+    private final SimpleDirectedGraph<MyVertex, MyEdge> graph;
+    private final JGraphModelAdapter<MyVertex, MyEdge> adapter;
 
     private ArgumentationDiagram(List<Step> steps) {
         nodes = new HashMap<>();
         graph = new SimpleDirectedGraph<>(MyEdge.class);
 
         steps.forEach(this::computeStep);
+        adapter = new JGraphModelAdapter<>(graph);
 
-        JGraphModelAdapter adapter = new JGraphModelAdapter<>(graph);
         JGraph jGraph = new JGraph(adapter);
 
         JScrollPane jsp = new JScrollPane(jGraph);
@@ -41,6 +46,17 @@ public class ArgumentationDiagram extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // center the screen
         this.setVisible(true);
+
+        for(MyVertex vertex : graph.vertexSet()) {
+            try {
+                position(vertex);
+            } catch(Exception e) {
+                LOGGER.error("Impossible to position "+vertex, e);
+            }
+        }
+
+        // Instantaneous construction
+        graph.vertexSet().forEach(this::position);
     }
 
     public static void show(List<Step> steps) {
@@ -63,6 +79,19 @@ public class ArgumentationDiagram extends JFrame {
             addNode(evidence, evidence.getName(), VertexType.EVIDENCE);
             linkNodes(evidence, strategy);
         }
+
+        // Progressive construction
+        /*new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                computePlacements(conclusion);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();*/
+
+        // Instantaneous construction
+        computePlacements(conclusion);
     }
 
     private void addNode(Object o, String name, VertexType type) {
@@ -83,53 +112,78 @@ public class ArgumentationDiagram extends JFrame {
         else
             LOGGER.debug("Already linked "+nodes.get(begin)+" → "+nodes.get(end));
     }
+    private void computePlacements(Object motherNode) {
+        MyVertex vertex = nodes.get(motherNode);
+        computeY(vertex);
+        computeX(vertex);
+    }
+    private List<MyVertex> getChildren(MyVertex motherVertex) {
+        return graph.edgeSet().stream()
+                .filter(e -> graph.getEdgeTarget(e).equals(motherVertex))
+                .map(graph::getEdgeSource)
+                .collect(Collectors.toList());
+    }
+    private void computeY(MyVertex vertex) {
+        List<MyVertex> children = getChildren(vertex);
 
-    private class MyVertex {
-        final Object linkedObject;
-        final String name;
-        VertexType type;
+        // Progressive construction
+        // position(vertex);
 
-        private MyVertex(Object linkedObject, String name, VertexType type) {
-            this.linkedObject = linkedObject;
-            this.name = name;
-            this.type = type;
-        }
+        children.stream()
+                .filter(child -> child.y < vertex.y + 1)
+                .forEach(child -> {
+                    child.y = vertex.y + 1;
 
-        @Override
-        public String toString() {
-            return "[" + type.getValue() + "] " +name;
-        }
+                    computeY(child);
+                });
+    }
+    private void computeX(MyVertex vertex) {
+        List<MyVertex> children= getChildren(vertex);
 
-        void accumulateType(VertexType type) {
-            if(type == VertexType.CONCLUSION || this.type == VertexType.CONCLUSION) {
-                this.type = VertexType.CONCLUSION;
-            } else {
-                this.type = type;
+        int childSize = 0;
+        for(MyVertex child : children) {
+            computeX(child);
+            if((child.x + child.width/2) < childSize-1) {
+                decalX(child, childSize-child.x);
             }
+            childSize += child.width + 1;
         }
+        vertex.width = childSize>1 ? childSize-1 : 1;
+        vertex.x = vertex.width/2;
+        LOGGER.error(vertex);
+
+        // Progressive construction
+        //position(vertex);
     }
-    private class MyEdge extends DefaultEdge {
-        private String text;
+    private void decalX(MyVertex vertex, int ranks) {
+        vertex.x += ranks;
 
-        MyEdge(String s) {
-            this.text = s;
-        }
+        // Progressive construction
+        //position(vertex);
 
-        @Override
-        public String toString() {
-            return text;
-        }
+        getChildren(vertex).forEach(child -> decalX(child, ranks));
     }
-    private enum VertexType {
-        CONCLUSION("C"), EVIDENCE("E"), STRATEGY("S");
+    private void position(MyVertex vertex) {
+        DefaultGraphCell cell = adapter.getVertexCell( vertex );
+        Map attr = cell.getAttributes();
+        Rectangle2D b = GraphConstants.getBounds( attr );
 
-        final String value;
-        VertexType(String c) {
-            this.value = c;
-        }
+        GraphConstants.setBounds( attr, new AttributeMap.SerializableRectangle2D(
+                vertex.x * b.getWidth(),
+                vertex.y * b.getHeight() * 2,
+                b.getWidth(),
+                b.getHeight()));
 
-        public String getValue() {
-            return value;
-        }
+        Map<DefaultGraphCell,Map> cellAttr = new HashMap<>();
+        cellAttr.put( cell, attr );
+        adapter.edit( cellAttr, null, null, null );
+
+        // Progressive construction
+        /*try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
     }
+
 }
