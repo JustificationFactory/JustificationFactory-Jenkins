@@ -1,14 +1,11 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.base.engine.AVar;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Created by Nathaël N on 21/07/16.

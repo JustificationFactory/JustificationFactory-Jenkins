@@ -5,7 +5,6 @@ import fr.axonic.avek.gui.components.jellybeans.JellyBeanPane;
 import fr.axonic.base.engine.AEnumItem;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.DiscretAVar;
-import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;

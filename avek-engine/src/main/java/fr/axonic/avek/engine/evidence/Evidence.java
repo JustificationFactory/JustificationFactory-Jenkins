@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.evidence;
 
-public class Evidence<T extends Element> {
+public class Evidence<T extends Element> implements Cloneable{
     protected String name;
     protected T element;
 
@@ -26,5 +26,11 @@ public class Evidence<T extends Element> {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Evidence<T> clone() throws CloneNotSupportedException {
+        super.clone();
+        return new Evidence<>(this.getName(),this.getElement());
     }
 }

@@ -1,40 +1,35 @@
 package fr.axonic.avek.graph;
 
-import com.mxgraph.view.mxGraph;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import fr.axonic.avek.engine.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-
+import fr.axonic.avek.engine.Pattern;
+import fr.axonic.avek.engine.Step;
+import fr.axonic.avek.engine.conclusion.Conclusion;
+import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
-import org.jgraph.graph.AttributeMap;
-import org.jgraph.graph.Edge;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleDirectedGraph;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nathael on 07/09/16.
  */
 public class ArgumentationDiagram extends JFrame {
+    private final static Logger LOGGER = Logger.getLogger(ArgumentationDiagram.class);
 
-    private final SimpleGraph<String, MyEdge> graph;
+    private final Map<Object, MyVertex> nodes;
+    private final SimpleDirectedGraph<MyVertex, DefaultEdge> graph;
 
-    private ArgumentationDiagram(Step step) {
-        graph = new SimpleGraph<>(MyEdge.class);
-        set(step);
+    private ArgumentationDiagram(List<Step> steps) {
+        nodes = new HashMap<>();
+        graph = new SimpleDirectedGraph<>(MyEdge.class);
+
+        steps.forEach(this::computeStep);
 
         JGraphModelAdapter adapter = new JGraphModelAdapter<>(graph);
         JGraph jGraph = new JGraph(adapter);
@@ -48,37 +43,93 @@ public class ArgumentationDiagram extends JFrame {
         this.setVisible(true);
     }
 
-    public static void show(Step step) {
-        new Thread(() -> new ArgumentationDiagram(step)).start();
+    public static void show(List<Step> steps) {
+        new ArgumentationDiagram(steps);
     }
 
-    private void set(Step step) {
-        String conclusion =   step.getConclusion().getName();
-        String strategy = step.getPattern().getName();
+    private void computeStep(Step step) {
+        LOGGER.debug(step);
 
-        graph.addVertex(conclusion);
-        graph.addVertex(strategy);
-        MyEdge e = new MyEdge("");
-        graph.addEdge(strategy, conclusion, e);
+        Conclusion conclusion = step.getConclusion();
+        Pattern strategy = step.getPattern();
+        LOGGER.debug("Step: "+conclusion.getName()+" ← "+strategy.getName());
 
-        for(EvidenceRole evidence : step.getEvidences()) {
-            String name = evidence.getEvidence().getName();
-            graph.addVertex(name);
-            e = new MyEdge("");
-            graph.addEdge(name, strategy, e);
+        addNode(conclusion, conclusion.getName(), VertexType.CONCLUSION);
+        addNode(strategy, strategy.getName(), VertexType.STRATEGY);
+        linkNodes(strategy, conclusion);
+
+        for(EvidenceRole evidenceRole : step.getEvidences()) {
+            Evidence evidence = evidenceRole.getEvidence();
+            addNode(evidence, evidence.getName(), VertexType.EVIDENCE);
+            linkNodes(evidence, strategy);
         }
     }
 
+    private void addNode(Object o, String name, VertexType type) {
+        if (!nodes.containsKey(o)) {
+            MyVertex vertex = new MyVertex(o, name, type);
+            graph.addVertex(vertex);
+            nodes.put(o, vertex);
+        } else {
+            nodes.get(o).accumulateType(type);
+        }
+    }
+    private void linkNodes(Object begin, Object end) {
+        if(!graph.containsEdge(nodes.get(begin), nodes.get(end))) {
+            LOGGER.debug("Linking "+nodes.get(begin)+" → "+nodes.get(end));
+            MyEdge e = new MyEdge("");
+            graph.addEdge(nodes.get(begin), nodes.get(end), e);
+        }
+        else
+            LOGGER.debug("Already linked "+nodes.get(begin)+" → "+nodes.get(end));
+    }
+
+    private class MyVertex {
+        final Object linkedObject;
+        final String name;
+        VertexType type;
+
+        private MyVertex(Object linkedObject, String name, VertexType type) {
+            this.linkedObject = linkedObject;
+            this.name = name;
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return "[" + type.getValue() + "] " +name;
+        }
+
+        void accumulateType(VertexType type) {
+            if(type == VertexType.CONCLUSION || this.type == VertexType.CONCLUSION) {
+                this.type = VertexType.CONCLUSION;
+            } else {
+                this.type = type;
+            }
+        }
+    }
     private class MyEdge extends DefaultEdge {
         private String text;
 
         MyEdge(String s) {
-            this.text = "";
+            this.text = s;
         }
 
         @Override
         public String toString() {
             return text;
+        }
+    }
+    private enum VertexType {
+        CONCLUSION("C"), EVIDENCE("E"), STRATEGY("S");
+
+        final String value;
+        VertexType(String c) {
+            this.value = c;
+        }
+
+        public String getValue() {
+            return value;
         }
     }
 }

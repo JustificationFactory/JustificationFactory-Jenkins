@@ -69,10 +69,10 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
             steps.add(step);
             LOGGER.info(step.getConclusion());
             EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
-            baseEvidences.add(evidenceRoleType.create(step.getConclusion()));
+            baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
             return step;
         }
-        catch (NullPointerException e){
+        catch (NullPointerException | CloneNotSupportedException e){
             throw new StepBuildingException("Unknown pattern");
         }
 

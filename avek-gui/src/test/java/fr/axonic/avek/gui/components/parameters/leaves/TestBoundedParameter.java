@@ -1,9 +1,8 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.util.UtilForTests;
-import fr.axonic.base.*;
-import fr.axonic.base.engine.AVar;
-import fr.axonic.base.engine.ContinuousAVar;
+import fr.axonic.base.AContinuousDate;
+import fr.axonic.base.AContinuousNumber;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;

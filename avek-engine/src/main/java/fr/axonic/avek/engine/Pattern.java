@@ -72,7 +72,13 @@ public class Pattern {
 	//Should call applicable
 	public Step createStep(List<EvidenceRole> evidenceList, Conclusion conclusion) throws StepBuildingException {
 		if(applicable(evidenceList)){
-			Step res=new Step(this, evidenceList,conclusion);
+			Step res= null;
+			List<EvidenceRole> evidenceRoles=new ArrayList<>(evidenceList);
+			try {
+				res = new Step(this, evidenceRoles, (Conclusion) conclusion.clone());
+			} catch (CloneNotSupportedException e) {
+				throw new StepBuildingException("There is a issue to apply the pattern "+name);
+			}
 			if(checkConclusion(EvidenceRole.translateToEvidence(evidenceList),conclusion)){
 				return res;
 			}

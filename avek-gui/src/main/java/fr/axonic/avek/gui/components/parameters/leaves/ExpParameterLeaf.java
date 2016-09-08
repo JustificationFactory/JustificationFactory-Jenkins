@@ -3,7 +3,6 @@ package fr.axonic.avek.gui.components.parameters.leaves;
 import fr.axonic.avek.gui.components.parameters.IExpParameter;
 import fr.axonic.avek.gui.util.LevelMark;
 import fr.axonic.base.AContinuousNumber;
-import fr.axonic.base.engine.AElement;
 import fr.axonic.base.engine.AVar;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

@@ -1,7 +1,6 @@
 package fr.axonic.avek.gui.view.frame;
 
 import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
-import fr.axonic.avek.engine.Step;
 import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.graph.ArgumentationDiagram;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
@@ -16,7 +15,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Created by Nathaël N on 26/07/16.
@@ -52,10 +50,7 @@ public class MainFrame extends BorderPane {
     @FXML
     private void onClickGraphButton(ActionEvent event) {
         try {
-            List<Step> s = ArgumentationDiagramAPIImpl.getInstance().getSteps();
-            Step lastStep = s.get(s.size()-1);
-
-            ArgumentationDiagram.show(lastStep);
+            ArgumentationDiagram.show(ArgumentationDiagramAPIImpl.getInstance().getSteps());
         } catch (VerificationException | WrongEvidenceException e) {
             LOGGER.error("Cannot show graph now");
         }
