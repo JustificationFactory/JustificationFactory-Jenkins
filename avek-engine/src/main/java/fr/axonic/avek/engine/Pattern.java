@@ -68,17 +68,24 @@ public class Pattern {
 		return true;
 	}
 
+	public List<EvidenceRole> filterUsefullEvidences(List<EvidenceRole> evidenceRoles){
+		List<EvidenceRole> evidenceRoleList=new ArrayList<>();
+		for(EvidenceRole evidenceRole:evidenceRoles){
+			for(EvidenceRoleType evidenceRoleType:roleTypes){
+				if(evidenceRoleType.isEvidenceType(evidenceRole.getEvidence())){
+					evidenceRoleList.add(evidenceRole);
+				}
+			}
+		}
+		return evidenceRoleList;
+	}
 
 	//Should call applicable
 	public Step createStep(List<EvidenceRole> evidenceList, Conclusion conclusion) throws StepBuildingException {
 		if(applicable(evidenceList)){
 			Step res= null;
-			List<EvidenceRole> evidenceRoles=new ArrayList<>(evidenceList);
-			try {
-				res = new Step(this, evidenceRoles, (Conclusion) conclusion.clone());
-			} catch (CloneNotSupportedException e) {
-				throw new StepBuildingException("There is a issue to apply the pattern "+name);
-			}
+			res = new Step(this, evidenceList, conclusion);
+
 			if(checkConclusion(EvidenceRole.translateToEvidence(evidenceList),conclusion)){
 				return res;
 			}

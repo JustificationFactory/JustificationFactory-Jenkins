@@ -65,14 +65,15 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     @Override
     public Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException {
         try{
-            Step step=patterns.get(patternId).createStep(evidences,conclusion);
+            List<EvidenceRole> usefullEvidences=patterns.get(patternId).filterUsefullEvidences(evidences);
+            Step step=patterns.get(patternId).createStep(usefullEvidences,conclusion.clone());
             steps.add(step);
             LOGGER.info(step.getConclusion());
             EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
             baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
             return step;
         }
-        catch (NullPointerException | CloneNotSupportedException e){
+        catch (NullPointerException  e){
             throw new StepBuildingException("Unknown pattern");
         }
 

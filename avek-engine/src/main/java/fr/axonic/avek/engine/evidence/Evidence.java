@@ -29,8 +29,7 @@ public class Evidence<T extends Element> implements Cloneable{
     }
 
     @Override
-    public Evidence<T> clone() throws CloneNotSupportedException {
-        super.clone();
+    public Evidence<T> clone() {
         return new Evidence<>(this.getName(),this.getElement());
     }
 }
