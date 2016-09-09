@@ -14,7 +14,7 @@ public class DynamicSubjectInformations extends AStructure{
 
     public DynamicSubjectInformations() throws VerificationException {
         super();
-        this.setLabel("Dynamic Subject Informations");
+        this.setLabel("Dynamic Informations");
         this.setCode("dynamic");
         this.setPath("fr.axonic.subject");
 

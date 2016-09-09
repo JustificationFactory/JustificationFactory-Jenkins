@@ -20,6 +20,7 @@ public class StaticSubjectInformations extends AStructure{
 
     public StaticSubjectInformations() throws VerificationException {
         super();
+        this.setLabel("Static Informations");
         this.setCode("static");
         this.setPath("fr.axonic.subject");
 

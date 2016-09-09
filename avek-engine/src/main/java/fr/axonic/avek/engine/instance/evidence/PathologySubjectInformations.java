@@ -20,7 +20,7 @@ public class PathologySubjectInformations extends AStructure{
 
     public PathologySubjectInformations() throws VerificationException {
         super();
-        this.setLabel("Pathology Subject Informations");
+        this.setLabel("Pathology Informations");
         this.setPath("fr.axonic.subject");
         this.setCode("pathology");
 
