@@ -34,10 +34,10 @@ public class MonitoredSystemView extends Accordion {
                     SimpleDateFormat df = new SimpleDateFormat();
                     df.applyPattern("dd/MM/yyyy HH:mm:ss");
                     list.getItems().add(new Label(
-                            av.getLabel() + " : "+ df.format(((ADate)av).getValue().getTime())));
+                            av.getLabel() + " : " + (((ADate)av).getValue()==null?null:df.format(((ADate)av).getValue().getTime()))));
                 } else {
                     list.getItems().add(new Label(
-                            av.getLabel() + " : " + ((AVar)av).getValue().toString()));
+                            av.getLabel() + " : " + ((AVar)av).getValue()));
                 }
 	        }
         }

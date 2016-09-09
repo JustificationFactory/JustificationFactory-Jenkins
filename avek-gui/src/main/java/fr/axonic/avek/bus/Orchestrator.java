@@ -17,6 +17,8 @@ import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import fr.axonic.avek.model.MonitoredSystem;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AStructure;
+import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
@@ -167,23 +169,12 @@ public class Orchestrator implements Observer {
                         currentSubject = (Subject) evidenceRole.getEvidence().getElement();
 
                         MonitoredSystem ms = new MonitoredSystem(currentSubject.getId());
-                        Map<String, AEntity> map = currentSubject.getStaticInformations().getFieldsContainer();
-                        AList<AEntity> al = new AList<>();
-                        al.setLabel("Static");
-                        al.addAll(map.values());
-                        ms.addCategory(al);
-
-                        map = currentSubject.getDynamicInformations().getFieldsContainer();
-                        al = new AList<>();
-                        al.setLabel("Dynamic");
-                        al.addAll(map.values());
-                        ms.addCategory(al);
-
-                        map = currentSubject.getPathologyInformations().getFieldsContainer();
-                        al = new AList<>();
-                        al.setLabel("Pathologic");
-                        al.addAll(map.values());
-                        ms.addCategory(al);
+                        currentSubject.getFieldsContainer().forEach((key,val)-> {
+                            if(val instanceof AStructure)
+                                ms.addCategory(AVarHelper.transformAStructureToAList((AStructure) val));
+                            else
+                                LOGGER.warn("Not treated: '"+key+"':"+val);
+                        });
 
                         content.put(ComponentType.MONITORED_SYSTEM, ms);
                         break;
