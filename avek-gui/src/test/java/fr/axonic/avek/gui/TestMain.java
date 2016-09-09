@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui;
 
 import fr.axonic.avek.gui.util.UtilForTests;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -23,5 +24,11 @@ public class TestMain extends ApplicationTest {
     @Test
     public void test() {
         assertTrue("Application cannot be launched", true);
+        clickOn("#btnStrategy");
+        clickOn("#comboBox");
+        type(KeyCode.DOWN, 3);
+        type(KeyCode.ENTER);
+        clickOn("#submit");
+        clickOn("#btnStrategy");
     }
 }

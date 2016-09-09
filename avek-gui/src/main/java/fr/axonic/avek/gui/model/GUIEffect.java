@@ -48,8 +48,11 @@ public class GUIEffect<T> {
         }
     }
 
+    public Set<JellyBeanItem> getAddedItems() {
+        return addedItems;
+    }
     public Set<JellyBeanItem> getJellyBeanItemList() {
-        return bindCollection!=null?onAddBindings.keySet():addedItems;
+        return bindCollection!=null?onAddBindings.keySet():getAddedItems();
     }
 
 }

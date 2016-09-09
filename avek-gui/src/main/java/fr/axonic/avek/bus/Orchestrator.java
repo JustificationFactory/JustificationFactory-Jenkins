@@ -1,12 +1,14 @@
 package fr.axonic.avek.bus;
 
 import fr.axonic.avek.bus.translator.DataTranslator;
-import fr.axonic.avek.engine.*;
+import fr.axonic.avek.engine.ArgumentationDiagramAPI;
+import fr.axonic.avek.engine.Pattern;
+import fr.axonic.avek.engine.StepBuildingException;
+import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
-import fr.axonic.avek.graph.ArgumentationDiagram;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIException;
@@ -17,7 +19,6 @@ import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
-import org.codehaus.plexus.util.cli.Arg;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -95,8 +96,8 @@ public class Orchestrator implements Observer {
     }
 
     /**
-     * Call GUI API to show the right view corresponding to the current Pattern
-     * @param pattern
+     * Call GUI API to show the right view corresponding to a Pattern
+     * @param pattern Will showing view corresponding to this pattern
      * @throws GUIException
      */
     private void showViewFromPattern(Pattern pattern) throws GUIException {
