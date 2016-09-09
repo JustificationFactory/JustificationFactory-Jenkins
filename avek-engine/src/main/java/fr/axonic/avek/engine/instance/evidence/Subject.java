@@ -12,19 +12,31 @@ public class Subject extends Element implements Limit {
     private DynamicSubjectInformations dynamicInformations;
     private PathologySubjectInformations pathologyInformations;
 
-    public Subject() throws VerificationException {
+
+    public Subject(String id, StaticSubjectInformations staticInformations, DynamicSubjectInformations dynamicInformations, PathologySubjectInformations pathologyInformations) {
+
+
         super();
         this.setLabel("Subject");
         this.setPath("fr.axonic");
         this.setCode("subject");
         this.id=new AString();
         this.id.setLabel("Subject ID");
-        id.setCode("id");
-        id.setPath("fr.axonic.subject");
-        this.staticInformations=new StaticSubjectInformations();
-        this.dynamicInformations=new DynamicSubjectInformations();
-        this.pathologyInformations=new PathologySubjectInformations();
+        this.id.setCode("id");
+        this.id.setPath("fr.axonic.subject");
+        try {
+            this.id.setValue(id);
+        } catch (VerificationException e) {
+            e.printStackTrace();
+        }
+        this.staticInformations = staticInformations;
+        this.dynamicInformations = dynamicInformations;
+        this.pathologyInformations = pathologyInformations;
         super.init();
+    }
+
+    public Subject() throws VerificationException {
+        this(null, null, null, null);
     }
 
     public AString getId() {

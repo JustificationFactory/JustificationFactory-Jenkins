@@ -130,22 +130,21 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
 
 
 
-        Subject subject=new Subject();
-        subject.setIdValue("12345");
+
         StaticSubjectInformations staticInfos=new StaticSubjectInformations();
         staticInfos.setBirthdayValue(new GregorianCalendar());
         staticInfos.setGenderValue(Gender.MALE);
         staticInfos.setHeightValue(70.5);
         staticInfos.setNameValue("Paul");
-        subject.setStaticInformations(staticInfos);
         DynamicSubjectInformations dynamicInfos=new DynamicSubjectInformations();
         dynamicInfos.setBmiValue(40);
         dynamicInfos.setWeightValue(130);
-        subject.setDynamicInformations(dynamicInfos);
+
         PathologySubjectInformations pathologyInfos=new PathologySubjectInformations();
         pathologyInfos.setBeginningOfObesityValue(new GregorianCalendar());
         pathologyInfos.setObesityTypeValue(ObesityType.GYNOID);
-        subject.setPathologyInformations(pathologyInfos);
+
+        Subject subject=new Subject("12345",staticInfos,dynamicInfos,pathologyInfos);
         Evidence<Stimulation> stimulation0 = new Evidence<Stimulation>("Stimulation 0", stimulation);
         Evidence<Subject> subject0 = new Evidence<Subject>("Subject 0",subject);
         EvidenceRoleType<Stimulation> rtStimulation = new EvidenceRoleType<>("stimulation", Stimulation.class);
