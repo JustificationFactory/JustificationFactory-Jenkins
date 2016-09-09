@@ -18,8 +18,8 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("WeakerAccess")
 public class JellyBean<T,U,V> extends HBox {
-    private final static Logger LOGGER = Logger.getLogger(JellyBean.class);
-    private final static URL FXML
+    private static final Logger LOGGER = Logger.getLogger(JellyBean.class);
+    private static final URL FXML
             = JellyBean.class.getClassLoader().getResource("fr/axonic/avek/gui/components/jellybeans/JellyBean.fxml");
 
     @FXML

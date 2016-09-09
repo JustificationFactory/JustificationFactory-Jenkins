@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * Created by Nathaël N on 28/07/16.
  */
 class EffectToGuiEffect extends DataTranslator<AList<Effect>, GUIEffect> {
-    private final static Logger LOGGER = Logger.getLogger(EffectToGuiEffect.class);
+    private static final Logger LOGGER = Logger.getLogger(EffectToGuiEffect.class);
 
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
 

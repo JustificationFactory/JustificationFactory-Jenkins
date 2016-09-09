@@ -14,7 +14,6 @@ import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.SimpleDirectedGraph;
 
 import javax.swing.*;
-import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class ArgumentationDiagram extends JFrame {
         this.setContentPane(jsp);
 
         this.setSize(500, 500);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null); // center the screen
         this.setVisible(true);
 
@@ -150,7 +149,6 @@ public class ArgumentationDiagram extends JFrame {
         }
         vertex.width = childSize>1 ? childSize-1 : 1;
         vertex.x = vertex.width/2;
-        LOGGER.error(vertex);
 
         // Progressive construction
         //position(vertex);
@@ -163,16 +161,18 @@ public class ArgumentationDiagram extends JFrame {
 
         getChildren(vertex).forEach(child -> decalX(child, ranks));
     }
+
+    private final static int WIDTH_CONSTANT = 150; //px
+    private final static int HEIGHT_CONSTANT = 30; //px
     private void position(MyVertex vertex) {
         DefaultGraphCell cell = adapter.getVertexCell( vertex );
         Map attr = cell.getAttributes();
-        Rectangle2D b = GraphConstants.getBounds( attr );
 
         GraphConstants.setBounds( attr, new AttributeMap.SerializableRectangle2D(
-                vertex.x * b.getWidth(),
-                vertex.y * b.getHeight() * 2,
-                b.getWidth(),
-                b.getHeight()));
+                vertex.x * WIDTH_CONSTANT, // vertex distance from left
+                vertex.y * HEIGHT_CONSTANT * 2, // vertex distance from top
+                WIDTH_CONSTANT, // Vertex width
+                HEIGHT_CONSTANT)); // Vertex height
 
         Map<DefaultGraphCell,Map> cellAttr = new HashMap<>();
         cellAttr.put( cell, attr );

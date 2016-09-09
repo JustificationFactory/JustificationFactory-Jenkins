@@ -99,8 +99,12 @@ class ParametersCategory implements IExpParameter {
     @Override
     public List<List<Node>> getNodes() {
         List<List<Node>> list = new ArrayList<>();
-        list.addAll(title.getNodes()); // Add title nodes
-        children.forEach(iep -> list.addAll(iep.getNodes())); // Add children nodes
+
+        // Add title nodes
+        list.addAll(title.getNodes());
+
+        // Add children nodes
+        children.forEach(iep -> list.addAll(iep.getNodes()));
         return list;
     }
 }

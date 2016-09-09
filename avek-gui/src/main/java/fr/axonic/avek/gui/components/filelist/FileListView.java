@@ -24,7 +24,7 @@ import java.util.List;
  * Created by Nathaël N on 18/07/16.
  */
 public class FileListView extends StackPane {
-    private final static Logger LOGGER = Logger.getLogger(FileListView.class);
+    private static final Logger LOGGER = Logger.getLogger(FileListView.class);
 
     private static final URL FXML
             = FileListView.class.getClassLoader().getResource("fr/axonic/avek/gui/components/filelist/FileListView.fxml");

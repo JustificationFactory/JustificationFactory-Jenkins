@@ -1,6 +1,7 @@
 package fr.axonic.avek.gui;
 
 import fr.axonic.avek.bus.Orchestrator;
+import fr.axonic.avek.engine.ArgumentationDiagramAPIImpl;
 import fr.axonic.avek.engine.WrongEvidenceException;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.api.GUIException;
@@ -18,6 +19,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException, WrongEvidenceException, GUIException, VerificationException {
         GUIAPIImpl.getInstance().initializeFrame(primaryStage);
-        new Orchestrator(GUIAPIImpl.getInstance());
+        new Orchestrator(GUIAPIImpl.getInstance(), ArgumentationDiagramAPIImpl.getInstance());
     }
 }

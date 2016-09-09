@@ -18,7 +18,9 @@ public class LevelMark extends HBox {
     private static final String LINE = "levelmark-line";
     private static final String ARROW = "levelmark-arrow";
     private static final String CSS = "levelmark";
-    private static final int ROTATE_DURATION = 500; // ms
+
+    // ms
+    private static final int ROTATE_DURATION = 500;
 
     private Consumer<Boolean> onClickExpand;
     private boolean expandable;

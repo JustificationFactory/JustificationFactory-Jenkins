@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Nathaël N on 21/07/16.
  */
 public class BoundedParameter extends SensitiveParameter {
-    private final static Logger LOGGER = Logger.getLogger(BoundedParameter.class);
+    private static final Logger LOGGER = Logger.getLogger(BoundedParameter.class);
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     private final HBox generalizationPane;

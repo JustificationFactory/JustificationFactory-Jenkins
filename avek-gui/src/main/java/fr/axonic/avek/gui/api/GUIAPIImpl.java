@@ -1,5 +1,6 @@
 package fr.axonic.avek.gui.api;
 
+import fr.axonic.avek.bus.FeedbackEventEnum;
 import fr.axonic.avek.gui.view.AbstractView;
 import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.frame.MainFrame;
@@ -14,8 +15,8 @@ import java.util.Map;
  * Created by cduffau on 12/08/16.
  */
 public class GUIAPIImpl extends GUIAPI {
-    private final static Logger LOGGER = Logger.getLogger(GUIAPIImpl.class);
-    private final static GUIAPIImpl INSTANCE = new GUIAPIImpl();
+    private static final Logger LOGGER = Logger.getLogger(GUIAPIImpl.class);
+    private static final GUIAPIImpl INSTANCE = new GUIAPIImpl();
 
     private final LoadingView loadingView = new LoadingView();
     private Map<ComponentType, Object> content;
@@ -45,7 +46,8 @@ public class GUIAPIImpl extends GUIAPI {
             throw new GUIException("Wrong content for " + viewType);
         }
 
-        this.content = content; // should be done before view loading
+        // should be done before view loading
+        this.content = content;
 
         // Setting the view
         try {
@@ -68,8 +70,8 @@ public class GUIAPIImpl extends GUIAPI {
     }
 
     public void onSubmitPatternChoice(String patternName) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("Pattern", patternName);
+        Map<FeedbackEventEnum, Object> data = new HashMap<>();
+        data.put(FeedbackEventEnum.PATTERN, patternName);
         setChanged();
         notifyObservers(data);
     }
@@ -90,10 +92,10 @@ public class GUIAPIImpl extends GUIAPI {
 
 
     public void onStrategySubmitted() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("Strategy", null);
-        data.put("ViewType", viewType);
-        data.put("Content", content);
+        Map<FeedbackEventEnum, Object> data = new HashMap<>();
+        data.put(FeedbackEventEnum.STRATEGY, null);
+        data.put(FeedbackEventEnum.VIEW_TYPE, viewType);
+        data.put(FeedbackEventEnum.CONTENT, content);
         setChanged();
         notifyObservers(data);
     }

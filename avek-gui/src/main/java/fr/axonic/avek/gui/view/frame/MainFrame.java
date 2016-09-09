@@ -20,8 +20,8 @@ import java.net.URL;
  * Created by Nathaël N on 26/07/16.
  */
 public class MainFrame extends BorderPane {
-    private final static Logger LOGGER = Logger.getLogger(MainFrame.class);
-    private final static URL FXML = MainFrame.class.getClassLoader()
+    private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
+    private static final URL FXML = MainFrame.class.getClassLoader()
             .getResource("fr/axonic/avek/gui/view/frame/MainFrame.fxml");
 
     @FXML
@@ -61,7 +61,9 @@ public class MainFrame extends BorderPane {
     public void setView(AbstractView av) {
         if(!av.isLoaded())
             av.load();
-        setCenter(av); // remove abstract fr.axonic.avek.gui.view currently loaded
+
+        // remove abstract view currently loaded
+        setCenter(av);
     }
 
     public void setStrategyButtonLabel(String strategyButtonLabel) {

@@ -40,4 +40,11 @@ public class MonitoredSystem extends AVar {
 			return categories.equals(((MonitoredSystem)obj).categories);
 		return super.equals(obj);
 	}
+
+	@Override
+	public int hashCode() {
+	    int hash = 17*id.hashCode();
+        hash = hash*13 + categories.hashCode();
+		return hash;
+	}
 }

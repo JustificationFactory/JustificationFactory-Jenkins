@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Created by Nathaël N on 19/07/16.
  */
 class FileListCell extends ListCell<UploadedFile> {
-    private final static Logger LOGGER = Logger.getLogger(FileListCell.class);
+    private static final Logger LOGGER = Logger.getLogger(FileListCell.class);
 
     private static final HashMap<String, Image> mapOfFileExtToSmallIcon = new HashMap<>();
     private ProgressIndicator progressIndicator;
@@ -93,7 +93,9 @@ class FileListCell extends ListCell<UploadedFile> {
             ImageView imageView = new ImageView(fxImage);
 
             setGraphic(imageView);
-            progressIndicator = null; // throw the progress indicator (now unused)
+
+            // throw the progress indicator (now unused)
+            progressIndicator = null;
         } else {
             if (progressIndicator == null) {
                 progressIndicator = new ProgressIndicator();

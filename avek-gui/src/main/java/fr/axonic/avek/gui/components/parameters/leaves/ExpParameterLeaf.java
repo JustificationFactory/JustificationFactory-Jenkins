@@ -24,7 +24,9 @@ public class ExpParameterLeaf implements IExpParameter {
     final Label paramTitle;
     final Label paramValue;
     final LevelMark levelMark;
-    final Label separator; // " : " label
+
+    // " : " label
+    final Label separator;
 
     public ExpParameterLeaf(int level, AVar var) {
         // Init elements

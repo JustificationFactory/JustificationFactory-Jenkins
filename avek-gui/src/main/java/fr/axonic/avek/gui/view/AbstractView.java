@@ -16,13 +16,14 @@ import java.util.Map;
  * Created by Nathaël N on 26/07/16.
  */
 public abstract class AbstractView extends BorderPane {
-    private final static Logger LOGGER = Logger.getLogger(AbstractView.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractView.class);
 
     // Is the view loaded ?
     private boolean loaded;
 
     protected AbstractView() {
-        loaded = false; // the view isn't loaded
+        // the view isn't loaded
+        loaded = false;
     }
 
     /**

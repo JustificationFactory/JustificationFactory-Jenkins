@@ -19,9 +19,9 @@ import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 
 public class EstablishEffectView extends AbstractView {
-    private final static Logger LOGGER = Logger.getLogger(EstablishEffectView.class);
+    private static final Logger LOGGER = Logger.getLogger(EstablishEffectView.class);
 
-    private final static String FXML = "fr/axonic/avek/gui/view/etablisheffect/EstablishEffectView.fxml";
+    private static final String FXML = "fr/axonic/avek/gui/view/etablisheffect/EstablishEffectView.fxml";
 
     @FXML
     private JellyBeanSelector jellyBeanSelector;
@@ -33,6 +33,25 @@ public class EstablishEffectView extends AbstractView {
     public Label monitoredSystemTitle;
     @FXML
     public Button monitoredSystemHistory;
+
+    @FXML
+    private SplitPane fileListSplitPane;
+    @FXML
+    private BorderPane fileListPane;
+    @FXML
+    private ToggleButton outerFileListButton;
+
+    @FXML
+    private SplitPane monitoredSystemSplitPane;
+    @FXML
+    private BorderPane monitoredSystemPane;
+    @FXML
+    private ToggleButton outerMonitoredSystemButton;
+
+    @FXML
+    private BorderPane resultsPane;
+    @FXML
+    private ToggleButton outerResultsButton;
 
     @Override
     protected void onLoad() {
@@ -53,13 +72,6 @@ public class EstablishEffectView extends AbstractView {
     }
 
     @FXML
-    private SplitPane fileListSplitPane;
-    @FXML
-    private BorderPane fileListPane;
-    @FXML
-    private ToggleButton outerFileListButton;
-
-    @FXML
     public void onClickFileListViewButton(ActionEvent event) {
         boolean newState = !fileListPane.isVisible();
         if (newState) {
@@ -72,15 +84,16 @@ public class EstablishEffectView extends AbstractView {
     }
 
     @FXML
-    private SplitPane monitoredSystemSplitPane;
-    @FXML
-    private BorderPane monitoredSystemPane;
-    @FXML
-    private ToggleButton outerMonitoredSystemButton;
-
-    @FXML
     public void onClickMonitoredSystemButton(ActionEvent event) {
         setMonitoredSystemVisible(!monitoredSystemPane.isVisible());
+    }
+
+    @FXML
+    public void onClickResultsButton(ActionEvent event) {
+        boolean newState = !resultsPane.isVisible();
+        resultsPane.setVisible(newState);
+        resultsPane.setManaged(newState);
+        outerResultsButton.setSelected(newState);
     }
 
     private void setMonitoredSystemVisible(boolean isVisible) {
@@ -91,19 +104,6 @@ public class EstablishEffectView extends AbstractView {
             hidePane(monitoredSystemPane,
                     monitoredSystemSplitPane, outerMonitoredSystemButton);
         }
-    }
-
-    @FXML
-    private BorderPane resultsPane;
-    @FXML
-    private ToggleButton outerResultsButton;
-
-    @FXML
-    public void onClickResultsButton(ActionEvent event) {
-        boolean newState = !resultsPane.isVisible();
-        resultsPane.setVisible(newState);
-        resultsPane.setManaged(newState);
-        outerResultsButton.setSelected(newState);
     }
 }
 

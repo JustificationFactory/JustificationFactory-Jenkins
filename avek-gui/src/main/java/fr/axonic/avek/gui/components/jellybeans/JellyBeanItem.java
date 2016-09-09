@@ -21,8 +21,8 @@ public class JellyBeanItem<T,U,V> {
     private Function<U,String> getStateLabelMethod;
     private Function<U,String> getStateCodeMethod;
 
-    // Listeners
-    private final Set<BiConsumer<U, U>> stateChangeListeners; // LastState, NewState
+    // LastState, NewState
+    private final Set<BiConsumer<U, U>> stateChangeListeners;
     private Consumer<Boolean> editableStateChangeListener;
 
     private V currentStateItem;

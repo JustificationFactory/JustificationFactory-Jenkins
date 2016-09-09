@@ -10,7 +10,7 @@ import java.util.HashSet;
  * Created by Nathaël N on 28/07/16.
  */
 public abstract class DataTranslator<T,S> {
-    private final static Logger LOGGER = Logger.getLogger(DataTranslator.class);
+    private static final Logger LOGGER = Logger.getLogger(DataTranslator.class);
     private static final HashSet<DataTranslator> toGUI = new HashSet<>();
     private static final HashSet<DataTranslator> toEngine = new HashSet<>();
 
@@ -19,16 +19,37 @@ public abstract class DataTranslator<T,S> {
         toGUI.add(new EffectToGuiEffect());
     }
 
+    /**
+     * Translate object of type T to object of type S
+     * @param t source object
+     * @return translated object
+     */
     protected abstract S translate(T t);
 
+    /**
+     * Translate given object in what GUI need
+     * @param engineObject object to translate
+     * @return translated object, or same object if GUI want this object as it is
+     */
     public static Object translateForGUI(Object engineObject) {
         return translateFor(engineObject, toGUI);
     }
 
+    /**
+     * Translate given object in what engine need
+     * @param guiObject object to translate
+     * @return translated object, or same object if engine want this object as it is
+     */
     public static Object translateForEngine(Object guiObject) {
         return translateFor(guiObject, toEngine);
     }
 
+    /**
+     * Will try to call translate Method for each dataTranslator set
+     * @param object The object to translate
+     * @param destination The set of dataTranslator to use
+     * @return Translated object, or the object itself if not matched any translator
+     */
     private static Object translateFor(Object object, HashSet<DataTranslator> destination) {
         for(DataTranslator translator : destination) {
             try {

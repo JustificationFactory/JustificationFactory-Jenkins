@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 25/07/16.
  */
 public class TestFileList extends ApplicationTest {
-    private final static Logger LOGGER = Logger.getLogger(TestFileList.class);
+    private static final Logger LOGGER = Logger.getLogger(TestFileList.class);
 
     static {
         UtilForTests.disableGraphics();

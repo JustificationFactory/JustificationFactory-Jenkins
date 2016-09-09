@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Nathaël N on 28/07/16.
  */
 class EffectEnumToGuiEffect extends DataTranslator<List<EffectEnum>, GUIEffect> {
-    private final static Logger LOGGER = Logger.getLogger(EffectEnumToGuiEffect.class);
+    private static final Logger LOGGER = Logger.getLogger(EffectEnumToGuiEffect.class);
 
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
 

@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Nathaël N on 26/07/16.
  */
 public abstract class Util {
-    private final static Logger LOGGER = Logger.getLogger(Util.class);
+    private static final Logger LOGGER = Logger.getLogger(Util.class);
 
     public static String getFileContent(File f) {
         String res = "";
@@ -23,6 +23,8 @@ public abstract class Util {
         } catch (IOException e) {
             LOGGER.error("Impossible to get file content for " + f, e);
         }
-        return res.substring(1); // Ignore first line break
+
+        // Ignore first line break
+        return res.substring(1);
     }
 }

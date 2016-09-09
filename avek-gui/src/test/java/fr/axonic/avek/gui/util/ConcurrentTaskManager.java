@@ -21,7 +21,7 @@ public class ConcurrentTaskManager {
         Platform.runLater(() -> platformThread = Thread.currentThread());
     }
 
-    private final static Logger LOGGER = Logger.getLogger(ConcurrentTaskManager.class);
+    private static final Logger LOGGER = Logger.getLogger(ConcurrentTaskManager.class);
     private volatile static int taskCount = 0;
     private final Set<FutureTask> running = new HashSet<>();
     private final Map<Thread, Integer> threads = new HashMap<>();

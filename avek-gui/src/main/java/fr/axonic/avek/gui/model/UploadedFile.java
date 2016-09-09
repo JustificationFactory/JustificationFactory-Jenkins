@@ -13,9 +13,13 @@ import java.util.Stack;
  * Created by Nathaël N on 18/07/16.
  */
 public class UploadedFile {
-    private final static Logger LOGGER = Logger.getLogger(UploadedFile.class);
-    private final static long MAX_BUF_LENGTH = 1024L * 1024L; // 1Mb
-    private final static long MIN_BUF_LENGTH = 1024L; // 1kb
+    private static final Logger LOGGER = Logger.getLogger(UploadedFile.class);
+
+    // 1Mb
+    private static final long MAX_BUF_LENGTH = 1024L * 1024L;
+
+    // 1kb
+    private static final long MIN_BUF_LENGTH = 1024L;
 
     public static final File uploadedFolder;
 
@@ -60,10 +64,10 @@ public class UploadedFile {
 
         // to update for each % of upload finished
         long calc = getSize() / 100L + 1L;
-        if (calc > MAX_BUF_LENGTH) { // 1Mb max
+        if (calc > MAX_BUF_LENGTH) {
             calc = MAX_BUF_LENGTH;
         }
-        if (calc < MIN_BUF_LENGTH) { // 1Kb min
+        if (calc < MIN_BUF_LENGTH) {
             calc = MIN_BUF_LENGTH;
         }
 
@@ -176,6 +180,15 @@ public class UploadedFile {
         return (double) uploadedBytes / (double) getSize();
     }
 
+    public void removeListener() {
+        this.listener = null;
+    }
+
+    public void setUpdateListener(Runnable listener) {
+        this.listener = listener;
+        Platform.runLater(listener);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof UploadedFile) {
@@ -184,12 +197,8 @@ public class UploadedFile {
         return super.equals(obj);
     }
 
-    public void removeListener() {
-        this.listener = null;
-    }
-
-    public void setUpdateListener(Runnable listener) {
-        this.listener = listener;
-        Platform.runLater(listener);
+    @Override
+    public int hashCode() {
+        return (origin.hashCode() * 17 + uploaded.hashCode())*13;
     }
 }

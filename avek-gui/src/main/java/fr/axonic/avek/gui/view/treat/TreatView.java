@@ -17,8 +17,8 @@ import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 
 public class TreatView extends AbstractView {
-    private final static Logger LOGGER = Logger.getLogger(TreatView.class);
-    private final static String FXML = "fr/axonic/avek/gui/view/treat/TreatView.fxml";
+    private static final Logger LOGGER = Logger.getLogger(TreatView.class);
+    private static final String FXML = "fr/axonic/avek/gui/view/treat/TreatView.fxml";
 
     @FXML
     private ParametersRoot parametersRoot;
@@ -28,6 +28,13 @@ public class TreatView extends AbstractView {
     public Label monitoredSystemTitle;
     @FXML
     public Button monitoredSystemHistory;
+
+    @FXML
+    private SplitPane monitoredSystemSplitPane;
+    @FXML
+    private BorderPane monitoredSystemPane;
+    @FXML
+    private ToggleButton outerMonitoredSystemButton;
 
     @Override
     protected void onLoad() {
@@ -44,13 +51,6 @@ public class TreatView extends AbstractView {
 
         parametersRoot.setData((GUIExperimentParameter) guiapi.getData(ComponentType.EXPERIMENTATION_PARAMETERS));
     }
-
-    @FXML
-    private SplitPane monitoredSystemSplitPane;
-    @FXML
-    private BorderPane monitoredSystemPane;
-    @FXML
-    private ToggleButton outerMonitoredSystemButton;
 
     @FXML
     public void onClickMonitoredSystemButton(ActionEvent event) {

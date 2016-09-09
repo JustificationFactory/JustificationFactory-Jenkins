@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 public class StrategySelectionView extends AbstractView {
-    private final static Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
-    private final static String FXML = "fr/axonic/avek/gui/view/strategyselection/StrategySelectionView.fxml";
+    private static final Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
+    private static final String FXML = "fr/axonic/avek/gui/view/strategyselection/StrategySelectionView.fxml";
 
     @FXML
     private Button submit;

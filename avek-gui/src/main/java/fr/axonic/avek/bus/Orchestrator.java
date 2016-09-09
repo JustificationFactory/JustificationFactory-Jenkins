@@ -6,6 +6,7 @@ import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
+import fr.axonic.avek.graph.ArgumentationDiagram;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIException;
@@ -16,6 +17,7 @@ import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
+import org.codehaus.plexus.util.cli.Arg;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +26,12 @@ import java.util.stream.Collectors;
  * Created by Nathaël N on 04/08/16.
  */
 public class Orchestrator implements Observer {
-    private final static Logger LOGGER = Logger.getLogger(Orchestrator.class);
+    private static final Logger LOGGER = Logger.getLogger(Orchestrator.class);
+    private static final String SUBJECT_STR = "subject";
+    private static final String STIM_STR = "stimulation";
+    private static final String PATTERN_TREAT = "Treat";
+    private static final String PATTERN_ES_EF = "Establish Effect";
+    private static final String PATTERN_GEN = "Generalize";
 
     private Pattern currentPattern;
     private Subject currentSubject;
@@ -37,16 +44,24 @@ public class Orchestrator implements Observer {
     private final ArgumentationDiagramAPI engineAPI;
     private final GUIAPI guiAPI;
 
-    public Orchestrator(GUIAPI guiapi) throws VerificationException, WrongEvidenceException, GUIException {
+    public Orchestrator(GUIAPI guiapi, ArgumentationDiagramAPI engineAPI) throws VerificationException, WrongEvidenceException, GUIException {
         patternList = new ArrayList<>();
 
-        engineAPI = ArgumentationDiagramAPIImpl.getInstance();
+        this.engineAPI = engineAPI;
         guiAPI = guiapi;
         guiapi.addObserver(this);
         
         this.orchestrate();
     }
 
+    /**
+     * Compute for the next pattern to apply and show right view depending on
+     * applicable patterns
+     *
+     * @throws GUIException
+     * @throws VerificationException
+     * @throws WrongEvidenceException
+     */
     private void orchestrate() throws GUIException, VerificationException, WrongEvidenceException {
         computeNextPattern();
 
@@ -65,6 +80,9 @@ public class Orchestrator implements Observer {
         }
     }
 
+    /**
+     * Request engineAPI to get applicable patterns list
+     */
     private void computeNextPattern() {
         // Preparing for following view
         evidences = engineAPI.getBaseEvidences();
@@ -76,6 +94,11 @@ public class Orchestrator implements Observer {
                         .collect(Collectors.toList()));
     }
 
+    /**
+     * Call GUI API to show the right view corresponding to the current Pattern
+     * @param pattern
+     * @throws GUIException
+     */
     private void showViewFromPattern(Pattern pattern) throws GUIException {
         ViewType viewType;
 
@@ -85,13 +108,13 @@ public class Orchestrator implements Observer {
 
         // Selecting the right view depending on pattern
         switch (pattern.getName()) {
-            case "Treat":
+            case PATTERN_TREAT:
                 viewType = ViewType.TREAT_VIEW;
                 break;
-            case "Establish Effect":
+            case PATTERN_ES_EF:
                 viewType = ViewType.ESTABLISH_EFFECT_VIEW;
                 break;
-            case "Generalize":
+            case PATTERN_GEN:
                 viewType = ViewType.GENERALIZE_VIEW;
                 break;
             default:
@@ -103,6 +126,10 @@ public class Orchestrator implements Observer {
     }
 
 
+    /**
+     * Create a AList containing all EffectEnum values as Effect
+     * @return the AList
+     */
     private AList<Effect> generateEffectList() {
         try {
             List<Effect> list = new ArrayList<>();
@@ -120,6 +147,10 @@ public class Orchestrator implements Observer {
             throw new RuntimeException("Impossible to make AList<Effect>", e);
         }
     }
+
+    /**
+     * @return Map containing data present in current evidences
+     */
     private Map<ComponentType, Object> getDataFromEvidence() {
         Map<ComponentType, Object> content = new HashMap<>();
 
@@ -131,7 +162,7 @@ public class Orchestrator implements Observer {
         for (EvidenceRole evidenceRole : evidences) {
             try {
                 switch (evidenceRole.getRole()) {
-                    case "subject":
+                    case SUBJECT_STR:
                         currentSubject = (Subject) evidenceRole.getEvidence().getElement();
 
                         MonitoredSystem ms = new MonitoredSystem(currentSubject.getId());
@@ -155,7 +186,7 @@ public class Orchestrator implements Observer {
 
                         content.put(ComponentType.MONITORED_SYSTEM, ms);
                         break;
-                    case "stimulation":
+                    case STIM_STR:
                         currentStimulation = (Stimulation) evidenceRole.getEvidence().getElement();
 
                         AList<AEntity> list = new AList<>();
@@ -164,7 +195,7 @@ public class Orchestrator implements Observer {
 
                         content.put(ComponentType.EXPERIMENTATION_PARAMETERS, new GUIExperimentParameter(list));
                         break;
-                    case "":
+                    default:
                         if (evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
                             LOGGER.error("Got: " + evidenceRole);
                             EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
@@ -173,7 +204,6 @@ public class Orchestrator implements Observer {
                             content.put(ComponentType.EFFECTS, currentEffects);
                             break;
                         }
-                    default:
                         LOGGER.warn("Unknown Evidence role \"" + evidenceRole.getRole() + "\" in " + evidenceRole);
                 }
             } catch (RuntimeException e) {
@@ -183,16 +213,20 @@ public class Orchestrator implements Observer {
         return content;
     }
 
+    /**
+     * Call the right constructXXXStep method depending on data from evidences
+     * @param data Data from current evidences
+     */
     private void constructStep(Map<ComponentType, Object> data) {
         // constructing step
         switch (currentPattern.getName()) {
-            case "Treat":
+            case PATTERN_TREAT:
                 constructTreatStep();
                 break;
-            case "Establish Effect":
+            case PATTERN_ES_EF:
                 constructEstablishEffectStep();
                 break;
-            case "Generalize":
+            case PATTERN_GEN:
                 constructGeneralizeStep();
                 break;
             default:
@@ -263,7 +297,7 @@ public class Orchestrator implements Observer {
     /**
      *
      * @param o Should be a GUIAPI
-     * @param arg Should be a Map&lt;String, Object&gt;
+     * @param arg Should be a Map&lt;FeedbackEventEnum, Object&gt;
      */
     @Override
     public void update(Observable o, Object arg) {
@@ -271,15 +305,16 @@ public class Orchestrator implements Observer {
             throw new RuntimeException("Update get not from current used GUI API");
         }
         @SuppressWarnings("unchecked")
-        Map<String, Object> data = (Map<String, Object>) arg;
+        Map<FeedbackEventEnum, Object> data = (Map<FeedbackEventEnum, Object>) arg;
 
 
         boolean strategyFlag = false;
         Map<ComponentType, Object> content = null;
 
-        for(Map.Entry<String,Object> entry : data.entrySet()) {
+        for(Map.Entry<FeedbackEventEnum,Object> entry : data.entrySet()) {
             switch (entry.getKey()) {
-                case "Pattern": // When user selected pattern strategy he wants clicking on submit button of selection view
+                // When user selected pattern strategy he wants clicking on submit button of selection view
+                case PATTERN:
                     String selectedPatternName = (String) entry.getValue();
 
                     Optional<Pattern> pattern =
@@ -297,16 +332,21 @@ public class Orchestrator implements Observer {
                         LOGGER.warn("No pattern found with name: " + selectedPatternName);
                     }
                     break;
-                case "Strategy": // When user validate data he wrote clicking on strategy button
+
+                // When user validate data he wrote clicking on strategy button
+                case STRATEGY:
                     strategyFlag = true;
                     LOGGER.debug("Strategy flag raised");
                     break;
-                case "Content":
+
+                case CONTENT:
                     //noinspection unchecked
                     content = (Map<ComponentType, Object>) data.get("Content");
                     LOGGER.debug("Content set to "+content);
                     break;
-                case "ViewType": break;
+
+                case VIEW_TYPE: break;
+
                 default:
                     throw new RuntimeException("No rule existing for name: " + entry.getKey());
             }

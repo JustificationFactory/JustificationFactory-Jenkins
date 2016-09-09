@@ -18,8 +18,8 @@ import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 
 public class GeneralizeView extends AbstractView {
-    private final static Logger LOGGER = Logger.getLogger(GeneralizeView.class);
-    private final static String FXML = "fr/axonic/avek/gui/view/generalize/GeneralizeView.fxml";
+    private static final Logger LOGGER = Logger.getLogger(GeneralizeView.class);
+    private static final String FXML = "fr/axonic/avek/gui/view/generalize/GeneralizeView.fxml";
 
     @FXML
     private JellyBeanPane jellyBeanPane;
@@ -35,6 +35,33 @@ public class GeneralizeView extends AbstractView {
     public Label monitoredSystemTitle;
     @FXML
     public Button monitoredSystemHistory;
+
+    @FXML
+    private SplitPane commentsSplitPane;
+    @FXML
+    private BorderPane commentsPane;
+    @FXML
+    private ToggleButton outerCommentsButton;
+
+    @FXML
+    private SplitPane fileListSplitPane;
+    @FXML
+    private BorderPane fileListPane;
+    @FXML
+    private ToggleButton outerFileListButton;
+
+    @FXML
+    private SplitPane monitoredSystemSplitPane;
+    @FXML
+    private BorderPane monitoredSystemPane;
+    @FXML
+    private ToggleButton outerMonitoredSystemButton;
+
+    @FXML
+    private BorderPane resultsPane;
+    @FXML
+    private ToggleButton outerResultsButton;
+
 
     @Override
     protected void onLoad() {
@@ -57,14 +84,6 @@ public class GeneralizeView extends AbstractView {
         }
     }
 
-
-    @FXML
-    private SplitPane commentsSplitPane;
-    @FXML
-    private BorderPane commentsPane;
-    @FXML
-    private ToggleButton outerCommentsButton;
-
     @FXML
     public void onClickCommentsButton(ActionEvent event) {
         boolean newState = !commentsPane.isVisible();
@@ -76,13 +95,6 @@ public class GeneralizeView extends AbstractView {
                     commentsSplitPane, outerCommentsButton);
         }
     }
-
-    @FXML
-    private SplitPane fileListSplitPane;
-    @FXML
-    private BorderPane fileListPane;
-    @FXML
-    private ToggleButton outerFileListButton;
 
     @FXML
     public void onClickFileListViewButton(ActionEvent event) {
@@ -97,15 +109,19 @@ public class GeneralizeView extends AbstractView {
     }
 
     @FXML
-    private SplitPane monitoredSystemSplitPane;
-    @FXML
-    private BorderPane monitoredSystemPane;
-    @FXML
-    private ToggleButton outerMonitoredSystemButton;
-
-    @FXML
     public void onClickMonitoredSystemButton(ActionEvent event) {
         setMonitoredSystemVisible(!monitoredSystemPane.isVisible());
+    }
+
+    @FXML
+    public void onClickResultsButton(ActionEvent event) {
+        setResultsVisible(!resultsPane.isVisible());
+    }
+
+    private void setResultsVisible(boolean isVisible) {
+        resultsPane.setVisible(isVisible);
+        resultsPane.setManaged(isVisible);
+        outerResultsButton.setSelected(isVisible);
     }
 
     private void setMonitoredSystemVisible(boolean isVisible) {
@@ -118,20 +134,5 @@ public class GeneralizeView extends AbstractView {
         }
     }
 
-    @FXML
-    private BorderPane resultsPane;
-    @FXML
-    private ToggleButton outerResultsButton;
-
-    @FXML
-    public void onClickResultsButton(ActionEvent event) {
-        setResultsVisible(!resultsPane.isVisible());
-    }
-
-    private void setResultsVisible(boolean isVisible) {
-        resultsPane.setVisible(isVisible);
-        resultsPane.setManaged(isVisible);
-        outerResultsButton.setSelected(isVisible);
-    }
 }
 
