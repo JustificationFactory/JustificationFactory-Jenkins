@@ -71,7 +71,7 @@ public abstract class AStructure extends AElement {
             LOGGER.error(e.getMessage(), e);
         }
 
-        fieldsContainer.values().forEach(aEntity -> aEntity.addListener(internalListener));
+        fieldsContainer.values().forEach(aEntity ->  {if(aEntity!=null)aEntity.addListener(internalListener);});
     }
 
     @Override
