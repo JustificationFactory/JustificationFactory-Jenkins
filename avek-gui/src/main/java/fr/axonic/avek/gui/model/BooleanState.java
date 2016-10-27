@@ -22,4 +22,9 @@ public enum BooleanState implements AEnumItem{
     public String getPath() {
         return "";
     }
+
+    @Override
+    public int getIndex(){
+        return ordinal();
+    }
 }

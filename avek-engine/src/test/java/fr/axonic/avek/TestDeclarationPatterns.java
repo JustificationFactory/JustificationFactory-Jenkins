@@ -9,7 +9,7 @@ import fr.axonic.avek.engine.instance.conclusion.Experimentation;
 import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.engine.instance.evidence.*;
 import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
-import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.avek.engine.strategy.*;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -23,7 +23,10 @@ public class TestDeclarationPatterns {
 		EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
 		ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
 		//Revoir car ici on a un singleton...
-		Strategy ts = new TreatStrategy();
+		class TestProject implements Project{
+
+		}
+		Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
 		Pattern treat = new Pattern("Treat", ts, Arrays.asList(new EvidenceRoleType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
 		
 		
@@ -33,7 +36,7 @@ public class TestDeclarationPatterns {
 		
 		EvidenceRole evStimulation0 = rtStimulation.create(stimulation0 );
 		EvidenceRole evSubject0 = rtSubject.create(subject0);
-		Step step0 = treat.createStep(Arrays.asList(new EvidenceRole[] {evStimulation0,evSubject0}), experimentation0);
+		Step step0 = treat.createStep(Arrays.asList(new EvidenceRole[] {evStimulation0,evSubject0}), experimentation0, new Actor("Toto", Role.INTERMEDIATE_EXPERT));
 		
 		//Step step0 = new Step(treat,Arrays.asList(new Element[] {stimulation0,subject0}), experimentation0);
 		

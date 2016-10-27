@@ -4,6 +4,8 @@ import fr.axonic.base.ANumber;
 import fr.axonic.base.engine.AStructure;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * Created by cduffau on 02/08/16.
  */
@@ -35,6 +37,7 @@ public class DynamicSubjectInformations extends AStructure{
         init();
     }
 
+    @XmlElement
     public ANumber getWeight() {
         return weight;
     }
@@ -47,6 +50,7 @@ public class DynamicSubjectInformations extends AStructure{
         this.weight.setValue(weight);
     }
 
+    @XmlElement
     public ANumber getBmi() {
         return bmi;
     }

@@ -3,6 +3,7 @@ package fr.axonic.avek.model;
 import fr.axonic.base.AString;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
+import fr.axonic.base.engine.AStructure;
 import fr.axonic.base.engine.AVar;
 
 import java.util.LinkedHashSet;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * Created by Nathaël N on 29/06/16.
  */
-public class MonitoredSystem extends AVar {
+public class MonitoredSystem extends AStructure {
 	private final AString id;
 
 	private final Set<AList<AEntity>> categories;

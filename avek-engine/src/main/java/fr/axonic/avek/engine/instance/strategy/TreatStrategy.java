@@ -7,11 +7,18 @@ import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 import fr.axonic.avek.engine.strategy.ComputedStrategy;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
+import fr.axonic.avek.engine.strategy.Rationale;
+import fr.axonic.avek.engine.strategy.UsageDomain;
 
 import java.util.Map;
 
 
 public class TreatStrategy extends HumanStrategy {
+
+	public TreatStrategy(Rationale rationale, UsageDomain usageDomain) {
+		super("Treat",rationale, usageDomain);
+	}
+
 	@Override
 	public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
 		return true;

@@ -6,8 +6,12 @@ import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.Arrays;
-
+@XmlRootElement
+@XmlSeeAlso(WaveformEnum.class)
 public class Stimulation extends Element implements Limit {
 
     private ARangedEnum<WaveformEnum> waveform;
@@ -36,6 +40,7 @@ public class Stimulation extends Element implements Limit {
 
     }
 
+    @XmlElement
     public ARangedEnum<WaveformEnum> getWaveform() {
         return waveform;
     }
@@ -47,6 +52,7 @@ public class Stimulation extends Element implements Limit {
         setProperty(AVEKAStructureProperty.WAVEFORM.name(),waveform);
     }
 
+    @XmlElement
     public WaveformParameter getWaveformParameter() {
         return waveformParameter;
     }
@@ -55,6 +61,7 @@ public class Stimulation extends Element implements Limit {
         setProperty(AVEKAStructureProperty.WAVEFORM_PARAMETER.name(),waveformParameter);
     }
 
+    @XmlElement
     public StimulationScheduler getStimulationScheduler() {
         return stimulationScheduler;
     }

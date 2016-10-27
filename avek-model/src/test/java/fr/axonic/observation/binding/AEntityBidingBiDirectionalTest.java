@@ -61,7 +61,7 @@ public class AEntityBidingBiDirectionalTest {
             throws BindingTypesException, VerificationException, BindingParametersException {
         assertNotEquals(number1, number2);
 
-        number1.bindBiDirectional(number2);
+        number1.bindBidirectional(number2);
         assertEquals(number1, number2);
 
         number1.setValue(10);
@@ -79,7 +79,7 @@ public class AEntityBidingBiDirectionalTest {
     @Test
     public void aVarBiDirectionalUnbindTest()
             throws BindingTypesException, VerificationException, BindingParametersException {
-        number1.bindBiDirectional(number2);
+        number1.bindBidirectional(number2);
         assertEquals(number1, number2);
 
         number2.unbind();
@@ -95,7 +95,7 @@ public class AEntityBidingBiDirectionalTest {
         assertFalse(number1.isBindWith(number2));
         assertFalse(number2.isBindWith(number1));
 
-        number1.bindBiDirectional(number2);
+        number1.bindBidirectional(number2);
         assertEquals(number1, number2);
 
         number1.unbind();
@@ -109,7 +109,7 @@ public class AEntityBidingBiDirectionalTest {
             throws BindingTypesException, VerificationException, BindingParametersException {
         assertNotEquals(structure1, structure2);
 
-        structure1.bindBiDirectional(structure2);
+        structure1.bindBidirectional(structure2);
         assertEquals(structure1, structure2);
 
         structure1.myNumber.setValue(10);
@@ -127,7 +127,7 @@ public class AEntityBidingBiDirectionalTest {
     @Test
     public void aStructureBiDirectionalUnbindTest()
             throws BindingTypesException, VerificationException, BindingParametersException {
-        structure1.bindBiDirectional(structure2);
+        structure1.bindBidirectional(structure2);
         assertEquals(structure1, structure2);
 
         structure2.unbind();
@@ -143,7 +143,7 @@ public class AEntityBidingBiDirectionalTest {
         assertFalse(structure1.isBindWith(structure2));
         assertFalse(structure2.isBindWith(structure1));
 
-        structure1.bindBiDirectional(structure2);
+        structure1.bindBidirectional(structure2);
         assertEquals(structure1, structure2);
 
         structure1.unbind();
@@ -157,7 +157,7 @@ public class AEntityBidingBiDirectionalTest {
             throws BindingTypesException, VerificationException, BindingParametersException {
         assertNotEquals(list1, list2);
 
-        list1.bindBiDirectional(list2);
+        list1.bindBidirectional(list2);
         assertEquals(list1, list2);
 
         list1.add(new AString("zzz"));
@@ -176,7 +176,7 @@ public class AEntityBidingBiDirectionalTest {
     public void aListBiDirectionalUnbindTest()
             throws BindingParametersException, BindingTypesException, VerificationException {
 
-        list1.bindBiDirectional(list2);
+        list1.bindBidirectional(list2);
         assertEquals(list1, list2);
 
         list2.unbind();
@@ -192,7 +192,7 @@ public class AEntityBidingBiDirectionalTest {
         assertFalse(list1.isBindWith(list2));
         assertFalse(list2.isBindWith(list1));
 
-        list1.bindBiDirectional(list2);
+        list1.bindBidirectional(list2);
         assertEquals(list1, list2);
 
         list1.unbind();

@@ -37,7 +37,7 @@ public class AVarTest {
         if(!(AVar.create(new BoundedNumberFormat()) instanceof AContinuousNumber)){
             fail();
         }
-        if(!(AVar.create(new BoundedDateFormat()) instanceof AContinuousDate)){
+        if(!(AVar.create(new BoundedDateFormat()) instanceof AContiniousDate)){
             fail();
         }
         if(!(AVar.create(new RangedStringFormat()) instanceof ARangedString)){

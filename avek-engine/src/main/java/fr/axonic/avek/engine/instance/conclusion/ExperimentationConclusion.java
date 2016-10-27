@@ -5,11 +5,15 @@ import fr.axonic.avek.engine.conclusion.Limit;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.Arrays;
 
 /**
  * Created by cduffau on 22/06/16.
  */
+@XmlRootElement
+@XmlSeeAlso({Subject.class, Stimulation.class, Experimentation.class})
 public class ExperimentationConclusion extends Conclusion<Experimentation> {
 
     private Subject subject;

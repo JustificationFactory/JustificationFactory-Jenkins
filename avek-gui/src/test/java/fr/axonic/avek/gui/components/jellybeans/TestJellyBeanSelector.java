@@ -60,6 +60,11 @@ public class TestJellyBeanSelector extends ApplicationTest {
 
                 @Override public String getCode() {return null;}
                 @Override public String getPath() {return null;}
+
+                @Override
+                public int getIndex() {
+                    return 0;
+                }
             }, ls);
             jbi.setGetLabelMethod(AEnumItem::getLabel);
 

@@ -3,6 +3,8 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.strategy.Actor;
+import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 
 import java.util.ArrayList;
@@ -81,10 +83,20 @@ public class Pattern {
 	}
 
 	//Should call applicable
-	public Step createStep(List<EvidenceRole> evidenceList, Conclusion conclusion) throws StepBuildingException {
+	public Step createStep(List<EvidenceRole> evidenceList, Conclusion conclusion, Actor actor) throws StepBuildingException {
 		if(applicable(evidenceList)){
 			Step res= null;
-			res = new Step(this, evidenceList, conclusion);
+			Strategy strategy=this.getStrategy();
+			if(strategy instanceof HumanStrategy){
+				if(actor!=null){
+					((HumanStrategy) strategy).setActor(actor);
+				}
+				else {
+					throw new StepBuildingException("Need an actor for the human strategy : "+strategy);
+
+				}
+			}
+			res = new Step(strategy, evidenceList, conclusion);
 
 			if(checkConclusion(EvidenceRole.translateToEvidence(evidenceList),conclusion)){
 				return res;

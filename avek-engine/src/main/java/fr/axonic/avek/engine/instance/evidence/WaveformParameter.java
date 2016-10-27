@@ -6,9 +6,13 @@ import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AStructure;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by cduffau on 09/08/16.
  */
+@XmlRootElement
 public class WaveformParameter extends AStructure{
     private AContinuousNumber amplitude;
     private AContinuousNumber frequency;
@@ -38,6 +42,7 @@ public class WaveformParameter extends AStructure{
         super.init();
     }
 
+    @XmlElement
     public ANumber getAmplitude() {
         return amplitude;
     }
@@ -46,6 +51,7 @@ public class WaveformParameter extends AStructure{
         this.amplitude.setValue(amplitude);
     }
 
+    @XmlElement
     public ANumber getFrequency() {
         return frequency;
     }
@@ -54,6 +60,7 @@ public class WaveformParameter extends AStructure{
         this.frequency.setValue(frequency);
     }
 
+    @XmlElement
     public ANumber getDuration() {
         return duration;
     }

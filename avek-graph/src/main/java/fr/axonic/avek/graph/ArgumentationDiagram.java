@@ -5,6 +5,7 @@ import fr.axonic.avek.engine.Step;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.strategy.Strategy;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
@@ -66,7 +67,7 @@ public class ArgumentationDiagram extends JFrame {
         LOGGER.debug(step);
 
         Conclusion conclusion = step.getConclusion();
-        Pattern strategy = step.getPattern();
+        Strategy strategy = step.getStrategy();
         LOGGER.debug("Step: "+conclusion.getName()+" ← "+strategy.getName());
 
         addNode(conclusion, conclusion.getName(), VertexType.CONCLUSION);

@@ -43,6 +43,9 @@ public enum TestEnum implements AEnumItem{
         return path;
     }
 
-
+    @Override
+    public int getIndex(){
+        return ordinal();
+    }
 
 }

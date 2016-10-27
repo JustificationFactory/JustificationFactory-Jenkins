@@ -2,9 +2,12 @@ package fr.axonic.avek.engine.instance.evidence;
 
 import fr.axonic.base.engine.AEnumItem;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by cduffau on 09/08/16.
  */
+@XmlRootElement
 public enum WaveformEnum implements AEnumItem{
     RECTANGULAR("rectangular","Rectangular"), SINUS("sinus","Sinus"), RAMP("ramp","Ramp");
     private String code, path, label;
@@ -40,5 +43,10 @@ public enum WaveformEnum implements AEnumItem{
     @Override
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public int getIndex() {
+        return ordinal();
     }
 }

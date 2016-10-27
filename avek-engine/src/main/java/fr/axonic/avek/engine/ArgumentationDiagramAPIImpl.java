@@ -7,14 +7,28 @@ import fr.axonic.avek.engine.instance.conclusion.Effect;
 import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
 import fr.axonic.avek.engine.instance.conclusion.Experimentation;
 import fr.axonic.avek.engine.instance.evidence.*;
-import fr.axonic.avek.engine.instance.strategy.EstablishEffectStrategy;
-import fr.axonic.avek.engine.instance.strategy.GeneralizeStrategy;
-import fr.axonic.avek.engine.instance.strategy.TreatStrategy;
+import fr.axonic.avek.engine.instance.strategy.*;
+import fr.axonic.avek.engine.strategy.Actor;
+import fr.axonic.avek.engine.strategy.Rationale;
+import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.util.JAXBUtil;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by cduffau on 04/08/16.
@@ -66,7 +80,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     public Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException {
         try{
             List<EvidenceRole> usefullEvidences=patterns.get(patternId).filterUsefullEvidences(evidences);
-            Step step=patterns.get(patternId).createStep(usefullEvidences,conclusion.clone());
+            Step step=patterns.get(patternId).createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
             steps.add(step);
             LOGGER.info(step.getConclusion());
             EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
@@ -82,7 +96,23 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
 
     @Override
     public List<Step> getSteps() {
+        try {
+            save(new StepsWrapper(steps),new File("test.xml"));
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return steps;
+    }
+
+    private static void save(Object object, File file) throws JAXBException, IOException {
+        JAXBContext context = JAXBContext.newInstance(new Class[]{object.getClass()});
+        Marshaller m = context.createMarshaller();
+        m.setProperty("jaxb.formatted.output", Boolean.valueOf(true));
+        FileOutputStream fos = new FileOutputStream(file);
+        m.marshal(object, fos);
+        fos.close();
     }
 
     private void initPatterns(){
@@ -91,7 +121,8 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
         //Revoir car ici on a un singleton...
-        Strategy ts = new TreatStrategy();
+        AXONICProject project=new AXONICProject(Stimulator.AXIS, Pathology.OBESITY);
+        Strategy ts = new TreatStrategy(new Rationale<>(project),null);
         Pattern treat = new Pattern("1","Treat", ts, Arrays.asList(new EvidenceRoleType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
         patterns.put(treat.getId(),treat);
 
@@ -100,13 +131,13 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
         rtResult.setOptional(true);
         ConclusionType conclusionEffectType = new ConclusionType(EstablishedEffect.class);
         //Revoir car ici on a un singleton...
-        Strategy ts2 = new EstablishEffectStrategy();
+        Strategy ts2 = new EstablishEffectStrategy(new Rationale<>(project),null);
         Pattern establishEffect = new Pattern("2","Establish Effect", ts2, Arrays.asList(new EvidenceRoleType[] {rtExperimentation, rtResult}), conclusionEffectType);
         patterns.put(establishEffect.getId(),establishEffect);
 
         EvidenceRoleType rtEstablishedEffect= new EvidenceRoleType("effects", EstablishedEffect.class);
 
-        Strategy ts3=new GeneralizeStrategy();
+        Strategy ts3=new GeneralizeStrategy(new Rationale<>(project),null);
         Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new EvidenceRoleType[]{rtEstablishedEffect}),conclusionEffectType);
         patterns.put(generalize.getId(),generalize);
 

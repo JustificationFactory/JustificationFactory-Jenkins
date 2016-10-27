@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
 import fr.axonic.avek.gui.util.UtilForTests;
-import fr.axonic.base.AContinuousDate;
+import fr.axonic.base.AContiniousDate;
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.validation.exception.VerificationException;
 import javafx.scene.Scene;
@@ -28,14 +28,14 @@ public class TestBoundedParameter extends ApplicationTest {
     }
 
     private AContinuousNumber number;
-    private AContinuousDate date;
+    private AContiniousDate date;
     private BoundedParameter boundedParameterN;
     private BoundedParameter boundedParameterD;
 
     @Override
     public void start(Stage stage) throws Exception {
         number = new AContinuousNumber();
-        date = new AContinuousDate();
+        date = new AContiniousDate();
         number.setValue(42.69);
         number.setLabel("Number's Label");
         

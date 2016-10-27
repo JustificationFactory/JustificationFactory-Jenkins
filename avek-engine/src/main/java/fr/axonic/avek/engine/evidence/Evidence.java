@@ -1,5 +1,13 @@
 package fr.axonic.avek.engine.evidence;
 
+import fr.axonic.avek.engine.conclusion.Conclusion;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+@XmlRootElement
+@XmlSeeAlso(Conclusion.class)
 public class Evidence<T extends Element> implements Cloneable{
     protected String name;
     protected T element;
@@ -31,6 +39,7 @@ public class Evidence<T extends Element> implements Cloneable{
         return result;
     }
 
+    @XmlElement
     public T getElement(){
         return element;
     }
@@ -43,6 +52,7 @@ public class Evidence<T extends Element> implements Cloneable{
                 '}';
     }
 
+    @XmlElement
     public String getName() {
         return name;
     }

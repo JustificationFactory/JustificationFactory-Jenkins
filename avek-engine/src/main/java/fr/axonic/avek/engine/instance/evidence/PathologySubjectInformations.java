@@ -7,12 +7,17 @@ import fr.axonic.base.engine.AStructure;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 /**
  * Created by cduffau on 02/08/16.
  */
+@XmlRootElement
+@XmlSeeAlso(ObesityType.class)
 public class PathologySubjectInformations extends AStructure{
 
     private ARangedEnum<ObesityType> obesityType;
@@ -37,6 +42,7 @@ public class PathologySubjectInformations extends AStructure{
         super.init();
     }
 
+    @XmlElement
     public AEnum<ObesityType> getObesityType() {
         return obesityType;
     }
@@ -49,6 +55,7 @@ public class PathologySubjectInformations extends AStructure{
         this.obesityType.setValue(obesityType);
     }
 
+    @XmlElement
     public ADate getBeginningOfObesity() {
         return beginningOfObesity;
     }

@@ -59,6 +59,11 @@ public class TestJellyBeans extends ApplicationTest {
 
             @Override public String getCode() {return null;}
             @Override public String getPath() {return null;}
+
+            @Override
+            public int getIndex() {
+                return 0;
+            }
         }, Arrays.asList(ExampleState.values()));
         ctm.runNowOnPlatform(() -> jb.set(jbi));
     }

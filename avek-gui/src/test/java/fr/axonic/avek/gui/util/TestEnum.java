@@ -32,4 +32,9 @@ public enum TestEnum implements AEnumItem{
     public String getPath() {
         return path;
     }
+
+    @Override
+    public int getIndex() {
+        return ordinal();
+    }
 }

@@ -5,12 +5,18 @@ import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.base.AString;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+
 public class Subject extends Element implements Limit {
 
     private AString id;
     private StaticSubjectInformations staticInformations;
     private DynamicSubjectInformations dynamicInformations;
     private PathologySubjectInformations pathologyInformations;
+
 
 
     public Subject(String id, StaticSubjectInformations staticInformations, DynamicSubjectInformations dynamicInformations, PathologySubjectInformations pathologyInformations) {
@@ -39,6 +45,7 @@ public class Subject extends Element implements Limit {
         this(null, null, null, null);
     }
 
+    @XmlElement
     public AString getId() {
         return id;
     }
@@ -51,6 +58,7 @@ public class Subject extends Element implements Limit {
         this.id.setValue(id);
     }
 
+    @XmlElement
     public StaticSubjectInformations getStaticInformations() {
         return staticInformations;
     }
@@ -59,6 +67,7 @@ public class Subject extends Element implements Limit {
         this.staticInformations = staticInformations;
     }
 
+    @XmlElement
     public DynamicSubjectInformations getDynamicInformations() {
         return dynamicInformations;
     }
@@ -67,6 +76,7 @@ public class Subject extends Element implements Limit {
         this.dynamicInformations = dynamicInformations;
     }
 
+    @XmlElement
     public PathologySubjectInformations getPathologyInformations() {
         return pathologyInformations;
     }

@@ -26,4 +26,9 @@ public enum ExampleState implements AEnumItem{
     public String getPath() {
         return null;
     }
+
+    @Override
+    public int getIndex() {
+        return ordinal();
+    }
 }

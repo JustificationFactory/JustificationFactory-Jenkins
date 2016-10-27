@@ -2,9 +2,12 @@ package fr.axonic.avek.engine.instance.evidence;
 
 import fr.axonic.base.engine.AEnumItem;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by cduffau on 02/08/16.
  */
+@XmlRootElement
 public enum Gender implements AEnumItem{
 
     MALE("male","Male"), FEMALE("female", "Female"), UNKNOWN("unknown", "Unknown");
@@ -42,5 +45,10 @@ public enum Gender implements AEnumItem{
     @Override
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public int getIndex() {
+        return ordinal();
     }
 }

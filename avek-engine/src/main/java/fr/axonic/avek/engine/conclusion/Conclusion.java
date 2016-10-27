@@ -2,10 +2,17 @@ package fr.axonic.avek.engine.conclusion;
 
 import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.avek.engine.evidence.Evidence;
+import fr.axonic.avek.engine.instance.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.engine.instance.conclusion.GeneralizationConclusion;
+import fr.axonic.avek.engine.instance.evidence.Stimulation;
+import fr.axonic.avek.engine.instance.evidence.Subject;
 
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
-
+@XmlRootElement
+@XmlSeeAlso({ExperimentationConclusion.class, EstablishEffectConclusion.class, GeneralizationConclusion.class})
 public class Conclusion<T extends Element> extends Evidence implements Cloneable {
 
 	protected List<Limit> limits;
@@ -46,5 +53,11 @@ public class Conclusion<T extends Element> extends Evidence implements Cloneable
 		Conclusion<T> conclusion=new Conclusion<>(this.getName(), (T) this.getElement());
 		conclusion.limits=this.limits;
 		return conclusion;
+	}
+
+	@XmlAnyElement
+	@XmlElementWrapper
+	public List<Limit> getLimits() {
+		return limits;
 	}
 }

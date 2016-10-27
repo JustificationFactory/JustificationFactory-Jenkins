@@ -1,40 +1,44 @@
 package fr.axonic.avek.engine.instance.evidence;
 
-import fr.axonic.base.AContinuousDate;
+import fr.axonic.base.AContiniousDate;
 import fr.axonic.base.ADate;
 import fr.axonic.base.engine.AStructure;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.GregorianCalendar;
 
 /**
  * Created by cduffau on 09/08/16.
  */
+@XmlRootElement
 public class StimulationScheduler extends AStructure {
 
-    private AContinuousDate from, to;
+    private AContiniousDate from, to;
 
     public StimulationScheduler() {
         super();
         this.setLabel("Stimulation Scheduler");
         this.setCode("scheduler");
         this.setPath("fr.axonic.stimulation");
-        from=new AContinuousDate();
+        from=new AContiniousDate();
         from.setLabel("From");
         from.setPath("fr.axonic.stimulation.scheduler");
         from.setCode("from");
-        to=new AContinuousDate();
+        to=new AContiniousDate();
         to.setLabel("To");
         to.setPath("fr.axonic.stimulation.scheduler");
         to.setCode("to");
         super.init();
     }
 
+    @XmlElement
     public ADate getFrom() {
         return from;
     }
 
-    private void setFrom(AContinuousDate from) {
+    private void setFrom(AContiniousDate from) {
         this.from = from;
     }
 
@@ -42,11 +46,12 @@ public class StimulationScheduler extends AStructure {
         this.from.setValue(from);
     }
 
+    @XmlElement
     public ADate getTo() {
         return to;
     }
 
-    private void setTo(AContinuousDate to) {
+    private void setTo(AContiniousDate to) {
         this.to = to;
     }
 

@@ -1,6 +1,6 @@
 package fr.axonic.avek.gui.components.parameters.leaves;
 
-import fr.axonic.base.AContinuousDate;
+import fr.axonic.base.AContiniousDate;
 import fr.axonic.base.AContinuousNumber;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.base.engine.ContinuousAVar;
@@ -71,7 +71,7 @@ public class BoundedParameter extends SensitiveParameter {
                     //noinspection unchecked
                     paramValue.setMin((U) Double.valueOf(newVal));
                 }
-                else if(paramValue instanceof AContinuousDate) {
+                else if(paramValue instanceof AContiniousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
 
                     minEquivRange.setTooltip(new Tooltip("DATE required\nexample: '31/12/2016 23:59:59'"));
@@ -111,7 +111,7 @@ public class BoundedParameter extends SensitiveParameter {
                     //noinspection unchecked
                     paramValue.setMax((U) Double.valueOf(newVal));
                 }
-                else if(paramValue instanceof AContinuousDate) {
+                else if(paramValue instanceof AContiniousDate) {
                     // Setting tooltip in case of error (will be removed if correct input)
                     maxEquivRange.setTooltip(new Tooltip("DATE required\nexample: '31/12/2016 23:59:59'"));
 

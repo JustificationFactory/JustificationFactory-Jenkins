@@ -5,12 +5,17 @@ import fr.axonic.base.engine.AStructure;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 /**
  * Created by cduffau on 02/08/16.
  */
+@XmlRootElement
+@XmlSeeAlso(Gender.class)
 public class StaticSubjectInformations extends AStructure{
 
     private ARangedEnum<Gender> gender;
@@ -48,6 +53,7 @@ public class StaticSubjectInformations extends AStructure{
         super.init();
     }
 
+    @XmlElement
     public AEnum<Gender> getGender() {
         return gender;
     }
@@ -60,6 +66,7 @@ public class StaticSubjectInformations extends AStructure{
         this.gender.setValue(gender);
     }
 
+    @XmlElement
     public ADate getBirthday() {
         return birthday;
     }
@@ -72,6 +79,7 @@ public class StaticSubjectInformations extends AStructure{
         this.birthday.setValue(birthday);
     }
 
+    @XmlElement
     public AString getName() {
         return name;
     }
@@ -84,6 +92,7 @@ public class StaticSubjectInformations extends AStructure{
         this.name = name;
     }
 
+    @XmlElement
     public ANumber getHeight() {
         return height;
     }
