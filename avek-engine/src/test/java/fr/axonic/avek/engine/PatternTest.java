@@ -105,7 +105,7 @@ public class PatternTest {
     }
 
     @Test(expected = StepBuildingException.class)
-    public void testStepWithNotGoodOrderEvidenceType() throws WrongEvidenceException, StepBuildingException, VerificationException {
+    public void testStepWithNotGoodOrderEvidenceType() throws WrongEvidenceException, StepBuildingException, VerificationException, StrategyException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);
@@ -126,7 +126,7 @@ public class PatternTest {
     }
 
     @Test
-    public void testGoodStep() throws WrongEvidenceException, StepBuildingException, VerificationException {
+    public void testGoodStep() throws WrongEvidenceException, StepBuildingException, VerificationException, StrategyException {
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
         ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);

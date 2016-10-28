@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class TestDeclarationPatterns {
 
-	public static void main(String[] args) throws WrongEvidenceException, StepBuildingException, VerificationException {
+	public static void main(String[] args) throws WrongEvidenceException, StepBuildingException, VerificationException, StrategyException {
 		EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
 		EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
 		ConclusionType conclusionExperimentationType = new ConclusionType(Experimentation.class);

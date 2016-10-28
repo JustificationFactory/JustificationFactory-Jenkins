@@ -3,7 +3,6 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
-import fr.axonic.avek.engine.instance.conclusion.Effect;
 import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
 import fr.axonic.avek.engine.instance.conclusion.Experimentation;
 import fr.axonic.avek.engine.instance.evidence.*;
@@ -12,23 +11,16 @@ import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Rationale;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.strategy.Strategy;
-import fr.axonic.util.JAXBUtil;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * Created by cduffau on 04/08/16.
@@ -77,7 +69,7 @@ public class ArgumentationDiagramAPIImpl implements ArgumentationDiagramAPI {
     }
 
     @Override
-    public Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException {
+    public Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         try{
             List<EvidenceRole> usefullEvidences=patterns.get(patternId).filterUsefullEvidences(evidences);
             Step step=patterns.get(patternId).createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));

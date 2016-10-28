@@ -5,10 +5,7 @@ import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
-import fr.axonic.avek.engine.strategy.ComputedStrategy;
-import fr.axonic.avek.engine.strategy.HumanStrategy;
-import fr.axonic.avek.engine.strategy.Rationale;
-import fr.axonic.avek.engine.strategy.UsageDomain;
+import fr.axonic.avek.engine.strategy.*;
 
 import java.util.Map;
 
@@ -16,7 +13,7 @@ import java.util.Map;
 public class TreatStrategy extends HumanStrategy {
 
 	public TreatStrategy(Rationale rationale, UsageDomain usageDomain) {
-		super("Treat",rationale, usageDomain);
+		super("Treat",rationale, usageDomain, Role.TECHNICIAN);
 	}
 
 	@Override

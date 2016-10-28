@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.strategy;
 
+import fr.axonic.avek.engine.StrategyException;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 
@@ -11,9 +12,11 @@ public abstract class HumanStrategy extends Strategy{
 
 	private Comment comment;
 	private Actor actor;
+	private Role minimumRole;
 
-	public HumanStrategy(String name,Rationale rationale, UsageDomain usageDomain) {
+	public HumanStrategy(String name,Rationale rationale, UsageDomain usageDomain, Role actorMinimumRole) {
 		super(name,rationale, usageDomain);
+		minimumRole=actorMinimumRole;
 	}
 
 	public HumanStrategy() {
@@ -39,8 +42,23 @@ public abstract class HumanStrategy extends Strategy{
 		return actor;
 	}
 
-	public void setActor(Actor actor) {
+	public void setActor(Actor actor) throws StrategyException {
+		if(!checkRole(actor)){
+			throw new StrategyException(actor.getName()+" has a none acceptable role");
+		}
 		this.actor = actor;
+	}
+
+	public Role getMinimumRole() {
+		return minimumRole;
+	}
+
+	public void setMinimumRole(Role minimumRole) {
+		this.minimumRole = minimumRole;
+	}
+
+	private boolean checkRole(Actor actor){
+		return minimumRole==null || minimumRole.ordinal()>=actor.getRole().ordinal();
 	}
 }
 

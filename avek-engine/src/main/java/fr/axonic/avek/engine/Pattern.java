@@ -83,7 +83,7 @@ public class Pattern {
 	}
 
 	//Should call applicable
-	public Step createStep(List<EvidenceRole> evidenceList, Conclusion conclusion, Actor actor) throws StepBuildingException {
+	public Step createStep(List<EvidenceRole> evidenceList, Conclusion conclusion, Actor actor) throws StepBuildingException, StrategyException {
 		if(applicable(evidenceList)){
 			Step res= null;
 			Strategy strategy=this.getStrategy();

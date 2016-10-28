@@ -1,14 +1,12 @@
 package fr.axonic.avek.bus;
 
 import fr.axonic.avek.bus.translator.DataTranslator;
-import fr.axonic.avek.engine.ArgumentationDiagramAPI;
-import fr.axonic.avek.engine.Pattern;
-import fr.axonic.avek.engine.StepBuildingException;
-import fr.axonic.avek.engine.WrongEvidenceException;
+import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
+import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIException;
@@ -235,7 +233,7 @@ public class Orchestrator implements Observer {
                             "Experimentation",
                             currentSubject,
                             currentStimulation));
-        } catch (WrongEvidenceException | StepBuildingException e) {
+        } catch (WrongEvidenceException | StepBuildingException | StrategyException e) {
             LOGGER.error("Impossible to constructStep");
         }
     }
@@ -258,7 +256,7 @@ public class Orchestrator implements Observer {
             // TODO pass UploadedFile.uploadedFolder; in establishEffectConclusion
 
             engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);
-        } catch (WrongEvidenceException | StepBuildingException e) {
+        } catch (WrongEvidenceException | StepBuildingException | StrategyException e) {
             LOGGER.error("Impossible to constructStep");
         }
     }
@@ -280,7 +278,7 @@ public class Orchestrator implements Observer {
                     ));
 
             engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);
-        } catch (WrongEvidenceException | StepBuildingException e) {
+        } catch (WrongEvidenceException | StepBuildingException | StrategyException e) {
             LOGGER.error("Impossible to constructStep");
         }
     }

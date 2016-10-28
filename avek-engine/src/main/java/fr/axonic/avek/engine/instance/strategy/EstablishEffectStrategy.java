@@ -2,10 +2,7 @@ package fr.axonic.avek.engine.instance.strategy;
 
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
-import fr.axonic.avek.engine.strategy.HumanStrategy;
-import fr.axonic.avek.engine.strategy.Rationale;
-import fr.axonic.avek.engine.strategy.Strategy;
-import fr.axonic.avek.engine.strategy.UsageDomain;
+import fr.axonic.avek.engine.strategy.*;
 
 import java.util.Map;
 
@@ -15,7 +12,7 @@ import java.util.Map;
 public class EstablishEffectStrategy extends HumanStrategy {
 
     public EstablishEffectStrategy(Rationale rationale, UsageDomain usageDomain) {
-        super("Establish Effect",rationale, usageDomain);
+        super("Establish Effect",rationale, usageDomain,Role.JUNIOR_EXPERT);
     }
 
     @Override
