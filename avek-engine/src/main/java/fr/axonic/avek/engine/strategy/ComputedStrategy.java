@@ -8,6 +8,14 @@ import java.util.Map;
 
 @XmlRootElement
 public abstract class ComputedStrategy extends Strategy{
+
+	public ComputedStrategy() {
+	}
+
+	public ComputedStrategy(String name, Rationale rationale, UsageDomain usageDomain) {
+		super(name, rationale, usageDomain);
+	}
+
 	public abstract Conclusion createConclusion(Map<String,Evidence> evidenceRoles);
 
 }

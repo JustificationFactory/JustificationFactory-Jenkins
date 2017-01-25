@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.instance.evidence;
 
-import fr.axonic.avek.engine.conclusion.Limit;
+import fr.axonic.avek.engine.conclusion.Restriction;
 import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.base.AString;
 import fr.axonic.validation.exception.VerificationException;
@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 
-public class Subject extends Element implements Limit {
+public class Subject extends Element implements Restriction {
 
     private AString id;
     private StaticSubjectInformations staticInformations;

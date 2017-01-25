@@ -3,12 +3,16 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.List;
 
 /**
  * Created by cduffau on 04/08/16.
  */
-public interface ArgumentationDiagramAPI {
+@XmlRootElement
+@XmlSeeAlso(ArgumentationSystem.class)
+public interface ArgumentationSystemAPI {
 
     List<String> getPossiblePatterns(List<EvidenceRole> evidenceRoles);
 
@@ -19,4 +23,8 @@ public interface ArgumentationDiagramAPI {
     Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
 
     List<Step> getSteps();
+
+    List<Pattern> getPatterns();
+
+    Pattern getObjective();
 }

@@ -7,6 +7,10 @@ import fr.axonic.avek.engine.conclusion.Conclusion;
  */
 public class GeneralizationConclusion extends Conclusion<EstablishedEffect>{
 
+    public GeneralizationConclusion(){
+        super();
+    }
+
     public GeneralizationConclusion(String name, EstablishedEffect element) {
         super(name, element);
     }

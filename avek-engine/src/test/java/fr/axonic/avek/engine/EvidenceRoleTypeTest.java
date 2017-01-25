@@ -33,13 +33,13 @@ public class EvidenceRoleTypeTest {
         EvidenceRoleType<Stimulation> evidenceRoleType= new EvidenceRoleType<Stimulation>("stimulation type",Stimulation.class);
         Evidence<Stimulation> evidence=new Evidence<Stimulation>("stimulation", new Stimulation());
         EvidenceRole role=evidenceRoleType.create(evidence);
-        assertTrue(evidenceRoleType.isEvidenceType(role.getEvidence()));
+        assertTrue(evidenceRoleType.isEvidenceType(role.getSupport()));
     }
     @Test
     public void testWrongEvidenceRoleFromEvidenceRoleType() throws WrongEvidenceException, VerificationException {
         EvidenceRoleType<Stimulation> evidenceRoleType= new EvidenceRoleType<Stimulation>("stimulation type",Stimulation.class);
         EvidenceRole evidenceRole=new EvidenceRole("test",new Evidence("test",new Subject()));
-        assertFalse(evidenceRoleType.isEvidenceType(evidenceRole.getEvidence()));
+        assertFalse(evidenceRoleType.isEvidenceType(evidenceRole.getSupport()));
     }
 
 

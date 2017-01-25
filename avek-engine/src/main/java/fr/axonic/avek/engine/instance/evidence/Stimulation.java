@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.instance.evidence;
 
-import fr.axonic.avek.engine.conclusion.Limit;
+import fr.axonic.avek.engine.conclusion.Restriction;
 import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.base.ARangedEnum;
 import fr.axonic.base.engine.AVarHelper;
@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.Arrays;
 @XmlRootElement
 @XmlSeeAlso(WaveformEnum.class)
-public class Stimulation extends Element implements Limit {
+public class Stimulation extends Element implements Restriction {
 
     private ARangedEnum<WaveformEnum> waveform;
     private WaveformParameter waveformParameter;

@@ -3,28 +3,39 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.evidence.Element;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.evidence.Support;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class EvidenceRoleType<T extends Element>{
 
 	private boolean optional = false;
 	private String name;
 	private Class evidenceType;
+
+	public EvidenceRoleType() {
+	}
+
 	public EvidenceRoleType(String name, Class<T> classEvidence){
 		this.name=name;
 		this.evidenceType = classEvidence;
 		this.optional=false;
 	}
-	public EvidenceRole create(Evidence evidence) throws WrongEvidenceException {
+	public EvidenceRole create(Support evidence) throws WrongEvidenceException {
 		if (evidence.getElement().getClass().equals(evidenceType)){
 			return  new EvidenceRole(this.name, evidence);
 		}
 		throw new WrongEvidenceException(evidence+ " is not compatible with "+evidenceType);
 	}
 
-	public boolean isEvidenceType(Evidence evidence){
-		return evidence.getElement().getClass().equals(evidenceType);
+	@XmlElement
+	public boolean isEvidenceType(Support support){
+		return support.getElement().getClass().equals(evidenceType);
 	}
 
+	@XmlElement
 	public boolean isOptional() {
 		return optional;
 	}
@@ -33,6 +44,7 @@ public class EvidenceRoleType<T extends Element>{
 		this.optional = optionnal;
 	}
 
+	@XmlElement
 	public String getName() {
 		return name;
 	}
@@ -41,6 +53,7 @@ public class EvidenceRoleType<T extends Element>{
 		this.name = name;
 	}
 
+	@XmlElement
 	public Class getEvidenceType() {
 		return evidenceType;
 	}

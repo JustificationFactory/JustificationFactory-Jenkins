@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.instance.conclusion;
 
 import fr.axonic.avek.engine.conclusion.Conclusion;
-import fr.axonic.avek.engine.conclusion.Limit;
+import fr.axonic.avek.engine.conclusion.Restriction;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
 
@@ -33,7 +33,7 @@ public class ExperimentationConclusion extends Conclusion<Experimentation> {
         super(name, experimentation);
         this.subject = subject;
         this.stimulation = stimulation;
-        limits = Arrays.asList(new Limit[]{subject,stimulation});
+        restrictions = Arrays.asList(new Restriction[]{subject,stimulation});
     }
 
     public Stimulation getStimulation() {
@@ -42,10 +42,10 @@ public class ExperimentationConclusion extends Conclusion<Experimentation> {
 
     public void setStimulation(Stimulation stimulation) {
         if(this.stimulation!=null){
-            limits.remove(stimulation);
+            restrictions.remove(stimulation);
         }
         this.stimulation = stimulation;
-        limits.add(stimulation);
+        restrictions.add(stimulation);
 
     }
 
@@ -55,9 +55,9 @@ public class ExperimentationConclusion extends Conclusion<Experimentation> {
 
     public void setSubject(Subject subject) {
         if(this.subject!=null){
-            limits.remove(subject);
+            restrictions.remove(subject);
         }
         this.subject = subject;
-        limits.add(subject);
+        restrictions.add(subject);
     }
 }

@@ -6,7 +6,6 @@ import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.*;
 import fr.axonic.avek.engine.instance.evidence.Stimulation;
 import fr.axonic.avek.engine.instance.evidence.Subject;
-import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIException;
@@ -42,10 +41,10 @@ public class Orchestrator implements Observer {
     private final List<Pattern> patternList;
     private List<EvidenceRole> evidences;
 
-    private final ArgumentationDiagramAPI engineAPI;
+    private final ArgumentationSystemAPI engineAPI;
     private final GUIAPI guiAPI;
 
-    public Orchestrator(GUIAPI guiapi, ArgumentationDiagramAPI engineAPI) throws VerificationException, WrongEvidenceException, GUIException {
+    public Orchestrator(GUIAPI guiapi, ArgumentationSystemAPI engineAPI) throws VerificationException, WrongEvidenceException, GUIException {
         patternList = new ArrayList<>();
 
         this.engineAPI = engineAPI;
@@ -164,7 +163,7 @@ public class Orchestrator implements Observer {
             try {
                 switch (evidenceRole.getRole()) {
                     case SUBJECT_STR:
-                        currentSubject = (Subject) evidenceRole.getEvidence().getElement();
+                        currentSubject = (Subject) evidenceRole.getSupport().getElement();
 
                         MonitoredSystem ms = new MonitoredSystem(currentSubject.getId());
                         currentSubject.getFieldsContainer().forEach((key,val)-> {
@@ -177,7 +176,7 @@ public class Orchestrator implements Observer {
                         content.put(ComponentType.MONITORED_SYSTEM, ms);
                         break;
                     case STIM_STR:
-                        currentStimulation = (Stimulation) evidenceRole.getEvidence().getElement();
+                        currentStimulation = (Stimulation) evidenceRole.getSupport().getElement();
 
                         AList<AEntity> list = new AList<>();
                         list.setLabel("root");
@@ -186,9 +185,9 @@ public class Orchestrator implements Observer {
                         content.put(ComponentType.EXPERIMENTATION_PARAMETERS, new GUIExperimentParameter(list));
                         break;
                     default:
-                        if (evidenceRole.getEvidence() instanceof EstablishEffectConclusion) {
+                        if (evidenceRole.getSupport() instanceof EstablishEffectConclusion) {
                             LOGGER.error("Got: " + evidenceRole);
-                            EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getEvidence();
+                            EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getSupport();
 
                             currentEffects = ((EstablishedEffect) eec.getElement()).getEffects();
                             content.put(ComponentType.EFFECTS, currentEffects);

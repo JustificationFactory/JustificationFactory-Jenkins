@@ -10,6 +10,9 @@ public class Experimentation extends Element {
     private Stimulation stimulation;
     private Subject subject;
 
+    public Experimentation() {
+    }
+
     public Experimentation(Stimulation stimulation, Subject subject) {
         this.stimulation = stimulation;
         this.subject = subject;

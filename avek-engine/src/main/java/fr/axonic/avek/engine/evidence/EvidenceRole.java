@@ -7,14 +7,14 @@ import java.util.List;
 @XmlRootElement
 public class EvidenceRole {
 	private String role;
-	private Evidence evidence;
+	private Support support;
 
 	private EvidenceRole() {
 	}
 
-	public EvidenceRole(String name, Evidence evidenceNew) {
+	public EvidenceRole(String name, Support evidenceNew) {
 		role = name;
-		evidence = evidenceNew;
+		support = evidenceNew;
 	}
 	@XmlElement
 	public String getRole() {
@@ -25,23 +25,23 @@ public class EvidenceRole {
 	}
 
 	@XmlElement
-	public Evidence getEvidence() {
-		return evidence;
+	public Support getSupport() {
+		return support;
 	}
-	public void setEvidence(Evidence evidence) {
-		this.evidence = evidence;
+	public void setSupport(Evidence support) {
+		this.support = support;
 	}
 
-	public static List<Evidence> translateToEvidence(List<EvidenceRole> evidenceRoles){
-		List<Evidence> evidences=new ArrayList<Evidence>();
+	public static List<Support> translateToEvidence(List<EvidenceRole> evidenceRoles){
+		List<Support> evidences=new ArrayList<>();
 		for(EvidenceRole evidenceRole : evidenceRoles){
-			evidences.add(evidenceRole.getEvidence());
+			evidences.add(evidenceRole.getSupport());
 		}
 		return evidences;
 	}
 
 	@Override
 	public String toString() {
-		return "EvidenceRole{role="+role+", evidence="+evidence+"}";
+		return "EvidenceRole{role="+role+", support="+ support +"}";
 	}
 }

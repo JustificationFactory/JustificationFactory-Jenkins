@@ -3,14 +3,18 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.evidence.Support;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@XmlRootElement
 public class Pattern {
 	
 	private List<EvidenceRoleType> roleTypes;
@@ -18,6 +22,10 @@ public class Pattern {
 	private String name;
 	private String id;
 	private ConclusionType conclusionType;
+
+	public Pattern(){
+
+	}
 
 	public Pattern(String id,String aName, Strategy aStrategy, List<EvidenceRoleType> roleTypeList,
 			ConclusionType aConclusionExperimentationType) {
@@ -36,7 +44,7 @@ public class Pattern {
 		List<EvidenceRoleType> evidenceRoleTypesUsed=new ArrayList<>();
 			for (int i = 0; i < roleTypes.size(); i++) {
 				for (int j = 0; j < asList.size(); j++) {
-					if(roleTypes.get(i).isEvidenceType(asList.get(j).getEvidence())){
+					if(roleTypes.get(i).isEvidenceType(asList.get(j).getSupport())){
 						evidenceRoleTypesUsed.add(roleTypes.get(i));
 						if(evidenceRoleTypesUsed.size()==roleTypes.size()){
 							return true;
@@ -53,7 +61,7 @@ public class Pattern {
 		return false;
 	}
 	
-	public boolean checkConclusion(List<Evidence> asList, Conclusion conclusion) {
+	public boolean checkConclusion(List<Support> asList, Conclusion conclusion) {
 		if(conclusionType.isConclusionType(conclusion)){
 			return false;
 		}
@@ -74,7 +82,7 @@ public class Pattern {
 		List<EvidenceRole> evidenceRoleList=new ArrayList<>();
 		for(EvidenceRole evidenceRole:evidenceRoles){
 			for(EvidenceRoleType evidenceRoleType:roleTypes){
-				if(evidenceRoleType.isEvidenceType(evidenceRole.getEvidence())){
+				if(evidenceRoleType.isEvidenceType(evidenceRole.getSupport())){
 					evidenceRoleList.add(evidenceRole);
 				}
 			}
@@ -113,7 +121,8 @@ public class Pattern {
 				+ ", conclusionType="
 				+ conclusionType + "]";
 	}
-
+	@XmlElement
+	@XmlElementWrapper
 	public List<EvidenceRoleType> getRoleTypes() {
 		return roleTypes;
 	}
@@ -122,6 +131,7 @@ public class Pattern {
 		this.roleTypes = roleTypes;
 	}
 
+	@XmlElement
 	public Strategy getStrategy() {
 		return strategy;
 	}
@@ -130,6 +140,7 @@ public class Pattern {
 		this.strategy = strategy;
 	}
 
+	@XmlElement
 	public String getName() {
 		return name;
 	}
@@ -138,6 +149,7 @@ public class Pattern {
 		this.name = name;
 	}
 
+	@XmlElement
 	public String getId() {
 		return id;
 	}
@@ -146,6 +158,7 @@ public class Pattern {
 		this.id = id;
 	}
 
+	@XmlElement
 	public ConclusionType getConclusionType() {
 		return conclusionType;
 	}
