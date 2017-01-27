@@ -104,7 +104,7 @@ public class Pattern {
 
 				}
 			}
-			res = new Step(strategy, evidenceList, conclusion);
+			res = new Step(id,strategy, evidenceList, conclusion);
 
 			if(checkConclusion(EvidenceRole.translateToEvidence(evidenceList),conclusion)){
 				return res;

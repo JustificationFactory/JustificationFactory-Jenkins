@@ -4,6 +4,7 @@ import fr.axonic.avek.engine.Step;
 import fr.axonic.avek.engine.conclusion.Conclusion;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.evidence.Support;
 import fr.axonic.avek.engine.strategy.Strategy;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -74,7 +75,7 @@ public class ArgumentationDiagram extends JFrame {
         linkNodes(strategy, conclusion);
 
         for(EvidenceRole evidenceRole : step.getEvidences()) {
-            Evidence evidence = evidenceRole.getSupport();
+            Support evidence = evidenceRole.getSupport();
             addNode(evidence, evidence.getName(), VertexType.EVIDENCE);
             linkNodes(evidence, strategy);
         }

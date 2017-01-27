@@ -20,15 +20,17 @@ public class Step {
 	private List<EvidenceRole> evidences;
 	private Strategy strategy;
 	private Conclusion conclusion;
+	private String patternId;
 	//L'ordre sera utilisé pour décider de l'association aux roles dans le cas où plusieurs evidence d'un même type sont necessaire au pattern
 
 	private Step() {
 	}
 
-	public Step(Strategy strategy, List<EvidenceRole> evidenceRolelist, Conclusion conclusion) {
+	public Step(String patternId, Strategy strategy, List<EvidenceRole> evidenceRolelist, Conclusion conclusion) {
 		this.strategy = strategy;
 		this.evidences = evidenceRolelist;
 		this.conclusion = conclusion;
+		this.patternId=patternId;
 	}
 
 	@XmlElement(name="evidenceRoles")
@@ -57,5 +59,13 @@ public class Step {
 
 	public void setConclusion(Conclusion conclusion) {
 		this.conclusion = conclusion;
+	}
+	@XmlElement
+	public String getPatternId() {
+		return patternId;
+	}
+
+	public void setPatternId(String patternId) {
+		this.patternId = patternId;
 	}
 }
