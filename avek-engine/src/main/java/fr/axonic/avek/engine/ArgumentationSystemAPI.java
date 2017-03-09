@@ -14,17 +14,17 @@ import java.util.List;
 @XmlSeeAlso(ArgumentationSystem.class)
 public interface ArgumentationSystemAPI {
 
-    List<String> getPossiblePatterns(List<EvidenceRole> evidenceRoles);
-
     Pattern getPattern(String patternId);
 
     List<EvidenceRole> getBaseEvidences();
 
-    Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
+    Step constructStep(Pattern pattern, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
 
     List<Step> getSteps();
 
-    List<Pattern> getPatterns();
+    PatternsBase getPatternsBase();
 
-    Pattern getObjective();
+    ConclusionType getObjective();
+
+    boolean validate();
 }

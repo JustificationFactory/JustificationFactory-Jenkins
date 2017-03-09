@@ -58,7 +58,7 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     @Override
     public Response constructStep(String argumentationSystem, String pattern, List<EvidenceRole> evidences, Conclusion conclusion) {
         try {
-            Step step = argumentationSystems.get(argumentationSystem).constructStep(pattern,evidences,conclusion);
+            Step step = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),evidences,conclusion);
             return Response.status(Response.Status.CREATED).entity(step).build();
         } catch (StepBuildingException | WrongEvidenceException | StrategyException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getStackTrace()).build();

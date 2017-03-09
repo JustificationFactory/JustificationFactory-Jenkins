@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine;
 
 import fr.axonic.avek.engine.conclusion.Conclusion;
+import fr.axonic.avek.engine.constraint.PatternConstraint;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.evidence.Support;

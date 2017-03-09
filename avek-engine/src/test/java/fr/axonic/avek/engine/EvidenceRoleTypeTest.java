@@ -16,28 +16,31 @@ public class EvidenceRoleTypeTest {
 
     @Test
     public void testGoodEvidenceCreation() throws WrongEvidenceException, VerificationException {
-        EvidenceRoleType<Stimulation> evidenceRoleType= new EvidenceRoleType<Stimulation>("stimulation type",Stimulation.class);
+        EvidenceRoleType<Evidence> evidenceRoleType= new EvidenceRoleType<Evidence>("stimulation type",Evidence.class);
         Evidence<Stimulation> evidence=new Evidence<Stimulation>("stimulation", new Stimulation());
         evidenceRoleType.create(evidence);
     }
 
     @Test(expected=WrongEvidenceException.class)
     public void testWrongEvidenceCreation() throws WrongEvidenceException, VerificationException {
-        EvidenceRoleType<Stimulation> evidenceRoleType= new EvidenceRoleType<Stimulation>("stimulation type",Stimulation.class);
+        EvidenceRoleType<Evidence> evidenceRoleType= new EvidenceRoleType<Evidence>("stimulation type",Evidence.class);
+
         Evidence<Subject> evidence=new Evidence<Subject>("subject", new Subject());
         evidenceRoleType.create(evidence);
     }
 
     @Test
     public void testGoodEvidenceRoleFromEvidenceRoleType() throws WrongEvidenceException, VerificationException {
-        EvidenceRoleType<Stimulation> evidenceRoleType= new EvidenceRoleType<Stimulation>("stimulation type",Stimulation.class);
+        EvidenceRoleType<Evidence> evidenceRoleType= new EvidenceRoleType<Evidence>("stimulation type",Evidence.class);
+
         Evidence<Stimulation> evidence=new Evidence<Stimulation>("stimulation", new Stimulation());
         EvidenceRole role=evidenceRoleType.create(evidence);
         assertTrue(evidenceRoleType.isEvidenceType(role.getSupport()));
     }
     @Test
     public void testWrongEvidenceRoleFromEvidenceRoleType() throws WrongEvidenceException, VerificationException {
-        EvidenceRoleType<Stimulation> evidenceRoleType= new EvidenceRoleType<Stimulation>("stimulation type",Stimulation.class);
+        EvidenceRoleType<Evidence> evidenceRoleType= new EvidenceRoleType<Evidence>("stimulation type",Evidence.class);
+
         EvidenceRole evidenceRole=new EvidenceRole("test",new Evidence("test",new Subject()));
         assertFalse(evidenceRoleType.isEvidenceType(evidenceRole.getSupport()));
     }

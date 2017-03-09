@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine;
 
 import fr.axonic.avek.engine.conclusion.Conclusion;
+import fr.axonic.avek.engine.constraint.PatternConstraint;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
@@ -34,33 +35,27 @@ import java.util.stream.Collectors;
 @XmlRootElement
 public class ArgumentationSystem implements ArgumentationSystemAPI {
 
-    private List<Pattern> patterns;
-    private Pattern objective;
+    private PatternsBase patternsBase;
+    private ConclusionType objective;
     private List<EvidenceRole> baseEvidences = new ArrayList<>();
     private List<Step> steps;
     private final static Logger LOGGER = Logger.getLogger(ArgumentationSystem.class);
 
     public ArgumentationSystem() throws VerificationException, WrongEvidenceException {
         steps=new ArrayList<>();
-        patterns= new ArrayList<>();
 
     }
-    public ArgumentationSystem(List<Pattern> patterns, List<EvidenceRole> baseEvidences) throws VerificationException, WrongEvidenceException {
+    public ArgumentationSystem(PatternsBase patternsBase, List<EvidenceRole> baseEvidences) throws VerificationException, WrongEvidenceException {
         this();
-        this.patterns=patterns;
+        this.patternsBase=patternsBase;
         this.baseEvidences=baseEvidences;
     }
 
-    @Override
-    @XmlElement
-    @XmlElementWrapper
-    public List<String> getPossiblePatterns(List<EvidenceRole> evidenceRoles) {
-        return patterns.stream().filter(pattern -> pattern.applicable(evidenceRoles)).map(pattern -> pattern.getId()).collect(Collectors.toList());
-    }
+
 
     @Override
     public Pattern getPattern(String patternId) {
-        return patterns.stream().filter(pattern -> pattern.getId().equals(patternId)).collect(singletonCollector());
+        return patternsBase.getPatterns().stream().filter(pattern -> pattern.getId().equals(patternId)).collect(singletonCollector());
     }
 
     @Override
@@ -73,13 +68,14 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     @Override
     @XmlElement
     @XmlElementWrapper
-    public List<Pattern> getPatterns() {
-        return patterns;
+    public PatternsBase getPatternsBase() {
+        return patternsBase;
     }
 
-    private void setPatterns(List<Pattern> patterns) {
-        this.patterns = patterns;
+    public void setPatternsBase(PatternsBase patternsBase) {
+        this.patternsBase = patternsBase;
     }
+
 
     private void setBaseEvidences(List<EvidenceRole> baseEvidences) {
         this.baseEvidences = baseEvidences;
@@ -91,12 +87,22 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     @XmlElement
-    public Pattern getObjective() {
+    public ConclusionType getObjective() {
         return objective;
     }
 
-    public void setObjective(Pattern objective) throws WrongObjectiveException {
-        if(patterns.contains(objective)){
+    @Override
+    public boolean validate() {
+        for(PatternConstraint constraint : patternsBase.getConstraints()){
+            if(!constraint.verify(steps)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setObjective(ConclusionType objective) throws WrongObjectiveException {
+        if(patternsBase.getPatterns().stream().filter(pattern -> pattern.getConclusionType().equals(objective)).count()>=1){
             this.objective = objective;
         }
         else{
@@ -105,13 +111,13 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     @Override
-    public Step constructStep(String patternId, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
+    public Step constructStep(Pattern pattern, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         try{
-            List<EvidenceRole> usefullEvidences=getPattern(patternId).filterUsefullEvidences(evidences);
-            Step step=getPattern(patternId).createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
+            List<EvidenceRole> usefullEvidences=pattern.filterUsefullEvidences(evidences);
+            Step step=pattern.createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
             steps.add(step);
             LOGGER.info(step.getConclusion());
-            EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getElement().getClass());
+            EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getClass());
             baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
             return step;
         }
@@ -124,13 +130,6 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public List<Step> getSteps() {
-        try {
-            save(new StepsWrapper(steps),new File("test.json"));
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return steps;
     }
 
@@ -144,8 +143,9 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         FileOutputStream fos = new FileOutputStream(file);
         m.marshal(object, fos);
         fos.close();
-    }
 
+
+    }
 
 
     private static <T> Collector<T, ?, T> singletonCollector() {

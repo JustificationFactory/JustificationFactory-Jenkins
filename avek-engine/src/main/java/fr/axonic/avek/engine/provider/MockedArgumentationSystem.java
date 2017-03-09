@@ -1,6 +1,10 @@
 package fr.axonic.avek.engine.provider;
 
 import fr.axonic.avek.engine.*;
+import fr.axonic.avek.engine.constraint.PatternConstraint;
+import fr.axonic.avek.engine.constraint.pattern.inter.NotCascadingConstraint;
+import fr.axonic.avek.engine.constraint.pattern.intra.ConclusionReuseConstraint;
+import fr.axonic.avek.engine.constraint.pattern.intra.UnicityConstraint;
 import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
@@ -19,12 +23,12 @@ import java.util.*;
 public class MockedArgumentationSystem {
 
     public static ArgumentationSystemAPI getAXONICArgumentationSystem() throws VerificationException, WrongEvidenceException {
-        ArgumentationSystem argumentationSystem=new ArgumentationSystem(getAXONICPatterns(),getAXONICBaseEvidences());
+        ArgumentationSystem argumentationSystem=new ArgumentationSystem(getAXONICPatternsBase(),getAXONICBaseEvidences());
 
         return argumentationSystem;
     }
 
-    private static List<Pattern> getAXONICPatterns(){
+    private static PatternsBase getAXONICPatternsBase(){
         List<Pattern> patterns=new ArrayList<>();
         EvidenceRoleType rtStimulation = new EvidenceRoleType("stimulation", Stimulation.class);
         EvidenceRoleType rtSubject = new EvidenceRoleType("subject", Subject.class);
@@ -33,7 +37,6 @@ public class MockedArgumentationSystem {
         AXONICProject project=new AXONICProject(Stimulator.AXIS, Pathology.OBESITY);
         Strategy ts = new TreatStrategy(new Rationale<>(project),null);
         Pattern treat = new Pattern("1","Treat", ts, Arrays.asList(new EvidenceRoleType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
-        patterns.add(treat);
 
         EvidenceRoleType rtExperimentation = new EvidenceRoleType("experimentation", Experimentation.class);
         EvidenceRoleType rtResult = new EvidenceRoleType("experimentation", Result.class);
@@ -49,7 +52,15 @@ public class MockedArgumentationSystem {
         Strategy ts3=new GeneralizeStrategy(new Rationale<>(project),null);
         Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new EvidenceRoleType[]{rtEstablishedEffect}),conclusionEffectType);
         patterns.add(generalize);
-        return patterns;
+
+
+        List<PatternConstraint> patternConstraints=new ArrayList<>();
+        patternConstraints.add(new UnicityConstraint(generalize));
+        patternConstraints.add(new ConclusionReuseConstraint(treat));
+        patternConstraints.add(new ConclusionReuseConstraint(establishEffect));
+        patternConstraints.add(new NotCascadingConstraint(treat,generalize));
+        patterns.add(treat);
+        return new PatternsBase(patterns, patternConstraints);
 
 
     }
@@ -87,8 +98,8 @@ public class MockedArgumentationSystem {
         Subject subject=new Subject("12345",staticInfos,dynamicInfos,pathologyInfos);
         Evidence<Stimulation> stimulation0 = new Evidence<Stimulation>("Stimulation 0", stimulation);
         Evidence<Subject> subject0 = new Evidence<Subject>("Subject 0",subject);
-        EvidenceRoleType<Stimulation> rtStimulation = new EvidenceRoleType<>("stimulation", Stimulation.class);
-        EvidenceRoleType<Subject> rtSubject = new EvidenceRoleType<>("subject", Subject.class);
+        EvidenceRoleType<Evidence> rtStimulation = new EvidenceRoleType<>("stimulation", Evidence.class);
+        EvidenceRoleType<Evidence> rtSubject = new EvidenceRoleType<>("subject", Evidence.class);
         EvidenceRole evStimulation0 = rtStimulation.create(stimulation0);
         EvidenceRole evSubject0 = rtSubject.create(subject0);
         List<EvidenceRole> baseEvidences=new ArrayList<>();

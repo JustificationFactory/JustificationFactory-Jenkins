@@ -5,11 +5,12 @@ import fr.axonic.avek.engine.evidence.Evidence;
 import fr.axonic.avek.engine.evidence.EvidenceRole;
 import fr.axonic.avek.engine.evidence.Support;
 
+import javax.annotation.processing.SupportedOptions;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class EvidenceRoleType<T extends Element>{
+public class EvidenceRoleType<T extends Support>{
 
 	private boolean optional = false;
 	private String name;
@@ -24,7 +25,7 @@ public class EvidenceRoleType<T extends Element>{
 		this.optional=false;
 	}
 	public EvidenceRole create(Support evidence) throws WrongEvidenceException {
-		if (evidence.getElement().getClass().equals(evidenceType)){
+		if (evidence.getClass().equals(evidenceType)){
 			return  new EvidenceRole(this.name, evidence);
 		}
 		throw new WrongEvidenceException(evidence+ " is not compatible with "+evidenceType);
