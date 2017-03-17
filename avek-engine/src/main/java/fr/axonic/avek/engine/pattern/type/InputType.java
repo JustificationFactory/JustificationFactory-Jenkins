@@ -31,7 +31,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 	}
 
 	public boolean isPrimitiveInputType(){
-		return type.isAssignableFrom(Evidence.class);
+		return Evidence.class.isAssignableFrom(type);
 	}
 	@XmlElement
 	public String getName() {

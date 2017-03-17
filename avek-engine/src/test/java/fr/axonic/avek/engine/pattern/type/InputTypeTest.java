@@ -1,22 +1,21 @@
-package fr.axonic.avek.engine;
+package fr.axonic.avek.engine.pattern.type;
 
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.evidence.Evidence;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.evidence.Stimulation;
 import fr.axonic.avek.instance.evidence.StimulationEvidence;
 import fr.axonic.avek.instance.evidence.Subject;
-import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by cduffau on 24/06/16.
+ * Created by cduffau on 17/03/17.
  */
-public class SupportRoleTypeTest {
-
+public class InputTypeTest {
     @Test
     public void testGoodEvidenceCreation() throws WrongEvidenceException, VerificationException {
         InputType<Evidence> evidenceRoleType= new InputType<Evidence>("stimulation type",Evidence.class);
@@ -48,5 +47,16 @@ public class SupportRoleTypeTest {
         assertFalse(evidenceRoleType.check(supportRole.getSupport()));
     }
 
+    @Test
+    public void isPrimitiveInputType() throws Exception {
+        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation type",StimulationEvidence.class);
+        assertTrue(evidenceRoleType.isPrimitiveInputType());
+    }
+
+    @Test
+    public void isNotPrimitiveInputType() throws Exception {
+        InputType<ExperimentationConclusion> evidenceRoleType= new InputType<>("stimulation type",ExperimentationConclusion.class);
+        assertFalse(evidenceRoleType.isPrimitiveInputType());
+    }
 
 }

@@ -119,7 +119,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     @Override
     public Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         try{
-            List<SupportRole> usefullEvidences=pattern.filterUsefullEvidences(evidences);
+            List<SupportRole> usefullEvidences=pattern.filterUsefulEvidences(evidences);
             Step step=pattern.createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
             steps.add(step);
             LOGGER.info(step.getConclusion());
@@ -139,7 +139,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         return steps;
     }
 
-    private static void save(Object object, File file) throws JAXBException, IOException {
+    /**private static void save(Object object, File file) throws JAXBException, IOException {
         JAXBContext context = JAXBContext.newInstance(object.getClass());
         Marshaller m = context.createMarshaller();
         m.setProperty(MarshallerProperties.MEDIA_TYPE,
@@ -151,7 +151,9 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         fos.close();
 
 
-    }
+    }*/
+
+    @Override
     public void resolveHypothesis(Step step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException {
         SupportRole hypo=step.getEvidences().stream().filter(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis && evidenceRole.getSupport().equals(hypothesis)).collect(singletonCollector());
         Pattern pattern=patternsBase.getPattern(step.getPatternId());
@@ -169,7 +171,6 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
         }
     }
-
     @Override
     public String toString() {
         return "ArgumentationSystem{" +

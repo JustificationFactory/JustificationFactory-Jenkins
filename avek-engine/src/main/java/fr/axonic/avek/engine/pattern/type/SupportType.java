@@ -32,6 +32,21 @@ public abstract class SupportType<T extends Support> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SupportType)) return false;
+
+        SupportType<?> that = (SupportType<?>) o;
+
+        return type != null ? type.equals(that.type) : that.type == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return type != null ? type.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "SupportType{" +
                 "type=" + type +

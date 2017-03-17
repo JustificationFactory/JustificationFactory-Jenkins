@@ -9,6 +9,7 @@ import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.conclusion.GeneralizationConclusion;
 import fr.axonic.avek.instance.evidence.*;
 import fr.axonic.avek.instance.strategy.*;
 import fr.axonic.avek.engine.pattern.Pattern;
@@ -49,16 +50,14 @@ public class MockedArgumentationSystem {
         patterns.add(establishEffect);
 
         InputType<EstablishEffectConclusion> rtEstablishedEffect= new InputType<>("effects", EstablishEffectConclusion.class);
-
+        OutputType<GeneralizationConclusion> conclusionGeneralizationType = new OutputType<>(GeneralizationConclusion.class);
         Strategy ts3=new GeneralizeStrategy(new Rationale<>(project),null);
-        Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new InputType[]{rtEstablishedEffect}),conclusionEffectType);
+        Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new InputType[]{rtEstablishedEffect}),conclusionGeneralizationType);
         patterns.add(generalize);
 
 
         List<PatternConstraint> patternConstraints=new ArrayList<>();
         patternConstraints.add(new UnicityConstraint(generalize));
-        patternConstraints.add(new ConclusionReuseConstraint(treat));
-        patternConstraints.add(new ConclusionReuseConstraint(establishEffect));
         patternConstraints.add(new NotCascadingConstraint(treat,generalize));
         patterns.add(treat);
         return new PatternsBase(patterns, patternConstraints);

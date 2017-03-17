@@ -46,18 +46,12 @@ public class Pattern {
 	public boolean applicable(List<SupportRole> asList) {
 		List<InputType> evidenceRoleTypesUsed=new ArrayList<>();
 			for (int i = 0; i < inputTypes.size(); i++) {
-				for (int j = 0; j < asList.size(); j++) {
-					if(inputTypes.get(i).check(asList.get(j).getSupport())){
+				for (SupportRole anAsList : asList) {
+					if (inputTypes.get(i).check(anAsList.getSupport()) && !evidenceRoleTypesUsed.contains(inputTypes.get(i))) {
 						evidenceRoleTypesUsed.add(inputTypes.get(i));
-						if(evidenceRoleTypesUsed.size()== inputTypes.size()){
+						if (evidenceRoleTypesUsed.size() == inputTypes.size()) {
 							return true;
 						}
-					}
-				}
-				if (!evidenceRoleTypesUsed.contains(inputTypes.get(i))){
-					evidenceRoleTypesUsed.add(inputTypes.get(i));
-					if(evidenceRoleTypesUsed.size()== inputTypes.size()){
-						return true;
 					}
 				}
 			}
@@ -81,7 +75,7 @@ public class Pattern {
 		return true;
 	}
 
-	public List<SupportRole> filterUsefullEvidences(List<SupportRole> supportRoles){
+	public List<SupportRole> filterUsefulEvidences(List<SupportRole> supportRoles){
 		List<SupportRole> supportRoleList =new ArrayList<>();
 		for(SupportRole supportRole : supportRoles){
 			for(InputType evidenceRoleType: inputTypes){
