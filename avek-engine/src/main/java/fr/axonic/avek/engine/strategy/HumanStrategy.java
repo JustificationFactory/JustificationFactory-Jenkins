@@ -1,13 +1,15 @@
 package fr.axonic.avek.engine.strategy;
 
-import fr.axonic.avek.engine.StrategyException;
-import fr.axonic.avek.engine.conclusion.Conclusion;
-import fr.axonic.avek.engine.evidence.Evidence;
+import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.evidence.Evidence;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Map;
 @XmlRootElement
+@XmlType(name="humanStrategy")
 public abstract class HumanStrategy extends Strategy{
 
 	private Comment comment;

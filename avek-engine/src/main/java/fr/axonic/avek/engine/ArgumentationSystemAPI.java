@@ -1,7 +1,14 @@
 package fr.axonic.avek.engine;
 
-import fr.axonic.avek.engine.conclusion.Conclusion;
-import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.exception.StepBuildingException;
+import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.pattern.PatternsBase;
+import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.type.OutputType;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -16,15 +23,15 @@ public interface ArgumentationSystemAPI {
 
     Pattern getPattern(String patternId);
 
-    List<EvidenceRole> getBaseEvidences();
+    List<SupportRole> getBaseEvidences();
 
-    Step constructStep(Pattern pattern, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
+    Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
 
     List<Step> getSteps();
 
     PatternsBase getPatternsBase();
 
-    ConclusionType getObjective();
+    OutputType getObjective();
 
     boolean validate();
 }

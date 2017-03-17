@@ -1,10 +1,9 @@
 package fr.axonic.avek.engine.constraint.pattern.inter;
 
-import fr.axonic.avek.engine.Pattern;
+import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.constraint.PatternConstraint;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

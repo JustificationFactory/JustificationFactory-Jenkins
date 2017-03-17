@@ -1,8 +1,7 @@
 package fr.axonic.avek.engine.constraint.pattern.intra;
 
-import fr.axonic.avek.engine.Pattern;
-import fr.axonic.avek.engine.Step;
-import fr.axonic.avek.engine.constraint.PatternConstraint;
+import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.pattern.Step;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +21,9 @@ public class ConclusionReuseConstraint extends IntraPatternConstraint {
         List<Step> patternSteps=steps.stream().filter(step -> pattern.getId().equals(step.getPatternId())).collect(Collectors.toList());
         Stream<Step> stepStream=steps.stream()
                 .filter(step -> step.getEvidences().stream().
-                        filter(evidenceRole -> patternSteps.stream()
-                                .filter(stepPattern -> evidenceRole.getSupport().getName().equals(stepPattern.getConclusion().getName()))
-                                .distinct().count()>=1)
-                        .distinct().count()>=1)
+                        anyMatch(evidenceRole -> patternSteps.stream()
+                                .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId())))
+                        )
                 .distinct();
         return stepStream.count()>=patternSteps.size();
     }

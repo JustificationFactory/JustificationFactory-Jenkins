@@ -1,8 +1,8 @@
 package fr.axonic.avek.engine.strategy;
 
-import fr.axonic.avek.engine.StrategyException;
-import fr.axonic.avek.engine.conclusion.Conclusion;
-import fr.axonic.avek.engine.evidence.Evidence;
+import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.evidence.Evidence;
 import org.junit.Before;
 import org.junit.Test;
 

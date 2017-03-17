@@ -1,17 +1,23 @@
 package fr.axonic.avek.engine;
 
-import fr.axonic.avek.engine.conclusion.Conclusion;
+import fr.axonic.avek.engine.exception.StepBuildingException;
+import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.exception.WrongObjectiveException;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.constraint.PatternConstraint;
-import fr.axonic.avek.engine.evidence.Evidence;
-import fr.axonic.avek.engine.evidence.EvidenceRole;
-import fr.axonic.avek.engine.instance.conclusion.EstablishedEffect;
-import fr.axonic.avek.engine.instance.conclusion.Experimentation;
-import fr.axonic.avek.engine.instance.evidence.*;
-import fr.axonic.avek.engine.instance.strategy.*;
+import fr.axonic.avek.engine.constraint.PatternConstraintException;
+import fr.axonic.avek.engine.constraint.pattern.inter.NoCycleConstraint;
+import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.evidence.Hypothesis;
+import fr.axonic.avek.engine.support.Support;
+import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.pattern.PatternsBase;
+import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.strategy.Actor;
-import fr.axonic.avek.engine.strategy.Rationale;
 import fr.axonic.avek.engine.strategy.Role;
-import fr.axonic.avek.engine.strategy.Strategy;
+import fr.axonic.avek.engine.pattern.type.OutputType;
+import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
@@ -36,8 +42,8 @@ import java.util.stream.Collectors;
 public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     private PatternsBase patternsBase;
-    private ConclusionType objective;
-    private List<EvidenceRole> baseEvidences = new ArrayList<>();
+    private OutputType objective;
+    private List<SupportRole> baseEvidences = new ArrayList<>();
     private List<Step> steps;
     private final static Logger LOGGER = Logger.getLogger(ArgumentationSystem.class);
 
@@ -45,7 +51,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         steps=new ArrayList<>();
 
     }
-    public ArgumentationSystem(PatternsBase patternsBase, List<EvidenceRole> baseEvidences) throws VerificationException, WrongEvidenceException {
+    public ArgumentationSystem(PatternsBase patternsBase, List<SupportRole> baseEvidences) throws VerificationException, WrongEvidenceException {
         this();
         this.patternsBase=patternsBase;
         this.baseEvidences=baseEvidences;
@@ -55,13 +61,13 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public Pattern getPattern(String patternId) {
-        return patternsBase.getPatterns().stream().filter(pattern -> pattern.getId().equals(patternId)).collect(singletonCollector());
+        return patternsBase.getPattern(patternId);
     }
 
     @Override
     @XmlElement
     @XmlElementWrapper
-    public List<EvidenceRole> getBaseEvidences() {
+    public List<SupportRole> getBaseEvidences() {
         return baseEvidences;
     }
 
@@ -77,7 +83,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
 
-    private void setBaseEvidences(List<EvidenceRole> baseEvidences) {
+    private void setBaseEvidences(List<SupportRole> baseEvidences) {
         this.baseEvidences = baseEvidences;
     }
 
@@ -87,7 +93,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     @XmlElement
-    public ConclusionType getObjective() {
+    public OutputType getObjective() {
         return objective;
     }
 
@@ -101,8 +107,8 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         return true;
     }
 
-    public void setObjective(ConclusionType objective) throws WrongObjectiveException {
-        if(patternsBase.getPatterns().stream().filter(pattern -> pattern.getConclusionType().equals(objective)).count()>=1){
+    public void setObjective(OutputType objective) throws WrongObjectiveException {
+        if(patternsBase.getPatterns().stream().filter(pattern -> pattern.getOutputType().equals(objective)).count()>=1){
             this.objective = objective;
         }
         else{
@@ -111,17 +117,17 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     @Override
-    public Step constructStep(Pattern pattern, List<EvidenceRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
+    public Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         try{
-            List<EvidenceRole> usefullEvidences=pattern.filterUsefullEvidences(evidences);
+            List<SupportRole> usefullEvidences=pattern.filterUsefullEvidences(evidences);
             Step step=pattern.createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
             steps.add(step);
             LOGGER.info(step.getConclusion());
-            EvidenceRoleType evidenceRoleType=new EvidenceRoleType("",step.getConclusion().getClass());
+            InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
             baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
             return step;
         }
-        catch (NullPointerException  e){
+        catch (NullPointerException | CloneNotSupportedException  e){
             throw new StepBuildingException("Unknown pattern");
         }
 
@@ -134,21 +140,47 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     private static void save(Object object, File file) throws JAXBException, IOException {
-        JAXBContext context = JAXBContext.newInstance(new Class[]{object.getClass()});
+        JAXBContext context = JAXBContext.newInstance(object.getClass());
         Marshaller m = context.createMarshaller();
         m.setProperty(MarshallerProperties.MEDIA_TYPE,
                 "application/json");
-        m.setProperty("jaxb.formatted.output", Boolean.valueOf(true));
-        m.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, Boolean.valueOf(false));
+        m.setProperty("jaxb.formatted.output", Boolean.TRUE);
+        m.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, Boolean.FALSE);
         FileOutputStream fos = new FileOutputStream(file);
         m.marshal(object, fos);
         fos.close();
 
 
     }
+    public void resolveHypothesis(Step step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException {
+        SupportRole hypo=step.getEvidences().stream().filter(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis && evidenceRole.getSupport().equals(hypothesis)).collect(singletonCollector());
+        Pattern pattern=patternsBase.getPattern(step.getPatternId());
+        Optional<InputType> evidenceRoleTypeResult=pattern.getInputTypes().stream().filter(evidenceRoleType -> evidenceRoleType.check(hypo.getSupport())).findAny();
+        if(evidenceRoleTypeResult.isPresent()){
+            SupportRole res=evidenceRoleTypeResult.get().create(support);
+            step.getEvidences().remove(hypo);
+            step.getEvidences().add(res);
+            NoCycleConstraint constraint=new NoCycleConstraint(step);
+            if(!constraint.verify(steps)){
+                step.getEvidences().add(hypo);
+                step.getEvidences().remove(res);
+                throw new PatternConstraintException("No cycle allowed, "+support+ " will create a cycle");
+            }
 
+        }
+    }
 
-    private static <T> Collector<T, ?, T> singletonCollector() {
+    @Override
+    public String toString() {
+        return "ArgumentationSystem{" +
+                "patternsBase=" + patternsBase +
+                ", objective=" + objective +
+                ", baseEvidences=" + baseEvidences +
+                ", steps=" + steps +
+                '}';
+    }
+
+    public static <T> Collector<T, ?, T> singletonCollector() {
         return Collectors.collectingAndThen(
                 Collectors.toList(),
                 list -> {

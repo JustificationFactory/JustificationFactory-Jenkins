@@ -1,9 +1,8 @@
 package fr.axonic.avek.engine.strategy;
 
-import fr.axonic.avek.engine.instance.strategy.AXONICProject;
+import fr.axonic.avek.instance.strategy.AXONICProject;
 
 import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 

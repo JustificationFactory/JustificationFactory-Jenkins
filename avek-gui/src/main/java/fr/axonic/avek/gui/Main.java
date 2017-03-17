@@ -1,8 +1,8 @@
 package fr.axonic.avek.gui;
 
 import fr.axonic.avek.bus.Orchestrator;
-import fr.axonic.avek.engine.WrongEvidenceException;
-import fr.axonic.avek.engine.provider.MockedArgumentationSystem;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.api.GUIException;
 import fr.axonic.validation.exception.VerificationException;

@@ -1,7 +1,7 @@
 package fr.axonic.avek.gui.view.frame;
 
-import fr.axonic.avek.engine.WrongEvidenceException;
-import fr.axonic.avek.engine.provider.MockedArgumentationSystem;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.avek.graph.ArgumentationDiagram;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.view.AbstractView;

@@ -2,8 +2,7 @@ package fr.axonic.avek.engine.constraint.pattern.intra;
 
 import fr.axonic.avek.engine.constraint.PatternConstraint;
 import fr.axonic.avek.engine.constraint.pattern.PatternConstraintTest;
-import fr.axonic.avek.engine.constraint.pattern.intra.UnicityConstraint;
-import fr.axonic.avek.engine.evidence.EvidenceRole;
+import fr.axonic.avek.engine.support.SupportRole;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -23,7 +22,7 @@ public class UnicityConstraintTest extends PatternConstraintTest {
     @Test
     public void verifyNotUnicity() throws Exception {
         PatternConstraint patternConstraint=new UnicityConstraint(pattern);
-        argumentationSystem.constructStep(pattern, Arrays.asList(new EvidenceRole[] {evStimulation0,evSubject0}), experimentation0);
+        argumentationSystem.constructStep(pattern, Arrays.asList(new SupportRole[] {evStimulation0,evSubject0}), experimentation0);
         assertFalse(patternConstraint.verify(argumentationSystem.getSteps()));
     }
 

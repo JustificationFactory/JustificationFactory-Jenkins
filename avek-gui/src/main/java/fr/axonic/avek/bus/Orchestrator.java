@@ -2,10 +2,14 @@ package fr.axonic.avek.bus;
 
 import fr.axonic.avek.bus.translator.DataTranslator;
 import fr.axonic.avek.engine.*;
-import fr.axonic.avek.engine.evidence.EvidenceRole;
-import fr.axonic.avek.engine.instance.conclusion.*;
-import fr.axonic.avek.engine.instance.evidence.Stimulation;
-import fr.axonic.avek.engine.instance.evidence.Subject;
+import fr.axonic.avek.engine.exception.StepBuildingException;
+import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.instance.conclusion.*;
+import fr.axonic.avek.instance.evidence.Stimulation;
+import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
 import fr.axonic.avek.gui.api.GUIException;
@@ -39,7 +43,7 @@ public class Orchestrator implements Observer {
     private Stimulation currentStimulation;
 
     private final List<Pattern> patternList;
-    private List<EvidenceRole> evidences;
+    private List<SupportRole> evidences;
 
     private final ArgumentationSystemAPI engineAPI;
     private final GUIAPI guiAPI;
@@ -159,11 +163,11 @@ public class Orchestrator implements Observer {
         content.put(ComponentType.EFFECTS, currentEffects);
 
         // Setting others data to Data bus
-        for (EvidenceRole evidenceRole : evidences) {
+        for (SupportRole supportRole : evidences) {
             try {
-                switch (evidenceRole.getRole()) {
+                switch (supportRole.getRole()) {
                     case SUBJECT_STR:
-                        currentSubject = (Subject) evidenceRole.getSupport().getElement();
+                        currentSubject = (Subject) supportRole.getSupport().getElement();
 
                         MonitoredSystem ms = new MonitoredSystem(currentSubject.getId());
                         currentSubject.getFieldsContainer().forEach((key,val)-> {
@@ -176,7 +180,7 @@ public class Orchestrator implements Observer {
                         content.put(ComponentType.MONITORED_SYSTEM, ms);
                         break;
                     case STIM_STR:
-                        currentStimulation = (Stimulation) evidenceRole.getSupport().getElement();
+                        currentStimulation = (Stimulation) supportRole.getSupport().getElement();
 
                         AList<AEntity> list = new AList<>();
                         list.setLabel("root");
@@ -185,18 +189,18 @@ public class Orchestrator implements Observer {
                         content.put(ComponentType.EXPERIMENTATION_PARAMETERS, new GUIExperimentParameter(list));
                         break;
                     default:
-                        if (evidenceRole.getSupport() instanceof EstablishEffectConclusion) {
-                            LOGGER.error("Got: " + evidenceRole);
-                            EstablishEffectConclusion eec = (EstablishEffectConclusion) evidenceRole.getSupport();
+                        if (supportRole.getSupport() instanceof EstablishEffectConclusion) {
+                            LOGGER.error("Got: " + supportRole);
+                            EstablishEffectConclusion eec = (EstablishEffectConclusion) supportRole.getSupport();
 
                             currentEffects = ((EstablishedEffect) eec.getElement()).getEffects();
                             content.put(ComponentType.EFFECTS, currentEffects);
                             break;
                         }
-                        LOGGER.warn("Unknown Evidence role \"" + evidenceRole.getRole() + "\" in " + evidenceRole);
+                        LOGGER.warn("Unknown Evidence role \"" + supportRole.getRole() + "\" in " + supportRole);
                 }
             } catch (RuntimeException e) {
-                LOGGER.error("Impossible to treat Evidence role: " + evidenceRole, e);
+                LOGGER.error("Impossible to treat Evidence role: " + supportRole, e);
             }
         }
         return content;
