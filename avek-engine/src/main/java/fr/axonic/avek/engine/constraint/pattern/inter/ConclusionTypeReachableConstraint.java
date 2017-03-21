@@ -1,4 +1,4 @@
-package fr.axonic.avek.engine.constraint.pattern;
+package fr.axonic.avek.engine.constraint.pattern.inter;
 
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;

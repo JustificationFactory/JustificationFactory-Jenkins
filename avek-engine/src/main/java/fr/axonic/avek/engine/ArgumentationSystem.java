@@ -5,9 +5,9 @@ import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.exception.WrongObjectiveException;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.constraint.PatternConstraint;
+import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintException;
-import fr.axonic.avek.engine.constraint.pattern.inter.NoCycleConstraint;
+import fr.axonic.avek.engine.constraint.graph.NoCycleConstraint;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 import fr.axonic.avek.engine.support.Support;
@@ -20,17 +20,10 @@ import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
 import org.apache.log4j.Logger;
-import org.eclipse.persistence.jaxb.MarshallerProperties;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -99,7 +92,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public boolean validate() {
-        for(PatternConstraint constraint : patternsBase.getConstraints()){
+        for(ArgumentationSystemConstraint constraint : patternsBase.getConstraints()){
             if(!constraint.verify(steps)){
                 return false;
             }
@@ -119,8 +112,8 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     @Override
     public Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         try{
-            List<SupportRole> usefullEvidences=pattern.filterUsefulEvidences(evidences);
-            Step step=pattern.createStep(usefullEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
+            List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(evidences);
+            Step step=pattern.createStep(usefulEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
             steps.add(step);
             LOGGER.info(step.getConclusion());
             InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());

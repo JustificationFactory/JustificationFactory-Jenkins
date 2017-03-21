@@ -1,5 +1,7 @@
 package fr.axonic.avek.engine.constraint.pattern;
 
+import fr.axonic.avek.engine.constraint.PatternConstraintTest;
+import fr.axonic.avek.engine.constraint.pattern.inter.ConclusionTypeReachableConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.pattern.type.OutputType;
@@ -20,7 +22,7 @@ import static org.junit.Assert.*;
 /**
  * Created by cduffau on 16/03/17.
  */
-public class ConclusionTypeReachableConstraintTest extends PatternConstraintTest{
+public class ConclusionTypeReachableConstraintTest extends PatternConstraintTest {
 
 
     @Test

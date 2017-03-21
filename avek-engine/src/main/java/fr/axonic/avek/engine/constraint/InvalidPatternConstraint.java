@@ -1,7 +1,4 @@
-package fr.axonic.avek.engine.constraint.pattern;
-
-import fr.axonic.avek.engine.constraint.PatternConstraint;
-import fr.axonic.avek.engine.constraint.PatternConstraintException;
+package fr.axonic.avek.engine.constraint;
 
 /**
  * Created by cduffau on 15/03/17.

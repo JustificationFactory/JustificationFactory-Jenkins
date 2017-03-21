@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.pattern;
 
 import fr.axonic.avek.engine.ArgumentationSystem;
-import fr.axonic.avek.engine.constraint.PatternConstraint;
+import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.support.SupportRole;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 public class PatternsBase {
 
     private List<Pattern> patterns;
-    private List<PatternConstraint> constraints;
+    private List<ArgumentationSystemConstraint> constraints;
 
-    public PatternsBase(List<Pattern> patterns, List<PatternConstraint> constraints) {
+    public PatternsBase(List<Pattern> patterns, List<ArgumentationSystemConstraint> constraints) {
         this.patterns = patterns;
         this.constraints = constraints;
     }
@@ -49,16 +49,16 @@ public class PatternsBase {
     }
 
     @XmlTransient
-    public List<PatternConstraint> getConstraints() {
+    public List<ArgumentationSystemConstraint> getConstraints() {
         return constraints;
     }
 
-    public void setConstraints(List<PatternConstraint> constraints) {
+    public void setConstraints(List<ArgumentationSystemConstraint> constraints) {
         this.constraints = constraints;
     }
 
-    public void addConstraint(PatternConstraint patternConstraint){
-        this.constraints.add(patternConstraint);
+    public void addConstraint(ArgumentationSystemConstraint argumentationSystemConstraint){
+        this.constraints.add(argumentationSystemConstraint);
     }
     public void addPattern(Pattern pattern){
         this.patterns.add(pattern);

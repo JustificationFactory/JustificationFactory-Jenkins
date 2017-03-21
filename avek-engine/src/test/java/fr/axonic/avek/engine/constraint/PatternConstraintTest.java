@@ -1,4 +1,4 @@
-package fr.axonic.avek.engine.constraint.pattern;
+package fr.axonic.avek.engine.constraint;
 
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.exception.StepBuildingException;

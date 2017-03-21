@@ -1,5 +1,6 @@
-package fr.axonic.avek.engine.constraint.pattern.inter;
+package fr.axonic.avek.engine.constraint.step;
 
+import fr.axonic.avek.engine.constraint.PatternConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
 
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Created by cduffau on 09/03/17.
  */
-public class NotCascadingConstraint extends InterPatternConstraint{
+public class NotCascadingConstraint extends PatternConstraint {
 
     public NotCascadingConstraint(Pattern pattern1, Pattern pattern2){
         super(pattern1,pattern2);

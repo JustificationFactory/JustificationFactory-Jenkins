@@ -1,10 +1,11 @@
 package fr.axonic.avek.engine.pattern;
 
+import fr.axonic.avek.engine.constraint.pattern.intra.ApplicablePatternConstraint;
+import fr.axonic.avek.engine.constraint.pattern.intra.StepConstructionConstraint;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
@@ -26,6 +27,9 @@ public class Pattern {
 	private List<InputType> inputTypes;
 	private OutputType outputType;
 
+	private StepConstructionConstraint constructionConstraint=new StepConstructionConstraint(this);
+	private ApplicablePatternConstraint applicablePatternConstraint=new ApplicablePatternConstraint(this);
+
 	public Pattern(){
 
 	}
@@ -43,36 +47,12 @@ public class Pattern {
 		this("0",aName,aStrategy,roleTypeList,aConclusionExperimentationType);
 	}
 
-	public boolean applicable(List<SupportRole> asList) {
-		List<InputType> evidenceRoleTypesUsed=new ArrayList<>();
-			for (int i = 0; i < inputTypes.size(); i++) {
-				for (SupportRole anAsList : asList) {
-					if (inputTypes.get(i).check(anAsList.getSupport()) && !evidenceRoleTypesUsed.contains(inputTypes.get(i))) {
-						evidenceRoleTypesUsed.add(inputTypes.get(i));
-						if (evidenceRoleTypesUsed.size() == inputTypes.size()) {
-							return true;
-						}
-					}
-				}
-			}
-		return false;
+	boolean applicable(List<SupportRole> supportRoles) {
+		return applicablePatternConstraint.verify(supportRoles);
 	}
 	
-	public boolean checkConclusion(List<Support> asList, Conclusion conclusion) {
-		if(!outputType.check(conclusion)){
-			return false;
-		}
-		if(inputTypes.size()==asList.size()){
-			for(int i = 0; i< inputTypes.size(); i++){
-				InputType roleType= inputTypes.get(i);
-				if(!roleType.check(asList.get(i))){
-					return false;
-				}
-			}
-		}
-
-
-		return true;
+	private boolean checkConclusion(Step step) {
+		return constructionConstraint.verify(step);
 	}
 
 	public List<SupportRole> filterUsefulEvidences(List<SupportRole> supportRoles){
@@ -90,7 +70,6 @@ public class Pattern {
 		return supportRoleList;
 	}
 
-	//Should call applicable
 	public Step createStep(List<SupportRole> evidenceList, Conclusion conclusion, Actor actor) throws StepBuildingException, StrategyException {
 		if(applicable(evidenceList)){
 			Step res= null;
@@ -106,7 +85,7 @@ public class Pattern {
 			}
 			res = new Step(id,strategy, evidenceList, conclusion);
 
-			if(checkConclusion(SupportRole.translateToEvidence(evidenceList),conclusion)){
+			if(checkConclusion(res)){
 				return res;
 			}
             throw new StepBuildingException("There is a issue to  apply the pattern "+name);

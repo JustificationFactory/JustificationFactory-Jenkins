@@ -1,11 +1,11 @@
-package fr.axonic.avek.engine.constraint.pattern.inter;
+package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.constraint.PatternConstraint;
-import fr.axonic.avek.engine.constraint.pattern.PatternConstraintTest;
+import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.instance.conclusion.Effect;
@@ -68,9 +68,9 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         SupportRole conclusionRole=conclusionRoleType2.create(conclusion);
 
         Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole), conclusion);
-        PatternConstraint patternConstraint=new NoCycleConstraint(step1);
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
-        assertFalse(patternConstraint.verify(Arrays.asList(step1)));
+        assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1)));
     }
 
     @Test
@@ -99,9 +99,9 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
 
         Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, supportRole4), conclusion);
         Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, supportRole3), conclusion2);
-        PatternConstraint patternConstraint=new NoCycleConstraint(step1);
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
-        assertFalse(patternConstraint.verify(Arrays.asList(step1, step2)));
+        assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1, step2)));
     }
 
     @Test
@@ -132,15 +132,15 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole2), conclusion);
         Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
         Step step3=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
-        PatternConstraint patternConstraint=new NoCycleConstraint(step1);
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
-        assertFalse(patternConstraint.verify(Arrays.asList(step1, step2, step3)));
+        assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1, step2, step3)));
     }
 
     @Test
     public void testNoCycle() {
-        PatternConstraint patternConstraint=new NoCycleConstraint(argumentationSystem.getSteps().get(0));
-        assertTrue(patternConstraint.verify(argumentationSystem.getSteps()));
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(argumentationSystem.getSteps().get(0));
+        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
     }
 
     @Test
@@ -171,9 +171,9 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
         Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
         Step step3=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
-        PatternConstraint patternConstraint=new NoCycleConstraint(step1);
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
-        assertTrue(patternConstraint.verify(Arrays.asList(step1, step2, step3)));
+        assertTrue(argumentationSystemConstraint.verify(Arrays.asList(step1, step2, step3)));
     }
 
 

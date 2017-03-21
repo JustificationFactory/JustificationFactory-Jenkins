@@ -1,7 +1,7 @@
-package fr.axonic.avek.engine.constraint.pattern.inter;
+package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.pattern.Step;
-import fr.axonic.avek.engine.constraint.PatternConstraint;
+import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.engine.support.SupportRole;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Created by cduffau on 09/03/17.
  */
-public class NoCycleConstraint implements PatternConstraint{
+public class NoCycleConstraint implements ArgumentationSystemConstraint {
 
     private Step step;
 

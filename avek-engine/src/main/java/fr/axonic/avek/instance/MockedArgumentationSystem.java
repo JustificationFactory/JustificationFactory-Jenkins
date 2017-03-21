@@ -1,10 +1,9 @@
 package fr.axonic.avek.instance;
 
 import fr.axonic.avek.engine.*;
-import fr.axonic.avek.engine.constraint.PatternConstraint;
-import fr.axonic.avek.engine.constraint.pattern.inter.NotCascadingConstraint;
-import fr.axonic.avek.engine.constraint.pattern.intra.ConclusionReuseConstraint;
-import fr.axonic.avek.engine.constraint.pattern.intra.UnicityConstraint;
+import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.step.NotCascadingConstraint;
+import fr.axonic.avek.engine.constraint.step.UniquenessConstraint;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
@@ -56,11 +55,11 @@ public class MockedArgumentationSystem {
         patterns.add(generalize);
 
 
-        List<PatternConstraint> patternConstraints=new ArrayList<>();
-        patternConstraints.add(new UnicityConstraint(generalize));
-        patternConstraints.add(new NotCascadingConstraint(treat,generalize));
+        List<ArgumentationSystemConstraint> argumentationSystemConstraints =new ArrayList<>();
+        argumentationSystemConstraints.add(new UniquenessConstraint(generalize));
+        argumentationSystemConstraints.add(new NotCascadingConstraint(treat,generalize));
         patterns.add(treat);
-        return new PatternsBase(patterns, patternConstraints);
+        return new PatternsBase(patterns, argumentationSystemConstraints);
 
 
     }
