@@ -9,14 +9,15 @@ import java.util.Map;
 /**
  * Created by cduffau on 04/08/16.
  */
-public class EstablishEffectStrategy extends HumanStrategy {
+public class EstablishEffectStrategy extends ComputedStrategy {
 
     public EstablishEffectStrategy(Rationale rationale, UsageDomain usageDomain) {
-        super("Establish Effect",rationale, usageDomain,Role.JUNIOR_EXPERT);
+        super("Establish Effect",rationale, usageDomain);
     }
 
+
     @Override
-    public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-        return true;
+    public Conclusion createConclusion(Map<String, Evidence> evidenceRoles) {
+        return null;
     }
 }

@@ -92,12 +92,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public boolean validate() {
-        for(ArgumentationSystemConstraint constraint : patternsBase.getConstraints()){
-            if(!constraint.verify(steps)){
-                return false;
-            }
-        }
-        return true;
+        return patternsBase.getConstraints().stream().allMatch(constraint -> constraint.verify(steps));
     }
 
     public void setObjective(OutputType objective) throws WrongObjectiveException {
@@ -113,7 +108,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     public Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         try{
             List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(evidences);
-            Step step=pattern.createStep(usefulEvidences,conclusion.clone(), new Actor("Chloé", Role.INTERMEDIATE_EXPERT));
+            Step step=pattern.createStep(usefulEvidences,conclusion.clone());
             steps.add(step);
             LOGGER.info(step.getConclusion());
             InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());

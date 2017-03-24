@@ -7,4 +7,7 @@ public class InvalidPatternConstraint extends PatternConstraintException{
     public InvalidPatternConstraint() {
         super("");
     }
+    public InvalidPatternConstraint(String message) {
+        super(message);
+    }
 }

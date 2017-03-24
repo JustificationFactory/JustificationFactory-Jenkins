@@ -42,5 +42,21 @@ public class InputType<T extends Support> extends SupportType<T>{
 		this.name = name;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof InputType)) return false;
+		if (!super.equals(o)) return false;
 
+		InputType<?> inputType = (InputType<?>) o;
+
+		return name != null ? name.equals(inputType.name) : inputType.name == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		return result;
+	}
 }

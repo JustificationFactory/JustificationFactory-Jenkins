@@ -7,16 +7,15 @@ import fr.axonic.avek.engine.strategy.*;
 import java.util.Map;
 
 
-public class TreatStrategy extends ComputedStrategy {
+public class TreatStrategy extends HumanStrategy {
 
 	public TreatStrategy(Rationale rationale, UsageDomain usageDomain) {
 		super("Treat",rationale, usageDomain);
 	}
 
-
 	@Override
-	public Conclusion createConclusion(Map<String, Evidence> evidenceRoles) {
-		return null;
+	public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
+		return true;
 	}
 
 	// createConclusion according to Evidences

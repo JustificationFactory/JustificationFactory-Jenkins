@@ -1,5 +1,7 @@
 package fr.axonic.avek.engine.strategy;
 
+import fr.axonic.avek.engine.support.evidence.Evidence;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -7,11 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by cduffau on 26/10/16.
  */
 @XmlRootElement
-public class Actor {
+public class Actor extends Evidence{
     private String name;
     private Role role;
 
-    public Actor() {
+    private Actor() {
     }
 
     public Actor(String name, Role role) {

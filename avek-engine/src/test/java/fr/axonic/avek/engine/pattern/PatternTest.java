@@ -46,7 +46,7 @@ public class PatternTest {
 
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
-        assertTrue(treat.applicable(Arrays.asList(new SupportRole[] {evSubject0,evStimulation0})));
+        assertTrue(treat.applicable(Arrays.asList(evSubject0,evStimulation0)));
     }
 
     @Test
@@ -92,6 +92,59 @@ public class PatternTest {
         assertTrue(treat.applicable(Arrays.asList(new SupportRole[] {evStimulation0})));
     }
 
+    @Test
+    public void testApplicableWithMultipleSameEvidences() throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
+        InputType<StimulationEvidence> rtStimulation = new InputType<>("stimulation", StimulationEvidence.class);
+        InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
+        InputType<SubjectEvidence> rtSubject2 = new InputType<>("subject2", SubjectEvidence.class);
+        OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
+
+        //Revoir car ici on a un singleton...
+        class TestProject implements Project{
+
+        }
+        Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
+        Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject, rtSubject2}), conclusionExperimentationType);
+
+
+        Evidence<Stimulation> stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
+        Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
+        Evidence<Subject> subject1 = new SubjectEvidence("Subject 1",new Subject());
+        ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
+
+        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
+        SupportRole evSubject0 = rtSubject.create(subject0);
+        SupportRole evSubject1=rtSubject2.create(subject1);
+        Step step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0,evSubject1), experimentation0);
+        assertNotNull(step0);
+    }
+
+    @Test(expected = StepBuildingException.class)
+    public void testApplicableWithNotEnoughSameEvidences() throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
+        InputType<StimulationEvidence> rtStimulation = new InputType<>("stimulation", StimulationEvidence.class);
+        InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
+        InputType<SubjectEvidence> rtSubject2 = new InputType<>("subject2", SubjectEvidence.class);
+        OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
+
+        //Revoir car ici on a un singleton...
+        class TestProject implements Project{
+
+        }
+        Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
+        Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject, rtSubject2}), conclusionExperimentationType);
+
+
+        Evidence<Stimulation> stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
+        Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
+        Evidence<Subject> subject1 = new SubjectEvidence("Subject 1",new Subject());
+        ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
+
+        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
+        SupportRole evSubject0 = rtSubject.create(subject0);
+
+        Step step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
+    }
+
 
     @Test(expected = WrongEvidenceException.class)
     public void testApplicableWithNotGoodEvidenceType() throws WrongEvidenceException, VerificationException {
@@ -112,6 +165,7 @@ public class PatternTest {
         assertFalse(treat.applicable(Arrays.asList(new SupportRole[] {evSubject0,evResult0})));
     }
 
+    @Ignore
     @Test(expected = StepBuildingException.class)
     public void testStepWithNotGoodOrderEvidenceType() throws WrongEvidenceException, StepBuildingException, VerificationException, StrategyException {
         InputType<StimulationEvidence> rtStimulation = new InputType<>("stimulation", StimulationEvidence.class);
@@ -131,7 +185,7 @@ public class PatternTest {
 
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
-        treat.createStep(Arrays.asList(new SupportRole[] {evSubject0,evStimulation0}),experimentation0,new Actor("Toto", Role.INTERMEDIATE_EXPERT));
+        treat.createStep(Arrays.asList(evSubject0,evStimulation0),experimentation0);
     }
 
     @Test
@@ -154,7 +208,7 @@ public class PatternTest {
 
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
-        Step step0 = treat.createStep(Arrays.asList(new SupportRole[] {evStimulation0,evSubject0}), experimentation0,new Actor("Toto", Role.INTERMEDIATE_EXPERT));
+        Step step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
         assertNotNull(step0);
         assertNotNull(step0.getConclusion());
         assertNotNull(step0.getEvidences());

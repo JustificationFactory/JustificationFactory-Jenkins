@@ -22,7 +22,7 @@ public class UniquenessConstraintTest extends PatternConstraintTest {
     @Test
     public void verifyNotUnicity() throws Exception {
         ArgumentationSystemConstraint argumentationSystemConstraint =new UniquenessConstraint(pattern);
-        argumentationSystem.constructStep(pattern, Arrays.asList(new SupportRole[] {evStimulation0,evSubject0}), experimentation0);
+        argumentationSystem.constructStep(pattern, Arrays.asList(evStimulation0,evSubject0,evActor0), experimentation0);
         assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
     }
 

@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.pattern;
 
+import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.ApplicablePatternConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.StepConstructionConstraint;
 import fr.axonic.avek.engine.exception.StepBuildingException;
@@ -27,15 +28,17 @@ public class Pattern {
 	private List<InputType> inputTypes;
 	private OutputType outputType;
 
-	private StepConstructionConstraint constructionConstraint=new StepConstructionConstraint(this);
+	private List<StepConstraint> constructionConstraints;
 	private ApplicablePatternConstraint applicablePatternConstraint=new ApplicablePatternConstraint(this);
 
 	public Pattern(){
-
+		constructionConstraints=new ArrayList<>();
+		constructionConstraints.add(new StepConstructionConstraint(this));
 	}
 
 	public Pattern(String id,String aName, Strategy aStrategy, List<InputType> roleTypeList,
 			OutputType aConclusionExperimentationType) {
+		this();
 		this.id=id;
 		name = aName;
 		strategy = aStrategy;
@@ -52,7 +55,7 @@ public class Pattern {
 	}
 	
 	private boolean checkConclusion(Step step) {
-		return constructionConstraint.verify(step);
+		return constructionConstraints.stream().allMatch(stepConstraint -> stepConstraint.verify(step)) ;
 	}
 
 	public List<SupportRole> filterUsefulEvidences(List<SupportRole> supportRoles){
@@ -70,19 +73,10 @@ public class Pattern {
 		return supportRoleList;
 	}
 
-	public Step createStep(List<SupportRole> evidenceList, Conclusion conclusion, Actor actor) throws StepBuildingException, StrategyException {
+	public Step createStep(List<SupportRole> evidenceList, Conclusion conclusion) throws StepBuildingException, StrategyException {
 		if(applicable(evidenceList)){
 			Step res= null;
 			Strategy strategy=this.getStrategy();
-			if(strategy instanceof HumanStrategy){
-				if(actor!=null){
-					((HumanStrategy) strategy).setActor(actor);
-				}
-				else {
-					throw new StepBuildingException("Need an actor for the human strategy : "+strategy);
-
-				}
-			}
 			res = new Step(id,strategy, evidenceList, conclusion);
 
 			if(checkConclusion(res)){
@@ -139,6 +133,9 @@ public class Pattern {
 		this.outputType = outputType;
 	}
 
+	public void addConstructionConstraint(StepConstraint stepConstraint){
+		constructionConstraints.add(stepConstraint);
+	}
 	@Override
 	public String toString() {
 		return "Pattern{" +
