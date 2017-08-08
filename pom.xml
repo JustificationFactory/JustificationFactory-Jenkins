@@ -12,6 +12,7 @@
         <module>avek-gui</module>
         <module>avek-model</module>
         <module>avek-graph</module>
+        <module>avek-jenkins</module>
     </modules>
 
     <properties>

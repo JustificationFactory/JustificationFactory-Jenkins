@@ -49,7 +49,7 @@ public abstract class SupportType<T extends Support> {
     @Override
     public String toString() {
         return "SupportType{" +
-                "type=" + type +
+                "type='" + type +
                 '}';
     }
 }
