@@ -1,7 +1,6 @@
 package fr.axonic.avek.service;
 
 
-import fr.axonic.avek.engine.ArgumentationSystem;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by cduffau on 17/03/17.

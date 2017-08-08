@@ -1,12 +1,12 @@
 package fr.axonic.avek.service;
 
-import fr.axonic.avek.engine.*;
+import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -21,7 +21,7 @@ import java.util.UUID;
  * Created by cduffau on 16/01/17.
  */
 @Path("/argumentation")
-public class ArgumentationSystemServiceImpl implements ArgumentationSystemService{
+public class ArgumentationSystemServiceImpl implements ArgumentationSystemService {
     private Map<String, ArgumentationSystemAPI> argumentationSystems;
 
     public ArgumentationSystemServiceImpl(){

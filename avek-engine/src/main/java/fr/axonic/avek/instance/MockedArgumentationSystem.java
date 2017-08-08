@@ -1,5 +1,6 @@
 package fr.axonic.avek.instance;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.InvalidPatternConstraint;
@@ -16,6 +17,7 @@ import fr.axonic.avek.engine.strategy.*;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.conclusion.*;
 import fr.axonic.avek.instance.evidence.*;
@@ -39,6 +41,7 @@ public class MockedArgumentationSystem {
     }
 
     private static PatternsBase getAXONICPatternsBase(){
+
         List<Pattern> patterns=new ArrayList<>();
         InputType<StimulationEvidence> rtStimulation = new InputType<>("stimulation", StimulationEvidence.class);
         InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);

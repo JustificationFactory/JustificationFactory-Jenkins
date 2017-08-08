@@ -1,8 +1,8 @@
 package fr.axonic.avek.service;
 
-import fr.axonic.avek.engine.*;
-import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

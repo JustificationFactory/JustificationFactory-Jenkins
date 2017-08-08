@@ -92,7 +92,7 @@ public class Orchestrator implements Observer {
         evidences = engineAPI.getBaseEvidences();
         patternList.clear();
         patternList.addAll(
-                engineAPI.getPossiblePatterns(evidences)
+                engineAPI.getPatternsBase().getPossiblePatterns(evidences)
                         .stream()
                         .map(engineAPI::getPattern)
                         .collect(Collectors.toList()));
@@ -230,7 +230,7 @@ public class Orchestrator implements Observer {
     private void constructTreatStep() {
         LOGGER.debug("Constructing Treat step");
         try {
-            engineAPI.constructStep(currentPattern.getId(),
+            engineAPI.constructStep(currentPattern,
                     evidences,
                     new ExperimentationConclusion(
                             "Experimentation",
@@ -258,7 +258,7 @@ public class Orchestrator implements Observer {
 
             // TODO pass UploadedFile.uploadedFolder; in establishEffectConclusion
 
-            engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);
+            engineAPI.constructStep(currentPattern, evidences, conclusion);
         } catch (WrongEvidenceException | StepBuildingException | StrategyException e) {
             LOGGER.error("Impossible to constructStep");
         }
@@ -280,7 +280,7 @@ public class Orchestrator implements Observer {
                             currentEffects
                     ));
 
-            engineAPI.constructStep(currentPattern.getId(), evidences, conclusion);
+            engineAPI.constructStep(currentPattern, evidences, conclusion);
         } catch (WrongEvidenceException | StepBuildingException | StrategyException e) {
             LOGGER.error("Impossible to constructStep");
         }

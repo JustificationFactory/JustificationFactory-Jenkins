@@ -4,6 +4,7 @@ import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.AbstractProject;
+import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
@@ -62,9 +63,15 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
     public void perform(Run<?,?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
         // This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
+        listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
+        listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternID);
+        try {
+            new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL()).sendPattern(argumentationSystemName,patternID);
+            listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
+        } catch (IOException e) {
+            listener.fatalError(e.toString());
 
-            listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
-            listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternID);
+        }
     }
 
     // Overridden for better type safety.
