@@ -14,10 +14,4 @@ public class EstablishEffectStrategy extends ComputedStrategy {
     public EstablishEffectStrategy(Rationale rationale, UsageDomain usageDomain) {
         super("Establish Effect",rationale, usageDomain);
     }
-
-
-    @Override
-    public Conclusion createConclusion(Map<String, Evidence> evidenceRoles) {
-        return null;
-    }
 }

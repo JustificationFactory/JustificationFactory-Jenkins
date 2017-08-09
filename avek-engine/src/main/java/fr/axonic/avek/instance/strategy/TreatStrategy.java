@@ -13,11 +13,6 @@ public class TreatStrategy extends HumanStrategy {
 		super("Treat",rationale, usageDomain);
 	}
 
-	@Override
-	public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-		return true;
-	}
-
 	// createConclusion according to Evidences
 	/**public Conclusion createConclusion(Map<String,Evidence> evidenceRoles){
 		return new ExperimentationConclusion((Subject)evidenceRoles.get("subject").getElement(),(Stimulation)evidenceRoles.get("stimulation").getElement());

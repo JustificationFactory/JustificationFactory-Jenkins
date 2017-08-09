@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.pattern.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.engine.support.SupportRole;
@@ -7,6 +8,7 @@ import fr.axonic.avek.engine.support.Support;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class InputType<T extends Support> extends SupportType<T>{
@@ -30,9 +32,12 @@ public class InputType<T extends Support> extends SupportType<T>{
 		throw new WrongEvidenceException(evidence+ " is not compatible with "+ type);
 	}
 
+	@XmlTransient
+	@JsonIgnore
 	public boolean isPrimitiveInputType(){
 		return Evidence.class.isAssignableFrom(type);
 	}
+
 	@XmlElement
 	public String getName() {
 		return name;

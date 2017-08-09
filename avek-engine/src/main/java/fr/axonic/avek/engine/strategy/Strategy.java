@@ -1,11 +1,14 @@
 package fr.axonic.avek.engine.strategy;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement
 @XmlSeeAlso({HumanStrategy.class, ComputedStrategy.class})
+@JsonDeserialize(as=HumanStrategy.class)
 public abstract class Strategy {
 
     private String name;

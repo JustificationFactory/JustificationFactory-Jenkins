@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Map;
 @XmlRootElement
 @XmlType(name="humanStrategy")
-public abstract class HumanStrategy extends Strategy{
+public class HumanStrategy extends Strategy{
 
 	private Comment comment;
 
@@ -24,9 +24,6 @@ public abstract class HumanStrategy extends Strategy{
 	public void addComment(Comment comment){
 		this.comment=comment;
 	}
-
-	public abstract  boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion);
-
 	@XmlElement
 	public Comment getComment() {
 		return comment;

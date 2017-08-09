@@ -18,6 +18,4 @@ public abstract class ComputedStrategy extends Strategy{
 		super(name, rationale, usageDomain);
 	}
 
-	public abstract Conclusion createConclusion(Map<String,Evidence> evidenceRoles);
-
 }

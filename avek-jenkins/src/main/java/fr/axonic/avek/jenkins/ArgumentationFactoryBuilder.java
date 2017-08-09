@@ -1,5 +1,6 @@
 package fr.axonic.avek.jenkins;
 
+import fr.axonic.avek.engine.pattern.Pattern;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
@@ -19,6 +20,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Sample {@link Builder}.
@@ -74,6 +76,7 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         }
     }
 
+
     // Overridden for better type safety.
     // If your plugin doesn't really define any property on Descriptor,
     // you don't have to do this.
@@ -123,7 +126,7 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
          *      prevent the form from being saved. It just means that a message
          *      will be displayed to the user. 
          */
-        public FormValidation doCheckName(@QueryParameter String value)
+        public FormValidation doCheckArgumentationFactoryURL(@QueryParameter String value)
                 throws IOException, ServletException {
             if (value.length() == 0)
                 return FormValidation.error("Please set an URL");
@@ -131,6 +134,34 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
             UrlValidator urlValidator = new UrlValidator(schemes);
             if (!urlValidator.isValid(value))
                 return FormValidation.warning("Please set a valid URL");
+            return FormValidation.ok();
+        }
+        public FormValidation doCheckArgumentationSystemName(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set a argumentation system");
+            try {
+                List<String> argumentationSystems=new ArgumentationFactoryClient(getArgumentationFactoryURL()).getArgumentationSystems();
+                if(argumentationSystems.stream().noneMatch(s -> s.equals(value))){
+                    return FormValidation.error("Unknown argumentation system "+value);
+                }
+            } catch (ArgumentationFactoryException e) {
+                return FormValidation.error("Please set a valid argumentation system");
+            }
+            return FormValidation.ok();
+        }
+
+        public FormValidation doCheckPatternID(@QueryParameter String value, @QueryParameter String argumentationSystemName){
+            if (value.length() == 0)
+                return FormValidation.error("Please set a pattern");
+            try {
+                List<String> patterns = new ArgumentationFactoryClient(getArgumentationFactoryURL()).getPatterns(argumentationSystemName);
+                if (patterns.stream().noneMatch(pattern -> pattern.equals(value)))
+                    return FormValidation.error("Unknown pattern ID in "+argumentationSystemName);
+            } catch (ArgumentationFactoryException e) {
+                return FormValidation.error("Please set a valid argumentation system");
+            }
+
+
             return FormValidation.ok();
         }
 

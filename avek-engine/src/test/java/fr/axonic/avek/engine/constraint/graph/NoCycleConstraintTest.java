@@ -49,12 +49,7 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
 
     @Test
     public void testCycleOneStair() throws VerificationException, WrongEvidenceException {
-        Strategy strategy=new HumanStrategy() {
-            @Override
-            public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-                return false;
-            }
-        };
+        Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
         SupportRole supportRole1 =evidenceRoleType1.create(evidence1);
@@ -75,12 +70,7 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
 
     @Test
     public void testCycleTwoStair() throws VerificationException, WrongEvidenceException {
-        Strategy strategy=new HumanStrategy() {
-            @Override
-            public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-                return false;
-            }
-        };
+        Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
         SupportRole supportRole1 =evidenceRoleType1.create(evidence1);
@@ -106,12 +96,7 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
 
     @Test
     public void testCycleTwoStairAndSplit() throws VerificationException, WrongEvidenceException {
-        Strategy strategy=new HumanStrategy() {
-            @Override
-            public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-                return false;
-            }
-        };
+        Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
         SupportRole supportRole1 =evidenceRoleType1.create(evidence1);
@@ -145,12 +130,7 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
 
     @Test
     public void testNoCycleTwoStairAndEvidenceReuse() throws VerificationException, WrongEvidenceException {
-        Strategy strategy=new HumanStrategy() {
-            @Override
-            public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-                return false;
-            }
-        };
+        Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
         SupportRole supportRole1 =evidenceRoleType1.create(evidence1);

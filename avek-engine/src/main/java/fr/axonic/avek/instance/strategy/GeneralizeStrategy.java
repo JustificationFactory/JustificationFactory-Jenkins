@@ -9,14 +9,10 @@ import java.util.Map;
 /**
  * Created by cduffau on 09/08/16.
  */
-public class GeneralizeStrategy extends ComputedStrategy{
+public class GeneralizeStrategy extends ComputedStrategy {
 
     public GeneralizeStrategy(Rationale rationale, UsageDomain usageDomain) {
-        super("Generalize",rationale, usageDomain);
+        super("Generalize", rationale, usageDomain);
     }
 
-    @Override
-    public Conclusion createConclusion(Map<String, Evidence> evidenceRoles) {
-        return null;
-    }
 }

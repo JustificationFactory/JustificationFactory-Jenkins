@@ -25,12 +25,29 @@ public interface ArgumentationSystemService {
     Response removeArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
 
     @GET
+    @Path("/systems")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getArgumentationSystems();
+
+    @GET
     @Path("/{argumentation_system_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getArgumentation(@PathParam("argumentation_system_id") String argumentationSystemId);
+    Response getArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
+
+    @GET
+    @Path("/{argumentation_system_id}/patterns")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getArgumentationSystemPatterns(@PathParam("argumentation_system_id") String argumentationSystemId);
+
+    @GET
+    @Path("/{argumentation_system_id}/patterns/{pattern_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getArgumentationSystemPattern(@PathParam("argumentation_system_id") String argumentationSystemId, @PathParam("pattern_id") String pattern);
+
 
     @POST
     @Path("/step/{argumentation_system_id}/{pattern_id}")
+    @Consumes(MediaType.APPLICATION_JSON)
     Response constructStep(@PathParam("argumentation_system_id") String argumentationSystem, @PathParam("pattern_id") String pattern, @QueryParam("evidences") List<SupportRole> evidences, @QueryParam("conclusion") Conclusion conclusion);
 
 }

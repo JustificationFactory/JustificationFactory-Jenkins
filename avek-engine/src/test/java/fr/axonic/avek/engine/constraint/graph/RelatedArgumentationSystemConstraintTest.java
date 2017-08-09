@@ -31,12 +31,7 @@ public class RelatedArgumentationSystemConstraintTest extends PatternConstraintT
 
     @Test
     public void verifyConnexeWithMoreThanOneStep() throws Exception {
-        Strategy strategy=new HumanStrategy() {
-            @Override
-            public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-                return false;
-            }
-        };
+        Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
         SupportRole supportRole1 =evidenceRoleType1.create(evidence1);
@@ -63,12 +58,7 @@ public class RelatedArgumentationSystemConstraintTest extends PatternConstraintT
 
     @Test
     public void verifyNotConnexe() throws Exception {
-        Strategy strategy=new HumanStrategy() {
-            @Override
-            public boolean check(Map<String, Evidence> evidenceRoles, Conclusion conclusion) {
-                return false;
-            }
-        };
+        Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
         SupportRole supportRole1 =evidenceRoleType1.create(evidence1);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="Argumentation Factory" packages="">
+		<!-- END OF THE TEST FINDER/SCANNER -->
+	<Loggers>
+
+		<Root level="info">
+			<AppenderRef ref="Console" />
+		</Root>
+
+	</Loggers>
+</Configuration>

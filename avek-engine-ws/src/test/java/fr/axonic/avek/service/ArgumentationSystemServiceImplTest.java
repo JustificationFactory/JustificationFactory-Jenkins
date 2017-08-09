@@ -27,7 +27,7 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         System.out.println(argumentationSystem);
         assertNotNull(argumentationSystem);
         assertEquals(argumentationSystem.getStatusInfo(), Response.Status.OK);
-        //assertTrue(argumentationSystem.getPatternsBase().getPatterns().size()>0);
+        //assertTrue(argumentationSystem..getPatterns().size()>0);
     }
 
 }

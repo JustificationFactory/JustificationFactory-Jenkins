@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -38,7 +39,8 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     private OutputType objective;
     private List<SupportRole> baseEvidences = new ArrayList<>();
     private List<Step> steps;
-    private final static Logger LOGGER = Logger.getLogger(ArgumentationSystem.class);
+    //@XmlTransient
+    //private final static Logger LOGGER = Logger.getLogger(ArgumentationSystem.class);
 
     public ArgumentationSystem() throws VerificationException, WrongEvidenceException {
         steps=new ArrayList<>();
@@ -96,11 +98,13 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     public void setObjective(OutputType objective) throws WrongObjectiveException {
-        if(patternsBase.getPatterns().stream().filter(pattern -> pattern.getOutputType().equals(objective)).count()>=1){
-            this.objective = objective;
-        }
-        else{
-            throw new WrongObjectiveException();
+        if(objective!=null){
+            if(patternsBase.getPatterns().stream().filter(pattern -> pattern.getOutputType().equals(objective)).count()>=1){
+                this.objective = objective;
+            }
+            else{
+                throw new WrongObjectiveException();
+            }
         }
     }
 
@@ -110,7 +114,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
             List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(evidences);
             Step step=pattern.createStep(usefulEvidences,conclusion.clone());
             steps.add(step);
-            LOGGER.info(step.getConclusion());
+            //LOGGER.info(step.getConclusion());
             InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
             baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
             return step;
