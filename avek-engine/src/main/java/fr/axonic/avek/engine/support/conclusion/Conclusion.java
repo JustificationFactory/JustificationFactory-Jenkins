@@ -1,5 +1,7 @@
 package fr.axonic.avek.engine.support.conclusion;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
@@ -7,10 +9,17 @@ import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.conclusion.GeneralizationConclusion;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
 @XmlSeeAlso({ExperimentationConclusion.class, EstablishEffectConclusion.class, GeneralizationConclusion.class})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = ExperimentationConclusion.class, name = "ExperimentationConclusion"),
+		@JsonSubTypes.Type(value = EstablishEffectConclusion.class, name = "EstablishEffectConclusion"),
+		@JsonSubTypes.Type(value = GeneralizationConclusion.class, name = "GeneralizationConclusion")}
+)
 public class Conclusion<T extends Element> extends Support<T> implements Cloneable {
 
 	protected List<Restriction> restrictions;
@@ -20,7 +29,7 @@ public class Conclusion<T extends Element> extends Support<T> implements Cloneab
 	}
 
 	public Conclusion() {
-		// TODO Auto-generated constructor stub
+		restrictions=new ArrayList<>();
 	}
 	
 	public Conclusion(Object o) {

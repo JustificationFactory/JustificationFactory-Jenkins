@@ -1,20 +1,24 @@
 package fr.axonic.avek.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.instance.MockedArgumentationSystem;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.validation.exception.VerificationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -105,14 +109,24 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     }
 
     @Override
-    public Response constructStep(String argumentationSystem, String pattern, List<SupportRole> evidences, Conclusion conclusion) {
+    public Response constructStep(String argumentationSystem, String pattern, String step) {
+        LOGGER.info("test");
+        ObjectMapper mapper=new ObjectMapper();
         try {
-            Step step = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),evidences,conclusion);
+            mapper.readValue(step,Step.class);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
+        Conclusion conclusion=new ExperimentationConclusion();
+        Step step1=new Step("1",new HumanStrategy(), new ArrayList<SupportRole>(), conclusion);
+        /**try {
+            Step res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),step.getEvidences(),step.getConclusion());
             LOGGER.info("Step created on "+argumentationSystem+" with pattern "+pattern);
-            return Response.status(Response.Status.CREATED).entity(step).build();
+            return Response.status(Response.Status.CREATED).entity(res).build();
         } catch (StepBuildingException | WrongEvidenceException | StrategyException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getStackTrace()).build();
-        }
+        }*/
+         return Response.status(Response.Status.OK).entity(step).build();
 
     }
 }

@@ -1,6 +1,7 @@
 package fr.axonic.avek.service;
 
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
+import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ArgumentationSystemService {
 
     @POST
-    @Path("/system/")
+    @Path("/system")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     Response registerArgumentationSystem(@QueryParam("argumentation_system") ArgumentationSystemAPI argumentationSystem);
@@ -46,8 +47,10 @@ public interface ArgumentationSystemService {
 
 
     @POST
-    @Path("/step/{argumentation_system_id}/{pattern_id}")
+    @Path("{argumentation_system_id}/{pattern_id}/step")
+    //@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML})
     @Consumes(MediaType.APPLICATION_JSON)
-    Response constructStep(@PathParam("argumentation_system_id") String argumentationSystem, @PathParam("pattern_id") String pattern, @QueryParam("evidences") List<SupportRole> evidences, @QueryParam("conclusion") Conclusion conclusion);
+    @Produces(MediaType.APPLICATION_JSON)
+    Response constructStep(@PathParam("argumentation_system_id") String argumentationSystem, @PathParam("pattern_id") String pattern, @QueryParam("step") String step);
 
 }

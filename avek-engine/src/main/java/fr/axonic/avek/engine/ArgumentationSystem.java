@@ -19,7 +19,8 @@ import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -40,7 +41,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     private List<SupportRole> baseEvidences = new ArrayList<>();
     private List<Step> steps;
     //@XmlTransient
-    //private final static Logger LOGGER = Logger.getLogger(ArgumentationSystem.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ArgumentationSystem.class);
 
     public ArgumentationSystem() throws VerificationException, WrongEvidenceException {
         steps=new ArrayList<>();
@@ -114,7 +115,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
             List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(evidences);
             Step step=pattern.createStep(usefulEvidences,conclusion.clone());
             steps.add(step);
-            //LOGGER.info(step.getConclusion());
+            LOGGER.info(step.getConclusion().toString());
             InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
             baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
             return step;

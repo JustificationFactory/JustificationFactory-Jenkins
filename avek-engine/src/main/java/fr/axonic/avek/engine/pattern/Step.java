@@ -55,6 +55,7 @@ public class Step {
 	public void setConclusion(Conclusion conclusion) {
 		this.conclusion = conclusion;
 	}
+
 	@XmlElement
 	public String getPatternId() {
 		return patternId;
