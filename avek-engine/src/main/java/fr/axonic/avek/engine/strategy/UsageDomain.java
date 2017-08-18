@@ -20,4 +20,26 @@ public class UsageDomain {
     public List<Context> getContexts() {
         return contexts;
     }
+
+    @Override
+    public String toString() {
+        return "UsageDomain{" +
+                "contexts=" + contexts +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UsageDomain)) return false;
+
+        UsageDomain that = (UsageDomain) o;
+
+        return contexts != null ? contexts.equals(that.contexts) : that.contexts == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return contexts != null ? contexts.hashCode() : 0;
+    }
 }

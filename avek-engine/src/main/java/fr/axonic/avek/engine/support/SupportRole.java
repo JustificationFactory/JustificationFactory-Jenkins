@@ -44,6 +44,6 @@ public class SupportRole {
 
 	@Override
 	public String toString() {
-		return "EvidenceRole{role="+role+", support="+ support +"}";
+		return "SupportRole{role="+role+", support="+ support +"}";
 	}
 }

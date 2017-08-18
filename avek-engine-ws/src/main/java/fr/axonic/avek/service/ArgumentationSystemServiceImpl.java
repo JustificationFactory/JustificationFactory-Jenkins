@@ -109,14 +109,14 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     }
 
     @Override
-    public Response constructStep(String argumentationSystem, String pattern, String step) {
+    public Response constructStep(String argumentationSystem, String pattern, Step step) {
         LOGGER.info("test");
-        ObjectMapper mapper=new ObjectMapper();
+        /**ObjectMapper mapper=new ObjectMapper();
         try {
             mapper.readValue(step,Step.class);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-        }
+        }*/
         Conclusion conclusion=new ExperimentationConclusion();
         Step step1=new Step("1",new HumanStrategy(), new ArrayList<SupportRole>(), conclusion);
         /**try {

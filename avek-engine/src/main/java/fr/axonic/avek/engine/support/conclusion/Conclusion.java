@@ -64,7 +64,7 @@ public class Conclusion<T extends Element> extends Support<T> implements Cloneab
 
 	@Override
 	public String toString() {
-		return super.toString().substring(0,super.toString().length()-2)+
+		return super.toString().substring(0,super.toString().length()-1)+
 				", restrictions=" + restrictions +
 				'}';
 	}
@@ -73,5 +73,9 @@ public class Conclusion<T extends Element> extends Support<T> implements Cloneab
 	@XmlElementWrapper
 	public List<Restriction> getRestrictions() {
 		return restrictions;
+	}
+
+	private void setRestrictions(List<Restriction> restrictions) {
+		this.restrictions = restrictions;
 	}
 }

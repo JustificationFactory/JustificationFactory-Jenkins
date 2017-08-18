@@ -1,15 +1,27 @@
 package fr.axonic.avek.engine.strategy;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.strategy.EstablishEffectStrategy;
+import fr.axonic.avek.instance.strategy.GeneralizeStrategy;
+import fr.axonic.avek.instance.strategy.TreatStrategy;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Map;
 @XmlRootElement
-@XmlType(name="humanStrategy")
+@XmlSeeAlso({TreatStrategy.class, EstablishEffectStrategy.class, GeneralizeStrategy.class})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = TreatStrategy.class, name = "TreatStrategy"),
+		@JsonSubTypes.Type(value = EstablishEffectStrategy.class, name = "EstablishEffectStrategy"),
+		@JsonSubTypes.Type(value = GeneralizeStrategy.class, name = "GeneralizeStrategy")})
 public class HumanStrategy extends Strategy{
 
 	private Comment comment;

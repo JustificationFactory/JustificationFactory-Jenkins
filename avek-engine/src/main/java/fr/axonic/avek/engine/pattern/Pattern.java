@@ -136,6 +136,7 @@ public class Pattern {
 	public void addConstructionConstraint(StepConstraint stepConstraint){
 		constructionConstraints.add(stepConstraint);
 	}
+
 	@Override
 	public String toString() {
 		return "Pattern{" +
@@ -144,6 +145,32 @@ public class Pattern {
 				", strategy=" + strategy +
 				", inputTypes=" + inputTypes +
 				", outputType=" + outputType +
+				", constructionConstraints=" + constructionConstraints +
+				", applicablePatternConstraint=" + applicablePatternConstraint +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Pattern)) return false;
+
+		Pattern pattern = (Pattern) o;
+
+		if (id != null ? !id.equals(pattern.id) : pattern.id != null) return false;
+		if (name != null ? !name.equals(pattern.name) : pattern.name != null) return false;
+		if (strategy != null ? !strategy.equals(pattern.strategy) : pattern.strategy != null) return false;
+		if (inputTypes != null ? !inputTypes.equals(pattern.inputTypes) : pattern.inputTypes != null) return false;
+		return outputType != null ? outputType.equals(pattern.outputType) : pattern.outputType == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (strategy != null ? strategy.hashCode() : 0);
+		result = 31 * result + (inputTypes != null ? inputTypes.hashCode() : 0);
+		result = 31 * result + (outputType != null ? outputType.hashCode() : 0);
+		return result;
 	}
 }

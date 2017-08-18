@@ -14,4 +14,8 @@ public class EstablishEffectStrategy extends ComputedStrategy {
     public EstablishEffectStrategy(Rationale rationale, UsageDomain usageDomain) {
         super("Establish Effect",rationale, usageDomain);
     }
+
+    public EstablishEffectStrategy() {
+        this(null, null);
+    }
 }

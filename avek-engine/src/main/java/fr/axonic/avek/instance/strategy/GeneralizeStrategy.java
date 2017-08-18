@@ -15,4 +15,7 @@ public class GeneralizeStrategy extends ComputedStrategy {
         super("Generalize", rationale, usageDomain);
     }
 
+    public GeneralizeStrategy() {
+        this(null, null);
+    }
 }

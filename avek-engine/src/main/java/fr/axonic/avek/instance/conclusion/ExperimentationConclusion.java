@@ -19,7 +19,7 @@ public class ExperimentationConclusion extends Conclusion<Experimentation> {
     private Subject subject;
     private Stimulation stimulation;
     public ExperimentationConclusion() {
-
+        super();
     }
     public ExperimentationConclusion(String name, Subject subject, Stimulation stimulation) {
         this(name,new Experimentation(stimulation, subject), subject, stimulation);
