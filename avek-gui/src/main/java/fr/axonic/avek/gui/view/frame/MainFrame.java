@@ -11,7 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +21,7 @@ import java.net.URL;
  * Created by Nathaël N on 26/07/16.
  */
 public class MainFrame extends BorderPane {
-    private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
     private static final URL FXML = MainFrame.class.getClassLoader()
             .getResource("fr/axonic/avek/gui/view/frame/MainFrame.fxml");
 
@@ -37,7 +38,7 @@ public class MainFrame extends BorderPane {
             fxmlLoader.load();
             LOGGER.debug("MainFrame loaded.");
         } catch (IOException e) {
-            LOGGER.fatal("Impossible to load FXML for MainFrame", e);
+            LOGGER.error("Impossible to load FXML for MainFrame", e);
         }
     }
 

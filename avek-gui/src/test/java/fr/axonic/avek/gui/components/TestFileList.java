@@ -5,10 +5,11 @@ import fr.axonic.avek.gui.util.ConcurrentTaskManager;
 import fr.axonic.avek.gui.util.UtilForTests;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Nathaël N on 25/07/16.
  */
 public class TestFileList extends ApplicationTest {
-    private static final Logger LOGGER = Logger.getLogger(TestFileList.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestFileList.class);
 
     static {
         UtilForTests.disableGraphics();

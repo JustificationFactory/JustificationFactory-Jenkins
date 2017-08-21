@@ -5,7 +5,8 @@ import fr.axonic.avek.gui.components.parameters.leaves.CategoryTitle;
 import fr.axonic.avek.gui.components.parameters.leaves.ExpParameterLeaf;
 import fr.axonic.base.engine.*;
 import javafx.scene.Node;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by Nathaël N on 13/07/16.
  */
 class ParametersCategory implements IExpParameter {
-    private static final Logger LOGGER = Logger.getLogger(ParametersCategory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParametersCategory.class);
 
     final int level;
     private ExpParameterLeaf title;

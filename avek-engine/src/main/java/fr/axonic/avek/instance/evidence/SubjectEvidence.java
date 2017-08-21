@@ -9,4 +9,8 @@ public class SubjectEvidence extends Evidence<Subject>{
     public SubjectEvidence(String name, Subject element) {
         super(name, element);
     }
+
+    public SubjectEvidence() {
+        super();
+    }
 }

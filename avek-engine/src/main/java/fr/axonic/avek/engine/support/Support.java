@@ -1,8 +1,14 @@
 package fr.axonic.avek.engine.support;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.evidence.Evidence;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.evidence.SubjectEvidence;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,6 +20,15 @@ import java.util.UUID;
  */
 @XmlRootElement
 @XmlSeeAlso({Conclusion.class, Evidence.class})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Evidence.class, name = "Evidence"),
+        @JsonSubTypes.Type(value = Conclusion.class, name = "Conclusion"),
+        @JsonSubTypes.Type(value = Actor.class, name = "Actor"),
+        @JsonSubTypes.Type(value = SubjectEvidence.class, name="SubjectEvidence"),
+        @JsonSubTypes.Type(value = StimulationEvidence.class, name="StimulationEvidence"),
+        @JsonSubTypes.Type(value = ExperimentationConclusion.class, name = "ExperimentationConclusion")}
+        )
 public abstract class Support<T extends Element> implements Cloneable{
     protected String id, name;
     protected T element;

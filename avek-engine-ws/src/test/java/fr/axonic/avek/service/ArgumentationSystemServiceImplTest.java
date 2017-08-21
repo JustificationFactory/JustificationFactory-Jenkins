@@ -5,13 +5,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.engine.ArgumentationSystem;
+import fr.axonic.avek.engine.ArgumentationSystemAPI;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.type.InputType;
+import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
+import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
+import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.evidence.Stimulation;
+import fr.axonic.avek.instance.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.instance.evidence.SubjectEvidence;
+import fr.axonic.validation.exception.VerificationException;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
@@ -23,6 +34,7 @@ import javax.ws.rs.core.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -80,17 +92,37 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         assertEquals(pattern.getId(),"1");
     }
     @Test
-    public void testPostArgumentationStep() {
-
+    public void testPostWrongArgumentationStep() throws JsonProcessingException {
         Conclusion conclusion = new ExperimentationConclusion();
         Step stepToCreate = new Step("1", new HumanStrategy(), new ArrayList<SupportRole>(), conclusion);
-         Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(stepToCreate));
-         assertNotNull(stepResponse);
-         System.out.println(stepResponse);
-         assertEquals(stepResponse.getStatusInfo(),Response.Status.OK );
-         Step step=stepResponse.readEntity(Step.class);
-         assertNotNull(step);
-         assertEquals(step.getConclusion(),conclusion);
+        Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(stepToCreate));
+        assertNotNull(stepResponse);
+        assertEquals(stepResponse.getStatusInfo(),Response.Status.NOT_ACCEPTABLE );
+        List error=stepResponse.readEntity(List.class);
+        assertNotNull(error);
+
+    }
+
+    @Test
+    public void testPostRightArgumentationStep() throws JsonProcessingException, VerificationException, WrongEvidenceException {
+
+        StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
+        SubjectEvidence subject0 = new SubjectEvidence("Subject 0",new Subject());
+        Actor actor0=new Actor("Chloé", Role.SENIOR_EXPERT);
+        ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0",subject0.getElement(),stimulation0.getElement());
+        InputType<StimulationEvidence> rtStimulation = new InputType<>("stimulation", StimulationEvidence.class);
+        InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
+        InputType<Actor> rtActor=new InputType<>("actor", Actor.class);
+        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
+        SupportRole evSubject0 = rtSubject.create(subject0);
+        SupportRole evActor0=rtActor.create(actor0);
+
+        Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(new Step("1", new HumanStrategy(), Arrays.asList(evActor0,evSubject0,evStimulation0),experimentation0)));
+        assertNotNull(stepResponse);
+        assertEquals(stepResponse.getStatusInfo(),Response.Status.CREATED );
+        Step step=stepResponse.readEntity(Step.class);
+        assertNotNull(step);
+        //assertEquals(step.getConclusion(),experimentation0);
 
     }
 

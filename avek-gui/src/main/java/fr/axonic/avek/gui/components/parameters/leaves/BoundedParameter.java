@@ -12,7 +12,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by Nathaël N on 21/07/16.
  */
 public class BoundedParameter extends SensitiveParameter {
-    private static final Logger LOGGER = Logger.getLogger(BoundedParameter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoundedParameter.class);
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     private final HBox generalizationPane;

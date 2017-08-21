@@ -14,10 +14,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TreatView extends AbstractView {
-    private static final Logger LOGGER = Logger.getLogger(TreatView.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TreatView.class);
     private static final String FXML = "fr/axonic/avek/gui/view/treat/TreatView.fxml";
 
     @FXML

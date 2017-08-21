@@ -7,13 +7,14 @@ import com.google.gson.JsonParser;
 import fr.axonic.base.engine.AEntity;
 import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AVar;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Nathaël N on 12/07/16.
  */
 class Jsonifier<T> {
-    private static final Logger LOGGER = Logger.getLogger(Jsonifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Jsonifier.class);
     private final Class<T> tClass;
 
     Jsonifier(Class<T> tClass) {

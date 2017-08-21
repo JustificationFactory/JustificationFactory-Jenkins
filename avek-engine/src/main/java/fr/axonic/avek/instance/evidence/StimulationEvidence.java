@@ -10,4 +10,8 @@ public class StimulationEvidence extends Evidence<Stimulation>{
     public StimulationEvidence(String name, Stimulation stimulation) {
         super(name,stimulation);
     }
+
+    public StimulationEvidence() {
+        super();
+    }
 }

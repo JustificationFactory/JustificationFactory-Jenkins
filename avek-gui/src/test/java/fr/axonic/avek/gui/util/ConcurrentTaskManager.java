@@ -1,7 +1,8 @@
 package fr.axonic.avek.gui.util;
 
 import javafx.application.Platform;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ public class ConcurrentTaskManager {
         Platform.runLater(() -> platformThread = Thread.currentThread());
     }
 
-    private static final Logger LOGGER = Logger.getLogger(ConcurrentTaskManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConcurrentTaskManager.class);
     private volatile static int taskCount = 0;
     private final Set<FutureTask> running = new HashSet<>();
     private final Map<Thread, Integer> threads = new HashMap<>();

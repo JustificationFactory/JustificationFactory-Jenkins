@@ -6,7 +6,8 @@ import fr.axonic.avek.gui.view.LoadingView;
 import fr.axonic.avek.gui.view.frame.MainFrame;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  * Created by cduffau on 12/08/16.
  */
 public class GUIAPIImpl extends GUIAPI {
-    private static final Logger LOGGER = Logger.getLogger(GUIAPIImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GUIAPIImpl.class);
     private static final GUIAPIImpl INSTANCE = new GUIAPIImpl();
 
     private final LoadingView loadingView = new LoadingView();

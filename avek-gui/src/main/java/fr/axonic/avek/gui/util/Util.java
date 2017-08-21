@@ -1,6 +1,8 @@
 package fr.axonic.avek.gui.util;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.util.List;
  * Created by Nathaël N on 26/07/16.
  */
 public abstract class Util {
-    private static final Logger LOGGER = Logger.getLogger(Util.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Util.class);
 
     public static String getFileContent(File f) {
         String res = "";

@@ -7,7 +7,8 @@ import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.AEnum;
 import fr.axonic.base.engine.AVar;
 import fr.axonic.validation.exception.VerificationException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by Nathaël N on 28/07/16.
  */
 class EffectEnumToGuiEffect extends DataTranslator<List<EffectEnum>, GUIEffect> {
-    private static final Logger LOGGER = Logger.getLogger(EffectEnumToGuiEffect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EffectEnumToGuiEffect.class);
 
     //  //  //  //  //  TYPE TRANSLATORS //  //  //  //  //
 

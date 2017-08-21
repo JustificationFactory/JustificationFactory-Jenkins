@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.strategy;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -10,25 +11,26 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Actor extends Evidence{
-    private String name;
+    private String actorName;
     private Role role;
 
     private Actor() {
     }
 
-    public Actor(String name, Role role) {
+    public Actor(String actorName, Role role) {
         this.name = name;
         this.role = role;
     }
-
     @XmlElement
-    public String getName() {
-        return name;
+    public String getActorName() {
+        return actorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setActorName(String actorName) {
+        this.actorName = actorName;
     }
+
+
 
     @XmlElement
     public Role getRole() {

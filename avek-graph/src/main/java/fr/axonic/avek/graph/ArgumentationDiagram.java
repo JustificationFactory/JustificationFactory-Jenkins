@@ -5,13 +5,14 @@ import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.strategy.Strategy;
-import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.SimpleDirectedGraph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  * Created by nathael on 07/09/16.
  */
 public class ArgumentationDiagram extends JFrame {
-    private final static Logger LOGGER = Logger.getLogger(ArgumentationDiagram.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ArgumentationDiagram.class);
 
     private final Map<Object, MyVertex> nodes;
     private final SimpleDirectedGraph<MyVertex, MyEdge> graph;
@@ -63,7 +64,7 @@ public class ArgumentationDiagram extends JFrame {
     }
 
     private void computeStep(Step step) {
-        LOGGER.debug(step);
+        LOGGER.debug(step.toString());
 
         Conclusion conclusion = step.getConclusion();
         Strategy strategy = step.getStrategy();

@@ -1,7 +1,8 @@
 package fr.axonic.avek.gui.model;
 
 import javafx.application.Platform;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
@@ -13,7 +14,7 @@ import java.util.Stack;
  * Created by Nathaël N on 18/07/16.
  */
 public class UploadedFile {
-    private static final Logger LOGGER = Logger.getLogger(UploadedFile.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UploadedFile.class);
 
     // 1Mb
     private static final long MAX_BUF_LENGTH = 1024L * 1024L;

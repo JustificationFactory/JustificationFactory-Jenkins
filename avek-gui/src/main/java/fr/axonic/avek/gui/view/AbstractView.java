@@ -5,7 +5,8 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Created by Nathaël N on 26/07/16.
  */
 public abstract class AbstractView extends BorderPane {
-    private static final Logger LOGGER = Logger.getLogger(AbstractView.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractView.class);
 
     // Is the view loaded ?
     private boolean loaded;
@@ -69,7 +70,7 @@ public abstract class AbstractView extends BorderPane {
             fxmlLoader.load();
             loaded = true;
         } catch (IOException | RuntimeException e) {
-            LOGGER.fatal("Impossible to load FXML", e);
+            LOGGER.error("Impossible to load FXML", e);
             throw new RuntimeException("Impossible to load FXML\nFor "+toString()+"\nWith path:"+path);
         }
     }

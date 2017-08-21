@@ -3,7 +3,8 @@ package fr.axonic.avek.gui.components.parameters.groups;
 import fr.axonic.avek.gui.model.GUIExperimentParameter;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by Nathaël N on 21/07/16.
  */
 public class ParametersRoot extends GridPane {
-    private static final Logger LOGGER = Logger.getLogger(ParametersCategory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParametersCategory.class);
     private static final String CSS = "fr/axonic/avek/gui/components/parameters/parameters.css";
 
     private final ParametersCategory parameters;

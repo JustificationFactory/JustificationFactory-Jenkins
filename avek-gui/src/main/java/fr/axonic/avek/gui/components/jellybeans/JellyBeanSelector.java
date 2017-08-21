@@ -13,7 +13,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +25,7 @@ import java.util.Map;
  * Created by cduffau on 02/07/16.
  */
 public class JellyBeanSelector extends VBox {
-    private static final Logger LOGGER = Logger.getLogger(JellyBeanSelector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JellyBeanSelector.class);
     private static final URL FXML
             = JellyBeanSelector.class.getClassLoader().getResource("fr/axonic/avek/gui/components/jellybeans/JellyBeansSelector.fxml");
     private static final String CSS = "fr/axonic/avek/gui/components/jellybeans/jellyBeanSelector.css";
@@ -49,7 +50,7 @@ public class JellyBeanSelector extends VBox {
             fxmlLoader.load();
             LOGGER.debug("JellyBeanSelector loaded.");
         } catch (IOException e) {
-            LOGGER.fatal("Impossible to load FXML for JellyBeanSelector", e);
+            LOGGER.error("Impossible to load FXML for JellyBeanSelector", e);
         }
 
         this.getStylesheets().add(CSS);

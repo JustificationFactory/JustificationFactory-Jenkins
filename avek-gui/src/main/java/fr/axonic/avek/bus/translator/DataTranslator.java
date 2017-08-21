@@ -1,6 +1,7 @@
 package fr.axonic.avek.bus.translator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.HashSet;
  * Created by Nathaël N on 28/07/16.
  */
 public abstract class DataTranslator<T,S> {
-    private static final Logger LOGGER = Logger.getLogger(DataTranslator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataTranslator.class);
     private static final HashSet<DataTranslator> toGUI = new HashSet<>();
     private static final HashSet<DataTranslator> toEngine = new HashSet<>();
 

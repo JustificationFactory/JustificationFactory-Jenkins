@@ -8,12 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class StrategySelectionView extends AbstractView {
-    private static final Logger LOGGER = Logger.getLogger(StrategySelectionView.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StrategySelectionView.class);
     private static final String FXML = "fr/axonic/avek/gui/view/strategyselection/StrategySelectionView.fxml";
 
     @FXML

@@ -5,7 +5,9 @@ import fr.axonic.avek.gui.view.etablisheffect.EstablishEffectView;
 import fr.axonic.avek.gui.view.generalize.GeneralizeView;
 import fr.axonic.avek.gui.view.strategyselection.StrategySelectionView;
 import fr.axonic.avek.gui.view.treat.TreatView;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,7 @@ public enum ViewType {
     GENERALIZE_VIEW(GeneralizeView.class, ComponentType.MONITORED_SYSTEM, ComponentType.EXPERIMENTATION_PARAMETERS, /*ComponentType.COMPLEMENTARY_FILES, ComponentType.COMMENTS,*/ ComponentType.EFFECTS),
     STRATEGY_SELECTION_VIEW(StrategySelectionView.class,ComponentType.SELECTION);
 
-    private static final Logger LOGGER = Logger.getLogger(ViewType.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewType.class);
     private final List<ComponentType> compatibleComponents;
     private final Class<? extends AbstractView> viewClass;
 

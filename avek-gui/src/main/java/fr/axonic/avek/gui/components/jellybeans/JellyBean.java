@@ -7,7 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("WeakerAccess")
 public class JellyBean<T,U,V> extends HBox {
-    private static final Logger LOGGER = Logger.getLogger(JellyBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JellyBean.class);
     private static final URL FXML
             = JellyBean.class.getClassLoader().getResource("fr/axonic/avek/gui/components/jellybeans/JellyBean.fxml");
 
@@ -44,7 +45,7 @@ public class JellyBean<T,U,V> extends HBox {
             fxmlLoader.load();
             LOGGER.debug("JellyBean loaded.");
         } catch (IOException e) {
-            LOGGER.fatal("Impossible to load FXML for JellyBean", e);
+            LOGGER.error("Impossible to load FXML for JellyBean", e);
         }
 
         tooltip = new Tooltip();

@@ -21,7 +21,8 @@ import fr.axonic.base.engine.AList;
 import fr.axonic.base.engine.AStructure;
 import fr.axonic.base.engine.AVarHelper;
 import fr.axonic.validation.exception.VerificationException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  * Created by Nathaël N on 04/08/16.
  */
 public class Orchestrator implements Observer {
-    private static final Logger LOGGER = Logger.getLogger(Orchestrator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Orchestrator.class);
     private static final String SUBJECT_STR = "subject";
     private static final String STIM_STR = "stimulation";
     private static final String PATTERN_TREAT = "Treat";

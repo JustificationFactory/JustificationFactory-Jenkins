@@ -11,7 +11,8 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by Nathaël N on 18/07/16.
  */
 public class FileListView extends StackPane {
-    private static final Logger LOGGER = Logger.getLogger(FileListView.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileListView.class);
 
     private static final URL FXML
             = FileListView.class.getClassLoader().getResource("fr/axonic/avek/gui/components/filelist/FileListView.fxml");
@@ -45,7 +46,7 @@ public class FileListView extends StackPane {
             fxmlLoader.load();
             LOGGER.debug("FileListView loaded.");
         } catch (IOException e) {
-            LOGGER.fatal("Impossible to load FXML for FileListView", e);
+            LOGGER.error("Impossible to load FXML for FileListView", e);
         }
     }
 
