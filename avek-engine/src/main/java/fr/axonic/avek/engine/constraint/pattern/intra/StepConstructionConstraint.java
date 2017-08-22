@@ -1,15 +1,12 @@
 package fr.axonic.avek.engine.constraint.pattern.intra;
 
-import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
-import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.SupportRole;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +30,7 @@ public class StepConstructionConstraint implements StepConstraint, Argumentation
         if(pattern.getInputTypes().size()!=step.getEvidences().size()) {
          return false;
         }
-        List<Support> supports=SupportRole.translateToEvidence(step.getEvidences());
+        List<Support> supports=SupportRole.translateToSupport(step.getEvidences());
         return pattern.getInputTypes().stream().allMatch(inputType -> {Optional<Support> s=supports.stream().filter(inputType::check).findAny(); supports.remove(s.get()); return s.isPresent();});
     }
 

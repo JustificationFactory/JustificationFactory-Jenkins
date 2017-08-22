@@ -30,11 +30,11 @@ public class SupportRole {
 	public Support getSupport() {
 		return support;
 	}
-	public void setSupport(Evidence support) {
+	public void setSupport(Support support) {
 		this.support = support;
 	}
 
-	public static List<Support> translateToEvidence(List<SupportRole> supportRoles){
+	public static List<Support> translateToSupport(List<SupportRole> supportRoles){
 		List<Support> evidences=new ArrayList<>();
 		for(SupportRole supportRole : supportRoles){
 			evidences.add(supportRole.getSupport());

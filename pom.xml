@@ -12,8 +12,8 @@
         <module>avek-gui</module>
         <module>avek-model</module>
         <module>avek-graph</module>
-        <module>avek-jenkins</module>
         <module>avek-engine-ws</module>
+        <module>avek-jenkins</module>
     </modules>
 
     <properties>
@@ -58,8 +58,6 @@
             <artifactId>gson</artifactId>
             <version>2.6.2</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

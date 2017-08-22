@@ -4,6 +4,7 @@ package fr.axonic.avek.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.axonic.avek.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
@@ -94,7 +95,7 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
     @Test
     public void testPostWrongArgumentationStep() throws JsonProcessingException {
         Conclusion conclusion = new ExperimentationConclusion();
-        Step stepToCreate = new Step("1", new HumanStrategy(), new ArrayList<SupportRole>(), conclusion);
+        StepToCreate stepToCreate = new StepToCreate(new ArrayList<>(),conclusion);
         Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(stepToCreate));
         assertNotNull(stepResponse);
         assertEquals(stepResponse.getStatusInfo(),Response.Status.NOT_ACCEPTABLE );
@@ -116,8 +117,9 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
         SupportRole evActor0=rtActor.create(actor0);
-
-        Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(new Step("1", new HumanStrategy(), Arrays.asList(evActor0,evSubject0,evStimulation0),experimentation0)));
+        StepToCreate stepToCreate=new StepToCreate(Arrays.asList(evActor0,evSubject0,evStimulation0),experimentation0);
+        System.out.println(new JerseyMapperProvider().getContext(null).writeValueAsString(stepToCreate));
+        Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(stepToCreate));
         assertNotNull(stepResponse);
         assertEquals(stepResponse.getStatusInfo(),Response.Status.CREATED );
         Step step=stepResponse.readEntity(Step.class);

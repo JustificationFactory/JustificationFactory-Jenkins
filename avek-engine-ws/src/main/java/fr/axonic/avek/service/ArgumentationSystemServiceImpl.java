@@ -109,10 +109,10 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     }
 
     @Override
-    public Response constructStep(String argumentationSystem, String pattern, Step step) {
+    public Response constructStep(String argumentationSystem, String pattern, StepToCreate step) {
 
         try {
-            Step res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),step.getEvidences(),step.getConclusion());
+            Step res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),step.getSupports(),step.getConclusion());
             LOGGER.info("Step created on "+argumentationSystem+" with pattern "+pattern);
             return Response.status(Response.Status.CREATED).entity(res).build();
         } catch (StepBuildingException | WrongEvidenceException | StrategyException e) {
