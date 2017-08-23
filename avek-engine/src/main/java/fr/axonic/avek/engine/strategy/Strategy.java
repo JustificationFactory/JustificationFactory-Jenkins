@@ -11,9 +11,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement
 @XmlSeeAlso({HumanStrategy.class, ComputedStrategy.class})
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-@JsonSubTypes({@JsonSubTypes.Type(value = HumanStrategy.class, name = "HumanStrategy"),
-        @JsonSubTypes.Type(value = ComputedStrategy.class, name = "ComputerStrategy")})
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.MINIMAL_CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type")
 public abstract class Strategy {
 
     private String name;

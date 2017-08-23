@@ -16,4 +16,35 @@
     <f:entry title="Pattern ID" field="patternID">
       <f:textbox />
     </f:entry>
+
+    <f:entry title="Conclusion" >
+        <table width="100%">
+            <f:entry title="Conclusion ID"
+                     field="conclusionID">
+                <f:textbox  />
+            </f:entry>
+            <f:entry title="Artifact Path"
+                     field="conclusionArtifactPath">
+                <f:textbox  />
+            </f:entry>
+        </table>
+    </f:entry>
+
+  <f:entry title="Supports">
+    <f:repeatable field="supports"  name="supports" minimum="1">
+        <table width="100%" >
+            <f:entry title="Support ID"
+                     field="supportId">
+                <f:textbox  />
+            </f:entry>
+            <f:entry title="Artifact Path"
+                     field="artifactPath">
+                <f:textbox  />
+            </f:entry>
+        </table>
+        <div align="right">
+            <input type="button" value="Delete Tag" class="repeatable-delete" style="margin-left: 1em;" />
+        </div>
+    </f:repeatable>
+  </f:entry>
 </j:jelly>

@@ -13,11 +13,10 @@ import fr.axonic.avek.instance.evidence.SubjectEvidence;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Subject.class, name="Subject"),
-        @JsonSubTypes.Type(value = Stimulation.class, name="Stimulation")}
-)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.MINIMAL_CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type")
 public interface Restriction {
 
 }

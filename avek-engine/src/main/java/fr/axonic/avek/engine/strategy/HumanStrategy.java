@@ -17,11 +17,6 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Map;
 @XmlRootElement
 @XmlSeeAlso({TreatStrategy.class, EstablishEffectStrategy.class, GeneralizeStrategy.class})
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = TreatStrategy.class, name = "TreatStrategy"),
-		@JsonSubTypes.Type(value = EstablishEffectStrategy.class, name = "EstablishEffectStrategy"),
-		@JsonSubTypes.Type(value = GeneralizeStrategy.class, name = "GeneralizeStrategy")})
 public class HumanStrategy extends Strategy{
 
 	private Comment comment;

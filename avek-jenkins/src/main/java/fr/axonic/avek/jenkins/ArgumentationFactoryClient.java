@@ -32,7 +32,7 @@ public class ArgumentationFactoryClient {
 
     public void sendPattern(String argumentationSystem, String patternId) throws IOException {
 
-        URL url =new URL(serverURL+"/step/"+argumentationSystem+"/"+patternId);
+       /** URL url =new URL(serverURL+"/step/"+argumentationSystem+"/"+patternId);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -59,7 +59,7 @@ public class ArgumentationFactoryClient {
             conn.disconnect();
             throw new HTTPException(conn.getResponseCode());
         }
-        conn.disconnect();
+        conn.disconnect();*/
 
     }
 

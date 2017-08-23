@@ -14,12 +14,6 @@ import java.util.List;
 
 @XmlRootElement
 @XmlSeeAlso({ExperimentationConclusion.class, EstablishEffectConclusion.class, GeneralizationConclusion.class})
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = ExperimentationConclusion.class, name = "ExperimentationConclusion"),
-		@JsonSubTypes.Type(value = EstablishEffectConclusion.class, name = "EstablishEffectConclusion"),
-		@JsonSubTypes.Type(value = GeneralizationConclusion.class, name = "GeneralizationConclusion")}
-)
 public class Conclusion<T extends Element> extends Support<T> implements Cloneable {
 
 	protected List<Restriction> restrictions;

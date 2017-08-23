@@ -20,15 +20,10 @@ import java.util.UUID;
  */
 @XmlRootElement
 @XmlSeeAlso({Conclusion.class, Evidence.class})
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Evidence.class, name = "Evidence"),
-        @JsonSubTypes.Type(value = Conclusion.class, name = "Conclusion"),
-        @JsonSubTypes.Type(value = Actor.class, name = "Actor"),
-        @JsonSubTypes.Type(value = SubjectEvidence.class, name="SubjectEvidence"),
-        @JsonSubTypes.Type(value = StimulationEvidence.class, name="StimulationEvidence"),
-        @JsonSubTypes.Type(value = ExperimentationConclusion.class, name = "ExperimentationConclusion")}
-        )
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.MINIMAL_CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type")
 public abstract class Support<T extends Element> implements Cloneable{
     protected String id, name;
     protected T element;

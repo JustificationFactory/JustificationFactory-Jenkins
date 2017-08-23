@@ -1,11 +1,10 @@
 package fr.axonic.avek.jenkins;
 
-import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.AbstractProject;
-import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
@@ -15,11 +14,14 @@ import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,15 +42,38 @@ import java.util.List;
  */
 public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildStep {
 
+
     private final String argumentationSystemName;
     private final String patternID;
+    private final SupportArtifact conclusion;
+
+    private  List<SupportArtifact> supports;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternID) {
+    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternID, String conclusionID, String conclusionArtifactPath, SupportArtifact[] supports) {
         this.argumentationSystemName = argumentationSystemName;
         this.patternID=patternID;
+        this.conclusion=new SupportArtifact(conclusionID, conclusionArtifactPath);
+        this.supports = Arrays.asList(supports);
     }
+
+    public SupportArtifact getConclusion() {
+        return conclusion;
+    }
+
+    public String getConclusionID(){
+        return conclusion.getSupportId();
+    }
+    public String getConclusionArtifactPath(){
+        return conclusion.getArtifactPath();
+    }
+    public SupportArtifact[] getSupports() {
+        return supports.toArray(new SupportArtifact[supports.size()]);
+    }
+
+
+
 
     /**
      * We'll use this from the {@code config.jelly}.
@@ -67,6 +92,10 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         // Since this is a dummy, we just say 'hello world' and call that a build.
         listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
         listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternID);
+        listener.getLogger().println("Supports :"+supports);
+        listener.getLogger().println("Conclusion :"+conclusion);
+
+
         try {
             new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL()).sendPattern(argumentationSystemName,patternID);
             listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
