@@ -13,14 +13,14 @@
   <f:entry title="Argumentation Sytem Name" field="argumentationSystemName">
     <f:textbox />
   </f:entry>
-    <f:entry title="Pattern ID" field="patternID">
+    <f:entry title="Pattern ID" field="patternId">
       <f:textbox />
     </f:entry>
 
     <f:entry title="Conclusion" >
         <table width="100%">
             <f:entry title="Conclusion ID"
-                     field="conclusionID">
+                     field="conclusionId">
                 <f:textbox  />
             </f:entry>
             <f:entry title="Artifact Path"

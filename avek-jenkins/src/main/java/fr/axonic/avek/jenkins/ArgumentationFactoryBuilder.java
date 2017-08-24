@@ -1,5 +1,6 @@
 package fr.axonic.avek.jenkins;
 
+import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import hudson.Extension;
 import hudson.FilePath;
@@ -19,6 +20,8 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
+import javax.ws.rs.QueryParam;
+import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,17 +47,17 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
 
 
     private final String argumentationSystemName;
-    private final String patternID;
+    private final String patternId;
     private final SupportArtifact conclusion;
 
     private  List<SupportArtifact> supports;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternID, String conclusionID, String conclusionArtifactPath, SupportArtifact[] supports) {
+    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternId, String conclusionId, String conclusionArtifactPath, SupportArtifact[] supports) {
         this.argumentationSystemName = argumentationSystemName;
-        this.patternID=patternID;
-        this.conclusion=new SupportArtifact(conclusionID, conclusionArtifactPath);
+        this.patternId=patternId;
+        this.conclusion=new SupportArtifact(conclusionId, conclusionArtifactPath);
         this.supports = Arrays.asList(supports);
     }
 
@@ -62,7 +65,7 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         return conclusion;
     }
 
-    public String getConclusionID(){
+    public String getConclusionId(){
         return conclusion.getSupportId();
     }
     public String getConclusionArtifactPath(){
@@ -82,8 +85,8 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         return argumentationSystemName;
     }
 
-    public String getPatternID() {
-        return patternID;
+    public String getPatternId() {
+        return patternId;
     }
 
     @Override
@@ -91,17 +94,17 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         // This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
         listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
-        listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternID);
+        listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternId);
         listener.getLogger().println("Supports :"+supports);
         listener.getLogger().println("Conclusion :"+conclusion);
 
-
         try {
-            new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL()).sendPattern(argumentationSystemName,patternID);
+            new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL()).sendStep(argumentationSystemName,patternId,conclusion,supports);
             listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
+        } catch (ResponseException e) {
+            listener.fatalError("ERROR CODE : "+e.getStatusCode()+"\n\r"+e.getReason());
         } catch (IOException e) {
-            listener.fatalError(e.toString());
-
+            listener.fatalError(e.getMessage());
         }
     }
 
@@ -179,7 +182,7 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
             return FormValidation.ok();
         }
 
-        public FormValidation doCheckPatternID(@QueryParameter String value, @QueryParameter String argumentationSystemName){
+        public FormValidation doCheckPatternId(@QueryParameter String value, @QueryParameter String argumentationSystemName){
             if (value.length() == 0)
                 return FormValidation.error("Please set a pattern");
             try {
@@ -188,6 +191,21 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
                     return FormValidation.error("Unknown pattern ID in "+argumentationSystemName);
             } catch (ArgumentationFactoryException e) {
                 return FormValidation.error("Please set a valid argumentation system");
+            }
+
+
+            return FormValidation.ok();
+        }
+
+        public FormValidation doCheckConclusionId(@QueryParameter String value, @QueryParameter String argumentationSystemName, @QueryParameter String patternId){
+            if (value.length() == 0)
+                return FormValidation.error("Please set a conclusion ID");
+            try {
+               Pattern pattern = new ArgumentationFactoryClient(getArgumentationFactoryURL()).getPattern(argumentationSystemName,patternId);
+                if (!pattern.getOutputType().getType().getName().equals(value))
+                    return FormValidation.error("Unknown conclusion ID");
+            } catch (ArgumentationFactoryException e) {
+                return FormValidation.error("Please set a valid argumentation system and pattern ID");
             }
 
 

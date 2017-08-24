@@ -1,18 +1,17 @@
 package fr.axonic.avek.jenkins;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.axonic.avek.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Element;
+import fr.axonic.avek.service.StepToCreate;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import javax.ws.rs.NotFoundException;
 import javax.xml.ws.http.HTTPException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,36 +29,33 @@ public class ArgumentationFactoryClient {
         this.serverURL = serverURL;
     }
 
-    public void sendPattern(String argumentationSystem, String patternId) throws IOException {
+    public void sendStep(String argumentationSystem, String patternId, SupportArtifact conclusion, List<SupportArtifact> supports) throws IOException {
 
-       /** URL url =new URL(serverURL+"/step/"+argumentationSystem+"/"+patternId);
+       URL url =new URL(serverURL+argumentationSystem+"/"+patternId+"/step");
+        System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
-        ObjectMapper mapper = new ObjectMapper();
-        Conclusion conclusion=new Conclusion("test", new Element());
-        String conclusionJson =mapper.writeValueAsString(conclusion);
-
-        String evidencesJson="";
-
-        OutputStream os = conn.getOutputStream();
-        os.write(("evidences="+evidencesJson).getBytes());
-        os.write(("conclusion="+conclusionJson).getBytes());
-        os.flush();
+        ObjectMapper mapper=new JerseyMapperProvider().getContext(null);
+        StepToCreate stepToCreate=new StepToCreate();
+        OutputStream wr = new DataOutputStream(conn.getOutputStream());
+        mapper.writeValue(wr,stepToCreate);
+        wr.flush();
+        wr.close();
 
         if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
             String output;
-            System.out.println(conn.getResponseCode());
+            StringBuilder reason=new StringBuilder();
             while ((output = br.readLine()) != null) {
-                System.out.println(output);
+                reason.append(output);
             }
             conn.disconnect();
-            throw new HTTPException(conn.getResponseCode());
+            throw new ResponseException(conn.getResponseCode(),reason.toString());
         }
-        conn.disconnect();*/
+        conn.disconnect();
 
     }
 
@@ -88,6 +84,39 @@ public class ArgumentationFactoryClient {
             }
             conn.disconnect();
             return mapper.readValue(res,List.class);
+        }
+        catch (IOException e){
+            throw new ArgumentationFactoryException(e);
+        }
+
+
+    }
+
+    public Pattern getPattern(String argumentationSystem, String patternID) throws ArgumentationFactoryException{
+        try{
+            URL url =new URL(serverURL+argumentationSystem+"/patterns/"+patternID);
+            System.out.println(url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json");
+            ObjectMapper mapper = new ObjectMapper();
+
+
+
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                conn.disconnect();
+                throw new ArgumentationFactoryException(new NotFoundException());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+            String res="";
+            String output;
+            while ((output = br.readLine()) != null) {
+                res+=output;
+            }
+            conn.disconnect();
+            return mapper.readValue(res,Pattern.class);
         }
         catch (IOException e){
             throw new ArgumentationFactoryException(e);

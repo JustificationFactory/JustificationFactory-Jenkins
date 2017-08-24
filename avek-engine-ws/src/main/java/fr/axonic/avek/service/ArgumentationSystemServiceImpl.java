@@ -118,7 +118,7 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
         } catch (StepBuildingException | WrongEvidenceException | StrategyException e) {
             LOGGER.error("Error during Step creation on "+argumentationSystem+" with pattern "+pattern);
             LOGGER.error(e.toString());
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e.getStackTrace()).build();
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity(e.getStackTrace()).build();
         }
 
 
