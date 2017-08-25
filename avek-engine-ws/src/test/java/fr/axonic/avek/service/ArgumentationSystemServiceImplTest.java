@@ -2,27 +2,21 @@ package fr.axonic.avek.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
-import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
-import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.MockedArgumentationSystem;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.Stimulation;
-import fr.axonic.avek.instance.evidence.StimulationEvidence;
-import fr.axonic.avek.instance.evidence.Subject;
-import fr.axonic.avek.instance.evidence.SubjectEvidence;
+import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.avek.evidence.Stimulation;
+import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.avek.evidence.Subject;
+import fr.axonic.avek.instance.avek.evidence.SubjectEvidence;
 import fr.axonic.validation.exception.VerificationException;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -30,10 +24,8 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -98,7 +90,7 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         StepToCreate stepToCreate = new StepToCreate(new ArrayList<>(),conclusion);
         Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(stepToCreate));
         assertNotNull(stepResponse);
-        assertEquals(stepResponse.getStatusInfo(),Response.Status.NOT_ACCEPTABLE );
+        assertEquals(stepResponse.getStatusInfo(),Response.Status.EXPECTATION_FAILED);
         List error=stepResponse.readEntity(List.class);
         assertNotNull(error);
 

@@ -17,17 +17,8 @@
       <f:textbox />
     </f:entry>
 
-    <f:entry title="Conclusion" >
-        <table width="100%">
-            <f:entry title="Conclusion ID"
-                     field="conclusionId">
-                <f:textbox  />
-            </f:entry>
-            <f:entry title="Artifact Path"
-                     field="conclusionArtifactPath">
-                <f:textbox  />
-            </f:entry>
-        </table>
+    <f:entry title="Conclusion ID" field="conclusionId">
+        <f:textbox  />
     </f:entry>
 
   <f:entry title="Supports">

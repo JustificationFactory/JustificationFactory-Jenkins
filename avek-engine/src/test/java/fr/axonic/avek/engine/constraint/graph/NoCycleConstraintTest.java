@@ -8,13 +8,13 @@ import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.instance.conclusion.Effect;
-import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
-import fr.axonic.avek.instance.conclusion.EstablishedEffect;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.Result;
-import fr.axonic.avek.instance.evidence.ResultsEvidence;
-import fr.axonic.avek.instance.evidence.Stimulation;
+import fr.axonic.avek.instance.avek.conclusion.Effect;
+import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.instance.avek.conclusion.EstablishedEffect;
+import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.avek.evidence.Result;
+import fr.axonic.avek.instance.avek.evidence.ResultsEvidence;
+import fr.axonic.avek.instance.avek.evidence.Stimulation;
 import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
@@ -24,7 +24,6 @@ import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 

@@ -1,30 +1,27 @@
 package fr.axonic.avek.jenkins;
 
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
+import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatusEnum;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.AbstractProject;
+import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
-import hudson.tasks.BuildStepDescriptor;
-import hudson.tasks.Builder;
+import hudson.tasks.*;
 import hudson.util.FormValidation;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
-import javax.ws.rs.QueryParam;
-import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,34 +40,35 @@ import java.util.List;
  *
  * @author Kohsuke Kawaguchi
  */
-public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildStep {
+public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuildStep{
 
 
     private final String argumentationSystemName;
-    private final String patternId;
-    private final SupportArtifact conclusion;
+    private final String patternId, conclusionId;
+    private final JenkinsStatus jenkinsStatus;
+    private ArgumentationFactoryClient argumentationFactoryClient;
 
     private  List<SupportArtifact> supports;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternId, String conclusionId, String conclusionArtifactPath, SupportArtifact[] supports) {
+    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternId, String conclusionId, SupportArtifact[] supports) {
         this.argumentationSystemName = argumentationSystemName;
         this.patternId=patternId;
-        this.conclusion=new SupportArtifact(conclusionId, conclusionArtifactPath);
+        this.jenkinsStatus =new JenkinsStatus();
+        this.conclusionId=conclusionId;
         this.supports = Arrays.asList(supports);
+        this.argumentationFactoryClient=new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL());
     }
 
-    public SupportArtifact getConclusion() {
-        return conclusion;
+    public JenkinsStatus getJenkinsStatus() {
+        return jenkinsStatus;
     }
 
-    public String getConclusionId(){
-        return conclusion.getSupportId();
+    public String getConclusionId() {
+        return conclusionId;
     }
-    public String getConclusionArtifactPath(){
-        return conclusion.getArtifactPath();
-    }
+
     public SupportArtifact[] getSupports() {
         return supports.toArray(new SupportArtifact[supports.size()]);
     }
@@ -96,15 +94,27 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
         listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternId);
         listener.getLogger().println("Supports :"+supports);
-        listener.getLogger().println("Conclusion :"+conclusion);
+        listener.getLogger().println("Conclusion :"+ conclusionId);
 
         try {
-            new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL()).sendStep(argumentationSystemName,patternId,conclusion,supports);
-            listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
+            JenkinsStatusEnum status=build.getResult().equals(Result.SUCCESS)?JenkinsStatusEnum.OK:JenkinsStatusEnum.KO;
+            jenkinsStatus.setStatus(status);
+            if(status==JenkinsStatusEnum.OK){
+                argumentationFactoryClient.sendStep(argumentationSystemName,patternId, conclusionId, jenkinsStatus, supports);
+                listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
+
+            }
+            else{
+                listener.error("Build status : "+build.getResult().toString()+". Impossible to trace results");
+            }
+
         } catch (ResponseException e) {
-            listener.fatalError("ERROR CODE : "+e.getStatusCode()+"\n\r"+e.getReason());
+            listener.fatalError("ERROR CODE : "+e.getStatusCode());
+            listener.fatalError(e.getReason());
+            build.setResult(Result.FAILURE);
         } catch (IOException e) {
             listener.fatalError(e.getMessage());
+            build.setResult(Result.FAILURE);
         }
     }
 
@@ -117,6 +127,10 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
         return (DescriptorImpl)super.getDescriptor();
     }
 
+    @Override
+    public BuildStepMonitor getRequiredMonitorService() {
+        return BuildStepMonitor.BUILD;
+    }
 
 
     /**
@@ -128,7 +142,7 @@ public class ArgumentationFactoryBuilder extends Builder implements SimpleBuildS
      * for the actual HTML fragment for the configuration screen.
      */
     @Extension // This indicates to Jenkins that this is an implementation of an extension point.
-    public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
+    public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
         /**
          * To persist global configuration information,
          * simply store it in a field and call save().

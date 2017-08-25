@@ -1,18 +1,15 @@
 package fr.axonic.avek.engine.support;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.StimulationEvidence;
-import fr.axonic.avek.instance.evidence.SubjectEvidence;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.UUID;
 
 /**
@@ -61,7 +58,6 @@ public abstract class Support<T extends Element> implements Cloneable{
         return element;
     }
 
-
     @XmlElement
     public String getName() {
         return name;
@@ -76,6 +72,11 @@ public abstract class Support<T extends Element> implements Cloneable{
         this.id = id;
     }
 
+    @XmlTransient
+    @JsonIgnore
+    public boolean isPrimitiveInputType(){
+        return Evidence.class.isAssignableFrom(getClass());
+    }
     @Override
     public Support clone() throws CloneNotSupportedException {
         Support res= (Support) super.clone();

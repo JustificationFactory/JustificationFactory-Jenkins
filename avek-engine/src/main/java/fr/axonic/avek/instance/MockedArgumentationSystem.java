@@ -1,6 +1,5 @@
 package fr.axonic.avek.instance;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.InvalidPatternConstraint;
@@ -12,20 +11,18 @@ import fr.axonic.avek.engine.constraint.step.UniquenessConstraint;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.strategy.*;
-import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.conclusion.*;
-import fr.axonic.avek.instance.evidence.*;
-import fr.axonic.avek.instance.strategy.*;
+import fr.axonic.avek.instance.avek.conclusion.*;
+import fr.axonic.avek.instance.avek.evidence.*;
+import fr.axonic.avek.instance.avek.strategy.*;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
+import fr.axonic.avek.instance.jenkins.JenkinsArgumentationSystem;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -38,6 +35,10 @@ public class MockedArgumentationSystem {
 
     public static ArgumentationSystemAPI getAXONICArgumentationSystem() throws VerificationException, WrongEvidenceException {
         return new ArgumentationSystem(getAXONICPatternsBase(),getAXONICBaseEvidences());
+    }
+
+    public static ArgumentationSystemAPI getJenkinsArgumentationSystem() throws VerificationException, WrongEvidenceException {
+        return new JenkinsArgumentationSystem();
     }
 
     private static PatternsBase getAXONICPatternsBase(){

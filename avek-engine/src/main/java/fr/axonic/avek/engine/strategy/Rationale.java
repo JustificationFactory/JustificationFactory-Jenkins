@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.strategy;
 
-import fr.axonic.avek.instance.strategy.AXONICProject;
+import fr.axonic.avek.instance.avek.strategy.AXONICProject;
 
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;

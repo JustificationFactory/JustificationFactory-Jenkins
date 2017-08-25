@@ -1,14 +1,10 @@
 package fr.axonic.avek.engine;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.datatype.jaxrs.Jaxrs2TypesModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
@@ -16,25 +12,21 @@ import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
-import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.instance.MockedArgumentationSystem;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.Stimulation;
-import fr.axonic.avek.instance.evidence.StimulationEvidence;
-import fr.axonic.avek.instance.evidence.Subject;
-import fr.axonic.avek.instance.evidence.SubjectEvidence;
+import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.avek.evidence.Stimulation;
+import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.avek.evidence.Subject;
+import fr.axonic.avek.instance.avek.evidence.SubjectEvidence;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 

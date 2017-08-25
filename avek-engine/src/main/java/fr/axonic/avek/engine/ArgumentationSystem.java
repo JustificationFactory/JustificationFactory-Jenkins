@@ -36,10 +36,11 @@ import java.util.stream.Collectors;
 @XmlRootElement
 public class ArgumentationSystem implements ArgumentationSystemAPI {
 
-    private PatternsBase patternsBase;
-    private OutputType objective;
-    private List<SupportRole> baseEvidences = new ArrayList<>();
-    private List<Step> steps;
+    protected boolean autoSupportFill=false;
+    protected PatternsBase patternsBase;
+    protected OutputType objective;
+    protected List<SupportRole> baseEvidences = new ArrayList<>();
+    protected List<Step> steps;
     //@XmlTransient
     private final static Logger LOGGER = LoggerFactory.getLogger(ArgumentationSystem.class);
 
@@ -49,11 +50,9 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
     public ArgumentationSystem(PatternsBase patternsBase, List<SupportRole> baseEvidences) throws VerificationException, WrongEvidenceException {
         this();
-        this.patternsBase=patternsBase;
-        this.baseEvidences=baseEvidences;
+        this.patternsBase = patternsBase;
+        this.baseEvidences = baseEvidences;
     }
-
-
 
     @Override
     public Pattern getPattern(String patternId) {
@@ -111,20 +110,64 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
+        if(evidences==null || evidences.isEmpty()){
+            throw new StepBuildingException("Need evidences");
+        }
+        if(conclusion==null){
+            throw new StepBuildingException("Need a conclusion");
+        }
+        if(pattern==null){
+            throw new StepBuildingException("Need a pattern");
+        }
+
         try{
             List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(evidences);
+            if(autoSupportFill && usefulEvidences.size()!=pattern.getInputTypes().size()){
+                LOGGER.info("Missing supports. Trying to autofill");
+                List<InputType> inputTypeList=pattern.filterNotFillInput(usefulEvidences);
+                LOGGER.info("Found "+inputTypeList+ " to fill");
+                List<SupportRole> autoFillSupports=collectSupports(inputTypeList);
+                LOGGER.info("Found "+autoFillSupports+ ". Add them to supports");
+                usefulEvidences.addAll(autoFillSupports);
+            }
             Step step=pattern.createStep(usefulEvidences,conclusion.clone());
             steps.add(step);
-            LOGGER.info(step.getConclusion().toString());
+            LOGGER.info("Supports : "+ usefulEvidences);
+            LOGGER.info("Conclusion : "+ step.getConclusion());
             InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
-            baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
+
+            if(autoSupportFill){
+                baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
+                List<SupportRole> evidencesToAdd=evidences.stream().filter(supportRole -> supportRole.getSupport().isPrimitiveInputType() && !baseEvidences.contains(supportRole)).collect(Collectors.toList());
+                baseEvidences.addAll(evidencesToAdd);
+            }
             return step;
         }
-        catch (NullPointerException | CloneNotSupportedException  e){
-            throw new StepBuildingException("Unknown pattern");
+        catch (CloneNotSupportedException  e){
+            throw new StepBuildingException("Problem during step creation ",e);
         }
 
 
+    }
+
+    private List<SupportRole> collectSupports(List<InputType> inputTypes) throws StepBuildingException {
+        List<SupportRole> collected=new ArrayList<>();
+        for(InputType inputType:inputTypes){
+            for(SupportRole supportRole:baseEvidences){
+                if(inputType.getType().equals(supportRole.getSupport().getClass())){
+                    if(!collected.contains(supportRole)){
+                        collected.add(supportRole);
+                        break;
+                    }
+                }
+            }
+        }
+        LOGGER.info(collected.toString());
+        if(collected.size()!=inputTypes.size()){
+            throw new StepBuildingException("Impossible to auto fill all supports");
+        }
+
+        return collected;
     }
 
     @Override

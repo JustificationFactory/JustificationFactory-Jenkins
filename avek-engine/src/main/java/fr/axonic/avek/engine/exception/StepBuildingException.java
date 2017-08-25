@@ -7,4 +7,8 @@ public class StepBuildingException extends Exception {
     public StepBuildingException(String s) {
         super(s);
     }
+
+    public StepBuildingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

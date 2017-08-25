@@ -4,19 +4,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.support.Support;
+import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.evidence.Document;
 import fr.axonic.avek.engine.support.evidence.Element;
+import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
 import fr.axonic.avek.service.StepToCreate;
-import org.apache.commons.validator.routines.UrlValidator;
 
 import javax.ws.rs.NotFoundException;
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by cduffau on 08/08/17.
@@ -29,31 +32,58 @@ public class ArgumentationFactoryClient {
         this.serverURL = serverURL;
     }
 
-    public void sendStep(String argumentationSystem, String patternId, SupportArtifact conclusion, List<SupportArtifact> supports) throws IOException {
+    public void sendStep(String argumentationSystem, String patternId, String conclusionId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supports) throws IOException {
 
-       URL url =new URL(serverURL+argumentationSystem+"/"+patternId+"/step");
+        URL url =new URL(serverURL+argumentationSystem+"/"+patternId+"/step");
         System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         ObjectMapper mapper=new JerseyMapperProvider().getContext(null);
-        StepToCreate stepToCreate=new StepToCreate();
+        List<SupportRole> supportRoles=new ArrayList<>();
+        for(SupportArtifact supportArtifact: supports){
+            try {
+                File artifactURL=new File(supportArtifact.getArtifactPath());
+                Document document=new Document(artifactURL.getAbsolutePath());
+                Support support= (Support) Class.forName(supportArtifact.getSupportId()).getDeclaredConstructor(String.class,Document.class).newInstance(artifactURL.getName(),document);
+                supportRoles.add(new SupportRole("jenkins-artifact",support));
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Conclusion ccl= null;
+        try {
+            ccl = (Conclusion) Class.forName(conclusionId).getDeclaredConstructor(JenkinsStatus.class).newInstance(jenkinsStatus);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        StepToCreate stepToCreate=new StepToCreate(supportRoles,ccl);
         OutputStream wr = new DataOutputStream(conn.getOutputStream());
         mapper.writeValue(wr,stepToCreate);
         wr.flush();
         wr.close();
 
         if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-            String output;
-            StringBuilder reason=new StringBuilder();
-            while ((output = br.readLine()) != null) {
-                reason.append(output);
-            }
             conn.disconnect();
-            throw new ResponseException(conn.getResponseCode(),reason.toString());
+            throw new ResponseException(conn.getResponseCode(),"Server returned HTTP response code:"+conn.getResponseCode()+" for URL "+url.toString());
         }
         conn.disconnect();
 

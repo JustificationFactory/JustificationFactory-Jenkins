@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.pattern;
 
+import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.ApplicablePatternConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.StepConstructionConstraint;
@@ -12,6 +13,8 @@ import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -21,6 +24,9 @@ import java.util.List;
 
 @XmlRootElement
 public class Pattern {
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(Pattern.class);
+
 
 	private String id;
 	private String name;
@@ -71,6 +77,23 @@ public class Pattern {
 			}
 		}
 		return supportRoleList;
+	}
+	public List<InputType> filterNotFillInput(List<SupportRole> supportRoles){
+		List<InputType> usedInputTypeList =new ArrayList<>();
+		for(SupportRole supportRole : supportRoles){
+			for(InputType evidenceRoleType: inputTypes){
+				if(evidenceRoleType.check(supportRole.getSupport())){
+					if(!usedInputTypeList.contains(supportRole)){
+						usedInputTypeList.add(evidenceRoleType);
+					}
+
+				}
+			}
+		}
+		List<InputType> inputTypesRes=new ArrayList<>(this.inputTypes);
+		inputTypesRes.removeAll(usedInputTypeList);
+		LOGGER.info(inputTypesRes.toString());
+		return inputTypesRes;
 	}
 
 	public Step createStep(List<SupportRole> evidenceList, Conclusion conclusion) throws StepBuildingException, StrategyException {

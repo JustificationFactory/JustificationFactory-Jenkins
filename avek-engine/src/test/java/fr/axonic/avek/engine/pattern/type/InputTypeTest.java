@@ -3,10 +3,10 @@ package fr.axonic.avek.engine.pattern.type;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.Stimulation;
-import fr.axonic.avek.instance.evidence.StimulationEvidence;
-import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.avek.evidence.Stimulation;
+import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.avek.evidence.Subject;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Test;
 

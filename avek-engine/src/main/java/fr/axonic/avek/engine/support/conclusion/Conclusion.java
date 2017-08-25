@@ -1,12 +1,10 @@
 package fr.axonic.avek.engine.support.conclusion;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
-import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.conclusion.GeneralizationConclusion;
+import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.avek.conclusion.GeneralizationConclusion;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

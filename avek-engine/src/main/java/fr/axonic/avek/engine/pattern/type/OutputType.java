@@ -22,4 +22,8 @@ public class OutputType<T extends Conclusion> extends SupportType<T>{
 		
 		return null;
 	}
+
+	public InputType<T> transformToInput(){
+		return new InputType<>(type.getName(),type);
+	}
 }
