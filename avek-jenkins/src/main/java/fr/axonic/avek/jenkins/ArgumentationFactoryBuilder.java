@@ -10,6 +10,7 @@ import hudson.model.AbstractProject;
 import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import hudson.scm.SCM;
 import hudson.tasks.*;
 import hudson.util.FormValidation;
 import jenkins.tasks.SimpleBuildStep;
@@ -97,8 +98,9 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
         listener.getLogger().println("Conclusion :"+ conclusionId);
 
         try {
-            JenkinsStatusEnum status=build.getResult().equals(Result.SUCCESS)?JenkinsStatusEnum.OK:JenkinsStatusEnum.KO;
+            JenkinsStatusEnum status=Result.SUCCESS.equals(build.getResult())?JenkinsStatusEnum.OK:JenkinsStatusEnum.KO;
             jenkinsStatus.setStatus(status);
+            jenkinsStatus.setVersion(build.getEnvironment(listener).get("GIT_COMMIT"));
             if(status==JenkinsStatusEnum.OK){
                 argumentationFactoryClient.sendStep(argumentationSystemName,patternId, conclusionId, jenkinsStatus, supports);
                 listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
@@ -112,7 +114,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             listener.fatalError("ERROR CODE : "+e.getStatusCode());
             listener.fatalError(e.getReason());
             build.setResult(Result.FAILURE);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             listener.fatalError(e.getMessage());
             build.setResult(Result.FAILURE);
         }
@@ -243,6 +245,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             // To persist global configuration information,
             // set that to properties and call save().
             argumentationFactoryURL = formData.getString("argumentationFactoryURL");
+
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
             save();
@@ -258,6 +261,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
         public String getArgumentationFactoryURL() {
             return argumentationFactoryURL;
         }
+
     }
 }
 

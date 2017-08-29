@@ -30,7 +30,10 @@ public class JenkinsArgumentationSystem extends ArgumentationSystem{
         patternsBase.addPattern(unitPattern);
         patternsBase.addPattern(integrationPattern);
         this.patternsBase=patternsBase;
-        this.autoSupportFill=true;
+        this.autoSupportFillEnable =true;
+        this.versioningEnable=true;
 
     }
+
+
 }

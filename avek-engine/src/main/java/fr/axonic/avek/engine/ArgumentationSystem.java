@@ -5,7 +5,6 @@ import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.exception.WrongObjectiveException;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintException;
 import fr.axonic.avek.engine.constraint.graph.NoCycleConstraint;
 import fr.axonic.avek.engine.support.SupportRole;
@@ -14,8 +13,6 @@ import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.Step;
-import fr.axonic.avek.engine.strategy.Actor;
-import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
@@ -25,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -36,13 +32,14 @@ import java.util.stream.Collectors;
 @XmlRootElement
 public class ArgumentationSystem implements ArgumentationSystemAPI {
 
-    protected boolean autoSupportFill=false;
+    protected boolean autoSupportFillEnable =false;
     protected PatternsBase patternsBase;
     protected OutputType objective;
     protected List<SupportRole> baseEvidences = new ArrayList<>();
     protected List<Step> steps;
     //@XmlTransient
     private final static Logger LOGGER = LoggerFactory.getLogger(ArgumentationSystem.class);
+    protected boolean versioningEnable=false;
 
     public ArgumentationSystem() throws VerificationException, WrongEvidenceException {
         steps=new ArrayList<>();
@@ -121,26 +118,12 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         }
 
         try{
-            List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(evidences);
-            if(autoSupportFill && usefulEvidences.size()!=pattern.getInputTypes().size()){
-                LOGGER.info("Missing supports. Trying to autofill");
-                List<InputType> inputTypeList=pattern.filterNotFillInput(usefulEvidences);
-                LOGGER.info("Found "+inputTypeList+ " to fill");
-                List<SupportRole> autoFillSupports=collectSupports(inputTypeList);
-                LOGGER.info("Found "+autoFillSupports+ ". Add them to supports");
-                usefulEvidences.addAll(autoFillSupports);
-            }
+            List<SupportRole> usefulEvidences=filterUsefulSupports(pattern,evidences,conclusion);
             Step step=pattern.createStep(usefulEvidences,conclusion.clone());
             steps.add(step);
             LOGGER.info("Supports : "+ usefulEvidences);
             LOGGER.info("Conclusion : "+ step.getConclusion());
-            InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
-
-            if(autoSupportFill){
-                baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
-                List<SupportRole> evidencesToAdd=evidences.stream().filter(supportRole -> supportRole.getSupport().isPrimitiveInputType() && !baseEvidences.contains(supportRole)).collect(Collectors.toList());
-                baseEvidences.addAll(evidencesToAdd);
-            }
+            postStepCreated(step);
             return step;
         }
         catch (CloneNotSupportedException  e){
@@ -148,6 +131,32 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         }
 
 
+    }
+
+    protected void postStepCreated(Step step) throws CloneNotSupportedException, WrongEvidenceException {
+        InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
+
+        if(autoSupportFillEnable){
+            baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
+            List<SupportRole> evidencesToAdd=step.getEvidences().stream().filter(supportRole -> supportRole.getSupport().isPrimitiveInputType() && !baseEvidences.contains(supportRole)).collect(Collectors.toList());
+            baseEvidences.addAll(evidencesToAdd);
+        }
+    }
+
+    protected List<SupportRole> filterUsefulSupports(Pattern pattern, List<SupportRole> supports, Conclusion conclusion) throws StepBuildingException {
+        List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(supports);
+        if(autoSupportFillEnable && usefulEvidences.size()!=pattern.getInputTypes().size()){
+            LOGGER.info("Missing supports. Trying to autofill");
+            List<InputType> inputTypeList=pattern.filterNotFillInput(usefulEvidences);
+            LOGGER.info("Found "+inputTypeList+ " to fill");
+            List<SupportRole> autoFillSupports=collectSupports(inputTypeList);
+            LOGGER.info("Found "+autoFillSupports+ ". Add them to supports");
+            usefulEvidences.addAll(autoFillSupports);
+        }
+        if(versioningEnable){
+            usefulEvidences=usefulEvidences.stream().filter(supportRole -> supportRole.getSupport().getElement().getVersion()==null || supportRole.getSupport().getElement().getVersion().equals(conclusion.getElement().getVersion())).collect(Collectors.toList());
+        }
+        return usefulEvidences;
     }
 
     private List<SupportRole> collectSupports(List<InputType> inputTypes) throws StepBuildingException {

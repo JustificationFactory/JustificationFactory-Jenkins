@@ -13,11 +13,17 @@ public class JenkinsStatus extends Element{
 
     private JenkinsStatusEnum status;
 
-    public JenkinsStatus(JenkinsStatusEnum status) {
+
+    public JenkinsStatus(JenkinsStatusEnum status, String version) {
+        super(version);
         this.status = status;
+    }
+    public JenkinsStatus(JenkinsStatusEnum status) {
+        this(status,null);
     }
 
     public JenkinsStatus() {
+        super();
     }
 
     @XmlElement
@@ -28,4 +34,6 @@ public class JenkinsStatus extends Element{
     public void setStatus(JenkinsStatusEnum status) {
         this.status = status;
     }
+
+
 }

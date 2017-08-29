@@ -5,6 +5,7 @@ import fr.axonic.avek.instance.avek.evidence.Stimulation;
 import fr.axonic.avek.instance.avek.evidence.Subject;
 import fr.axonic.base.engine.AStructure;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -19,4 +20,22 @@ import javax.xml.bind.annotation.XmlSeeAlso;
         property = "@type")
 
 public abstract class Element extends AStructure {
+
+    private String version;
+
+    public Element(String version) {
+        this.version = version;
+    }
+
+    public Element() {
+    }
+
+    @XmlElement
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }
