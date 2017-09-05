@@ -1,14 +1,11 @@
 package fr.axonic.avek.service;
 
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
-import fr.axonic.avek.engine.pattern.Step;
-import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.StepToCreate;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 /**
  * Created by cduffau on 16/01/17.

@@ -1,6 +1,7 @@
 package fr.axonic.avek.service;
 
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
+import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;

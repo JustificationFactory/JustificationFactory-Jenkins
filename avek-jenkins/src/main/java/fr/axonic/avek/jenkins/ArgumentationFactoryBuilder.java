@@ -115,7 +115,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
                 for(SupportRole support : step.getEvidences()){
                     for(SupportArtifact artifact:supports){
                         File file=new File(artifact.getArtifactPath());
-                        if(file.getName().equals(((Document)support.getSupport().getElement()).getUrl().getValue())){
+                        if(support.getSupport() instanceof DocumentEvidence &&file.getName().equals(((Document)support.getSupport().getElement()).getUrl().getValue())){
                             SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDir(),argumentationSystemName,patternId, step.getId(),support.getSupport().getId(), artifact.getArtifactPath());
                             smbUtil.copy();
                             break;
@@ -126,7 +126,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
                 listener.getLogger().println("Copy artifacts on "+getDescriptor().getSmbDir());
             }
             else{
-                listener.error("Build status : "+build.getResult().toString()+". Impossible to trace results");
+                listener.error("Build status : "+build.getResult()+". Impossible to trace results");
             }
 
         } catch (ResponseException e) {

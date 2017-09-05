@@ -66,7 +66,7 @@ public class SupportArtifact extends AbstractDescribableImpl<SupportArtifact> {
     public static class DescriptorImpl extends Descriptor<SupportArtifact> {
         private String argumentationFactoryURL;
 
-        public String getDisplayName() { return null; }
+        public String getDisplayName() { return "Support Artifact"; }
 
         public FormValidation doCheckSupportId(@QueryParameter String value, @QueryParameter String argumentationSystemName, @QueryParameter String patternID){
             System.out.println(argumentationSystemName +", "+patternID+", "+argumentationFactoryURL);

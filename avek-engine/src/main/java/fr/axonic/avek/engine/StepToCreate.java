@@ -1,4 +1,4 @@
-package fr.axonic.avek.service;
+package fr.axonic.avek.engine;
 
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
