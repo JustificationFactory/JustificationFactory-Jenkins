@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
@@ -11,6 +12,7 @@ import fr.axonic.avek.engine.support.evidence.Document;
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
 import fr.axonic.avek.service.StepToCreate;
+import org.json.JSONObject;
 
 import javax.ws.rs.NotFoundException;
 import javax.xml.ws.http.HTTPException;
@@ -20,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by cduffau on 08/08/17.
@@ -32,10 +35,11 @@ public class ArgumentationFactoryClient {
         this.serverURL = serverURL;
     }
 
-    public void sendStep(String argumentationSystem, String patternId, String conclusionId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supports) throws IOException {
+    public Step sendStep(String argumentationSystem, String patternId, String conclusionId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supports) throws IOException {
 
         URL url =new URL(serverURL+argumentationSystem+"/"+patternId+"/step");
         System.out.println(url);
+
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -45,7 +49,7 @@ public class ArgumentationFactoryClient {
         for(SupportArtifact supportArtifact: supports){
             try {
                 File artifactURL=new File(supportArtifact.getArtifactPath());
-                Document document=new Document(artifactURL.getAbsolutePath());
+                Document document=new Document(artifactURL.getName());
                 Support support= (Support) Class.forName(supportArtifact.getSupportId()).getDeclaredConstructor(String.class,Document.class).newInstance(artifactURL.getName(),document);
                 supportRoles.add(new SupportRole("jenkins-artifact",support));
             } catch (InstantiationException e) {
@@ -85,8 +89,16 @@ public class ArgumentationFactoryClient {
             conn.disconnect();
             throw new ResponseException(conn.getResponseCode(),"Server returned HTTP response code:"+conn.getResponseCode()+" for URL "+url.toString());
         }
-        conn.disconnect();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+        return mapper.readValue(result.toString(), Step.class);
     }
 
     public List<String> getPatterns(String argumentationSystem) throws ArgumentationFactoryException{

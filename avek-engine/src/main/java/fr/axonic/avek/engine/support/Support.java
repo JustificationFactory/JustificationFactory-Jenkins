@@ -28,7 +28,7 @@ public abstract class Support<T extends Element> implements Cloneable{
     public Support(String name, T element) {
         this.name = name;
         this.element = element;
-        this.id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString().replace("-", "");
     }
     public Support() {
         this(null,null);

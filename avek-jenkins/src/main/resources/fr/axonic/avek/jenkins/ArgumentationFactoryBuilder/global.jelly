@@ -17,5 +17,9 @@
       description="Set the URL where the instance of Argumentation Factory is running">
       <f:textbox />
     </f:entry>
+    <f:entry title="Samba URL Server" field="smbDirURL"
+             description="Set the Samba server where argumentation artifacts will be stored">
+      <f:textbox />
+    </f:entry>
   </f:section>
 </j:jelly>

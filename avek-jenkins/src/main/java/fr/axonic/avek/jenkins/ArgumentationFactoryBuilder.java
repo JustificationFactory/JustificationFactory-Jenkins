@@ -1,6 +1,11 @@
 package fr.axonic.avek.jenkins;
 
 import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.support.Support;
+import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.evidence.Document;
+import fr.axonic.avek.engine.support.evidence.DocumentEvidence;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatusEnum;
 import hudson.Extension;
@@ -21,9 +26,11 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Sample {@link Builder}.
@@ -102,9 +109,21 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             jenkinsStatus.setStatus(status);
             jenkinsStatus.setVersion(build.getEnvironment(listener).get("GIT_COMMIT"));
             if(status==JenkinsStatusEnum.OK){
-                argumentationFactoryClient.sendStep(argumentationSystemName,patternId, conclusionId, jenkinsStatus, supports);
-                listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
 
+                Step step=argumentationFactoryClient.sendStep(argumentationSystemName,patternId, conclusionId, jenkinsStatus, supports);
+                listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
+                for(SupportRole support : step.getEvidences()){
+                    for(SupportArtifact artifact:supports){
+                        File file=new File(artifact.getArtifactPath());
+                        if(file.getName().equals(((Document)support.getSupport().getElement()).getUrl().getValue())){
+                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDir(),argumentationSystemName,patternId, step.getId(),support.getSupport().getId(), artifact.getArtifactPath());
+                            smbUtil.copy();
+                            break;
+                        }
+
+                    }
+                }
+                listener.getLogger().println("Copy artifacts on "+getDescriptor().getSmbDir());
             }
             else{
                 listener.error("Build status : "+build.getResult().toString()+". Impossible to trace results");
@@ -153,6 +172,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
          * If you don't want fields to be persisted, use {@code transient}.
          */
         private String argumentationFactoryURL;
+        private String smbDir;
 
         /**
          * In order to load the persisted global configuration, you have to 
@@ -184,6 +204,18 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
                 return FormValidation.warning("Please set a valid URL");
             return FormValidation.ok();
         }
+
+        public FormValidation doCheckSmbDirURL(@QueryParameter String value)
+                throws IOException, ServletException {
+            if (value.length() == 0)
+                return FormValidation.error("Please set an URL");
+            String[] schemes = {"smb"}; // DEFAULT schemes = "http", "https", "ftp"
+            UrlValidator urlValidator = new UrlValidator(schemes);
+            if (!urlValidator.isValid(value))
+                return FormValidation.warning("Please set a valid URL");
+            return FormValidation.ok();
+        }
+
         public FormValidation doCheckArgumentationSystemName(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a argumentation system");
@@ -245,6 +277,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             // To persist global configuration information,
             // set that to properties and call save().
             argumentationFactoryURL = formData.getString("argumentationFactoryURL");
+            smbDir=formData.getString("smbDirURL");
 
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
@@ -262,6 +295,9 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             return argumentationFactoryURL;
         }
 
+        public String getSmbDir() {
+            return smbDir;
+        }
     }
 }
 

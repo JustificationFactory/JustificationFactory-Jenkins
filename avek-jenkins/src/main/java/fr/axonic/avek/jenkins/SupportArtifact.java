@@ -7,12 +7,17 @@ import hudson.model.Descriptor;
 import hudson.os.SU;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import jcifs.smb.SmbFile;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 
 /**
  * Created by cduffau on 22/08/17.

@@ -38,4 +38,5 @@ public class StepToCreate {
     public void setConclusion(Conclusion conclusion) {
         this.conclusion = conclusion;
     }
+
 }

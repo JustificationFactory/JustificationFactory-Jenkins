@@ -8,10 +8,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
+import java.util.UUID;
 
 @XmlRootElement
 public class Step {
-
+	private String id;
 	private String patternId;
 	private List<SupportRole> evidences;
 	private Strategy strategy;
@@ -19,9 +20,11 @@ public class Step {
 
 
 	private Step() {
+		id= UUID.randomUUID().toString().replace("-", "");
 	}
 
 	public Step(String patternId, Strategy strategy, List<SupportRole> supportRolelist, Conclusion conclusion) {
+		this();
 		this.strategy = strategy;
 		this.evidences = supportRolelist;
 		this.conclusion = conclusion;
@@ -65,10 +68,20 @@ public class Step {
 		this.patternId = patternId;
 	}
 
+	@XmlElement
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return "Step{" +
-				"patternId='" + patternId + '\'' +
+				"id='" + id + '\'' +
+				", patternId='" + patternId + '\'' +
 				", evidences=" + evidences +
 				", strategy=" + strategy +
 				", conclusion=" + conclusion +
