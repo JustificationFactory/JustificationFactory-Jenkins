@@ -17,10 +17,6 @@
       <f:textbox />
     </f:entry>
 
-    <f:entry title="Conclusion ID" field="conclusionId">
-        <f:textbox  />
-    </f:entry>
-
   <f:entry title="Supports">
     <f:repeatable field="supports"  name="supports" minimum="1">
         <table width="100%" >

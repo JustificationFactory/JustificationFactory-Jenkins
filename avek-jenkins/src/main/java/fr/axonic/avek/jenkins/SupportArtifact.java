@@ -64,34 +64,31 @@ public class SupportArtifact extends AbstractDescribableImpl<SupportArtifact> {
 
     @Extension
     public static class DescriptorImpl extends Descriptor<SupportArtifact> {
-        private String argumentationFactoryURL;
 
         public String getDisplayName() { return "Support Artifact"; }
 
-        public FormValidation doCheckSupportId(@QueryParameter String value, @QueryParameter String argumentationSystemName, @QueryParameter String patternID){
-            System.out.println(argumentationSystemName +", "+patternID+", "+argumentationFactoryURL);
+        public FormValidation doCheckSupportId(@QueryParameter String value){
+            ArgumentationFactoryBuilder.DescriptorImpl des=new ArgumentationFactoryBuilder.DescriptorImpl();
+
+            /**System.out.println( argumentationSystemName+", "+patternID);
             if (value.length() == 0)
                 return FormValidation.error("Please set a conclusion ID");
             try {
-                Pattern pattern = new ArgumentationFactoryClient(getArgumentationFactoryURL()).getPattern(argumentationSystemName,patternID);
+                Pattern pattern = new ArgumentationFactoryClient(des.getArgumentationFactoryURL()).getPattern(argumentationSystemName,patternID);
                 if (pattern.getInputTypes().stream().noneMatch(inputType -> inputType.getType().getName().equals(value)))
                     return FormValidation.error("Unknown support ID");
             } catch (ArgumentationFactoryException e) {
                 return FormValidation.error("Please set a valid argumentation system and pattern ID");
             }
-
+            */
 
             return FormValidation.ok();
         }
-        public String getArgumentationFactoryURL() {
-            return argumentationFactoryURL;
-        }
+
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-            // To persist global configuration information,
-            // set that to properties and call save().
-            argumentationFactoryURL = formData.getString("argumentationFactoryURL");
+
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
             save();

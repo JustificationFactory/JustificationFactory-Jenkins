@@ -2,7 +2,6 @@ package fr.axonic.avek.jenkins;
 
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
-import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.evidence.Document;
 import fr.axonic.avek.engine.support.evidence.DocumentEvidence;
@@ -15,7 +14,6 @@ import hudson.model.AbstractProject;
 import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
-import hudson.scm.SCM;
 import hudson.tasks.*;
 import hudson.util.FormValidation;
 import jenkins.tasks.SimpleBuildStep;
@@ -24,13 +22,14 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Sample {@link Builder}.
@@ -50,9 +49,10 @@ import java.util.UUID;
  */
 public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuildStep{
 
+    private static final Logger LOGGER= LoggerFactory.getLogger(ArgumentationFactoryBuilder.class);
 
     private final String argumentationSystemName;
-    private final String patternId, conclusionId;
+    private final String patternId;
     private final JenkinsStatus jenkinsStatus;
     private ArgumentationFactoryClient argumentationFactoryClient;
 
@@ -60,11 +60,10 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternId, String conclusionId, SupportArtifact[] supports) {
+    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternId, SupportArtifact[] supports) {
         this.argumentationSystemName = argumentationSystemName;
         this.patternId=patternId;
         this.jenkinsStatus =new JenkinsStatus();
-        this.conclusionId=conclusionId;
         this.supports = Arrays.asList(supports);
         this.argumentationFactoryClient=new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL());
     }
@@ -73,9 +72,6 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
         return jenkinsStatus;
     }
 
-    public String getConclusionId() {
-        return conclusionId;
-    }
 
     public SupportArtifact[] getSupports() {
         return supports.toArray(new SupportArtifact[supports.size()]);
@@ -102,7 +98,6 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
         listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
         listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternId);
         listener.getLogger().println("Supports :"+supports);
-        listener.getLogger().println("Conclusion :"+ conclusionId);
 
         try {
             JenkinsStatusEnum status=Result.SUCCESS.equals(build.getResult())?JenkinsStatusEnum.OK:JenkinsStatusEnum.KO;
@@ -110,20 +105,20 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             jenkinsStatus.setVersion(build.getEnvironment(listener).get("GIT_COMMIT"));
             if(status==JenkinsStatusEnum.OK){
 
-                Step step=argumentationFactoryClient.sendStep(argumentationSystemName,patternId, conclusionId, jenkinsStatus, supports);
+                Step step=argumentationFactoryClient.sendStep(argumentationSystemName,patternId, jenkinsStatus, supports);
                 listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
                 for(SupportRole support : step.getEvidences()){
                     for(SupportArtifact artifact:supports){
                         File file=new File(artifact.getArtifactPath());
                         if(support.getSupport() instanceof DocumentEvidence &&file.getName().equals(((Document)support.getSupport().getElement()).getUrl().getValue())){
-                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDir(),argumentationSystemName,patternId, step.getId(),support.getSupport().getId(), artifact.getArtifactPath());
+                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDirURL(),argumentationSystemName,patternId, step.getId(),support.getSupport().getId(), artifact.getArtifactPath());
                             smbUtil.copy();
                             break;
                         }
 
                     }
                 }
-                listener.getLogger().println("Copy artifacts on "+getDescriptor().getSmbDir());
+                listener.getLogger().println("Copy artifacts on "+getDescriptor().getSmbDirURL());
             }
             else{
                 listener.error("Build status : "+build.getResult()+". Impossible to trace results");
@@ -172,7 +167,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
          * If you don't want fields to be persisted, use {@code transient}.
          */
         private String argumentationFactoryURL;
-        private String smbDir;
+        private String smbDirURL;
 
         /**
          * In order to load the persisted global configuration, you have to 
@@ -245,21 +240,6 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             return FormValidation.ok();
         }
 
-        public FormValidation doCheckConclusionId(@QueryParameter String value, @QueryParameter String argumentationSystemName, @QueryParameter String patternId){
-            if (value.length() == 0)
-                return FormValidation.error("Please set a conclusion ID");
-            try {
-               Pattern pattern = new ArgumentationFactoryClient(getArgumentationFactoryURL()).getPattern(argumentationSystemName,patternId);
-                if (!pattern.getOutputType().getType().getName().equals(value))
-                    return FormValidation.error("Unknown conclusion ID");
-            } catch (ArgumentationFactoryException e) {
-                return FormValidation.error("Please set a valid argumentation system and pattern ID");
-            }
-
-
-            return FormValidation.ok();
-        }
-
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
             // Indicates that this builder can be used with all kinds of project types 
             return true;
@@ -277,8 +257,8 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             // To persist global configuration information,
             // set that to properties and call save().
             argumentationFactoryURL = formData.getString("argumentationFactoryURL");
-            smbDir=formData.getString("smbDirURL");
-
+            smbDirURL =formData.getString("smbDirURL");
+            LOGGER.info(formData.toString());
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
             save();
@@ -295,8 +275,8 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             return argumentationFactoryURL;
         }
 
-        public String getSmbDir() {
-            return smbDir;
+        public String getSmbDirURL() {
+            return smbDirURL;
         }
     }
 }

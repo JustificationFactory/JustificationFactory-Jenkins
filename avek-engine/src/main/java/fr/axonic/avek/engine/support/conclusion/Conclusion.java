@@ -21,11 +21,12 @@ public class Conclusion<T extends Element> extends Support<T> implements Cloneab
 	}
 
 	public Conclusion() {
+		super();
 		restrictions=new ArrayList<>();
 	}
 	
-	public Conclusion(Object o) {
-		// TODO Auto-generated constructor stub
+	public Conclusion(T element) {
+		this(null,element);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package fr.axonic.avek.jenkins;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.engine.ArgumentationSystem;
+import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.support.Support;
@@ -36,7 +37,7 @@ public class ArgumentationFactoryClient {
         this.serverURL = serverURL;
     }
 
-    public Step sendStep(String argumentationSystem, String patternId, String conclusionId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supports) throws IOException {
+    public Step sendStep(String argumentationSystem, String patternId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supports) throws IOException {
 
         URL url =new URL(serverURL+argumentationSystem+"/"+patternId+"/step");
         LOGGER.info("Call URL "+url);
@@ -60,8 +61,9 @@ public class ArgumentationFactoryClient {
         }
         Conclusion ccl= null;
         try {
-            ccl = (Conclusion) Class.forName(conclusionId).getDeclaredConstructor(JenkinsStatus.class).newInstance(jenkinsStatus);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+            Pattern pattern=getPattern(argumentationSystem,patternId);
+            ccl=pattern.getOutputType().create(null,jenkinsStatus);
+        } catch (ArgumentationFactoryException | StepBuildingException e) {
             LOGGER.error(e.toString());
         }
         StepToCreate stepToCreate=new StepToCreate(supportRoles,ccl);

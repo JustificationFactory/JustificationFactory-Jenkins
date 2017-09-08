@@ -11,12 +11,8 @@ public class JenkinsConclusion extends Conclusion<JenkinsStatus> {
 
     }
 
-
     public JenkinsConclusion() {
         super();
     }
 
-    public JenkinsConclusion(String name) {
-        super(name,null);
-    }
 }
