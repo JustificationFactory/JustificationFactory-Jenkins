@@ -1,5 +1,6 @@
 package fr.axonic.avek.service;
 
+import fr.axonic.avek.dao.ArgumentationSystemsDAO;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.StepBuildingException;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,11 +31,17 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     static {
         argumentationSystems=new HashMap<>();
         try {
-            argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
-            LOGGER.info("AXONIC Argumentation System added");
-            argumentationSystems.put("Jenkins", MockedArgumentationSystem.getJenkinsArgumentationSystem());
-            LOGGER.info("Jenkins Argumentation System added");
-        } catch (VerificationException | WrongEvidenceException e) {
+            argumentationSystems= ArgumentationSystemsDAO.loadArgumentationSystems();
+
+           if(argumentationSystems.get("AXONIC")==null) {
+               argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
+               LOGGER.info("AXONIC Argumentation System added");
+           }
+           if(argumentationSystems.get("Jenkins")==null){
+               argumentationSystems.put("Jenkins", MockedArgumentationSystem.getJenkinsArgumentationSystem());
+               LOGGER.info("Jenkins Argumentation System added");
+           }
+        } catch (VerificationException | WrongEvidenceException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -45,6 +53,12 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     public Response registerArgumentationSystem(ArgumentationSystemAPI argumentationSystem) {
         String id =UUID.randomUUID().toString();
         argumentationSystems.put(id,argumentationSystem);
+        try {
+            ArgumentationSystemsDAO.saveArgumentationSystem(id,argumentationSystem);
+        } catch (IOException e) {
+            LOGGER.error(e.toString());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(id).build();
+        }
         LOGGER.info(id+" Argumentation System added");
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
@@ -55,8 +69,34 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to remove");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
         }
+        try {
+            ArgumentationSystemsDAO.removeArgumentationSystem(argumentationSystemId);
+        } catch (IOException e) {
+            LOGGER.error(e.toString());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystemId).build();
+        }
         LOGGER.info(argumentationSystemId+" Argumentation System removed");
         return Response.status(Response.Status.OK).build();
+    }
+
+    @Override
+    public Response removeStepsInArgumentationSystem(String argumentationSystemId) {
+        ArgumentationSystemAPI argumentationSystem = argumentationSystems.get(argumentationSystemId);
+        if(argumentationSystem==null){
+            LOGGER.warn("Unknown "+argumentationSystemId+", impossible to remove");
+            return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
+        }
+        else {
+            argumentationSystem.removeSteps();
+            try {
+                ArgumentationSystemsDAO.saveArgumentationSystem(argumentationSystemId,argumentationSystem);
+            } catch (IOException e) {
+                LOGGER.error(e.toString());
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystemId).build();
+            }
+            LOGGER.info(argumentationSystemId+" Argumentation System steps removed");
+            return Response.status(Response.Status.OK).build();
+        }
     }
 
     @Override
@@ -111,6 +151,12 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
         try {
             Step res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),step.getSupports(),step.getConclusion());
             LOGGER.info("Step created on "+argumentationSystem+" with pattern "+pattern);
+            try {
+                ArgumentationSystemsDAO.saveArgumentationSystem(argumentationSystem,argumentationSystems.get(argumentationSystem));
+            } catch (IOException e) {
+                LOGGER.error(e.toString());
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystem).build();
+            }
             return Response.status(Response.Status.CREATED).entity(res).build();
         } catch (StepBuildingException | WrongEvidenceException | StrategyException e) {
             LOGGER.error("Error during Step creation on "+argumentationSystem+" with pattern "+pattern);

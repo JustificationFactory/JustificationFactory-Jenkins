@@ -39,4 +39,6 @@ public interface ArgumentationSystemAPI {
     boolean validate();
 
     void resolveHypothesis(Step step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException;
+
+    void removeSteps();
 }

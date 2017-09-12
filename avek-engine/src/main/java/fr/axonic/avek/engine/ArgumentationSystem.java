@@ -216,6 +216,12 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
         }
     }
+
+    @Override
+    public void removeSteps() {
+        steps.clear();
+    }
+
     @Override
     public String toString() {
         return "ArgumentationSystem{" +

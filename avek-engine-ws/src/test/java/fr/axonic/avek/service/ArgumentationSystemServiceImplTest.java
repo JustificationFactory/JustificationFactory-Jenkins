@@ -2,7 +2,7 @@ package fr.axonic.avek.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.axonic.avek.JerseyMapperProvider;
+import fr.axonic.avek.dao.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;

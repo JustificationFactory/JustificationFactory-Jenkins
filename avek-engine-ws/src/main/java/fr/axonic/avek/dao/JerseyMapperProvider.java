@@ -1,4 +1,4 @@
-package fr.axonic.avek;
+package fr.axonic.avek.dao;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;

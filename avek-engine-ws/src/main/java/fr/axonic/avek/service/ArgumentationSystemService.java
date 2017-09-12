@@ -22,6 +22,12 @@ public interface ArgumentationSystemService {
     @Path("/{argumentation_system_id}")
     Response removeArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
 
+    @DELETE
+    @Path("/{argumentation_system_id}/steps")
+    Response removeStepsInArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
+
+
+
     @GET
     @Path("/systems")
     @Produces(MediaType.APPLICATION_JSON)
