@@ -34,7 +34,7 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
             argumentationSystems= ArgumentationSystemsDAO.loadArgumentationSystems();
 
            if(argumentationSystems.get("AXONIC")==null) {
-               argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
+               //argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
                LOGGER.info("AXONIC Argumentation System added");
            }
            if(argumentationSystems.get("Jenkins")==null){
@@ -61,6 +61,13 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
         }
         LOGGER.info(id+" Argumentation System added");
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
+    }
+
+    @Override
+    public Response registerPattern(String argumentationSystemId, Pattern pattern) {
+        ArgumentationSystemAPI argumentationSystem=argumentationSystems.get(argumentationSystemId);
+        argumentationSystem.addPattern(pattern);
+        return Response.status(Response.Status.ACCEPTED).entity(pattern.getId()).build();
     }
 
     @Override

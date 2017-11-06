@@ -57,6 +57,11 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     @Override
+    public void addPattern(Pattern pattern) {
+        patternsBase.addPattern(pattern);
+    }
+
+    @Override
     @XmlElement
     @XmlElementWrapper
     public List<SupportRole> getBaseEvidences() {

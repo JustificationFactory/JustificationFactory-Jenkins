@@ -2,6 +2,7 @@ package fr.axonic.avek.service;
 
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
+import fr.axonic.avek.engine.pattern.Pattern;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +18,13 @@ public interface ArgumentationSystemService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     Response registerArgumentationSystem(@QueryParam("argumentation_system") ArgumentationSystemAPI argumentationSystem);
+
+    @POST
+    @Path("/{argumentation_system_id}/pattern")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    Response registerPattern(@PathParam("argumentation_system_id") String argumentationSystemId, @QueryParam("pattern")Pattern pattern);
+
 
     @DELETE
     @Path("/{argumentation_system_id}")

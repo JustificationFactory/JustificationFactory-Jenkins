@@ -26,6 +26,8 @@ public interface ArgumentationSystemAPI {
 
     Pattern getPattern(String patternId);
 
+    void addPattern( Pattern pattern);
+
     List<SupportRole> getBaseEvidences();
 
     Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
