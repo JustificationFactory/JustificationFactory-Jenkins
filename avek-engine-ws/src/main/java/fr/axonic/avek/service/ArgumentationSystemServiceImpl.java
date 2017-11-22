@@ -34,7 +34,7 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
             argumentationSystems= ArgumentationSystemsDAO.loadArgumentationSystems();
 
            if(argumentationSystems.get("AXONIC")==null) {
-               //argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
+               argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
                LOGGER.info("AXONIC Argumentation System added");
            }
            if(argumentationSystems.get("Jenkins")==null){
