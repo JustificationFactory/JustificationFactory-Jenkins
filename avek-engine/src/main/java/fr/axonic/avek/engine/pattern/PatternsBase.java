@@ -73,7 +73,8 @@ public class PatternsBase {
     @Override
     public String toString() {
         return "PatternsBase{" +
-                "patterns=" + patterns +
+                "type"+patternsBaseType.toString()+
+                ", patterns=" + patterns +
                 ", constraints=" + constraints +
                 '}';
     }
