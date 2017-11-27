@@ -18,20 +18,22 @@ import java.util.stream.Collectors;
 @XmlRootElement
 public class PatternsBase {
 
+    private PatternsBaseType patternsBaseType;
     private List<Pattern> patterns;
     private List<ArgumentationSystemConstraint> constraints;
 
-    public PatternsBase(List<Pattern> patterns, List<ArgumentationSystemConstraint> constraints) {
+    public PatternsBase(PatternsBaseType patternsBaseType,List<Pattern> patterns, List<ArgumentationSystemConstraint> constraints) {
         this.patterns = patterns;
         this.constraints = constraints;
+        this.patternsBaseType=patternsBaseType;
     }
 
     public PatternsBase() {
-        this(new ArrayList<>(), new ArrayList<>());
+        this(PatternsBaseType.LIST_OF_PATTERNS,new ArrayList<>(), new ArrayList<>());
     }
 
     public PatternsBase(List<Pattern> patterns) {
-        this(patterns, new ArrayList<>());
+        this(PatternsBaseType.LIST_OF_PATTERNS,patterns, new ArrayList<>());
     }
 
     public List<String> getPossiblePatterns(List<SupportRole> supportRoles) {
@@ -74,5 +76,14 @@ public class PatternsBase {
                 "patterns=" + patterns +
                 ", constraints=" + constraints +
                 '}';
+    }
+
+    @XmlElement
+    public PatternsBaseType getPatternsBaseType() {
+        return patternsBaseType;
+    }
+
+    public void setPatternsBaseType(PatternsBaseType patternsBaseType) {
+        this.patternsBaseType = patternsBaseType;
     }
 }
