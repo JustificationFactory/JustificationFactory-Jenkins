@@ -24,8 +24,8 @@ public class JenkinsArgumentationSystem extends ArgumentationSystem{
         InputType<DocumentEvidence> documentType=new InputType<>("document",DocumentEvidence.class);
         OutputType<UnitTestJenkinsConclusion> utType=new OutputType<>(UnitTestJenkinsConclusion.class);
         OutputType<IntegrationTestJenkinsConclusion> itType=new OutputType<>(IntegrationTestJenkinsConclusion.class);
-        Pattern unitPattern=new Pattern("unit-test","Unit Test Pattern", new JenkinsStrategy(),Arrays.asList(documentType),utType);
-        Pattern integrationPattern=new Pattern("integration-test","Integration pattern", new JenkinsStrategy(), Arrays.asList(documentType,utType.transformToInput()),itType);
+        Pattern unitPattern=new Pattern("unit-test","Unit Test Pattern", new JenkinsStrategy("Validate unit tests"),Arrays.asList(documentType),utType);
+        Pattern integrationPattern=new Pattern("integration-test","Integration pattern", new JenkinsStrategy("Validate integration tests"), Arrays.asList(documentType,utType.transformToInput()),itType);
 
         patternsBase.addPattern(unitPattern);
         patternsBase.addPattern(integrationPattern);
