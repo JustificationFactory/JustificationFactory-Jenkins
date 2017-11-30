@@ -11,6 +11,7 @@ import fr.axonic.avek.engine.constraint.step.UniquenessConstraint;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.PatternsBaseType;
 import fr.axonic.avek.engine.strategy.*;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
@@ -78,7 +79,7 @@ public class MockedArgumentationSystem {
         argumentationSystemConstraints.add(new NoHypothesisConstraint());
         argumentationSystemConstraints.add(new RelatedArgumentationSystemConstraint());
         patterns.add(treat);
-        return new PatternsBase(patterns, argumentationSystemConstraints);
+        return new PatternsBase(PatternsBaseType.LIST_OF_PATTERNS, patterns, argumentationSystemConstraints);
 
 
     }
