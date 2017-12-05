@@ -8,4 +8,6 @@ import fr.axonic.avek.instance.avek.strategy.AXONICProject;
  */
 @JsonDeserialize(as= AXONICProject.class)
 public interface Project {
+
+    String name();
 }

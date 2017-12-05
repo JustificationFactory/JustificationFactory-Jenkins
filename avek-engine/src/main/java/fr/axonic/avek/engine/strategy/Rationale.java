@@ -2,9 +2,7 @@ package fr.axonic.avek.engine.strategy;
 
 import fr.axonic.avek.instance.avek.strategy.AXONICProject;
 
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by cduffau on 26/10/16.
@@ -51,5 +49,13 @@ public class Rationale<P extends Project> {
     @Override
     public int hashCode() {
         return project != null ? project.hashCode() : 0;
+    }
+
+    @XmlElement
+    public String getName() {
+        return project.name();
+    }
+
+    private void setName(String name) {
     }
 }

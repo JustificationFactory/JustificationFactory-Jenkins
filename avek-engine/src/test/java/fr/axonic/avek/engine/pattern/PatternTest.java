@@ -33,6 +33,10 @@ public class PatternTest {
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
         class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
@@ -54,8 +58,12 @@ public class PatternTest {
         InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
 
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
@@ -77,8 +85,12 @@ public class PatternTest {
         InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
         //rtSubject.setOptional(true);
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
@@ -98,8 +110,12 @@ public class PatternTest {
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
 
         //Revoir car ici on a un singleton...
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject, rtSubject2}), conclusionExperimentationType);
@@ -125,8 +141,12 @@ public class PatternTest {
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
 
         //Revoir car ici on a un singleton...
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject, rtSubject2}), conclusionExperimentationType);
@@ -151,8 +171,12 @@ public class PatternTest {
         InputType<SubjectEvidence> rtResult = new InputType<>("subject", SubjectEvidence.class);
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
 
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
@@ -170,8 +194,12 @@ public class PatternTest {
         InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
 
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
@@ -193,8 +221,12 @@ public class PatternTest {
         OutputType<ExperimentationConclusion> conclusionExperimentationType = new OutputType<>(ExperimentationConclusion.class);
 
         //Revoir car ici on a un singleton...
-        class TestProject implements Project{
+        class TestProject implements Project {
 
+            @Override
+            public String name() {
+                return "test";
+            }
         }
         Strategy ts = new TreatStrategy(new Rationale<>(new TestProject()), null);
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);

@@ -65,4 +65,9 @@ public class AXONICProject implements Project{
                 ", pathology=" + pathology +
                 '}';
     }
+
+    @Override
+    public String name() {
+        return stimulator + "for "+pathology;
+    }
 }
