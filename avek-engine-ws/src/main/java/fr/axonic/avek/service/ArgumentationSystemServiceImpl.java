@@ -1,6 +1,7 @@
 package fr.axonic.avek.service;
 
 import fr.axonic.avek.dao.ArgumentationSystemsDAO;
+import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.StepBuildingException;
@@ -50,7 +51,7 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     }
 
     @Override
-    public Response registerArgumentationSystem(ArgumentationSystemAPI argumentationSystem) {
+    public Response registerArgumentationSystem(ArgumentationSystem argumentationSystem) {
         String id =UUID.randomUUID().toString();
         argumentationSystems.put(id,argumentationSystem);
         try {

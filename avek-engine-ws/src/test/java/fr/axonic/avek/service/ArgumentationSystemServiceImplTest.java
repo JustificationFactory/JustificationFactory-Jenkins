@@ -4,6 +4,7 @@ package fr.axonic.avek.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.axonic.avek.dao.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
+import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
@@ -120,5 +121,15 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         //assertEquals(step.getConclusion(),experimentation0);
 
     }
+    @Test
+    public void testRegisterArgumentationSystem() throws VerificationException, WrongEvidenceException {
+        ArgumentationSystemAPI argumentationSystem=new ArgumentationSystem();
+        Response argSystem=target("/argumentation/system").request().post(Entity.json(argumentationSystem));
+        assertNotNull(argSystem);
+        assertEquals(argSystem.getStatusInfo(), Response.Status.ACCEPTED);
+        String system=argSystem.readEntity(String.class);
+        assertNotNull(system);
+    }
+
 
 }
