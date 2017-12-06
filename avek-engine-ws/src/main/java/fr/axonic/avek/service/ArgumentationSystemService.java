@@ -1,5 +1,6 @@
 package fr.axonic.avek.service;
 
+import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.pattern.Pattern;
@@ -17,7 +18,7 @@ public interface ArgumentationSystemService {
     @Path("/system")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response registerArgumentationSystem(ArgumentationSystemAPI argumentationSystem);
+    Response registerArgumentationSystem(ArgumentationSystem argumentationSystem);
 
     @POST
     @Path("/{argumentation_system_id}/pattern")
