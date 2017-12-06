@@ -17,13 +17,13 @@ public interface ArgumentationSystemService {
     @Path("/system")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response registerArgumentationSystem(@QueryParam("argumentation_system") ArgumentationSystemAPI argumentationSystem);
+    Response registerArgumentationSystem(ArgumentationSystemAPI argumentationSystem);
 
     @POST
     @Path("/{argumentation_system_id}/pattern")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response registerPattern(@PathParam("argumentation_system_id") String argumentationSystemId, @QueryParam("pattern")Pattern pattern);
+    Response registerPattern(@PathParam("argumentation_system_id") String argumentationSystemId, Pattern pattern);
 
 
     @DELETE
