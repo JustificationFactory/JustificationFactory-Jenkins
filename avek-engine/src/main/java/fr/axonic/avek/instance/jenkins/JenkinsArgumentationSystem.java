@@ -6,7 +6,7 @@ import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.pattern.type.OutputType;
-import fr.axonic.avek.engine.support.evidence.DocumentEvidence;
+import fr.axonic.avek.engine.support.instance.DocumentEvidence;
 import fr.axonic.avek.instance.jenkins.conclusion.IntegrationTestJenkinsConclusion;
 import fr.axonic.avek.instance.jenkins.conclusion.UnitTestJenkinsConclusion;
 import fr.axonic.validation.exception.VerificationException;

@@ -1,5 +1,6 @@
 package fr.axonic.avek.service;
 
+import fr.axonic.avek.ArtifactType;
 import fr.axonic.avek.dao.ArgumentationSystemsDAO;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
@@ -9,14 +10,19 @@ import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.support.Support;
+import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.validation.exception.VerificationException;
 
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -173,5 +179,24 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
         }
 
 
+    }
+
+    @Override
+    public Response getArtifactTypes(String artifact) {
+        ArtifactType artifactType=ArtifactType.valueOf(artifact.toUpperCase());
+        Reflections reflections = new Reflections("fr.axonic.avek");
+        List<Class> classes=new ArrayList<>();
+        for(Class clas : artifactType.getClasses()){
+            Set<Class<? extends Evidence>> classs =
+                    reflections.getSubTypesOf(clas);
+            for(Class c:classs ){
+                if(!Modifier.isAbstract(c.getModifiers())){
+                    classes.add(c);
+                }
+            }
+
+        }
+
+        return Response.status(Response.Status.OK).entity(classes).build();
     }
 }

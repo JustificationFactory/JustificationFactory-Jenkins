@@ -1,5 +1,6 @@
 package fr.axonic.avek.service;
 
+import fr.axonic.avek.ArtifactType;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
@@ -34,7 +35,6 @@ public interface ArgumentationSystemService {
     Response removeStepsInArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
 
 
-
     @GET
     @Path("/systems")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,10 +57,22 @@ public interface ArgumentationSystemService {
 
 
     @POST
-    @Path("{argumentation_system_id}/{pattern_id}/step")
+    @Path("/{argumentation_system_id}/{pattern_id}/step")
     //@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Response constructStep(@PathParam("argumentation_system_id") String argumentationSystem, @PathParam("pattern_id") String pattern, StepToCreate step);
+
+    /**
+     *
+     * @param artifact a valid ArtifactType
+     * @return a response
+     * @see ArtifactType
+     */
+    @GET
+    //@Path("{argumentation_system_id}/support/types")
+    @Path("/{argumentation_artifact}/types")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getArtifactTypes(@PathParam("argumentation_artifact") String artifact);
 
 }

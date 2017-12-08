@@ -1,10 +1,9 @@
 package fr.axonic.avek.jenkins;
 
-import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.evidence.Document;
-import fr.axonic.avek.engine.support.evidence.DocumentEvidence;
+import fr.axonic.avek.engine.support.instance.DocumentEvidence;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatusEnum;
 import hudson.Extension;

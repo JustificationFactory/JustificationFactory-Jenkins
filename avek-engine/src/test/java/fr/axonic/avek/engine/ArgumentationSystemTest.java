@@ -10,7 +10,7 @@ import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Document;
-import fr.axonic.avek.engine.support.evidence.DocumentEvidence;
+import fr.axonic.avek.engine.support.instance.DocumentEvidence;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
