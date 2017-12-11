@@ -57,17 +57,22 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
     }
 
     @Override
-    public Response registerArgumentationSystem(ArgumentationSystem argumentationSystem) {
-        String id =UUID.randomUUID().toString();
-        argumentationSystems.put(id,argumentationSystem);
+    public Response registerArgumentationSystem(String name, ArgumentationSystem argumentationSystem) {
+        argumentationSystems.put(name,argumentationSystem);
         try {
-            ArgumentationSystemsDAO.saveArgumentationSystem(id,argumentationSystem);
+            ArgumentationSystemsDAO.saveArgumentationSystem(name,argumentationSystem);
         } catch (IOException e) {
             LOGGER.error(e.toString());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(id).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(name).build();
         }
-        LOGGER.info(id+" Argumentation System added");
-        return Response.status(Response.Status.ACCEPTED).entity(id).build();
+        LOGGER.info(name+" Argumentation System added");
+        return Response.status(Response.Status.ACCEPTED).entity(name).build();
+    }
+
+    @Override
+    public Response registerArgumentationSystem(ArgumentationSystem argumentationSystem) {
+        String id =UUID.randomUUID().toString();
+        return registerArgumentationSystem(id,argumentationSystem);
     }
 
     @Override

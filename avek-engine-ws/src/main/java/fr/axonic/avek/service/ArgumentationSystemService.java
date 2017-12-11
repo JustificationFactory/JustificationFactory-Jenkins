@@ -15,6 +15,12 @@ import javax.ws.rs.core.Response;
  */
 public interface ArgumentationSystemService {
 
+
+    @POST
+    @Path("/system/{argumentation_system_name}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    Response registerArgumentationSystem(@PathParam("argumentation_system_name") String name,ArgumentationSystem argumentationSystem);
+
     @POST
     @Path("/system")
     @Consumes(MediaType.APPLICATION_JSON)
