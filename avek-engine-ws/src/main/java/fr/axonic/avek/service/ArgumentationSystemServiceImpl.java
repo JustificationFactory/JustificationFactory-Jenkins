@@ -1,7 +1,11 @@
 package fr.axonic.avek.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 import fr.axonic.avek.ArtifactType;
 import fr.axonic.avek.dao.ArgumentationSystemsDAO;
+import fr.axonic.avek.dao.JerseyMapperProvider;
 import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.ArgumentationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
@@ -14,6 +18,7 @@ import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.MockedArgumentationSystem;
+import fr.axonic.base.engine.AStructure;
 import fr.axonic.validation.exception.VerificationException;
 
 import org.reflections.Reflections;
@@ -22,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -204,4 +210,21 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
 
         return Response.status(Response.Status.OK).entity(classes).build();
     }
+
+    @Override
+    public Response getTypeContent(String type) {
+        try {
+            Class clas=Class.forName(type);
+            JerseyMapperProvider jerseyMapperProvider=new JerseyMapperProvider();
+            JsonSchema schema=jerseyMapperProvider.getContext(null).generateJsonSchema(clas);
+
+            return Response.status(Response.Status.OK).entity(jerseyMapperProvider.getContext(null).writerWithDefaultPrettyPrinter().writeValueAsString(schema)).build();
+
+        } catch (ClassNotFoundException | JsonProcessingException e) {
+            LOGGER.error(e.toString());
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity(e.getStackTrace()).build();
+
+        }
+    }
+
 }

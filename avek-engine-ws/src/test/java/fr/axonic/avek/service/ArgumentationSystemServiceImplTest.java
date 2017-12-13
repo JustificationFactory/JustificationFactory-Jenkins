@@ -14,6 +14,7 @@ import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.engine.support.instance.DocumentEvidence;
 import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.avek.evidence.Stimulation;
 import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
@@ -31,6 +32,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
@@ -128,6 +130,15 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         assertNotNull(argSystem);
         assertEquals(argSystem.getStatusInfo(), Response.Status.ACCEPTED);
         String system=argSystem.readEntity(String.class);
+        assertNotNull(system);
+    }
+
+    @Test
+    public void testGetTypeContent() throws VerificationException, WrongEvidenceException {
+        Response fields=target("argumentation/type").queryParam("type", DocumentEvidence.class.getName()).request().get();
+        assertNotNull(fields);
+        assertEquals(fields.getStatusInfo(), Response.Status.OK);
+        String system=fields.readEntity(String.class);
         assertNotNull(system);
     }
 

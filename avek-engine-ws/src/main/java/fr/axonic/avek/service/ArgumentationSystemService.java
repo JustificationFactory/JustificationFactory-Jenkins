@@ -81,4 +81,10 @@ public interface ArgumentationSystemService {
     @Produces(MediaType.APPLICATION_JSON)
     Response getArtifactTypes(@PathParam("argumentation_artifact") String artifact);
 
+
+    @GET
+    @Path("/type")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getTypeContent(@QueryParam("type") String type);
+
 }
