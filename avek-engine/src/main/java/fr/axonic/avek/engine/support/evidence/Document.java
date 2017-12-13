@@ -11,28 +11,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Document extends Element{
 
-    private AString url;
+    private String url;
 
     public Document(String url) {
         super();
-        this.url = new AString();
-        try {
-            this.url.setValue(url);
-        } catch (VerificationException e) {
-            e.printStackTrace();
-        }
+        this.url=url;
         super.init();
     }
 
-    public Document() {
-        this.url=new AString();
+    public Document(){
     }
 
-    public AString getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(AString url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
