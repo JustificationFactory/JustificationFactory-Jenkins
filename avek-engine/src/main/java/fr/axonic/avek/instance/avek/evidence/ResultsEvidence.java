@@ -9,4 +9,8 @@ public class ResultsEvidence extends Evidence<Result>{
     public ResultsEvidence(String name, Result element) {
         super(name, element);
     }
+
+    public ResultsEvidence() {
+        super();
+    }
 }

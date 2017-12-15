@@ -14,6 +14,8 @@ import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.type.SupportType;
+import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
@@ -209,6 +211,27 @@ public class ArgumentationSystemServiceImpl implements ArgumentationSystemServic
         }
 
         return Response.status(Response.Status.OK).entity(classes).build();
+    }
+
+    @Override
+    public Response getArtifactTypesUsable(String argumentationSystem) {
+        List<Pattern> patterns=argumentationSystems.get(argumentationSystem).getPatternsBase().getPatterns();
+        Set<Class> humanClasses=new HashSet<>();
+        Set<Class> computedClasses=new HashSet<>();
+        for(Pattern pattern:patterns){
+            if(pattern.getStrategy() instanceof HumanStrategy){
+                humanClasses.addAll(pattern.getInputTypes().stream().map(SupportType::getType).collect(Collectors.toList()));
+                humanClasses.add(pattern.getOutputType().getType());
+            }
+            else {
+                computedClasses.addAll(pattern.getInputTypes().stream().map(SupportType::getType).collect(Collectors.toList()));
+                computedClasses.add(pattern.getOutputType().getType());
+            }
+        }
+        Map<ArtifactType,Set<Class>> res=new EnumMap<>(ArtifactType.class);
+        res.put(ArtifactType.HUMAN_STRATEGY,humanClasses);
+        res.put(ArtifactType.COMPUTED_STRATEGY,computedClasses);
+        return Response.status(Response.Status.OK).entity(res).build();
     }
 
     @Override

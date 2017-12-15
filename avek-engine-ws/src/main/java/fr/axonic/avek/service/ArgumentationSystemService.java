@@ -76,10 +76,15 @@ public interface ArgumentationSystemService {
      * @see ArtifactType
      */
     @GET
-    //@Path("{argumentation_system_id}/support/types")
-    @Path("/{argumentation_artifact}/types")
+    @Path("/types/{argumentation_artifact}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getArtifactTypes(@PathParam("argumentation_artifact") String artifact);
+
+
+    @GET
+    @Path("/{argumentation_system_id}/types")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getArtifactTypesUsable(@PathParam("argumentation_system_id") String argumentationSystem);
 
 
     @GET

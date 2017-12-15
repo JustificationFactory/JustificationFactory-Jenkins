@@ -6,6 +6,7 @@ import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,10 @@ public enum ArtifactType {
         classes=Arrays.asList(supportClass);
     }
 
+    ArtifactType() {
+    }
 
+    @XmlTransient
     public List<Class> getClasses() {
         return classes;
     }
