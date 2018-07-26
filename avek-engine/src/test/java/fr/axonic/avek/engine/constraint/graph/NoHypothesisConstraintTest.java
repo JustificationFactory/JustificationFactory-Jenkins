@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
@@ -19,20 +19,20 @@ public class NoHypothesisConstraintTest extends PatternConstraintTest{
     @Test
     public void testNoHypothesis(){
         ArgumentationSystemConstraint argumentationSystemConstraint =new NoHypothesisConstraint();
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
+        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
     public void testWithHypothesis(){
         ArgumentationSystemConstraint argumentationSystemConstraint =new NoHypothesisConstraint();
 
-        List<Step> stepList=argumentationSystem.getSteps();
-        Step hyp=stepList.get(0);
-        List<SupportRole> supportRoles =hyp.getEvidences();
+        List<JustificationStep> stepList=argumentationSystem.getJustificationDiagram().getSteps();
+        JustificationStep hyp=stepList.get(0);
+        List<SupportRole> supportRoles =hyp.getSupports();
         SupportRole supportRole = supportRoles.get(0);
         supportRole.setSupport(new Hypothesis());
         supportRoles.set(0, supportRole);
-        hyp.setEvidences(supportRoles);
+        hyp.setSupports(supportRoles);
         stepList.set(0,hyp);
 
         assertFalse(argumentationSystemConstraint.verify(stepList));

@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine.strategy;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import fr.axonic.avek.engine.kernel.StrategyAPI;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,7 +13,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
         use = JsonTypeInfo.Id.MINIMAL_CLASS,
         include = JsonTypeInfo.As.PROPERTY,
         property = "@type")
-public abstract class Strategy {
+public abstract class Strategy extends StrategyAPI {
 
     private String name;
     private Rationale rationale;

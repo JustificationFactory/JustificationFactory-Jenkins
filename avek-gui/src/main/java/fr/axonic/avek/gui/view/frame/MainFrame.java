@@ -51,7 +51,7 @@ public class MainFrame extends BorderPane {
     @FXML
     private void onClickGraphButton(ActionEvent event) {
         try {
-            ArgumentationDiagram.show(MockedArgumentationSystem.getAXONICArgumentationSystem().getSteps());
+            ArgumentationDiagram.show(MockedArgumentationSystem.getAXONICArgumentationSystem().getJustificationDiagram().getSteps());
         } catch (VerificationException | WrongEvidenceException e) {
             LOGGER.error("Cannot show graph now");
         }

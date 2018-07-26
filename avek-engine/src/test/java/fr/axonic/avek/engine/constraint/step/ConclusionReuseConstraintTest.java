@@ -34,13 +34,13 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
         SupportRole evExperimentation0 = rtExperimentation.create(experimentation0);
         SupportRole evResults0 = rtResults.create(results0);
         argumentationSystem.constructStep(argumentationSystem.getPattern("2"), Arrays.asList(new SupportRole[] {evExperimentation0,evResults0}), effect0);
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
+        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
     public void verifyConclusionNotReuse() throws Exception {
         ArgumentationSystemConstraint argumentationSystemConstraint =new ConclusionReuseConstraint(pattern);
-        assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
+        assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
 
         argumentationSystem.constructStep(argumentationSystem.getPattern("2"),Arrays.asList(new SupportRole[] {evExperimentation0,evResults1}), effect1);
 
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
+        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
 }

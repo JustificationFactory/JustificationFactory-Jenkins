@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint;
 
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ArgumentationSystemConstraint {
 
-    boolean verify(List<Step> steps);
+    boolean verify(List<JustificationStep> steps);
 
 }

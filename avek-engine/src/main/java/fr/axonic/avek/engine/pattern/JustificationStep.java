@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine.pattern;
 
+import fr.axonic.avek.engine.kernel.JustificationStepAPI;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.strategy.Strategy;
@@ -11,52 +12,23 @@ import java.util.List;
 import java.util.UUID;
 
 @XmlRootElement
-public class Step {
+public class JustificationStep extends JustificationStepAPI<SupportRole,Conclusion> {
 	private String id;
 	private String patternId;
-	private List<SupportRole> evidences;
-	private Strategy strategy;
-	private Conclusion conclusion;
 
-
-	private Step() {
+	private JustificationStep() {
 		id= UUID.randomUUID().toString().replace("-", "");
 	}
 
-	public Step(String patternId, Strategy strategy, List<SupportRole> supportRolelist, Conclusion conclusion) {
-		this();
-		this.strategy = strategy;
-		this.evidences = supportRolelist;
-		this.conclusion = conclusion;
+	public JustificationStep(String patternId, Strategy strategy, List<SupportRole> supportRolelist, Conclusion conclusion) {
+		super(supportRolelist,strategy,conclusion);
 		this.patternId=patternId;
 	}
 
 	@XmlElement(name="evidenceRoles")
 	@XmlElementWrapper
-	public List<SupportRole> getEvidences() {
-		return evidences;
-	}
-
-	public void setEvidences(List<SupportRole> evidences) {
-		this.evidences = evidences;
-	}
-
-	@XmlElement
-	public Strategy getStrategy() {
-		return strategy;
-	}
-
-	public void setStrategy(Strategy strategy) {
-		this.strategy = strategy;
-	}
-
-	@XmlElement
-	public Conclusion getConclusion() {
-		return conclusion;
-	}
-
-	public void setConclusion(Conclusion conclusion) {
-		this.conclusion = conclusion;
+	public List<SupportRole> getSupports() {
+		return supports;
 	}
 
 	@XmlElement
@@ -82,9 +54,19 @@ public class Step {
 		return "Step{" +
 				"id='" + id + '\'' +
 				", patternId='" + patternId + '\'' +
-				", evidences=" + evidences +
+				", evidences=" + supports +
 				", strategy=" + strategy +
 				", conclusion=" + conclusion +
 				'}';
+	}
+
+	@Override
+	public boolean isTerminal() {
+		return true;
+	}
+
+	@Override
+	public List<JustificationStepAPI> conformsTo() {
+		return null;
 	}
 }

@@ -1,8 +1,7 @@
 package fr.axonic.avek.service;
 
 import fr.axonic.avek.ArtifactType;
-import fr.axonic.avek.engine.ArgumentationSystem;
-import fr.axonic.avek.engine.ArgumentationSystemAPI;
+import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.pattern.Pattern;
 
@@ -13,18 +12,18 @@ import javax.ws.rs.core.Response;
 /**
  * Created by cduffau on 16/01/17.
  */
-public interface ArgumentationSystemService {
+public interface JustificationSystemService {
 
 
     @POST
     @Path("/system/{argumentation_system_name}")
     @Consumes(MediaType.APPLICATION_JSON)
-    Response registerArgumentationSystem(@PathParam("argumentation_system_name") String name,ArgumentationSystem argumentationSystem);
+    Response registerArgumentationSystem(@PathParam("argumentation_system_name") String name,JustificationSystem justificationSystem);
 
     @POST
     @Path("/system")
     @Consumes(MediaType.APPLICATION_JSON)
-    Response registerArgumentationSystem(ArgumentationSystem argumentationSystem);
+    Response registerArgumentationSystem(JustificationSystem justificationSystem);
 
     @POST
     @Path("/{argumentation_system_id}/pattern")
@@ -37,7 +36,7 @@ public interface ArgumentationSystemService {
     Response removeArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
 
     @DELETE
-    @Path("/{argumentation_system_id}/steps")
+    @Path("/{argumentation_system_id}/justificationDiagram")
     Response removeStepsInArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
 
 

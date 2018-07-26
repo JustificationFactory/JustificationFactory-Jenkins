@@ -2,7 +2,7 @@ package fr.axonic.avek.engine.constraint.step;
 
 import fr.axonic.avek.engine.constraint.PatternConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,14 +18,14 @@ public class NotCascadingConstraint extends PatternConstraint {
     }
 
     @Override
-    public boolean verify(List<Step> steps) {
+    public boolean verify(List<JustificationStep> steps) {
         Pattern pattern1 = patterns.get(0);
         Pattern pattern2 = patterns.get(1);
-        List<Step> pattern1Steps=steps.stream().filter(step -> pattern1.getId().equals(step.getPatternId())).collect(Collectors.toList());
-        List<Step> pattern2Steps=steps.stream().filter(step -> pattern2.getId().equals(step.getPatternId())).collect(Collectors.toList());
+        List<JustificationStep> pattern1Steps=steps.stream().filter(step -> pattern1.getId().equals(step.getPatternId())).collect(Collectors.toList());
+        List<JustificationStep> pattern2Steps=steps.stream().filter(step -> pattern2.getId().equals(step.getPatternId())).collect(Collectors.toList());
 
-        Stream<Step> stepStream=pattern2Steps.stream()
-                .filter(step -> step.getEvidences().stream().
+        Stream<JustificationStep> stepStream=pattern2Steps.stream()
+                .filter(step -> step.getSupports().stream().
                         anyMatch(evidenceRole -> pattern1Steps.stream()
                                 .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId()))))
                 .distinct();

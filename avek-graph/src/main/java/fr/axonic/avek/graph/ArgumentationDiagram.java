@@ -1,7 +1,7 @@
 package fr.axonic.avek.graph;
 
 import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.strategy.Strategy;
@@ -30,7 +30,7 @@ public class ArgumentationDiagram extends JFrame {
     private final SimpleDirectedGraph<MyVertex, MyEdge> graph;
     private final JGraphModelAdapter<MyVertex, MyEdge> adapter;
 
-    private ArgumentationDiagram(List<Step> steps) {
+    private ArgumentationDiagram(List<JustificationStep> steps) {
         nodes = new HashMap<>();
         graph = new SimpleDirectedGraph<>(MyEdge.class);
 
@@ -59,22 +59,22 @@ public class ArgumentationDiagram extends JFrame {
         graph.vertexSet().forEach(this::position);
     }
 
-    public static void show(List<Step> steps) {
+    public static void show(List<JustificationStep> steps) {
         new ArgumentationDiagram(steps);
     }
 
-    private void computeStep(Step step) {
+    private void computeStep(JustificationStep step) {
         LOGGER.debug(step.toString());
 
         Conclusion conclusion = step.getConclusion();
-        Strategy strategy = step.getStrategy();
+        Strategy strategy = (Strategy) step.getStrategy();
         LOGGER.debug("Step: "+conclusion.getName()+" ← "+strategy.getName());
 
         addNode(conclusion, conclusion.getName(), VertexType.CONCLUSION);
         addNode(strategy, strategy.getName(), VertexType.STRATEGY);
         linkNodes(strategy, conclusion);
 
-        for(SupportRole supportRole : step.getEvidences()) {
+        for(SupportRole supportRole : step.getSupports()) {
             Support evidence = supportRole.getSupport();
             addNode(evidence, evidence.getName(), VertexType.EVIDENCE);
             linkNodes(evidence, strategy);

@@ -2,7 +2,7 @@ package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
@@ -20,12 +20,12 @@ import static org.junit.Assert.*;
 /**
  * Created by cduffau on 21/03/17.
  */
-public class RelatedArgumentationSystemConstraintTest extends PatternConstraintTest{
+public class RelatedJustificationSystemConstraintTest extends PatternConstraintTest{
 
     @Test
     public void verifyConnexeWithOneStep() throws Exception {
         ArgumentationSystemConstraint argumentationSystemConstraint =new RelatedArgumentationSystemConstraint();
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
+        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
@@ -48,9 +48,9 @@ public class RelatedArgumentationSystemConstraintTest extends PatternConstraintT
         SupportRole conclusionRole2=conclusionRoleType3.create(conclusion2);
 
 
-        Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
-        Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
-        Step step3=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
+        JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
+        JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
+        JustificationStep step3=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
         ArgumentationSystemConstraint argumentationSystemConstraint =new RelatedArgumentationSystemConstraint();
         assertTrue(argumentationSystemConstraint.verify(Arrays.asList(step1,step2,step3)));
     }
@@ -75,9 +75,9 @@ public class RelatedArgumentationSystemConstraintTest extends PatternConstraintT
         SupportRole conclusionRole2=conclusionRoleType3.create(conclusion2);
 
 
-        Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
-        Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
-        Step step3=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion2);
+        JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
+        JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
+        JustificationStep step3=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion2);
         ArgumentationSystemConstraint argumentationSystemConstraint =new RelatedArgumentationSystemConstraint();
         assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1,step2,step3)));
     }

@@ -3,12 +3,12 @@ package fr.axonic.avek.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.axonic.avek.dao.JerseyMapperProvider;
-import fr.axonic.avek.engine.ArgumentationSystem;
-import fr.axonic.avek.engine.ArgumentationSystemAPI;
+import fr.axonic.avek.engine.JustificationSystem;
+import fr.axonic.avek.engine.JustificationSystemAPI;
 import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
@@ -32,7 +32,6 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
@@ -40,11 +39,11 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by cduffau on 17/03/17.
  */
-public class ArgumentationSystemServiceImplTest extends JerseyTest {
+public class JustificationSystemServiceImplTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(ArgumentationSystemServiceImpl.class);
+        return new ResourceConfig(JustificationSystemServiceImpl.class);
     }
 
     @Test
@@ -63,8 +62,8 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         //System.out.println(argumentationSystem);
         assertNotNull(argumentationSystemResponse);
         assertEquals(argumentationSystemResponse.getStatusInfo(), Response.Status.OK);
-        ArgumentationSystem argumentationSystem=argumentationSystemResponse.readEntity(ArgumentationSystem.class);
-        assertNotNull(argumentationSystem);
+        JustificationSystem justificationSystem =argumentationSystemResponse.readEntity(JustificationSystem.class);
+        assertNotNull(justificationSystem);
     }
 
     @Test
@@ -118,14 +117,14 @@ public class ArgumentationSystemServiceImplTest extends JerseyTest {
         Response stepResponse=target("/argumentation/AXONIC/1/step").request().post(Entity.json(stepToCreate));
         assertNotNull(stepResponse);
         assertEquals(stepResponse.getStatusInfo(),Response.Status.CREATED );
-        Step step=stepResponse.readEntity(Step.class);
+        JustificationStep step=stepResponse.readEntity(JustificationStep.class);
         assertNotNull(step);
         //assertEquals(step.getConclusion(),experimentation0);
 
     }
     @Test
     public void testRegisterArgumentationSystem() throws VerificationException, WrongEvidenceException {
-        ArgumentationSystemAPI argumentationSystem=new ArgumentationSystem();
+        JustificationSystemAPI argumentationSystem=new JustificationSystem();
         Response argSystem=target("/argumentation/system").request().post(Entity.json(argumentationSystem));
         assertNotNull(argSystem);
         assertEquals(argSystem.getStatusInfo(), Response.Status.ACCEPTED);

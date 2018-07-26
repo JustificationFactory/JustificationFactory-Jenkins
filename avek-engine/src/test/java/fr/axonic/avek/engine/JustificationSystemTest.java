@@ -3,6 +3,7 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
@@ -35,9 +36,9 @@ import static org.junit.Assert.*;
 /**
  * Created by cduffau on 17/03/17.
  */
-public class ArgumentationSystemTest {
+public class JustificationSystemTest {
 
-    private ArgumentationSystemAPI argumentationSystem;
+    private JustificationSystemAPI argumentationSystem;
 
     @Before
     public void setUp() throws VerificationException, WrongEvidenceException {
@@ -70,14 +71,14 @@ public class ArgumentationSystemTest {
     @Test
     public void constructStep() throws Exception {
         createAStep(Role.SENIOR_EXPERT);
-        assertTrue(argumentationSystem.getSteps().size()==1);
-        assertTrue(argumentationSystem.getSteps().get(0).getPatternId().equals("1"));
-        assertTrue(argumentationSystem.getSteps().get(0).getEvidences().size()==3);
-        assertTrue(argumentationSystem.getSteps().get(0).getStrategy() instanceof TreatStrategy);
+        assertTrue(argumentationSystem.getJustificationDiagram().getSteps().size()==1);
+        assertTrue(((JustificationStep)argumentationSystem.getJustificationDiagram().getSteps().get(0)).getPatternId().equals("1"));
+        assertTrue(((JustificationStep)argumentationSystem.getJustificationDiagram().getSteps().get(0)).getSupports().size()==3);
+        assertTrue(((JustificationStep)argumentationSystem.getJustificationDiagram().getSteps().get(0)).getStrategy() instanceof TreatStrategy);
     }
     @Test
     public void constructStepWithAutoFill() throws Exception {
-        ArgumentationSystemAPI argumentationSystem=MockedArgumentationSystem.getJenkinsArgumentationSystem();
+        JustificationSystemAPI argumentationSystem=MockedArgumentationSystem.getJenkinsArgumentationSystem();
         Pattern unitPattern=argumentationSystem.getPattern("unit-test");
         Pattern integrationPattern=argumentationSystem.getPattern("integration-test");
         Evidence documentEvidence=new DocumentEvidence("document",new Document("test"));

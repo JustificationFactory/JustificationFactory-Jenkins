@@ -1,6 +1,6 @@
 package fr.axonic.avek.instance.jenkins;
 
-import fr.axonic.avek.engine.ArgumentationSystem;
+import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
@@ -16,9 +16,9 @@ import java.util.Arrays;
 /**
  * Created by cduffau on 25/08/17.
  */
-public class JenkinsArgumentationSystem extends ArgumentationSystem{
+public class JenkinsJustificationSystem extends JustificationSystem {
 
-    public JenkinsArgumentationSystem() throws VerificationException, WrongEvidenceException {
+    public JenkinsJustificationSystem() throws VerificationException, WrongEvidenceException {
         super();
         PatternsBase patternsBase=new PatternsBase();
         InputType<DocumentEvidence> documentType=new InputType<>("document",DocumentEvidence.class);

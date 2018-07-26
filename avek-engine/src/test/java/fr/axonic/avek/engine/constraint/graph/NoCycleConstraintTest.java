@@ -15,7 +15,7 @@ import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.avek.evidence.Result;
 import fr.axonic.avek.instance.avek.evidence.ResultsEvidence;
 import fr.axonic.avek.instance.avek.evidence.Stimulation;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.pattern.type.InputType;
@@ -61,7 +61,7 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         InputType conclusionRoleType2=new InputType("Test2", Conclusion.class);
         SupportRole conclusionRole=conclusionRoleType2.create(conclusion);
 
-        Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole), conclusion);
+        JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole), conclusion);
         ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
         assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1)));
@@ -86,8 +86,8 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         SupportRole supportRole4 =conclusionRoleType3.create(conclusion2);
 
 
-        Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, supportRole4), conclusion);
-        Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, supportRole3), conclusion2);
+        JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, supportRole4), conclusion);
+        JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, supportRole3), conclusion2);
         ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
         assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1, step2)));
@@ -113,9 +113,9 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         SupportRole conclusionRole2=conclusionRoleType3.create(conclusion2);
 
 
-        Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole2), conclusion);
-        Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
-        Step step3=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
+        JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole2), conclusion);
+        JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
+        JustificationStep step3=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
         ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
         assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1, step2, step3)));
@@ -123,8 +123,8 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
 
     @Test
     public void testNoCycle() {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(argumentationSystem.getSteps().get(0));
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getSteps()));
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint((JustificationStep) argumentationSystem.getJustificationDiagram().getSteps().get(0));
+        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
@@ -147,9 +147,9 @@ public class NoCycleConstraintTest extends PatternConstraintTest{
         SupportRole conclusionRole2=conclusionRoleType3.create(conclusion2);
 
 
-        Step step1=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
-        Step step2=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
-        Step step3=new Step("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
+        JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
+        JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
+        JustificationStep step3=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
         ArgumentationSystemConstraint argumentationSystemConstraint =new NoCycleConstraint(step1);
 
         assertTrue(argumentationSystemConstraint.verify(Arrays.asList(step1, step2, step3)));

@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine;
 
+import fr.axonic.avek.engine.diagram.JustificationDiagram;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
@@ -12,7 +13,7 @@ import fr.axonic.avek.engine.support.evidence.Hypothesis;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
@@ -30,22 +31,22 @@ import java.util.stream.Collectors;
  * Created by cduffau on 04/08/16.
  */
 @XmlRootElement
-public class ArgumentationSystem implements ArgumentationSystemAPI {
+public class JustificationSystem implements JustificationSystemAPI {
 
     protected boolean autoSupportFillEnable =false;
     protected PatternsBase patternsBase;
     protected OutputType objective;
     protected List<SupportRole> baseEvidences = new ArrayList<>();
-    protected List<Step> steps;
+    protected JustificationDiagram justificationDiagram;
     //@XmlTransient
-    private final static Logger LOGGER = LoggerFactory.getLogger(ArgumentationSystem.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(JustificationSystem.class);
     protected boolean versioningEnable=false;
 
-    public ArgumentationSystem() throws VerificationException, WrongEvidenceException {
-        steps=new ArrayList<>();
+    public JustificationSystem() throws VerificationException, WrongEvidenceException {
+        justificationDiagram =new JustificationDiagram();
 
     }
-    public ArgumentationSystem(PatternsBase patternsBase, List<SupportRole> baseEvidences) throws VerificationException, WrongEvidenceException {
+    public JustificationSystem(PatternsBase patternsBase, List<SupportRole> baseEvidences) throws VerificationException, WrongEvidenceException {
         this();
         this.patternsBase = patternsBase;
         this.baseEvidences = baseEvidences;
@@ -84,8 +85,8 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
         this.baseEvidences = baseEvidences;
     }
 
-    private void setSteps(List<Step> steps) {
-        this.steps = steps;
+    private void setJustificationDiagram(JustificationDiagram justificationDiagram) {
+        this.justificationDiagram=justificationDiagram;
     }
 
     @Override
@@ -96,7 +97,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public boolean validate() {
-        return patternsBase.getConstraints().stream().allMatch(constraint -> constraint.verify(steps));
+        return patternsBase.getConstraints().stream().allMatch(constraint -> constraint.verify(justificationDiagram.getSteps()));
     }
 
     public void setObjective(OutputType objective) throws WrongObjectiveException {
@@ -111,7 +112,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     @Override
-    public Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
+    public JustificationStep constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         if(evidences==null || evidences.isEmpty()){
             throw new StepBuildingException("Need evidences");
         }
@@ -124,8 +125,8 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
         try{
             List<SupportRole> usefulEvidences=filterUsefulSupports(pattern,evidences,conclusion);
-            Step step=pattern.createStep(usefulEvidences,conclusion.clone());
-            steps.add(step);
+            JustificationStep step=pattern.createStep(usefulEvidences,conclusion.clone());
+            justificationDiagram.addStep(step);
             LOGGER.info("Supports : "+ usefulEvidences);
             LOGGER.info("Conclusion : "+ step.getConclusion());
             postStepCreated(step);
@@ -138,12 +139,12 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     }
 
-    protected void postStepCreated(Step step) throws CloneNotSupportedException, WrongEvidenceException {
+    protected void postStepCreated(JustificationStep step) throws CloneNotSupportedException, WrongEvidenceException {
         InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
 
         if(autoSupportFillEnable){
             baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
-            List<SupportRole> evidencesToAdd=step.getEvidences().stream().filter(supportRole -> supportRole.getSupport().isPrimitiveInputType() && !baseEvidences.contains(supportRole)).collect(Collectors.toList());
+            List<SupportRole> evidencesToAdd=step.getSupports().stream().filter(supportRole -> supportRole.getSupport().isPrimitiveInputType() && !baseEvidences.contains(supportRole)).collect(Collectors.toList());
             baseEvidences.addAll(evidencesToAdd);
         }
     }
@@ -185,8 +186,8 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }
 
     @Override
-    public List<Step> getSteps() {
-        return steps;
+    public JustificationDiagram getJustificationDiagram() {
+        return justificationDiagram;
     }
 
     /**private static void save(Object object, File file) throws JAXBException, IOException {
@@ -204,18 +205,18 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
     }*/
 
     @Override
-    public void resolveHypothesis(Step step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException {
-        SupportRole hypo=step.getEvidences().stream().filter(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis && evidenceRole.getSupport().equals(hypothesis)).collect(singletonCollector());
+    public void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException {
+        SupportRole hypo=step.getSupports().stream().filter(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis && evidenceRole.getSupport().equals(hypothesis)).collect(singletonCollector());
         Pattern pattern=patternsBase.getPattern(step.getPatternId());
         Optional<InputType> evidenceRoleTypeResult=pattern.getInputTypes().stream().filter(evidenceRoleType -> evidenceRoleType.check(hypo.getSupport())).findAny();
         if(evidenceRoleTypeResult.isPresent()){
             SupportRole res=evidenceRoleTypeResult.get().create(support);
-            step.getEvidences().remove(hypo);
-            step.getEvidences().add(res);
+            step.getSupports().remove(hypo);
+            step.getSupports().add(res);
             NoCycleConstraint constraint=new NoCycleConstraint(step);
-            if(!constraint.verify(steps)){
-                step.getEvidences().add(hypo);
-                step.getEvidences().remove(res);
+            if(!constraint.verify(justificationDiagram.getSteps())){
+                step.getSupports().add(hypo);
+                step.getSupports().remove(res);
                 throw new PatternConstraintException("No cycle allowed, "+support+ " will create a cycle");
             }
 
@@ -224,7 +225,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
 
     @Override
     public void removeSteps() {
-        steps.clear();
+        justificationDiagram.getSteps().clear();
     }
 
     @Override
@@ -233,7 +234,7 @@ public class ArgumentationSystem implements ArgumentationSystemAPI {
                 "patternsBase=" + patternsBase +
                 ", objective=" + objective +
                 ", baseEvidences=" + baseEvidences +
-                ", steps=" + steps +
+                ", justificationDiagram=" + justificationDiagram +
                 '}';
     }
 

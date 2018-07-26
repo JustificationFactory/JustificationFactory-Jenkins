@@ -23,7 +23,7 @@ import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
-import fr.axonic.avek.instance.jenkins.JenkinsArgumentationSystem;
+import fr.axonic.avek.instance.jenkins.JenkinsJustificationSystem;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -34,12 +34,12 @@ import java.util.*;
  */
 public class MockedArgumentationSystem {
 
-    public static ArgumentationSystemAPI getAXONICArgumentationSystem() throws VerificationException, WrongEvidenceException {
-        return new ArgumentationSystem(getAXONICPatternsBase(),getAXONICBaseEvidences());
+    public static JustificationSystemAPI getAXONICArgumentationSystem() throws VerificationException, WrongEvidenceException {
+        return new JustificationSystem(getAXONICPatternsBase(),getAXONICBaseEvidences());
     }
 
-    public static ArgumentationSystemAPI getJenkinsArgumentationSystem() throws VerificationException, WrongEvidenceException {
-        return new JenkinsArgumentationSystem();
+    public static JustificationSystemAPI getJenkinsArgumentationSystem() throws VerificationException, WrongEvidenceException {
+        return new JenkinsJustificationSystem();
     }
 
     private static PatternsBase getAXONICPatternsBase(){
@@ -127,7 +127,7 @@ public class MockedArgumentationSystem {
         return baseEvidences;
     }
 
-    public static void fillSomeSteps(ArgumentationSystem argumentationSystem, int number) throws WrongEvidenceException, StrategyException, StepBuildingException, VerificationException {
+    public static void fillSomeSteps(JustificationSystem justificationSystem, int number) throws WrongEvidenceException, StrategyException, StepBuildingException, VerificationException {
         Evidence<Stimulation> stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
         Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0",subject0.getElement(),stimulation0.getElement());
@@ -140,7 +140,7 @@ public class MockedArgumentationSystem {
             SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
             SupportRole evSubject0 = rtSubject.create(subject0);
             SupportRole evActor = rtActor.create(new Actor("Chloé", Role.SENIOR_EXPERT));
-            argumentationSystem.constructStep(argumentationSystem.getPattern("0"),Arrays.asList(evStimulation0,evSubject0, evActor), experimentation0);
+            justificationSystem.constructStep(justificationSystem.getPattern("0"),Arrays.asList(evStimulation0,evSubject0, evActor), experimentation0);
 
         }
         if( number >=2){
@@ -152,7 +152,7 @@ public class MockedArgumentationSystem {
             Conclusion<EstablishedEffect> effect0 = new EstablishEffectConclusion("Effect 0",new EstablishedEffect(null,new AList<>()));
             SupportRole experimentationRole = rtExperimentation.create(experimentation0);
             SupportRole evResults = rtResults.create(results0);
-            argumentationSystem.constructStep(argumentationSystem.getPattern("1"), Arrays.asList(experimentationRole,evResults), effect0);
+            justificationSystem.constructStep(justificationSystem.getPattern("1"), Arrays.asList(experimentationRole,evResults), effect0);
         }
     }
 

@@ -3,7 +3,7 @@ package fr.axonic.avek.engine.constraint.pattern.intra;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.SupportRole;
 
@@ -23,20 +23,20 @@ public class StepConstructionConstraint implements StepConstraint, Argumentation
     }
 
     @Override
-    public boolean verify(Step step){
+    public boolean verify(JustificationStep step){
         if(!pattern.getOutputType().check(step.getConclusion())){
             return false;
         }
-        if(pattern.getInputTypes().size()!=step.getEvidences().size()) {
+        if(pattern.getInputTypes().size()!=step.getSupports().size()) {
          return false;
         }
-        List<Support> supports=SupportRole.translateToSupport(step.getEvidences());
+        List<Support> supports=SupportRole.translateToSupport(step.getSupports());
         return pattern.getInputTypes().stream().allMatch(inputType -> {Optional<Support> s=supports.stream().filter(inputType::check).findAny(); supports.remove(s.get()); return s.isPresent();});
     }
 
     @Override
-    public boolean verify(List<Step> steps) {
-        List<Step> patternSteps=steps.stream().filter(step -> step.getPatternId().equals(pattern.getId())).distinct().collect(Collectors.toList());
+    public boolean verify(List<JustificationStep> steps) {
+        List<JustificationStep> patternSteps=steps.stream().filter(step -> step.getPatternId().equals(pattern.getId())).distinct().collect(Collectors.toList());
         return patternSteps.stream().allMatch(this::verify);
     }
 }

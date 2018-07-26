@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.pattern;
 
-import fr.axonic.avek.engine.ArgumentationSystem;
+import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.support.SupportRole;
 
@@ -67,7 +67,7 @@ public class PatternsBase {
     }
 
     public Pattern getPattern(String patternId) {
-        return patterns.stream().filter(pattern -> pattern.getId().equals(patternId)).collect(ArgumentationSystem.singletonCollector());
+        return patterns.stream().filter(pattern -> pattern.getId().equals(patternId)).collect(JustificationSystem.singletonCollector());
     }
 
     @Override

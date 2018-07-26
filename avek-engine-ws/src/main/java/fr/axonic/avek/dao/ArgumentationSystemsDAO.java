@@ -1,8 +1,8 @@
 package fr.axonic.avek.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.axonic.avek.engine.ArgumentationSystem;
-import fr.axonic.avek.engine.ArgumentationSystemAPI;
+import fr.axonic.avek.engine.JustificationSystem;
+import fr.axonic.avek.engine.JustificationSystemAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +16,8 @@ public class ArgumentationSystemsDAO {
 
     private static final String DIR="data";
 
-    public static Map<String, ArgumentationSystemAPI> loadArgumentationSystems() throws IOException {
-        Map<String, ArgumentationSystemAPI> res=new HashMap<>();
+    public static Map<String, JustificationSystemAPI> loadArgumentationSystems() throws IOException {
+        Map<String, JustificationSystemAPI> res=new HashMap<>();
         ObjectMapper mapper=new JerseyMapperProvider().getContext(null);
         File dir = new File(DIR);
         if(!dir.exists()){
@@ -27,13 +27,13 @@ public class ArgumentationSystemsDAO {
             for (File file:dir.listFiles()) {
                 String name=file.getName().split("\\.")[0];
                 LOGGER.info("Found Argumentation System "+name);
-                res.put(name,mapper.readValue(file, ArgumentationSystem.class));
+                res.put(name,mapper.readValue(file, JustificationSystem.class));
             }
         }
         return res;
     }
 
-    public static void saveArgumentationSystem(String name, ArgumentationSystemAPI argumentationSystem) throws IOException {
+    public static void saveArgumentationSystem(String name, JustificationSystemAPI argumentationSystem) throws IOException {
         File file=new File(DIR+"/"+name+".data");
         file.createNewFile();
         ObjectMapper mapper=new JerseyMapperProvider().getContext(null);

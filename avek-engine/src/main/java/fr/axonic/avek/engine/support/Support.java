@@ -2,6 +2,8 @@ package fr.axonic.avek.engine.support;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import fr.axonic.avek.engine.kernel.Artifact;
+import fr.axonic.avek.engine.kernel.Assertion;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.evidence.Evidence;
@@ -10,6 +12,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,7 +25,7 @@ import java.util.UUID;
         use = JsonTypeInfo.Id.MINIMAL_CLASS,
         include = JsonTypeInfo.As.PROPERTY,
         property = "@type")
-public abstract class Support<T extends Element> implements Cloneable{
+public abstract class Support<T extends Element> implements Assertion<T>, Cloneable{
     protected String id, name;
     protected T element;
 
@@ -56,6 +60,13 @@ public abstract class Support<T extends Element> implements Cloneable{
     @XmlElement
     public T getElement(){
         return element;
+    }
+
+    @Override
+    public List<T> getArtifacts() {
+        List<T> artifacts=new ArrayList<T>();
+        artifacts.add(element);
+        return artifacts;
     }
 
     @XmlElement
@@ -93,5 +104,15 @@ public abstract class Support<T extends Element> implements Cloneable{
                 ", name='" + name + '\'' +
                 ", element=" + element +
                 '}';
+    }
+
+    @Override
+    public boolean isTerminal() {
+        return false;
+    }
+
+    @Override
+    public List<Assertion> conformsTo() {
+        return null;
     }
 }

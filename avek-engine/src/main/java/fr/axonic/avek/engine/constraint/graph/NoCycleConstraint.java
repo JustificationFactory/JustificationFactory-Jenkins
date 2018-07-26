@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.graph;
 
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.engine.support.SupportRole;
@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
  */
 public class NoCycleConstraint implements ArgumentationSystemConstraint {
 
-    private Step step;
+    private JustificationStep step;
 
-    public NoCycleConstraint(Step step) {
+    public NoCycleConstraint(JustificationStep step) {
         this.step = step;
     }
 
     @Override
-    public boolean verify(List<Step> steps) {
-        List<SupportRole> supportRoles = step.getEvidences().stream().filter(evidenceRole -> !(evidenceRole.getSupport() instanceof Evidence)).collect(Collectors.toList());
+    public boolean verify(List<JustificationStep> steps) {
+        List<SupportRole> supportRoles = step.getSupports().stream().filter(evidenceRole -> !(evidenceRole.getSupport() instanceof Evidence)).collect(Collectors.toList());
         if(supportRoles.size() == 0) {
             return true;
         }
@@ -31,9 +31,9 @@ public class NoCycleConstraint implements ArgumentationSystemConstraint {
         return browsingToFindCycle(supportRoles, steps);
     }
 
-    private boolean browsingToFindCycle(List<SupportRole> supportRoles, List<Step> steps) {
-        List<Step> stepsWithReuse = steps.stream()
-                .filter(step -> step.getEvidences().stream().
+    private boolean browsingToFindCycle(List<SupportRole> supportRoles, List<JustificationStep> steps) {
+        List<JustificationStep> stepsWithReuse = steps.stream()
+                .filter(step -> step.getSupports().stream().
                         anyMatch(evidenceRole -> evidenceRole.getSupport().getId().equals(step.getConclusion().getId())))
                 .distinct().collect(Collectors.toList());
 
