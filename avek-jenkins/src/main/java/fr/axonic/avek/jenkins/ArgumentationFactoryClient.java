@@ -1,14 +1,14 @@
 package fr.axonic.avek.jenkins;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.axonic.avek.engine.ArgumentationSystem;
+import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.exception.StepBuildingException;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.Step;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Document;
+import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
 import fr.axonic.avek.engine.StepToCreate;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class ArgumentationFactoryClient {
         this.serverURL = serverURL;
     }
 
-    public Step sendStep(String argumentationSystem, String patternId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supports) throws IOException {
+    public JustificationStep sendStep(String argumentationSystem, String patternId, JenkinsStatus jenkinsStatus, List<SupportArtifact> supportArtifacts) throws IOException {
 
         URL url =new URL(serverURL+argumentationSystem+"/"+patternId+"/step");
         LOGGER.info("Call URL "+url);
@@ -47,13 +47,13 @@ public class ArgumentationFactoryClient {
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         ObjectMapper mapper=new JerseyMapperProvider().getContext();
-        List<SupportRole> supportRoles=new ArrayList<>();
-        for(SupportArtifact supportArtifact: supports){
+        List<Support> supports=new ArrayList<>();
+        for(SupportArtifact supportArtifact: supportArtifacts){
             try {
                 File artifactURL=new File(supportArtifact.getArtifactPath());
                 Document document=new Document(artifactURL.getName());
                 Support support= (Support) Class.forName(supportArtifact.getSupportId()).getDeclaredConstructor(String.class,Document.class).newInstance(artifactURL.getName(),document);
-                supportRoles.add(new SupportRole("jenkins-artifact",support));
+                supports.add(support);
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
                 LOGGER.error(e.toString());
             }
@@ -66,7 +66,7 @@ public class ArgumentationFactoryClient {
         } catch (ArgumentationFactoryException | StepBuildingException e) {
             LOGGER.error(e.toString());
         }
-        StepToCreate stepToCreate=new StepToCreate(supportRoles,ccl);
+        StepToCreate stepToCreate=new StepToCreate(supports,ccl);
         OutputStream wr = new DataOutputStream(conn.getOutputStream());
         mapper.writeValue(wr,stepToCreate);
         wr.flush();
@@ -85,7 +85,7 @@ public class ArgumentationFactoryClient {
         }
         rd.close();
         conn.disconnect();
-        return mapper.readValue(result.toString(), Step.class);
+        return mapper.readValue(result.toString(), JustificationStep.class);
     }
 
     public List<String> getPatterns(String argumentationSystem) throws ArgumentationFactoryException{
@@ -188,7 +188,7 @@ public class ArgumentationFactoryClient {
 
     }
 
-    public ArgumentationSystem getArgumentationSystem(String argumentationSystem) throws IOException {
+    public JustificationSystem getArgumentationSystem(String argumentationSystem) throws IOException {
 
         URL url =new URL(serverURL+argumentationSystem);
         LOGGER.info("Call URL "+url);
@@ -213,7 +213,7 @@ public class ArgumentationFactoryClient {
         }
         br.close();
         conn.disconnect();
-        return mapper.readValue(res.toString(),ArgumentationSystem.class);
+        return mapper.readValue(res.toString(), JustificationSystem.class);
 
     }
 

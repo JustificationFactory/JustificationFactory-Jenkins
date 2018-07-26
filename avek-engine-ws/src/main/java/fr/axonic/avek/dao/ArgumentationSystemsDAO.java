@@ -3,6 +3,7 @@ package fr.axonic.avek.dao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.JustificationSystemAPI;
+import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +17,8 @@ public class ArgumentationSystemsDAO {
 
     private static final String DIR="data";
 
-    public static Map<String, JustificationSystemAPI> loadArgumentationSystems() throws IOException {
-        Map<String, JustificationSystemAPI> res=new HashMap<>();
+    public static Map<String, JustificationSystem<ListPatternsBase>> loadArgumentationSystems() throws IOException {
+        Map<String, JustificationSystem<ListPatternsBase>> res=new HashMap<>();
         ObjectMapper mapper=new JerseyMapperProvider().getContext(null);
         File dir = new File(DIR);
         if(!dir.exists()){

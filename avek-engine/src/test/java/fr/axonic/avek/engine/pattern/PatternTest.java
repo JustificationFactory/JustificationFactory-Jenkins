@@ -4,7 +4,7 @@ package fr.axonic.avek.engine.pattern;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.avek.evidence.*;
 import fr.axonic.avek.instance.avek.strategy.TreatStrategy;
@@ -46,8 +46,8 @@ public class PatternTest {
         Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        SupportRole evSubject0 = rtSubject.create(subject0);
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        Support evSubject0 = rtSubject.create(subject0);
         assertTrue(treat.applicable(Arrays.asList(evSubject0,evStimulation0)));
     }
 
@@ -73,9 +73,9 @@ public class PatternTest {
         Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        SupportRole evSubject0 = rtSubject.create(subject0);
-        assertTrue(treat.applicable(Arrays.asList(new SupportRole[] {evSubject0,evStimulation0})));
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        Support evSubject0 = rtSubject.create(subject0);
+        assertTrue(treat.applicable(Arrays.asList(new Support[] {evSubject0,evStimulation0})));
     }
 
     @Test
@@ -98,8 +98,8 @@ public class PatternTest {
 
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        assertTrue(treat.applicable(Arrays.asList(new SupportRole[] {evStimulation0})));
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        assertTrue(treat.applicable(Arrays.asList(new Support[] {evStimulation0})));
     }
 
     @Test
@@ -126,9 +126,9 @@ public class PatternTest {
         Evidence<Subject> subject1 = new SubjectEvidence("Subject 1",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        SupportRole evSubject0 = rtSubject.create(subject0);
-        SupportRole evSubject1=rtSubject2.create(subject1);
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        Support evSubject0 = rtSubject.create(subject0);
+        Support evSubject1=rtSubject2.create(subject1);
         JustificationStep step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0,evSubject1), experimentation0);
         assertNotNull(step0);
     }
@@ -157,8 +157,8 @@ public class PatternTest {
         Evidence<Subject> subject1 = new SubjectEvidence("Subject 1",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        SupportRole evSubject0 = rtSubject.create(subject0);
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        Support evSubject0 = rtSubject.create(subject0);
 
         JustificationStep step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
     }
@@ -182,9 +182,9 @@ public class PatternTest {
         Pattern treat = new Pattern("Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject}), conclusionExperimentationType);
         Evidence<Result> result = new ResultsEvidence("Result 0", new Result(new AList<>()));
         Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
-        SupportRole evResult0 = rtResult.create(result);
-        SupportRole evSubject0 = rtSubject.create(subject0);
-        assertFalse(treat.applicable(Arrays.asList(new SupportRole[] {evSubject0,evResult0})));
+        Support evResult0 = rtResult.create(result);
+        Support evSubject0 = rtSubject.create(subject0);
+        assertFalse(treat.applicable(Arrays.asList(new Support[] {evSubject0,evResult0})));
     }
 
     @Ignore
@@ -209,8 +209,8 @@ public class PatternTest {
         Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        SupportRole evSubject0 = rtSubject.create(subject0);
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        Support evSubject0 = rtSubject.create(subject0);
         treat.createStep(Arrays.asList(evSubject0,evStimulation0),experimentation0);
     }
 
@@ -236,8 +236,8 @@ public class PatternTest {
         Evidence<Subject> subject0 = new SubjectEvidence("Subject 0",new Subject());
         ExperimentationConclusion experimentation0 = new ExperimentationConclusion("Experimentation 0", subject0.getElement(),stimulation0.getElement());
 
-        SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
-        SupportRole evSubject0 = rtSubject.create(subject0);
+        Support evStimulation0 = rtStimulation.create(stimulation0 );
+        Support evSubject0 = rtSubject.create(subject0);
         JustificationStep step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
         assertNotNull(step0);
         assertNotNull(step0.getConclusion());

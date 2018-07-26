@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.pattern.type;
 
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.avek.evidence.Stimulation;
@@ -36,15 +36,15 @@ public class InputTypeTest {
         InputType<Evidence> evidenceRoleType= new InputType<Evidence>("stimulation type",Evidence.class);
 
         Evidence<Stimulation> evidence=new Evidence<Stimulation>("stimulation", new Stimulation());
-        SupportRole role=evidenceRoleType.create(evidence);
-        assertTrue(evidenceRoleType.check(role.getSupport()));
+        Support role=evidenceRoleType.create(evidence);
+        assertTrue(evidenceRoleType.check(role));
     }
     @Test
     public void testWrongEvidenceRoleFromEvidenceRoleType() throws WrongEvidenceException, VerificationException {
         InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation type",StimulationEvidence.class);
 
-        SupportRole supportRole =new SupportRole("test",new Evidence("test",new Subject()));
-        assertFalse(evidenceRoleType.check(supportRole.getSupport()));
+        Support supportRole =new Evidence("test",new Subject());
+        assertFalse(evidenceRoleType.check(supportRole));
     }
 
     @Test

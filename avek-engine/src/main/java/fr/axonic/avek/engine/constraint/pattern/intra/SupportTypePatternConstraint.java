@@ -33,7 +33,7 @@ public class SupportTypePatternConstraint<T extends Support> implements Argument
 
     @Override
     public boolean verify(List<JustificationStep> steps){
-        List<JustificationStep> filteredSteps=steps.stream().filter(step -> step.getPatternId().equals(pattern.getId()) && step.getSupports().stream().anyMatch(supportRole -> supportType.check(supportRole.getSupport()))).collect(Collectors.toList());
+        List<JustificationStep> filteredSteps=steps.stream().filter(step -> step.getPatternId().equals(pattern.getId()) && step.getSupports().stream().anyMatch(supportRole -> supportType.check(supportRole))).collect(Collectors.toList());
         return filteredSteps.stream().allMatch(predicate);
     }
 

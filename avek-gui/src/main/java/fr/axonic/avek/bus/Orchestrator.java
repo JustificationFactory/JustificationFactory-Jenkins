@@ -5,7 +5,7 @@ import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.avek.conclusion.*;
 import fr.axonic.avek.instance.avek.evidence.Stimulation;
 import fr.axonic.avek.instance.avek.evidence.Subject;
@@ -44,7 +44,7 @@ public class Orchestrator implements Observer {
     private Stimulation currentStimulation;
 
     private final List<Pattern> patternList;
-    private List<SupportRole> evidences;
+    private List<Support> evidences;
 
     private final JustificationSystemAPI engineAPI;
     private final GUIAPI guiAPI;
@@ -90,12 +90,12 @@ public class Orchestrator implements Observer {
      */
     private void computeNextPattern() {
         // Preparing for following view
-        evidences = engineAPI.getBaseEvidences();
+        evidences = engineAPI.getRegisteredEvidences();
         patternList.clear();
         patternList.addAll(
                 engineAPI.getPatternsBase().getPossiblePatterns(evidences)
                         .stream()
-                        .map(engineAPI::getPattern)
+                        .map(engineAPI.getPatternsBase()::getPattern)
                         .collect(Collectors.toList()));
     }
 
@@ -164,11 +164,11 @@ public class Orchestrator implements Observer {
         content.put(ComponentType.EFFECTS, currentEffects);
 
         // Setting others data to Data bus
-        for (SupportRole supportRole : evidences) {
+        for (Support supportRole : evidences) {
             try {
-                switch (supportRole.getRole()) {
+                switch (supportRole.getName()) {
                     case SUBJECT_STR:
-                        currentSubject = (Subject) supportRole.getSupport().getElement();
+                        currentSubject = (Subject) supportRole.getElement();
 
                         MonitoredSystem ms = new MonitoredSystem(currentSubject.getId());
                         currentSubject.getFieldsContainer().forEach((key,val)-> {
@@ -181,7 +181,7 @@ public class Orchestrator implements Observer {
                         content.put(ComponentType.MONITORED_SYSTEM, ms);
                         break;
                     case STIM_STR:
-                        currentStimulation = (Stimulation) supportRole.getSupport().getElement();
+                        currentStimulation = (Stimulation) supportRole.getElement();
 
                         AList<AEntity> list = new AList<>();
                         list.setLabel("root");
@@ -190,15 +190,15 @@ public class Orchestrator implements Observer {
                         content.put(ComponentType.EXPERIMENTATION_PARAMETERS, new GUIExperimentParameter(list));
                         break;
                     default:
-                        if (supportRole.getSupport() instanceof EstablishEffectConclusion) {
+                        if (supportRole instanceof EstablishEffectConclusion) {
                             LOGGER.error("Got: " + supportRole);
-                            EstablishEffectConclusion eec = (EstablishEffectConclusion) supportRole.getSupport();
+                            EstablishEffectConclusion eec = (EstablishEffectConclusion) supportRole;
 
                             currentEffects = ((EstablishedEffect) eec.getElement()).getEffects();
                             content.put(ComponentType.EFFECTS, currentEffects);
                             break;
                         }
-                        LOGGER.warn("Unknown Evidence role \"" + supportRole.getRole() + "\" in " + supportRole);
+                        LOGGER.warn("Unknown Evidence role \"" + supportRole.getName() + "\" in " + supportRole);
                 }
             } catch (RuntimeException e) {
                 LOGGER.error("Impossible to treat Evidence role: " + supportRole, e);

@@ -23,7 +23,7 @@ public class ConclusionReuseConstraint extends PatternConstraint {
         Stream<JustificationStep> stepStream=steps.stream()
                 .filter(step -> step.getSupports().stream().
                         anyMatch(evidenceRole -> patternSteps.stream()
-                                .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId())))
+                                .anyMatch(stepPattern -> evidenceRole.getId().equals(stepPattern.getConclusion().getId())))
                         )
                 .distinct();
         return stepStream.count()>=patternSteps.size();

@@ -7,8 +7,8 @@ import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.kernel.JustificationStepAPI;
 import fr.axonic.avek.engine.kernel.StrategyAPI;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
@@ -50,21 +50,21 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 		this("0",aName,aStrategy,roleTypeList,aConclusionExperimentationType);
 	}
 
-	boolean applicable(List<SupportRole> supportRoles) {
-		return applicablePatternConstraint.verify(supportRoles);
+	boolean applicable(List<Support> supports) {
+		return applicablePatternConstraint.verify(supports);
 	}
 	
 	private boolean checkConclusion(JustificationStep step) {
 		return constructionConstraints.stream().allMatch(stepConstraint -> stepConstraint.verify(step)) ;
 	}
 
-	public List<SupportRole> filterUsefulEvidences(List<SupportRole> supportRoles){
-		List<SupportRole> supportRoleList =new ArrayList<>();
-		for(SupportRole supportRole : supportRoles){
+	public List<Support> filterUsefulEvidences(List<Support> supportRoles){
+		List<Support> supportRoleList =new ArrayList<>();
+		for(Support support : supportRoles){
 			for(InputType evidenceRoleType: supports){
-				if(evidenceRoleType.check(supportRole.getSupport())){
-					if(!supportRoleList.contains(supportRole)){
-						supportRoleList.add(supportRole);
+				if(evidenceRoleType.check(support)){
+					if(!supportRoleList.contains(support)){
+						supportRoleList.add(support);
 					}
 
 				}
@@ -72,12 +72,12 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 		}
 		return supportRoleList;
 	}
-	public List<InputType> filterNotFillInput(List<SupportRole> supportRoles){
+	public List<InputType> filterNotFillInput(List<Support> supportRoles){
 		List<InputType> usedInputTypeList =new ArrayList<>();
-		for(SupportRole supportRole : supportRoles){
+		for(Support support : supportRoles){
 			for(InputType evidenceRoleType: supports){
-				if(evidenceRoleType.check(supportRole.getSupport())){
-					if(!usedInputTypeList.contains(supportRole)){
+				if(evidenceRoleType.check(support)){
+					if(!usedInputTypeList.contains(support)){
 						usedInputTypeList.add(evidenceRoleType);
 					}
 
@@ -90,7 +90,7 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 		return inputTypesRes;
 	}
 
-	public JustificationStep createStep(List<SupportRole> evidenceList, Conclusion conclusion) throws StepBuildingException, StrategyException {
+	public JustificationStep createStep(List<Support> evidenceList, Conclusion conclusion) throws StepBuildingException {
 		if(applicable(evidenceList)){
 			JustificationStep res= null;
 			Strategy strategy= (Strategy) this.getStrategy();

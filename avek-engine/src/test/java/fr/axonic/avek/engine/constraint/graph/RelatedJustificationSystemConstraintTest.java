@@ -6,7 +6,7 @@ import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.avek.conclusion.Effect;
@@ -33,19 +33,19 @@ public class RelatedJustificationSystemConstraintTest extends PatternConstraintT
         Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
-        SupportRole supportRole1 =evidenceRoleType1.create(evidence1);
+        Support supportRole1 =evidenceRoleType1.create(evidence1);
 
         InputType evidenceRoleType2=new InputType("Test2", Evidence.class);
         Evidence evidence2=new Evidence("evidence2", new Stimulation());
-        SupportRole supportRole2 =evidenceRoleType2.create(evidence2);
+        Support supportRole2 =evidenceRoleType2.create(evidence2);
         Conclusion conclusion=new Conclusion("conclusion1",new Effect());
         Conclusion conclusion2=new Conclusion("conclusion2",new Effect());
         Conclusion conclusion3=new Conclusion("conclusion3",new Effect());
 
         InputType conclusionRoleType2=new InputType("Test3", Conclusion.class);
-        SupportRole conclusionRole1=conclusionRoleType2.create(conclusion);
+        Support conclusionRole1=conclusionRoleType2.create(conclusion);
         InputType conclusionRoleType3=new InputType("Test4", Conclusion.class);
-        SupportRole conclusionRole2=conclusionRoleType3.create(conclusion2);
+        Support conclusionRole2=conclusionRoleType3.create(conclusion2);
 
 
         JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
@@ -60,19 +60,19 @@ public class RelatedJustificationSystemConstraintTest extends PatternConstraintT
         Strategy strategy=new HumanStrategy();
         InputType evidenceRoleType1=new InputType("Test1", Evidence.class);
         Evidence evidence1=new Evidence("evidence1", new Stimulation());
-        SupportRole supportRole1 =evidenceRoleType1.create(evidence1);
+        Support supportRole1 =evidenceRoleType1.create(evidence1);
 
         InputType evidenceRoleType2=new InputType("Test2", Evidence.class);
         Evidence evidence2=new Evidence("evidence2", new Stimulation());
-        SupportRole supportRole2 =evidenceRoleType2.create(evidence2);
+        Support supportRole2 =evidenceRoleType2.create(evidence2);
         Conclusion conclusion=new Conclusion("conclusion1",new Effect());
         Conclusion conclusion2=new Conclusion("conclusion2",new Effect());
         Conclusion conclusion3=new Conclusion("conclusion3",new Effect());
 
         InputType conclusionRoleType2=new InputType("Test3", Conclusion.class);
-        SupportRole conclusionRole1=conclusionRoleType2.create(conclusion);
+        Support conclusionRole1=conclusionRoleType2.create(conclusion);
         InputType conclusionRoleType3=new InputType("Test4", Conclusion.class);
-        SupportRole conclusionRole2=conclusionRoleType3.create(conclusion2);
+        Support conclusionRole2=conclusionRoleType3.create(conclusion2);
 
 
         JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);

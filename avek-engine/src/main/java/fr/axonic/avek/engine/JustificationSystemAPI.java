@@ -7,7 +7,6 @@ import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.JustificationStep;
@@ -23,25 +22,18 @@ import java.util.List;
  */
 @XmlRootElement
 @XmlSeeAlso(JustificationSystem.class)
-public interface JustificationSystemAPI {
+public interface JustificationSystemAPI<T extends PatternsBase> {
 
-    Pattern getPattern(String patternId);
+    List<Support> getRegisteredEvidences();
 
-    void addPattern( Pattern pattern);
-
-    List<SupportRole> getBaseEvidences();
-
-    JustificationStep constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
+    JustificationStep constructStep(Pattern pattern, List<Support> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
 
     JustificationDiagramAPI getJustificationDiagram();
 
-    PatternsBase getPatternsBase();
-
-    OutputType getObjective();
+    T getPatternsBase();
 
     boolean validate();
 
     void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException;
 
-    void removeSteps();
 }

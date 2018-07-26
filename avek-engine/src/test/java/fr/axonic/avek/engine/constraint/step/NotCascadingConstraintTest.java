@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.step;
 
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
 import fr.axonic.avek.instance.avek.conclusion.EstablishedEffect;
 import fr.axonic.avek.instance.avek.evidence.ResultsEvidence;
@@ -23,7 +23,7 @@ public class NotCascadingConstraintTest extends PatternConstraintTest{
 
     @Test
     public void verifyCascading() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPattern("2"));
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPatternsBase().getPattern("2"));
 
 
         InputType<ExperimentationConclusion> rtExperimentation = new InputType<>("experimentation", ExperimentationConclusion.class);
@@ -31,15 +31,15 @@ public class NotCascadingConstraintTest extends PatternConstraintTest{
 
         ResultsEvidence results0 = new ResultsEvidence("Result 0",new Result(new AList<>()));
         EstablishEffectConclusion effect0 = new EstablishEffectConclusion("Effect 0",new EstablishedEffect(null, new AList<>()));
-        SupportRole evExperimentation0 = rtExperimentation.create(experimentation0);
-        SupportRole evResults0 = rtResults.create(results0);
-        argumentationSystem.constructStep(argumentationSystem.getPattern("2"), Arrays.asList(new SupportRole[] {evExperimentation0,evResults0}), effect0);
+        Support evExperimentation0 = rtExperimentation.create(experimentation0);
+        Support evResults0 = rtResults.create(results0);
+        argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"), Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
         assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
     public void verifyNotCascading() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPattern("3"));
+        ArgumentationSystemConstraint argumentationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPatternsBase().getPattern("3"));
 
 
         InputType<ExperimentationConclusion> rtExperimentation = new InputType<>("experimentation", ExperimentationConclusion.class);
@@ -47,9 +47,9 @@ public class NotCascadingConstraintTest extends PatternConstraintTest{
 
         ResultsEvidence results0 = new ResultsEvidence("Result 0",new Result(new AList<>()));
         EstablishEffectConclusion effect0 = new EstablishEffectConclusion("Effect 0",new EstablishedEffect(null, new AList<>()));
-        SupportRole evExperimentation0 = rtExperimentation.create(experimentation0);
-        SupportRole evResults0 = rtResults.create(results0);
-        argumentationSystem.constructStep(argumentationSystem.getPattern("2"), Arrays.asList(new SupportRole[] {evExperimentation0,evResults0}), effect0);
+        Support evExperimentation0 = rtExperimentation.create(experimentation0);
+        Support evResults0 = rtResults.create(results0);
+        argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"), Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
         assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 

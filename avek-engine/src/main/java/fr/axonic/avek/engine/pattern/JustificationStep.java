@@ -1,8 +1,8 @@
 package fr.axonic.avek.engine.pattern;
 
 import fr.axonic.avek.engine.kernel.JustificationStepAPI;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.strategy.Strategy;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @XmlRootElement
-public class JustificationStep extends JustificationStepAPI<SupportRole,Conclusion> {
+public class JustificationStep extends JustificationStepAPI<Support,Conclusion> {
 	private String id;
 	private String patternId;
 
@@ -20,14 +20,14 @@ public class JustificationStep extends JustificationStepAPI<SupportRole,Conclusi
 		id= UUID.randomUUID().toString().replace("-", "");
 	}
 
-	public JustificationStep(String patternId, Strategy strategy, List<SupportRole> supportRolelist, Conclusion conclusion) {
+	public JustificationStep(String patternId, Strategy strategy, List<Support> supportRolelist, Conclusion conclusion) {
 		super(supportRolelist,strategy,conclusion);
 		this.patternId=patternId;
 	}
 
-	@XmlElement(name="evidenceRoles")
+	@XmlElement
 	@XmlElementWrapper
-	public List<SupportRole> getSupports() {
+	public List<Support> getSupports() {
 		return supports;
 	}
 

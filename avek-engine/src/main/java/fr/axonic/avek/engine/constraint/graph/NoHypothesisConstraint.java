@@ -13,6 +13,6 @@ public class NoHypothesisConstraint implements ArgumentationSystemConstraint {
 
     @Override
     public boolean verify(List<JustificationStep> steps) {
-        return steps.stream().noneMatch(step -> step.getSupports().stream().anyMatch(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis));
+        return steps.stream().noneMatch(step -> step.getSupports().stream().anyMatch(evidenceRole -> evidenceRole instanceof Hypothesis));
     }
 }

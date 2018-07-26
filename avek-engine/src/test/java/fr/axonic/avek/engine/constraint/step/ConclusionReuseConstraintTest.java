@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.step;
 
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
 import fr.axonic.avek.instance.avek.conclusion.EstablishedEffect;
 import fr.axonic.avek.instance.avek.evidence.ResultsEvidence;
@@ -31,9 +31,9 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
         ResultsEvidence results0 = new ResultsEvidence("Result 0",new Result(new AList<>()));
         EstablishEffectConclusion effect0 = new EstablishEffectConclusion("Effect 0",new EstablishedEffect(null, new AList<>()));
 
-        SupportRole evExperimentation0 = rtExperimentation.create(experimentation0);
-        SupportRole evResults0 = rtResults.create(results0);
-        argumentationSystem.constructStep(argumentationSystem.getPattern("2"), Arrays.asList(new SupportRole[] {evExperimentation0,evResults0}), effect0);
+        Support evExperimentation0 = rtExperimentation.create(experimentation0);
+        Support evResults0 = rtResults.create(results0);
+        argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"), Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
         assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
@@ -58,12 +58,12 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
         EstablishEffectConclusion effect1 = new EstablishEffectConclusion("Effect 1",new EstablishedEffect(null, new AList<>()));
 
 
-        SupportRole evExperimentation0 = rtExperimentation.create(experimentation0);
-        SupportRole evResults0 = rtResults.create(results0);
-        SupportRole evResults1 = rtResults.create(results1);
-        argumentationSystem.constructStep(argumentationSystem.getPattern("2"),Arrays.asList(new SupportRole[] {evExperimentation0,evResults0}), effect0);
+        Support evExperimentation0 = rtExperimentation.create(experimentation0);
+        Support evResults0 = rtResults.create(results0);
+        Support evResults1 = rtResults.create(results1);
+        argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"),Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
 
-        argumentationSystem.constructStep(argumentationSystem.getPattern("2"),Arrays.asList(new SupportRole[] {evExperimentation0,evResults1}), effect1);
+        argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"),Arrays.asList(new Support[] {evExperimentation0,evResults1}), effect1);
 
         assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }

@@ -62,6 +62,10 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
         return element;
     }
 
+    public void setElement(T element) {
+        this.element = element;
+    }
+
     @Override
     public List<T> getArtifacts() {
         List<T> artifacts=new ArrayList<T>();
@@ -72,6 +76,10 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
     @XmlElement
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlElement

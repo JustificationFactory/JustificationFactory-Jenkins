@@ -1,9 +1,9 @@
 package fr.axonic.avek.engine.constraint.graph;
 
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 import org.junit.Test;
 
@@ -28,10 +28,8 @@ public class NoHypothesisConstraintTest extends PatternConstraintTest{
 
         List<JustificationStep> stepList=argumentationSystem.getJustificationDiagram().getSteps();
         JustificationStep hyp=stepList.get(0);
-        List<SupportRole> supportRoles =hyp.getSupports();
-        SupportRole supportRole = supportRoles.get(0);
-        supportRole.setSupport(new Hypothesis());
-        supportRoles.set(0, supportRole);
+        List<Support> supportRoles =hyp.getSupports();
+        supportRoles.set(0, new Hypothesis());
         hyp.setSupports(supportRoles);
         stepList.set(0,hyp);
 

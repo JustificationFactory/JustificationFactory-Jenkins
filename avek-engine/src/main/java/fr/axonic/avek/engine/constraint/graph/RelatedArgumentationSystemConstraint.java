@@ -16,7 +16,7 @@ public class RelatedArgumentationSystemConstraint implements ArgumentationSystem
             return true;
         }
         List<JustificationStep> linkedSteps=steps.stream().filter(step -> step.getSupports().stream().anyMatch(evidenceRole -> steps.stream()
-                .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId()))) || steps.stream().anyMatch(step1 -> step1.getSupports().stream().anyMatch(supportRole -> step.getConclusion().getId().equals(supportRole.getSupport().getId())))).distinct().collect(Collectors.toList());
+                .anyMatch(stepPattern -> evidenceRole.getId().equals(stepPattern.getConclusion().getId()))) || steps.stream().anyMatch(step1 -> step1.getSupports().stream().anyMatch(supportRole -> step.getConclusion().getId().equals(supportRole.getId())))).distinct().collect(Collectors.toList());
         return linkedSteps.size()==steps.size();
     }
 }

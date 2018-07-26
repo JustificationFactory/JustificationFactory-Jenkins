@@ -2,7 +2,9 @@ package fr.axonic.avek.engine.pattern;
 
 import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.exception.WrongObjectiveException;
+import fr.axonic.avek.engine.pattern.type.OutputType;
+import fr.axonic.avek.engine.support.Support;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -16,67 +18,32 @@ import java.util.stream.Collectors;
  * Created by cduffau on 09/03/17.
  */
 @XmlRootElement
-public class PatternsBase {
+public abstract class PatternsBase {
 
     private PatternsBaseType patternsBaseType;
-    private List<Pattern> patterns;
-    private List<ArgumentationSystemConstraint> constraints;
 
-    public PatternsBase(PatternsBaseType patternsBaseType,List<Pattern> patterns, List<ArgumentationSystemConstraint> constraints) {
-        this.patterns = patterns;
-        this.constraints = constraints;
+    public PatternsBase(PatternsBaseType patternsBaseType) {
         this.patternsBaseType=patternsBaseType;
     }
-
-    public PatternsBase() {
-        this(PatternsBaseType.LIST_OF_PATTERNS,new ArrayList<>(), new ArrayList<>());
-    }
-
-    public PatternsBase(List<Pattern> patterns) {
-        this(PatternsBaseType.LIST_OF_PATTERNS,patterns, new ArrayList<>());
-    }
-
-    public List<String> getPossiblePatterns(List<SupportRole> supportRoles) {
+    public List<String> getPossiblePatterns(List<Support> supportRoles) {
         return getPatterns().stream().filter(pattern -> pattern.applicable(supportRoles)).map(Pattern::getId).collect(Collectors.toList());
     }
 
     @XmlElement
     @XmlElementWrapper
-    public List<Pattern> getPatterns() {
-        return patterns;
-    }
+    public abstract List<Pattern> getPatterns();
 
-    public void setPatterns(List<Pattern> patterns) {
-        this.patterns = patterns;
-    }
+    public abstract void setPatterns(List<Pattern> patterns);
 
-    @XmlTransient
-    public List<ArgumentationSystemConstraint> getConstraints() {
-        return constraints;
-    }
 
-    public void setConstraints(List<ArgumentationSystemConstraint> constraints) {
-        this.constraints = constraints;
-    }
-
-    public void addConstraint(ArgumentationSystemConstraint argumentationSystemConstraint){
-        this.constraints.add(argumentationSystemConstraint);
-    }
-    public void addPattern(Pattern pattern){
-        this.patterns.add(pattern);
-    }
-
-    public Pattern getPattern(String patternId) {
-        return patterns.stream().filter(pattern -> pattern.getId().equals(patternId)).collect(JustificationSystem.singletonCollector());
-    }
+    public abstract Pattern getPattern(String patternId);
 
     @Override
     public String toString() {
         return "PatternsBase{" +
-                "type"+patternsBaseType.toString()+
-                ", patterns=" + patterns +
-                ", constraints=" + constraints +
-                '}';
+                "type="+patternsBaseType.toString()+
+                ", objective="+getObjective()+
+                ", patterns=" + getPatterns() +'}';
     }
 
     @XmlElement
@@ -87,4 +54,9 @@ public class PatternsBase {
     public void setPatternsBaseType(PatternsBaseType patternsBaseType) {
         this.patternsBaseType = patternsBaseType;
     }
+
+
+    @XmlElement
+    public abstract OutputType getObjective();
+
 }

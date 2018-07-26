@@ -4,9 +4,10 @@ import fr.axonic.avek.engine.*;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.avek.evidence.Stimulation;
 import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
@@ -27,15 +28,15 @@ import java.util.Arrays;
 public abstract class PatternConstraintTest {
 
     protected Pattern pattern;
-    protected JustificationSystemAPI argumentationSystem;
+    protected JustificationSystem<ListPatternsBase> argumentationSystem;
     protected ExperimentationConclusion experimentation0;
-    protected SupportRole evStimulation0;
-    protected SupportRole evSubject0;
-    protected SupportRole evActor0;
+    protected Support evStimulation0;
+    protected Support evSubject0;
+    protected Support evActor0;
 
     @Before
     public void setUp() throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
-        pattern= MockedArgumentationSystem.getAXONICArgumentationSystem().getPattern("1");
+        pattern= MockedArgumentationSystem.getAXONICArgumentationSystem().getPatternsBase().getPattern("1");
         argumentationSystem=MockedArgumentationSystem.getAXONICArgumentationSystem();
         argumentationSystem.getPatternsBase().setConstraints(new ArrayList<>());
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());

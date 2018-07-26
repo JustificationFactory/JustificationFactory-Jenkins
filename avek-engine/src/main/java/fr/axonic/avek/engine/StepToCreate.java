@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine;
 
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,22 +12,22 @@ import java.util.List;
 @XmlRootElement
 public class StepToCreate {
 
-    private List<SupportRole> supports;
+    private List<Support> supports;
     private Conclusion conclusion;
 
     public StepToCreate() {
     }
 
-    public StepToCreate(List<SupportRole> supports, Conclusion conclusion) {
+    public StepToCreate(List<Support> supports, Conclusion conclusion) {
         this.supports = supports;
         this.conclusion = conclusion;
     }
 
-    public List<SupportRole> getSupports() {
+    public List<Support> getSupports() {
         return supports;
     }
 
-    public void setSupports(List<SupportRole> supports) {
+    public void setSupports(List<Support> supports) {
         this.supports = supports;
     }
 

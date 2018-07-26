@@ -4,17 +4,12 @@ import fr.axonic.avek.engine.diagram.JustificationDiagram;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.exception.WrongObjectiveException;
+import fr.axonic.avek.engine.pattern.*;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.constraint.PatternConstraintException;
 import fr.axonic.avek.engine.constraint.graph.NoCycleConstraint;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.PatternsBase;
-import fr.axonic.avek.engine.pattern.JustificationStep;
-import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
 import org.slf4j.Logger;
@@ -31,58 +26,47 @@ import java.util.stream.Collectors;
  * Created by cduffau on 04/08/16.
  */
 @XmlRootElement
-public class JustificationSystem implements JustificationSystemAPI {
+public class JustificationSystem<T extends PatternsBase> implements JustificationSystemAPI<T> {
 
     protected boolean autoSupportFillEnable =false;
-    protected PatternsBase patternsBase;
-    protected OutputType objective;
-    protected List<SupportRole> baseEvidences = new ArrayList<>();
+    protected T patternsBase;
+    protected List<Support> registeredEvidences = new ArrayList<>();
     protected JustificationDiagram justificationDiagram;
     //@XmlTransient
     private final static Logger LOGGER = LoggerFactory.getLogger(JustificationSystem.class);
     protected boolean versioningEnable=false;
 
-    public JustificationSystem() throws VerificationException, WrongEvidenceException {
+    public JustificationSystem() {
         justificationDiagram =new JustificationDiagram();
 
     }
-    public JustificationSystem(PatternsBase patternsBase, List<SupportRole> baseEvidences) throws VerificationException, WrongEvidenceException {
+    public JustificationSystem(T patternsBase, List<Support> registeredEvidences) throws VerificationException, WrongEvidenceException {
         this();
         this.patternsBase = patternsBase;
-        this.baseEvidences = baseEvidences;
-    }
-
-    @Override
-    public Pattern getPattern(String patternId) {
-        return patternsBase.getPattern(patternId);
-    }
-
-    @Override
-    public void addPattern(Pattern pattern) {
-        patternsBase.addPattern(pattern);
+        this.registeredEvidences = registeredEvidences;
     }
 
     @Override
     @XmlElement
     @XmlElementWrapper
-    public List<SupportRole> getBaseEvidences() {
-        return baseEvidences;
+    public List<Support> getRegisteredEvidences() {
+        return registeredEvidences;
     }
 
     @Override
     @XmlElement
     @XmlElementWrapper
-    public PatternsBase getPatternsBase() {
+    public T getPatternsBase() {
         return patternsBase;
     }
 
-    public void setPatternsBase(PatternsBase patternsBase) {
+    public void setPatternsBase(T patternsBase) {
         this.patternsBase = patternsBase;
     }
 
 
-    private void setBaseEvidences(List<SupportRole> baseEvidences) {
-        this.baseEvidences = baseEvidences;
+    private void setRegisteredEvidences(List<Support> registeredEvidences) {
+        this.registeredEvidences = registeredEvidences;
     }
 
     private void setJustificationDiagram(JustificationDiagram justificationDiagram) {
@@ -90,29 +74,16 @@ public class JustificationSystem implements JustificationSystemAPI {
     }
 
     @Override
-    @XmlElement
-    public OutputType getObjective() {
-        return objective;
-    }
-
-    @Override
     public boolean validate() {
-        return patternsBase.getConstraints().stream().allMatch(constraint -> constraint.verify(justificationDiagram.getSteps()));
-    }
+        if(patternsBase instanceof ListPatternsBase){
+            return ((ListPatternsBase)patternsBase).getConstraints().stream().allMatch(constraint -> constraint.verify(justificationDiagram.getSteps()));
 
-    public void setObjective(OutputType objective) throws WrongObjectiveException {
-        if(objective!=null){
-            if(patternsBase.getPatterns().stream().filter(pattern -> pattern.getOutputType().equals(objective)).count()>=1){
-                this.objective = objective;
-            }
-            else{
-                throw new WrongObjectiveException();
-            }
         }
-    }
+        return true;
+        }
 
     @Override
-    public JustificationStep constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
+    public JustificationStep constructStep(Pattern pattern, List<Support> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         if(evidences==null || evidences.isEmpty()){
             throw new StepBuildingException("Need evidences");
         }
@@ -124,7 +95,7 @@ public class JustificationSystem implements JustificationSystemAPI {
         }
 
         try{
-            List<SupportRole> usefulEvidences=filterUsefulSupports(pattern,evidences,conclusion);
+            List<Support> usefulEvidences=filterUsefulSupports(pattern,evidences,conclusion);
             JustificationStep step=pattern.createStep(usefulEvidences,conclusion.clone());
             justificationDiagram.addStep(step);
             LOGGER.info("Supports : "+ usefulEvidences);
@@ -143,35 +114,35 @@ public class JustificationSystem implements JustificationSystemAPI {
         InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
 
         if(autoSupportFillEnable){
-            baseEvidences.add(evidenceRoleType.create(step.getConclusion().clone()));
-            List<SupportRole> evidencesToAdd=step.getSupports().stream().filter(supportRole -> supportRole.getSupport().isPrimitiveInputType() && !baseEvidences.contains(supportRole)).collect(Collectors.toList());
-            baseEvidences.addAll(evidencesToAdd);
+            registeredEvidences.add(step.getConclusion().clone());
+            List<Support> evidencesToAdd=step.getSupports().stream().filter(supportRole -> supportRole.isPrimitiveInputType() && !registeredEvidences.contains(supportRole)).collect(Collectors.toList());
+            registeredEvidences.addAll(evidencesToAdd);
         }
     }
 
-    protected List<SupportRole> filterUsefulSupports(Pattern pattern, List<SupportRole> supports, Conclusion conclusion) throws StepBuildingException {
-        List<SupportRole> usefulEvidences=pattern.filterUsefulEvidences(supports);
+    protected List<Support> filterUsefulSupports(Pattern pattern, List<Support> supports, Conclusion conclusion) throws StepBuildingException {
+        List<Support> usefulEvidences=pattern.filterUsefulEvidences(supports);
         if(autoSupportFillEnable && usefulEvidences.size()!=pattern.getInputTypes().size()){
             LOGGER.info("Missing supports. Trying to autofill");
             List<InputType> inputTypeList=pattern.filterNotFillInput(usefulEvidences);
             LOGGER.info("Found "+inputTypeList+ " to fill");
-            List<SupportRole> autoFillSupports=collectSupports(inputTypeList);
+            List<Support> autoFillSupports=collectSupports(inputTypeList);
             LOGGER.info("Found "+autoFillSupports+ ". Add them to supports");
             usefulEvidences.addAll(autoFillSupports);
         }
         if(versioningEnable){
-            usefulEvidences=usefulEvidences.stream().filter(supportRole -> supportRole.getSupport().getElement().getVersion()==null || supportRole.getSupport().getElement().getVersion().equals(conclusion.getElement().getVersion())).collect(Collectors.toList());
+            usefulEvidences=usefulEvidences.stream().filter(supportRole -> supportRole.getElement().getVersion()==null || supportRole.getElement().getVersion().equals(conclusion.getElement().getVersion())).collect(Collectors.toList());
         }
         return usefulEvidences;
     }
 
-    private List<SupportRole> collectSupports(List<InputType> inputTypes) throws StepBuildingException {
-        List<SupportRole> collected=new ArrayList<>();
+    private List<Support> collectSupports(List<InputType> inputTypes) throws StepBuildingException {
+        List<Support> collected=new ArrayList<>();
         for(InputType inputType:inputTypes){
-            for(SupportRole supportRole:baseEvidences){
-                if(inputType.getType().equals(supportRole.getSupport().getClass())){
-                    if(!collected.contains(supportRole)){
-                        collected.add(supportRole);
+            for(Support support: registeredEvidences){
+                if(inputType.getType().equals(support.getClass())){
+                    if(!collected.contains(support)){
+                        collected.add(support);
                         break;
                     }
                 }
@@ -206,11 +177,11 @@ public class JustificationSystem implements JustificationSystemAPI {
 
     @Override
     public void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException {
-        SupportRole hypo=step.getSupports().stream().filter(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis && evidenceRole.getSupport().equals(hypothesis)).collect(singletonCollector());
+        Support hypo=step.getSupports().stream().filter(evidenceRole -> evidenceRole instanceof Hypothesis && evidenceRole.equals(hypothesis)).collect(singletonCollector());
         Pattern pattern=patternsBase.getPattern(step.getPatternId());
-        Optional<InputType> evidenceRoleTypeResult=pattern.getInputTypes().stream().filter(evidenceRoleType -> evidenceRoleType.check(hypo.getSupport())).findAny();
+        Optional<InputType> evidenceRoleTypeResult=pattern.getInputTypes().stream().filter(evidenceRoleType -> evidenceRoleType.check(hypo)).findAny();
         if(evidenceRoleTypeResult.isPresent()){
-            SupportRole res=evidenceRoleTypeResult.get().create(support);
+            Support res=evidenceRoleTypeResult.get().create(support);
             step.getSupports().remove(hypo);
             step.getSupports().add(res);
             NoCycleConstraint constraint=new NoCycleConstraint(step);
@@ -224,16 +195,10 @@ public class JustificationSystem implements JustificationSystemAPI {
     }
 
     @Override
-    public void removeSteps() {
-        justificationDiagram.getSteps().clear();
-    }
-
-    @Override
     public String toString() {
         return "ArgumentationSystem{" +
                 "patternsBase=" + patternsBase +
-                ", objective=" + objective +
-                ", baseEvidences=" + baseEvidences +
+                ", registeredEvidences=" + registeredEvidences +
                 ", justificationDiagram=" + justificationDiagram +
                 '}';
     }

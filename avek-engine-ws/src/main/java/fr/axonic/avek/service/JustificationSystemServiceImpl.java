@@ -11,6 +11,7 @@ import fr.axonic.avek.engine.StepToCreate;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.SupportType;
@@ -32,9 +33,9 @@ import java.util.stream.Collectors;
 /**
  * Created by cduffau on 16/01/17.
  */
-@Path("/argumentation")
+@Path("/justification")
 public class JustificationSystemServiceImpl implements JustificationSystemService {
-    private static Map<String, JustificationSystemAPI> argumentationSystems;
+    private static Map<String, JustificationSystem<ListPatternsBase>> argumentationSystems;
 
     private static final Logger LOGGER= LoggerFactory.getLogger(JustificationSystemServiceImpl.class);
 
@@ -80,8 +81,8 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response registerPattern(String argumentationSystemId, Pattern pattern) {
-        JustificationSystemAPI argumentationSystem=argumentationSystems.get(argumentationSystemId);
-        argumentationSystem.addPattern(pattern);
+        JustificationSystem<ListPatternsBase> argumentationSystem=argumentationSystems.get(argumentationSystemId);
+        argumentationSystem.getPatternsBase().addPattern(pattern);
         return Response.status(Response.Status.ACCEPTED).entity(pattern.getId()).build();
     }
 
@@ -109,7 +110,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
         }
         else {
-            argumentationSystem.removeSteps();
+            argumentationSystem.getJustificationDiagram().getSteps().clear();
             try {
                 ArgumentationSystemsDAO.saveArgumentationSystem(argumentationSystemId,argumentationSystem);
             } catch (IOException e) {
@@ -171,7 +172,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
     public Response constructStep(String argumentationSystem, String pattern, StepToCreate step) {
 
         try {
-            JustificationStep res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPattern(pattern),step.getSupports(),step.getConclusion());
+            JustificationStep res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPatternsBase().getPattern(pattern),step.getSupports(),step.getConclusion());
             LOGGER.info("Step created on "+argumentationSystem+" with pattern "+pattern);
             try {
                 ArgumentationSystemsDAO.saveArgumentationSystem(argumentationSystem,argumentationSystems.get(argumentationSystem));

@@ -1,7 +1,7 @@
 package fr.axonic.avek.jenkins;
 
-import fr.axonic.avek.engine.pattern.Step;
-import fr.axonic.avek.engine.support.SupportRole;
+import fr.axonic.avek.engine.pattern.JustificationStep;
+import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.evidence.Document;
 import fr.axonic.avek.engine.support.instance.DocumentEvidence;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
@@ -104,13 +104,13 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             jenkinsStatus.setVersion(build.getEnvironment(listener).get("GIT_COMMIT"));
             if(status==JenkinsStatusEnum.OK){
 
-                Step step=argumentationFactoryClient.sendStep(argumentationSystemName,patternId, jenkinsStatus, supports);
+                JustificationStep step=argumentationFactoryClient.sendStep(argumentationSystemName,patternId, jenkinsStatus, supports);
                 listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
-                for(SupportRole support : step.getEvidences()){
+                for(Support support : step.getSupports()){
                     for(SupportArtifact artifact:supports){
                         File file=new File(artifact.getArtifactPath());
-                        if(support.getSupport() instanceof DocumentEvidence &&file.getName().equals(((Document)support.getSupport().getElement()).getUrl().getValue())){
-                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDirURL(),argumentationSystemName,patternId, step.getId(),support.getSupport().getId(), artifact.getArtifactPath());
+                        if(support instanceof DocumentEvidence &&file.getName().equals(((Document)support.getElement()).getUrl())){
+                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDirURL(),argumentationSystemName,patternId, step.getId(),support.getId(), artifact.getArtifactPath());
                             smbUtil.copy();
                             break;
                         }

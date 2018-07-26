@@ -20,8 +20,8 @@
         <scmUrl>https://github.com/AVEK-project/AVEK.git</scmUrl>
         <scmConnection>scm:git:ssh://git@github.com:AVEK-project/AVEK.git</scmConnection>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jersey2.version>2.25.1</jersey2.version>
-        <jaxrs.version>2.0.1</jaxrs.version>
+        <jersey2.version>2.27</jersey2.version>
+        <jaxrs.version>2.1</jaxrs.version>
         <log4j.version>2.7</log4j.version>
         <asf.version>4.0.0-sprint5</asf.version>
     </properties>

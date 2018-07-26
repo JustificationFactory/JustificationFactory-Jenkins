@@ -27,7 +27,7 @@ public class NotCascadingConstraint extends PatternConstraint {
         Stream<JustificationStep> stepStream=pattern2Steps.stream()
                 .filter(step -> step.getSupports().stream().
                         anyMatch(evidenceRole -> pattern1Steps.stream()
-                                .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId()))))
+                                .anyMatch(stepPattern -> evidenceRole.getId().equals(stepPattern.getConclusion().getId()))))
                 .distinct();
         return stepStream.count()==0;
     }

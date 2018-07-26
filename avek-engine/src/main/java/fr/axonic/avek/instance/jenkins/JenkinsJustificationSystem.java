@@ -2,6 +2,7 @@ package fr.axonic.avek.instance.jenkins;
 
 import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.type.InputType;
@@ -16,11 +17,11 @@ import java.util.Arrays;
 /**
  * Created by cduffau on 25/08/17.
  */
-public class JenkinsJustificationSystem extends JustificationSystem {
+public class JenkinsJustificationSystem extends JustificationSystem<ListPatternsBase> {
 
     public JenkinsJustificationSystem() throws VerificationException, WrongEvidenceException {
         super();
-        PatternsBase patternsBase=new PatternsBase();
+        ListPatternsBase patternsBase=new ListPatternsBase();
         InputType<DocumentEvidence> documentType=new InputType<>("document",DocumentEvidence.class);
         OutputType<UnitTestJenkinsConclusion> utType=new OutputType<>(UnitTestJenkinsConclusion.class);
         OutputType<IntegrationTestJenkinsConclusion> itType=new OutputType<>(IntegrationTestJenkinsConclusion.class);

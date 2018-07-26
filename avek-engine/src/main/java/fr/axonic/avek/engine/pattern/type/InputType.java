@@ -2,8 +2,8 @@ package fr.axonic.avek.engine.pattern.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.support.Support;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -25,11 +25,24 @@ public class InputType<T extends Support> extends SupportType<T>{
 		this.name=name;
 
 	}
-	public SupportRole create(Support evidence) throws WrongEvidenceException {
+	public Support create(Support evidence) throws WrongEvidenceException {
 		if (evidence.getClass().equals(type.getType())){
-			return  new SupportRole(this.name, evidence);
+			evidence.setName(name);
+			return  evidence;
 		}
 		throw new WrongEvidenceException(evidence+ " is not compatible with "+ type);
+	}
+
+	public Support create(Element artifact) throws WrongEvidenceException {
+		try {
+			Support support= (Support) type.getType().newInstance();
+			support.setElement(artifact);
+			support.setName(name);
+			return support;
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new WrongEvidenceException(artifact+ " is not compatible with "+ type);
+
+		}
 	}
 
 	@XmlTransient
