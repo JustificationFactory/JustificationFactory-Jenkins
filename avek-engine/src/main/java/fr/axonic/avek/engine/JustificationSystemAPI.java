@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine;
 
 import fr.axonic.avek.engine.constraint.PatternConstraintException;
+import fr.axonic.avek.engine.kernel.JustificationDiagramAPI;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
@@ -9,7 +10,7 @@ import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.SupportRole;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 
@@ -21,8 +22,8 @@ import java.util.List;
  * Created by cduffau on 04/08/16.
  */
 @XmlRootElement
-@XmlSeeAlso(ArgumentationSystem.class)
-public interface ArgumentationSystemAPI {
+@XmlSeeAlso(JustificationSystem.class)
+public interface JustificationSystemAPI {
 
     Pattern getPattern(String patternId);
 
@@ -30,9 +31,9 @@ public interface ArgumentationSystemAPI {
 
     List<SupportRole> getBaseEvidences();
 
-    Step constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
+    JustificationStep constructStep(Pattern pattern, List<SupportRole> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
 
-    List<Step> getSteps();
+    JustificationDiagramAPI getJustificationDiagram();
 
     PatternsBase getPatternsBase();
 
@@ -40,7 +41,7 @@ public interface ArgumentationSystemAPI {
 
     boolean validate();
 
-    void resolveHypothesis(Step step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException;
+    void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException;
 
     void removeSteps();
 }

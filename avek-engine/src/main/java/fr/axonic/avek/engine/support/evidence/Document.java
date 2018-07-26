@@ -1,15 +1,12 @@
 package fr.axonic.avek.engine.support.evidence;
 
-import fr.axonic.base.AString;
-import fr.axonic.validation.exception.VerificationException;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by cduffau on 24/08/17.
  */
 @XmlRootElement
-public class Document extends Element{
+public class Document extends Element {
 
     private String url;
 

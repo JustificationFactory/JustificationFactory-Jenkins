@@ -27,7 +27,7 @@ import java.util.Arrays;
 public abstract class PatternConstraintTest {
 
     protected Pattern pattern;
-    protected ArgumentationSystemAPI argumentationSystem;
+    protected JustificationSystemAPI argumentationSystem;
     protected ExperimentationConclusion experimentation0;
     protected SupportRole evStimulation0;
     protected SupportRole evSubject0;

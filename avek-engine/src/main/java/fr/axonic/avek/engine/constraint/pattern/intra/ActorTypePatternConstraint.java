@@ -14,6 +14,6 @@ public class ActorTypePatternConstraint extends SupportTypePatternConstraint<Act
 
 
     public ActorTypePatternConstraint(Pattern pattern, SupportType<Actor> supportType, Role roleMinimum) throws InvalidPatternConstraint {
-        super(pattern, supportType, step -> step.getStrategy() instanceof HumanStrategy && step.getEvidences().stream().allMatch(supportRole -> !supportType.check(supportRole.getSupport()) || ((Actor)supportRole.getSupport()).getRole().ordinal()<=roleMinimum.ordinal()));
+        super(pattern, supportType, step -> step.getStrategy() instanceof HumanStrategy && step.getSupports().stream().allMatch(supportRole -> !supportType.check(supportRole.getSupport()) || ((Actor)supportRole.getSupport()).getRole().ordinal()<=roleMinimum.ordinal()));
     }
 }

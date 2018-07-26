@@ -26,7 +26,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 
 	}
 	public SupportRole create(Support evidence) throws WrongEvidenceException {
-		if (evidence.getClass().equals(type)){
+		if (evidence.getClass().equals(type.getType())){
 			return  new SupportRole(this.name, evidence);
 		}
 		throw new WrongEvidenceException(evidence+ " is not compatible with "+ type);
@@ -35,7 +35,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 	@XmlTransient
 	@JsonIgnore
 	public boolean isPrimitiveInputType(){
-		return Evidence.class.isAssignableFrom(type);
+		return Evidence.class.isAssignableFrom(getType());
 	}
 
 	@XmlElement

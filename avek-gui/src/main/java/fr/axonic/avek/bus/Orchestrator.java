@@ -46,10 +46,10 @@ public class Orchestrator implements Observer {
     private final List<Pattern> patternList;
     private List<SupportRole> evidences;
 
-    private final ArgumentationSystemAPI engineAPI;
+    private final JustificationSystemAPI engineAPI;
     private final GUIAPI guiAPI;
 
-    public Orchestrator(GUIAPI guiapi, ArgumentationSystemAPI engineAPI) throws VerificationException, WrongEvidenceException, GUIException {
+    public Orchestrator(GUIAPI guiapi, JustificationSystemAPI engineAPI) throws VerificationException, WrongEvidenceException, GUIException {
         patternList = new ArrayList<>();
 
         this.engineAPI = engineAPI;

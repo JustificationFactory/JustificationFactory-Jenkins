@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by cduffau on 24/08/17.
  */
 @XmlRootElement
-public class JenkinsStatus extends Element{
+public class JenkinsStatus extends Element {
 
     private JenkinsStatusEnum status;
 

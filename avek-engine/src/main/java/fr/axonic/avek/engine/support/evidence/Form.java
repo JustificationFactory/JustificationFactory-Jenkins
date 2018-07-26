@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement
-public class Form extends Element{
+public class Form extends Element {
 
     private List<AString> form;
 

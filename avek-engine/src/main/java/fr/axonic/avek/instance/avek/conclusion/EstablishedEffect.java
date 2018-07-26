@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlRootElement
 @XmlSeeAlso({Experimentation.class,Effect.class})
-public class EstablishedEffect extends Element{
+public class EstablishedEffect extends Element {
     private Experimentation experimentation;
     private AList<Effect> effects;
 

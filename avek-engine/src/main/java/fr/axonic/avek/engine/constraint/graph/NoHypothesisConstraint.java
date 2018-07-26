@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.graph;
 
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class NoHypothesisConstraint implements ArgumentationSystemConstraint {
 
     @Override
-    public boolean verify(List<Step> steps) {
-        return steps.stream().noneMatch(step -> step.getEvidences().stream().anyMatch(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis));
+    public boolean verify(List<JustificationStep> steps) {
+        return steps.stream().noneMatch(step -> step.getSupports().stream().anyMatch(evidenceRole -> evidenceRole.getSupport() instanceof Hypothesis));
     }
 }

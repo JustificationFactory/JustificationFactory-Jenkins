@@ -4,12 +4,10 @@ import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.InvalidPatternConstraint;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.SupportType;
 import fr.axonic.avek.engine.support.Support;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -22,9 +20,9 @@ public class SupportTypePatternConstraint<T extends Support> implements Argument
 
     protected Pattern pattern;
     protected SupportType<T> supportType;
-    protected Predicate<Step> predicate;
+    protected Predicate<JustificationStep> predicate;
 
-    public SupportTypePatternConstraint(Pattern pattern, SupportType<T> supportType, Predicate<Step> predicate) throws InvalidPatternConstraint {
+    public SupportTypePatternConstraint(Pattern pattern, SupportType<T> supportType, Predicate<JustificationStep> predicate) throws InvalidPatternConstraint {
         this.pattern = pattern;
         this.supportType = supportType;
         this.predicate=predicate;
@@ -34,13 +32,13 @@ public class SupportTypePatternConstraint<T extends Support> implements Argument
     }
 
     @Override
-    public boolean verify(List<Step> steps){
-        List<Step> filteredSteps=steps.stream().filter(step -> step.getPatternId().equals(pattern.getId()) && step.getEvidences().stream().anyMatch(supportRole -> supportType.check(supportRole.getSupport()))).collect(Collectors.toList());
+    public boolean verify(List<JustificationStep> steps){
+        List<JustificationStep> filteredSteps=steps.stream().filter(step -> step.getPatternId().equals(pattern.getId()) && step.getSupports().stream().anyMatch(supportRole -> supportType.check(supportRole.getSupport()))).collect(Collectors.toList());
         return filteredSteps.stream().allMatch(predicate);
     }
 
     @Override
-    public boolean verify(Step step){
+    public boolean verify(JustificationStep step){
         return verify(Collections.singletonList(step));
     }
 }

@@ -22,11 +22,11 @@ public class OutputType<T extends Conclusion> extends SupportType<T>{
 	public Conclusion create(String name,Element o) throws StepBuildingException {
 		try {
 			if(name==null){
-				return (Conclusion) type.getDeclaredConstructor(o.getClass()).newInstance(o);
+				return (Conclusion) getType().getDeclaredConstructor(o.getClass()).newInstance(o);
 
 			}
 			else {
-				return (Conclusion) type.getDeclaredConstructor(String.class,o.getClass()).newInstance(name,o);
+				return (Conclusion) getType().getDeclaredConstructor(String.class,o.getClass()).newInstance(name,o);
 
 			}
 
@@ -36,6 +36,6 @@ public class OutputType<T extends Conclusion> extends SupportType<T>{
 	}
 
 	public InputType<T> transformToInput(){
-		return new InputType<>(type.getName(),type);
+		return new InputType<T>(getType().getName(),getType());
 	}
 }

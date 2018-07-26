@@ -1,5 +1,7 @@
 package fr.axonic.avek.engine.support;
 
+import fr.axonic.avek.engine.kernel.Artifact;
+import fr.axonic.avek.engine.kernel.Assertion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -7,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 @XmlRootElement
-public class SupportRole {
+public class SupportRole implements Assertion {
 	private String role;
 	private Support support;
 
@@ -45,5 +47,20 @@ public class SupportRole {
 	@Override
 	public String toString() {
 		return "SupportRole{role="+role+", support="+ support +"}";
+	}
+
+	@Override
+	public boolean isTerminal() {
+		return false;
+	}
+
+	@Override
+	public List<Assertion> conformsTo() {
+		return null;
+	}
+
+	@Override
+	public List<Artifact> getArtifacts() {
+		return null;
 	}
 }

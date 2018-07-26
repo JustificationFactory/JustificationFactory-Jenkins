@@ -129,7 +129,7 @@ public class PatternTest {
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
         SupportRole evSubject1=rtSubject2.create(subject1);
-        Step step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0,evSubject1), experimentation0);
+        JustificationStep step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0,evSubject1), experimentation0);
         assertNotNull(step0);
     }
 
@@ -160,7 +160,7 @@ public class PatternTest {
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
 
-        Step step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
+        JustificationStep step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
     }
 
 
@@ -238,12 +238,12 @@ public class PatternTest {
 
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
-        Step step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
+        JustificationStep step0 = treat.createStep(Arrays.asList(evStimulation0,evSubject0), experimentation0);
         assertNotNull(step0);
         assertNotNull(step0.getConclusion());
-        assertNotNull(step0.getEvidences());
+        assertNotNull(step0.getSupports());
         assertNotNull(step0.getStrategy());
-        assertEquals(step0.getEvidences().size(),2);
+        assertEquals(step0.getSupports().size(),2);
     }
 
 }

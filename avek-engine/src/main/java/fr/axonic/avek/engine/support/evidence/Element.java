@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine.support.evidence;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import fr.axonic.avek.engine.kernel.Artifact;
 import fr.axonic.avek.instance.avek.evidence.Stimulation;
 import fr.axonic.avek.instance.avek.evidence.Subject;
 import fr.axonic.base.engine.AStructure;
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
         include = JsonTypeInfo.As.PROPERTY,
         property = "@type")
 
-public abstract class Element extends AStructure {
+public abstract class Element extends AStructure implements Artifact {
 
     private String version;
 

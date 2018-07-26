@@ -9,7 +9,7 @@ import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
@@ -58,7 +58,7 @@ public class JacksonSerialization {
     @Test
     public void testStep() throws IOException, WrongEvidenceException, VerificationException, StrategyException, StepBuildingException {
         Pattern pattern= MockedArgumentationSystem.getAXONICArgumentationSystem().getPattern("1");
-        ArgumentationSystemAPI argumentationSystem=MockedArgumentationSystem.getAXONICArgumentationSystem();
+        JustificationSystemAPI argumentationSystem=MockedArgumentationSystem.getAXONICArgumentationSystem();
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
         SubjectEvidence subject0 = new SubjectEvidence("Subject 0",new Subject());
         Actor actor0=new Actor("Chloé", Role.SENIOR_EXPERT);
@@ -69,10 +69,10 @@ public class JacksonSerialization {
         SupportRole evStimulation0 = rtStimulation.create(stimulation0 );
         SupportRole evSubject0 = rtSubject.create(subject0);
         SupportRole evActor0=rtActor.create(actor0);
-        Step stepToCreate = argumentationSystem.constructStep(pattern, Arrays.asList(evStimulation0,evSubject0,evActor0), experimentation0);
+        JustificationStep stepToCreate = argumentationSystem.constructStep(pattern, Arrays.asList(evStimulation0,evSubject0,evActor0), experimentation0);
 
         String json = mapper.writeValueAsString(stepToCreate);
-        Step step=mapper.readValue(json, Step.class);
+        JustificationStep step=mapper.readValue(json, JustificationStep.class);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
-import fr.axonic.avek.engine.pattern.Step;
+import fr.axonic.avek.engine.pattern.JustificationStep;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
  */
 public class RelatedArgumentationSystemConstraint implements ArgumentationSystemConstraint {
     @Override
-    public boolean verify(List<Step> steps) {
+    public boolean verify(List<JustificationStep> steps) {
         if(steps.size()==1){
             return true;
         }
-        List<Step> linkedSteps=steps.stream().filter(step -> step.getEvidences().stream().anyMatch(evidenceRole -> steps.stream()
-                .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId()))) || steps.stream().anyMatch(step1 -> step1.getEvidences().stream().anyMatch(supportRole -> step.getConclusion().getId().equals(supportRole.getSupport().getId())))).distinct().collect(Collectors.toList());
+        List<JustificationStep> linkedSteps=steps.stream().filter(step -> step.getSupports().stream().anyMatch(evidenceRole -> steps.stream()
+                .anyMatch(stepPattern -> evidenceRole.getSupport().getId().equals(stepPattern.getConclusion().getId()))) || steps.stream().anyMatch(step1 -> step1.getSupports().stream().anyMatch(supportRole -> step.getConclusion().getId().equals(supportRole.getSupport().getId())))).distinct().collect(Collectors.toList());
         return linkedSteps.size()==steps.size();
     }
 }

@@ -1,15 +1,14 @@
 package fr.axonic.avek.engine.pattern;
 
-import fr.axonic.avek.engine.ArgumentationSystem;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.ApplicablePatternConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.StepConstructionConstraint;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.kernel.JustificationStepAPI;
+import fr.axonic.avek.engine.kernel.StrategyAPI;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.SupportRole;
-import fr.axonic.avek.engine.strategy.Actor;
-import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.pattern.type.InputType;
@@ -23,33 +22,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
-public class Pattern {
+public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(Pattern.class);
 
 
 	private String id;
 	private String name;
-	private Strategy strategy;
-	private List<InputType> inputTypes;
-	private OutputType outputType;
 
 	private List<StepConstraint> constructionConstraints;
 	private ApplicablePatternConstraint applicablePatternConstraint=new ApplicablePatternConstraint(this);
 
 	public Pattern(){
-		constructionConstraints=new ArrayList<>();
-		constructionConstraints.add(new StepConstructionConstraint(this));
+		this(null,null,null,null);
 	}
 
 	public Pattern(String id,String aName, Strategy aStrategy, List<InputType> roleTypeList,
-			OutputType aConclusionExperimentationType) {
-		this();
+			OutputType aConclusion) {
+		super(roleTypeList,aStrategy, aConclusion);
+		constructionConstraints=new ArrayList<>();
+		constructionConstraints.add(new StepConstructionConstraint(this));
 		this.id=id;
 		name = aName;
-		strategy = aStrategy;
-		inputTypes = roleTypeList;
-		outputType = aConclusionExperimentationType;
 	}
 	public Pattern(String aName, Strategy aStrategy, List<InputType> roleTypeList,
 				   OutputType aConclusionExperimentationType) {
@@ -60,14 +54,14 @@ public class Pattern {
 		return applicablePatternConstraint.verify(supportRoles);
 	}
 	
-	private boolean checkConclusion(Step step) {
+	private boolean checkConclusion(JustificationStep step) {
 		return constructionConstraints.stream().allMatch(stepConstraint -> stepConstraint.verify(step)) ;
 	}
 
 	public List<SupportRole> filterUsefulEvidences(List<SupportRole> supportRoles){
 		List<SupportRole> supportRoleList =new ArrayList<>();
 		for(SupportRole supportRole : supportRoles){
-			for(InputType evidenceRoleType: inputTypes){
+			for(InputType evidenceRoleType: supports){
 				if(evidenceRoleType.check(supportRole.getSupport())){
 					if(!supportRoleList.contains(supportRole)){
 						supportRoleList.add(supportRole);
@@ -81,7 +75,7 @@ public class Pattern {
 	public List<InputType> filterNotFillInput(List<SupportRole> supportRoles){
 		List<InputType> usedInputTypeList =new ArrayList<>();
 		for(SupportRole supportRole : supportRoles){
-			for(InputType evidenceRoleType: inputTypes){
+			for(InputType evidenceRoleType: supports){
 				if(evidenceRoleType.check(supportRole.getSupport())){
 					if(!usedInputTypeList.contains(supportRole)){
 						usedInputTypeList.add(evidenceRoleType);
@@ -90,17 +84,17 @@ public class Pattern {
 				}
 			}
 		}
-		List<InputType> inputTypesRes=new ArrayList<>(this.inputTypes);
+		List<InputType> inputTypesRes=new ArrayList<>(this.supports);
 		inputTypesRes.removeAll(usedInputTypeList);
 		LOGGER.info(inputTypesRes.toString());
 		return inputTypesRes;
 	}
 
-	public Step createStep(List<SupportRole> evidenceList, Conclusion conclusion) throws StepBuildingException, StrategyException {
+	public JustificationStep createStep(List<SupportRole> evidenceList, Conclusion conclusion) throws StepBuildingException, StrategyException {
 		if(applicable(evidenceList)){
-			Step res= null;
-			Strategy strategy=this.getStrategy();
-			res = new Step(id,strategy, evidenceList, conclusion);
+			JustificationStep res= null;
+			Strategy strategy= (Strategy) this.getStrategy();
+			res = new JustificationStep(id,strategy, evidenceList, conclusion);
 
 			if(checkConclusion(res)){
 				return res;
@@ -113,16 +107,16 @@ public class Pattern {
 	@XmlElement
 	@XmlElementWrapper
 	public List<InputType> getInputTypes() {
-		return inputTypes;
+		return supports;
 	}
 
 	public void setInputTypes(List<InputType> inputTypes) {
-		this.inputTypes = inputTypes;
+		this.supports = inputTypes;
 	}
 
 	@XmlElement
-	public Strategy getStrategy() {
-		return strategy;
+	public StrategyAPI getStrategy() {
+		return super.getStrategy();
 	}
 
 	public void setStrategy(Strategy strategy) {
@@ -149,11 +143,11 @@ public class Pattern {
 
 	@XmlElement
 	public OutputType getOutputType() {
-		return outputType;
+		return conclusion;
 	}
 
 	public void setOutputType(OutputType outputType) {
-		this.outputType = outputType;
+		this.conclusion = outputType;
 	}
 
 	public void addConstructionConstraint(StepConstraint stepConstraint){
@@ -166,8 +160,8 @@ public class Pattern {
 				"id='" + id + '\'' +
 				", name='" + name + '\'' +
 				", strategy=" + strategy +
-				", inputTypes=" + inputTypes +
-				", outputType=" + outputType +
+				", inputTypes=" + supports +
+				", outputType=" + conclusion +
 				", constructionConstraints=" + constructionConstraints +
 				", applicablePatternConstraint=" + applicablePatternConstraint +
 				'}';
@@ -183,8 +177,8 @@ public class Pattern {
 		if (id != null ? !id.equals(pattern.id) : pattern.id != null) return false;
 		if (name != null ? !name.equals(pattern.name) : pattern.name != null) return false;
 		if (strategy != null ? !strategy.equals(pattern.strategy) : pattern.strategy != null) return false;
-		if (inputTypes != null ? !inputTypes.equals(pattern.inputTypes) : pattern.inputTypes != null) return false;
-		return outputType != null ? outputType.equals(pattern.outputType) : pattern.outputType == null;
+		if (supports != null ? !supports.equals(pattern.supports) : pattern.supports != null) return false;
+		return conclusion != null ? conclusion.equals(pattern.conclusion) : pattern.conclusion == null;
 	}
 
 	@Override
@@ -192,8 +186,18 @@ public class Pattern {
 		int result = id != null ? id.hashCode() : 0;
 		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (strategy != null ? strategy.hashCode() : 0);
-		result = 31 * result + (inputTypes != null ? inputTypes.hashCode() : 0);
-		result = 31 * result + (outputType != null ? outputType.hashCode() : 0);
+		result = 31 * result + (supports != null ? supports.hashCode() : 0);
+		result = 31 * result + (conclusion != null ? conclusion.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public boolean isTerminal() {
+		return false;
+	}
+
+	@Override
+	public List<JustificationStepAPI> conformsTo() {
+		return null;
 	}
 }
