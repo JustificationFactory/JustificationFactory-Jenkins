@@ -2,6 +2,7 @@ package fr.axonic.avek.engine.kernel;
 
 
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 public abstract class JustificationStepAPI<T extends Assertion, V extends Assertion> implements JustificationElement<JustificationStepAPI>{
@@ -43,4 +44,11 @@ public abstract class JustificationStepAPI<T extends Assertion, V extends Assert
         this.conclusion = conclusion;
     }
 
+    @Override
+    @XmlTransient
+    public boolean isTerminal() {
+        boolean cclTerminal = conclusion.isTerminal();
+        boolean supportsTerminal=supports.stream().allMatch(JustificationElement::isTerminal);
+        return cclTerminal && supportsTerminal;
+    }
 }

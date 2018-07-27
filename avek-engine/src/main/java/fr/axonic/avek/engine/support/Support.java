@@ -116,7 +116,7 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
 
     @Override
     public boolean isTerminal() {
-        return false;
+        return true;
     }
 
     @Override

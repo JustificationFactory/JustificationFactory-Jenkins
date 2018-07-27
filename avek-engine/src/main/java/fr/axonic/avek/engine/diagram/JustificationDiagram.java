@@ -5,6 +5,7 @@ import fr.axonic.avek.engine.kernel.JustificationDiagramAPI;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import javafx.util.Pair;
 
+import javax.ws.rs.NotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +53,16 @@ public class JustificationDiagram implements JustificationDiagramAPI<Justificati
 
     @Override
     public Map<ComparisonType, List<JustificationStep>> compare(JustificationDiagramAPI justificationDiagramAPI) {
-        return null;
+        throw new NotSupportedException("Not yet implemented");
     }
 
     @Override
     public Pair<JustificationDiagramAPI, JustificationDiagramAPI> align(Map<ComparisonType, List<JustificationStep>> stepsToKeep) {
-        return null;
+        throw new NotSupportedException("Not yet implemented");
+    }
+
+    @Override
+    public List<JustificationDiagramAPI> conformsTo() {
+        throw new NotSupportedException("Not yet implemented");
     }
 }

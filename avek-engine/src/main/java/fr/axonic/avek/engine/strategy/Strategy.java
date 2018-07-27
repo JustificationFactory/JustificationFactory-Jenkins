@@ -9,10 +9,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement
 @XmlSeeAlso({HumanStrategy.class, ComputedStrategy.class})
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.MINIMAL_CLASS,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@type")
 public abstract class Strategy extends StrategyAPI {
 
     private String name;
@@ -20,10 +16,11 @@ public abstract class Strategy extends StrategyAPI {
     private UsageDomain usageDomain;
 
     public Strategy() {
+        super();
     }
 
     public Strategy(String name, Rationale rationale, UsageDomain usageDomain) {
-        this.name=name;
+        super(name);
         this.rationale = rationale;
         this.usageDomain = usageDomain;
     }
@@ -36,15 +33,6 @@ public abstract class Strategy extends StrategyAPI {
     @XmlElement
     public Rationale getRationale() {
         return rationale;
-    }
-
-    @XmlElement
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

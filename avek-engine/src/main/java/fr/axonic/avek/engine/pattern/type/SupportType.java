@@ -19,7 +19,10 @@ public abstract class SupportType<T extends Support> implements Assertion<Type> 
     protected Type type;
 
     SupportType(Class<T> type) {
-        this.type = new Type<T>(type);
+        this.type = new Type<>(type);
+    }
+
+    public SupportType() {
     }
 
     @XmlElement
@@ -68,6 +71,7 @@ public abstract class SupportType<T extends Support> implements Assertion<Type> 
     public boolean isTerminal() {
         return false;
     }
+
 
     @Override
     public List<Assertion> conformsTo() {

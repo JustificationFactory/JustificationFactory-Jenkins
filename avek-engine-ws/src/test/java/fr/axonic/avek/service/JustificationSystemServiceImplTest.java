@@ -127,7 +127,7 @@ public class JustificationSystemServiceImplTest extends JerseyTest {
     @Test
     public void testRegisterArgumentationSystem() throws VerificationException, WrongEvidenceException {
         JustificationSystemAPI argumentationSystem=new JustificationSystem();
-        Response argSystem=target("/argumentation/system").request().post(Entity.json(argumentationSystem));
+        Response argSystem=target("/justification/system").request().post(Entity.json(argumentationSystem));
         assertNotNull(argSystem);
         assertEquals(argSystem.getStatusInfo(), Response.Status.ACCEPTED);
         String system=argSystem.readEntity(String.class);
@@ -135,8 +135,8 @@ public class JustificationSystemServiceImplTest extends JerseyTest {
     }
 
     @Test
-    public void testGetTypeContent() throws VerificationException, WrongEvidenceException {
-        Response fields=target("argumentation/type").queryParam("type", DocumentEvidence.class.getName()).request().get();
+    public void testGetTypeContent() {
+        Response fields=target("/justification/type").queryParam("type", DocumentEvidence.class.getName()).request().get();
         assertNotNull(fields);
         assertEquals(fields.getStatusInfo(), Response.Status.OK);
         String system=fields.readEntity(String.class);

@@ -1,15 +1,14 @@
 package fr.axonic.avek.engine.pattern;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.exception.WrongObjectiveException;
 import fr.axonic.avek.engine.pattern.type.OutputType;
+import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.support.Support;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +17,11 @@ import java.util.stream.Collectors;
  * Created by cduffau on 09/03/17.
  */
 @XmlRootElement
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.MINIMAL_CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type")
+@XmlSeeAlso({ListPatternsBase.class, DiagramPatternsBase.class})
 public abstract class PatternsBase {
 
     private PatternsBaseType patternsBaseType;

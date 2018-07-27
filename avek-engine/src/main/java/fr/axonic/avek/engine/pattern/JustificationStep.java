@@ -61,11 +61,6 @@ public class JustificationStep extends JustificationStepAPI<Support,Conclusion> 
 	}
 
 	@Override
-	public boolean isTerminal() {
-		return true;
-	}
-
-	@Override
 	public List<JustificationStepAPI> conformsTo() {
 		return null;
 	}

@@ -7,6 +7,9 @@ import java.util.Objects;
 public class Type<T> implements Artifact {
     protected Class<T> type;
 
+    public Type() {
+    }
+
     public Type(Class<T> type) {
         this.type=type;
     }
