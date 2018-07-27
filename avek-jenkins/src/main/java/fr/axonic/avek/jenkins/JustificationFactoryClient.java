@@ -8,7 +8,6 @@ import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Document;
-import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
 import fr.axonic.avek.engine.StepToCreate;
 import org.slf4j.Logger;
@@ -27,13 +26,13 @@ import java.util.List;
 /**
  * Created by cduffau on 08/08/17.
  */
-public class ArgumentationFactoryClient {
+public class JustificationFactoryClient {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(ArgumentationFactoryClient.class);
+    private static final Logger LOGGER= LoggerFactory.getLogger(JustificationFactoryClient.class);
 
     private String serverURL;
 
-    public ArgumentationFactoryClient(String serverURL) {
+    public JustificationFactoryClient(String serverURL) {
         this.serverURL = serverURL;
     }
 
@@ -63,7 +62,7 @@ public class ArgumentationFactoryClient {
         try {
             Pattern pattern=getPattern(argumentationSystem,patternId);
             ccl=pattern.getOutputType().create(null,jenkinsStatus);
-        } catch (ArgumentationFactoryException | StepBuildingException e) {
+        } catch (JustificationFactoryException | StepBuildingException e) {
             LOGGER.error(e.toString());
         }
         StepToCreate stepToCreate=new StepToCreate(supports,ccl);
@@ -88,7 +87,7 @@ public class ArgumentationFactoryClient {
         return mapper.readValue(result.toString(), JustificationStep.class);
     }
 
-    public List<String> getPatterns(String argumentationSystem) throws ArgumentationFactoryException{
+    public List<String> getPatterns(String argumentationSystem) throws JustificationFactoryException {
         try{
             URL url =new URL(serverURL+argumentationSystem+"/patterns");
             LOGGER.info("Call URL "+url);
@@ -102,7 +101,7 @@ public class ArgumentationFactoryClient {
 
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 conn.disconnect();
-                throw new ArgumentationFactoryException(new NotFoundException());
+                throw new JustificationFactoryException(new NotFoundException());
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream()),StandardCharsets.UTF_8));
@@ -116,13 +115,13 @@ public class ArgumentationFactoryClient {
             return mapper.readValue(res.toString(),List.class);
         }
         catch (IOException e){
-            throw new ArgumentationFactoryException(e);
+            throw new JustificationFactoryException(e);
         }
 
 
     }
 
-    public Pattern getPattern(String argumentationSystem, String patternID) throws ArgumentationFactoryException{
+    public Pattern getPattern(String argumentationSystem, String patternID) throws JustificationFactoryException {
         try{
             URL url =new URL(serverURL+argumentationSystem+"/patterns/"+patternID);
             LOGGER.info("Call URL "+url);
@@ -136,7 +135,7 @@ public class ArgumentationFactoryClient {
 
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 conn.disconnect();
-                throw new ArgumentationFactoryException(new NotFoundException());
+                throw new JustificationFactoryException(new NotFoundException());
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream()),StandardCharsets.UTF_8));
@@ -150,12 +149,12 @@ public class ArgumentationFactoryClient {
             return mapper.readValue(res.toString(),Pattern.class);
         }
         catch (IOException e){
-            throw new ArgumentationFactoryException(e);
+            throw new JustificationFactoryException(e);
         }
 
 
     }
-    public List<String> getArgumentationSystems() throws ArgumentationFactoryException {
+    public List<String> getArgumentationSystems() throws JustificationFactoryException {
         try{
             URL url =new URL(serverURL+"systems");
             LOGGER.info("Call URL "+url);
@@ -169,7 +168,7 @@ public class ArgumentationFactoryClient {
 
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 conn.disconnect();
-                throw new ArgumentationFactoryException(new NotFoundException());
+                throw new JustificationFactoryException(new NotFoundException());
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream()),StandardCharsets.UTF_8));
@@ -183,7 +182,7 @@ public class ArgumentationFactoryClient {
             return mapper.readValue(res.toString(),List.class);
         }
         catch (IOException e){
-            throw new ArgumentationFactoryException(e);
+            throw new JustificationFactoryException(e);
         }
 
     }

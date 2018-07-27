@@ -5,8 +5,8 @@ import javax.ws.rs.NotFoundException;
 /**
  * Created by cduffau on 09/08/17.
  */
-public class ArgumentationFactoryException extends Exception {
-    public ArgumentationFactoryException(Exception e) {
+public class JustificationFactoryException extends Exception {
+    public JustificationFactoryException(Exception e) {
         super(e);
     }
 }

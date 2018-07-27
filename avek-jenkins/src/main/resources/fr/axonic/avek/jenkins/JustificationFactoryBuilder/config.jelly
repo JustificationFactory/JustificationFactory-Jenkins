@@ -7,10 +7,10 @@
   -->
 
   <!--
-    Creates a text field that shows the value of the "argumentationSystemName" property.
+    Creates a text field that shows the value of the "justificationSystemName" property.
     When submitted, it will be passed to the corresponding constructor parameter.
   -->
-  <f:entry title="Argumentation Sytem Name" field="argumentationSystemName">
+  <f:entry title="Justification Sytem Name" field="justificationSystemName">
     <f:textbox />
   </f:entry>
     <f:entry title="Pattern ID" field="patternId">
@@ -24,7 +24,7 @@
                      field="supportId">
                 <f:textbox  />
             </f:entry>
-            <f:entry title="Artifact Path"
+            <f:entry title="Justification Artifact Path"
                      field="artifactPath">
                 <f:textbox  />
             </f:entry>

@@ -36,9 +36,9 @@ import java.util.List;
  * <p>
  * When the user configures the project and enables this builder,
  * {@link DescriptorImpl#newInstance(StaplerRequest)} is invoked
- * and a new {@link fr.axonic.avek.jenkins.ArgumentationFactoryBuilder} is created. The created
+ * and a new {@link JustificationFactoryBuilder} is created. The created
  * instance is persisted to the project configuration XML by using
- * XStream, so this allows you to use instance fields (like {@link #argumentationSystemName})
+ * XStream, so this allows you to use instance fields (like {@link #justificationSystemName})
  * to remember the configuration.
  *
  * <p>
@@ -46,25 +46,25 @@ import java.util.List;
  *
  * @author Kohsuke Kawaguchi
  */
-public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuildStep{
+public class JustificationFactoryBuilder extends Publisher implements SimpleBuildStep{
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(ArgumentationFactoryBuilder.class);
+    private static final Logger LOGGER= LoggerFactory.getLogger(JustificationFactoryBuilder.class);
 
-    private final String argumentationSystemName;
+    private final String justificationSystemName;
     private final String patternId;
     private final JenkinsStatus jenkinsStatus;
-    private ArgumentationFactoryClient argumentationFactoryClient;
+    private JustificationFactoryClient justificationFactoryClient;
 
     private  List<SupportArtifact> supports;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public ArgumentationFactoryBuilder(String argumentationSystemName, String patternId, SupportArtifact[] supports) {
-        this.argumentationSystemName = argumentationSystemName;
+    public JustificationFactoryBuilder(String justificationSystemName, String patternId, SupportArtifact[] supports) {
+        this.justificationSystemName = justificationSystemName;
         this.patternId=patternId;
         this.jenkinsStatus =new JenkinsStatus();
         this.supports = Arrays.asList(supports);
-        this.argumentationFactoryClient=new ArgumentationFactoryClient(getDescriptor().getArgumentationFactoryURL());
+        this.justificationFactoryClient =new JustificationFactoryClient(getDescriptor().getJustificationFactoryURL());
     }
 
     public JenkinsStatus getJenkinsStatus() {
@@ -82,8 +82,8 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
     /**
      * We'll use this from the {@code config.jelly}.
      */
-    public String getArgumentationSystemName() {
-        return argumentationSystemName;
+    public String getJustificationSystemName() {
+        return justificationSystemName;
     }
 
     public String getPatternId() {
@@ -94,8 +94,8 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
     public void perform(Run<?,?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
         // This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
-        listener.getLogger().println("URL : "+getDescriptor().getArgumentationFactoryURL());
-        listener.getLogger().println("Argumentation System :"+ argumentationSystemName +", pattern ID : "+patternId);
+        listener.getLogger().println("URL : "+getDescriptor().getJustificationFactoryURL());
+        listener.getLogger().println("Justification System :"+ justificationSystemName +", pattern ID : "+patternId);
         listener.getLogger().println("Supports :"+supports);
 
         try {
@@ -104,13 +104,13 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             jenkinsStatus.setVersion(build.getEnvironment(listener).get("GIT_COMMIT"));
             if(status==JenkinsStatusEnum.OK){
 
-                JustificationStep step=argumentationFactoryClient.sendStep(argumentationSystemName,patternId, jenkinsStatus, supports);
-                listener.getLogger().println("Pushed on "+getDescriptor().getArgumentationFactoryURL());
+                JustificationStep step= justificationFactoryClient.sendStep(justificationSystemName,patternId, jenkinsStatus, supports);
+                listener.getLogger().println("Pushed on "+getDescriptor().getJustificationFactoryURL());
                 for(Support support : step.getSupports()){
                     for(SupportArtifact artifact:supports){
                         File file=new File(artifact.getArtifactPath());
                         if(support instanceof DocumentEvidence &&file.getName().equals(((Document)support.getElement()).getUrl())){
-                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDirURL(),argumentationSystemName,patternId, step.getId(),support.getId(), artifact.getArtifactPath());
+                            SmbUtil smbUtil=SmbUtil.getSmbUtil(getDescriptor().getSmbDirURL(), justificationSystemName,patternId, step.getId(),support.getId(), artifact.getArtifactPath());
                             smbUtil.copy();
                             break;
                         }
@@ -149,11 +149,11 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
 
 
     /**
-     * Descriptor for {@link fr.axonic.avek.jenkins.ArgumentationFactoryBuilder}. Used as a singleton.
+     * Descriptor for {@link JustificationFactoryBuilder}. Used as a singleton.
      * The class is marked as public so that it can be accessed from views.
      *
      * <p>
-     * See {@code src/main/resources/hudson/plugins/hello_world/ArgumentationFactoryBuilder/*.jelly}
+     * See {@code src/main/resources/hudson/plugins/hello_world/JustificationFactoryBuilder/*.jelly}
      * for the actual HTML fragment for the configuration screen.
      */
     @Extension // This indicates to Jenkins that this is an implementation of an extension point.
@@ -165,7 +165,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
          * <p>
          * If you don't want fields to be persisted, use {@code transient}.
          */
-        private String argumentationFactoryURL;
+        private String justificationFactoryURL;
         private String smbDirURL;
 
         /**
@@ -177,7 +177,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
         }
 
         /**
-         * Performs on-the-fly validation of the form field 'argumentationSystemName'.
+         * Performs on-the-fly validation of the form field 'justificationSystemName'.
          *
          * @param value
          *      This parameter receives the value that the user has typed.
@@ -188,7 +188,7 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
          *      prevent the form from being saved. It just means that a message
          *      will be displayed to the user. 
          */
-        public FormValidation doCheckArgumentationFactoryURL(@QueryParameter String value)
+        public FormValidation doCheckJustificationFactoryURL(@QueryParameter String value)
                 throws IOException, ServletException {
             if (value.length() == 0)
                 return FormValidation.error("Please set an URL");
@@ -210,16 +210,16 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             return FormValidation.ok();
         }
 
-        public FormValidation doCheckArgumentationSystemName(@QueryParameter String value) {
+        public FormValidation doCheckJustificationSystemName(@QueryParameter String value) {
             if (value.length() == 0)
-                return FormValidation.error("Please set a argumentation system");
+                return FormValidation.error("Please set a justification system");
             try {
-                List<String> argumentationSystems=new ArgumentationFactoryClient(getArgumentationFactoryURL()).getArgumentationSystems();
+                List<String> argumentationSystems=new JustificationFactoryClient(getJustificationFactoryURL()).getArgumentationSystems();
                 if(argumentationSystems.stream().noneMatch(s -> s.equals(value))){
-                    return FormValidation.error("Unknown argumentation system "+value);
+                    return FormValidation.error("Unknown justification system "+value);
                 }
-            } catch (ArgumentationFactoryException e) {
-                return FormValidation.error("Please set a valid argumentation system");
+            } catch (JustificationFactoryException e) {
+                return FormValidation.error("Please set a valid justification system");
             }
             return FormValidation.ok();
         }
@@ -228,11 +228,11 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
             if (value.length() == 0)
                 return FormValidation.error("Please set a pattern");
             try {
-                List<String> patterns = new ArgumentationFactoryClient(getArgumentationFactoryURL()).getPatterns(argumentationSystemName);
+                List<String> patterns = new JustificationFactoryClient(getJustificationFactoryURL()).getPatterns(argumentationSystemName);
                 if (patterns.stream().noneMatch(pattern -> pattern.equals(value)))
                     return FormValidation.error("Unknown pattern ID in "+argumentationSystemName);
-            } catch (ArgumentationFactoryException e) {
-                return FormValidation.error("Please set a valid argumentation system");
+            } catch (JustificationFactoryException e) {
+                return FormValidation.error("Please set a valid justification system");
             }
 
 
@@ -248,14 +248,14 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
          * This human readable name is used in the configuration screen.
          */
         public String getDisplayName() {
-            return "Trace with Argumentation Factory";
+            return "Trace with Justification Factory";
         }
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
             // To persist global configuration information,
             // set that to properties and call save().
-            argumentationFactoryURL = formData.getString("argumentationFactoryURL");
+            justificationFactoryURL = formData.getString("justificationFactoryURL");
             smbDirURL =formData.getString("smbDirURL");
             LOGGER.info(formData.toString());
             // ^Can also use req.bindJSON(this, formData);
@@ -267,11 +267,11 @@ public class ArgumentationFactoryBuilder extends Publisher implements SimpleBuil
         /**
          * This method returns true if the global configuration says we should speak French.
          *
-         * The method argumentationSystemName is bit awkward because global.jelly calls this method to determine
+         * The method justificationSystemName is bit awkward because global.jelly calls this method to determine
          * the initial state of the checkbox by the naming convention.
          */
-        public String getArgumentationFactoryURL() {
-            return argumentationFactoryURL;
+        public String getJustificationFactoryURL() {
+            return justificationFactoryURL;
         }
 
         public String getSmbDirURL() {

@@ -12,13 +12,13 @@
     tags they use. Views are always organized according to its owner class,
     so it should be straightforward to find them.
   -->
-  <f:section title="Argumentation Factory">
-    <f:entry title="Argumentation Factory URL" field="argumentationFactoryURL"
-      description="Set the URL where the instance of Argumentation Factory is running">
+  <f:section title="Justification Factory">
+    <f:entry title="Justification Factory URL" field="justificationFactoryURL"
+      description="Set the URL where the instance of Justification Factory is running">
       <f:textbox />
     </f:entry>
     <f:entry title="Samba URL Server" field="smbDirURL"
-             description="Set the Samba server where argumentation artifacts will be stored">
+             description="Set the Samba server where justification artifacts will be stored">
       <f:textbox />
     </f:entry>
   </f:section>

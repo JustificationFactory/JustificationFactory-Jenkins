@@ -1,23 +1,14 @@
 package fr.axonic.avek.jenkins;
 
-import fr.axonic.avek.engine.pattern.Pattern;
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
-import hudson.os.SU;
 import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
-import jcifs.smb.SmbFile;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 
 /**
  * Created by cduffau on 22/08/17.
@@ -68,13 +59,13 @@ public class SupportArtifact extends AbstractDescribableImpl<SupportArtifact> {
         public String getDisplayName() { return "Support Artifact"; }
 
         public FormValidation doCheckSupportId(@QueryParameter String value){
-            ArgumentationFactoryBuilder.DescriptorImpl des=new ArgumentationFactoryBuilder.DescriptorImpl();
+            JustificationFactoryBuilder.DescriptorImpl des=new JustificationFactoryBuilder.DescriptorImpl();
 
             /**System.out.println( argumentationSystemName+", "+patternID);
             if (value.length() == 0)
                 return FormValidation.error("Please set a conclusion ID");
             try {
-                Pattern pattern = new ArgumentationFactoryClient(des.getArgumentationFactoryURL()).getPattern(argumentationSystemName,patternID);
+                Pattern pattern = new ArgumentationFactoryClient(des.getJustificationFactoryURL()).getPattern(argumentationSystemName,patternID);
                 if (pattern.getInputTypes().stream().noneMatch(inputType -> inputType.getType().getName().equals(value)))
                     return FormValidation.error("Unknown support ID");
             } catch (ArgumentationFactoryException e) {
