@@ -2,8 +2,8 @@ package fr.axonic.avek.engine.pattern.type;
 
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.instance.avek.conclusion.Experimentation;
-import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.conclusion.Experimentation;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

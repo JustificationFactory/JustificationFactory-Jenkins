@@ -2,7 +2,7 @@ package fr.axonic.avek.gui;
 
 import fr.axonic.avek.bus.Orchestrator;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.instance.MockedArgumentationSystem;
+import fr.axonic.avek.instance.JustificationSystemFactory;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
 import fr.axonic.avek.gui.api.GUIException;
 import fr.axonic.validation.exception.VerificationException;
@@ -19,6 +19,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException, WrongEvidenceException, GUIException, VerificationException {
         GUIAPIImpl.getInstance().initializeFrame(primaryStage);
-        new Orchestrator(GUIAPIImpl.getInstance(), MockedArgumentationSystem.getAXONICArgumentationSystem());
+        new Orchestrator(GUIAPIImpl.getInstance(), JustificationSystemFactory.getAXONICArgumentationSystem());
     }
 }

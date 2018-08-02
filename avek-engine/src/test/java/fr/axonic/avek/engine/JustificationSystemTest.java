@@ -3,28 +3,17 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
-import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.engine.support.evidence.Document;
-import fr.axonic.avek.engine.support.instance.DocumentEvidence;
-import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.MockedArgumentationSystem;
-import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.avek.evidence.Stimulation;
-import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
-import fr.axonic.avek.instance.avek.evidence.Subject;
-import fr.axonic.avek.instance.avek.evidence.SubjectEvidence;
-import fr.axonic.avek.instance.avek.strategy.TreatStrategy;
-import fr.axonic.avek.instance.jenkins.conclusion.IntegrationTestJenkinsConclusion;
-import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatus;
-import fr.axonic.avek.instance.jenkins.conclusion.JenkinsStatusEnum;
-import fr.axonic.avek.instance.jenkins.conclusion.UnitTestJenkinsConclusion;
+import fr.axonic.avek.instance.AVEKJustificationSystem;
+import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.evidence.*;
+import fr.axonic.avek.instance.strategy.TreatStrategy;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +32,11 @@ public class JustificationSystemTest {
 
     @Before
     public void setUp() throws VerificationException, WrongEvidenceException {
-        argumentationSystem= MockedArgumentationSystem.getAXONICArgumentationSystem();
+        argumentationSystem= new AVEKJustificationSystem();
     }
 
     private void createAStep(Role role) throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
-        Pattern pattern= MockedArgumentationSystem.getAXONICArgumentationSystem().getPatternsBase().getPattern("1");
-        argumentationSystem=MockedArgumentationSystem.getAXONICArgumentationSystem();
+        Pattern pattern= argumentationSystem.getPatternsBase().getPattern("1");
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
         SubjectEvidence subject0 = new SubjectEvidence("Subject 0",new Subject());
         Actor actor0=new Actor("Chloé", role);
@@ -79,16 +67,13 @@ public class JustificationSystemTest {
     }
     @Test
     public void constructStepWithAutoFill() throws Exception {
-        JustificationSystemAPI argumentationSystem=MockedArgumentationSystem.getJenkinsArgumentationSystem();
-        Pattern unitPattern=argumentationSystem.getPatternsBase().getPattern("unit-test");
-        Pattern integrationPattern=argumentationSystem.getPatternsBase().getPattern("integration-test");
-        Evidence documentEvidence=new DocumentEvidence("document",new Document("test"));
-        Conclusion unitCcl=new UnitTestJenkinsConclusion(new JenkinsStatus(JenkinsStatusEnum.OK));
-        Conclusion itCcl=new IntegrationTestJenkinsConclusion(new JenkinsStatus(JenkinsStatusEnum.OK));
-        InputType<UnitTestJenkinsConclusion> utInputType=new InputType<>("unit-test",UnitTestJenkinsConclusion.class);
-        InputType<DocumentEvidence> documentInputType=new InputType<>("document",DocumentEvidence.class);
-        argumentationSystem.constructStep(unitPattern, Collections.singletonList(documentInputType.create(documentEvidence)),unitCcl);
-        argumentationSystem.constructStep(integrationPattern,Arrays.asList(documentInputType.create(documentEvidence)),itCcl);
+        argumentationSystem.autoSupportFillEnable=true;
+        createAStep(Role.SENIOR_EXPERT);
+        Pattern establishEffect=argumentationSystem.getPatternsBase().getPattern("2");
+        InputType<ResultsEvidence> rtResult = new InputType<>("experimentation", ResultsEvidence.class);
+        ResultsEvidence resultsEvidence=new ResultsEvidence();
+
+        argumentationSystem.constructStep(establishEffect,Arrays.asList(rtResult.create(resultsEvidence)),new EstablishEffectConclusion());
     }
 
     @Test(expected = StepBuildingException.class)

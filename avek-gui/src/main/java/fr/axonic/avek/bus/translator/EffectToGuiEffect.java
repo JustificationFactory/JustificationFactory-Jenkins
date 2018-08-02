@@ -1,7 +1,7 @@
 package fr.axonic.avek.bus.translator;
 
-import fr.axonic.avek.instance.avek.conclusion.Effect;
-import fr.axonic.avek.instance.avek.conclusion.EffectStateEnum;
+import fr.axonic.avek.instance.clinical.conclusion.Effect;
+import fr.axonic.avek.instance.clinical.conclusion.EffectStateEnum;
 import fr.axonic.avek.gui.components.jellybeans.JellyBeanItem;
 import fr.axonic.avek.gui.model.GUIEffect;
 import fr.axonic.base.AEnum;

@@ -9,8 +9,8 @@ import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.avek.conclusion.Effect;
-import fr.axonic.avek.instance.avek.evidence.Stimulation;
+import fr.axonic.avek.instance.conclusion.Effect;
+import fr.axonic.avek.instance.evidence.Stimulation;
 import org.junit.Test;
 
 import java.util.Arrays;

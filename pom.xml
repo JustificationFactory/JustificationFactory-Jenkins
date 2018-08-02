@@ -13,6 +13,7 @@
         <module>avek-model</module>
         <module>avek-graph</module>
         <module>avek-engine-ws</module>
+        <module>avek-engine-instance</module>
         <!--<module>avek-jenkins</module>-->
     </modules>
 
@@ -66,6 +67,11 @@
             <dependency>
                 <groupId>fr.axonic.avek</groupId>
                 <artifactId>avek-engine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.axonic.avek</groupId>
+                <artifactId>avek-engine-instance</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
