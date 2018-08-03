@@ -13,6 +13,7 @@
         <module>avek-model</module>
         <module>avek-graph</module>
         <module>avek-engine-ws</module>
+        <module>avek-bus</module>
         <!--<module>avek-jenkins</module>-->
     </modules>
 
