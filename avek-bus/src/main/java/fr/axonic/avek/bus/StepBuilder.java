@@ -9,32 +9,41 @@ import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
+import fr.axonic.avek.instance.redmine.RedmineConclusion;
+import fr.axonic.avek.instance.redmine.RedmineDocumentEvidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StepBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StepBuilder.class);
 
-    private final JustificationSystem justificationSystem;
+    private final List<JustificationSystem> justificationSystems;
     private final List<Support> knownSupports;
 
-    public StepBuilder(JustificationSystem justificationSystem) {
-        this.justificationSystem = justificationSystem;
+    public StepBuilder(List<JustificationSystem> justificationSystems) {
+        this.justificationSystems = justificationSystems;
         knownSupports = new ArrayList<>();
     }
 
     public void acknowledgeSupport(Support addedSupport) throws StepBuildingException, StrategyException {
         knownSupports.add(addedSupport);
 
-        triggerStepBuilding();
+        triggerStepsBuilding();
     }
 
-    private void triggerStepBuilding() throws StrategyException, StepBuildingException {
+    private void triggerStepsBuilding() throws StrategyException, StepBuildingException {
+        for (JustificationSystem system : justificationSystems) {
+            triggerOneSystemStepsBuilding(system);
+        }
+    }
+
+    private void triggerOneSystemStepsBuilding(JustificationSystem justificationSystem) throws StrategyException, StepBuildingException {
         PatternsBase patternsBase = justificationSystem.getPatternsBase();
 
         List<Pattern> patterns = patternsBase.getPossiblePatterns(knownSupports).stream()
@@ -48,18 +57,27 @@ public class StepBuilder {
             try {
                 JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, associatedConclusion);
 
-                // TODO What next with this step?
+                // TODO What is next with this step?
             } catch (WrongEvidenceException e) {
                 LOGGER.error("Unexpected wrong support", e);
             }
         }
 
         if (!patterns.isEmpty()) {
-            triggerStepBuilding();
+            triggerOneSystemStepsBuilding(justificationSystem);
         }
     }
 
     private Conclusion createConclusion(List<Support> usefulSupports) {
-        return null; // TODO
+        if (usefulSupports.isEmpty()) {
+            return null;
+        }
+
+        Optional<RedmineDocumentEvidence> evidence = usefulSupports.stream()
+                .filter(s -> s instanceof RedmineDocumentEvidence)
+                .map(s -> (RedmineDocumentEvidence) s)
+                .findFirst();
+
+        return evidence.map(RedmineConclusion::create).orElse(null);
     }
 }
