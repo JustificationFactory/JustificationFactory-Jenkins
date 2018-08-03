@@ -6,9 +6,9 @@ import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.avek.conclusion.*;
-import fr.axonic.avek.instance.avek.evidence.Stimulation;
-import fr.axonic.avek.instance.avek.evidence.Subject;
+import fr.axonic.avek.instance.clinical.conclusion.*;
+import fr.axonic.avek.instance.clinical.evidence.Stimulation;
+import fr.axonic.avek.instance.clinical.evidence.Subject;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.gui.api.ComponentType;
 import fr.axonic.avek.gui.api.GUIAPI;
@@ -90,7 +90,7 @@ public class Orchestrator implements Observer {
      */
     private void computeNextPattern() {
         // Preparing for following view
-        evidences = engineAPI.getRegisteredEvidences();
+        evidences = engineAPI.getUnusedAssertions();
         patternList.clear();
         patternList.addAll(
                 engineAPI.getPatternsBase().getPossiblePatterns(evidences)

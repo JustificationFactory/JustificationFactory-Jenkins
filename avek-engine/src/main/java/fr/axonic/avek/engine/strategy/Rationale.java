@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine.strategy;
 
-import fr.axonic.avek.instance.avek.strategy.AXONICProject;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.xml.bind.annotation.*;
 
@@ -8,7 +9,10 @@ import javax.xml.bind.annotation.*;
  * Created by cduffau on 26/10/16.
  */
 @XmlRootElement
-@XmlSeeAlso(AXONICProject.class)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.MINIMAL_CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type")
 public class Rationale<P extends Project> {
 
     private P project;

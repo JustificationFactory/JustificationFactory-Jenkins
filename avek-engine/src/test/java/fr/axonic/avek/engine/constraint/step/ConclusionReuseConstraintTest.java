@@ -1,14 +1,14 @@
 package fr.axonic.avek.engine.constraint.step;
 
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
-import fr.axonic.avek.instance.avek.conclusion.EstablishedEffect;
-import fr.axonic.avek.instance.avek.evidence.ResultsEvidence;
+import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.instance.conclusion.EstablishedEffect;
+import fr.axonic.avek.instance.evidence.ResultsEvidence;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
-import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.avek.evidence.Result;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.evidence.Result;
 import fr.axonic.base.engine.AList;
 import org.junit.Test;
 

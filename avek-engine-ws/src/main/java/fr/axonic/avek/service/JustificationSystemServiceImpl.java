@@ -3,7 +3,7 @@ package fr.axonic.avek.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 import fr.axonic.avek.ArtifactType;
-import fr.axonic.avek.dao.ArgumentationSystemsDAO;
+import fr.axonic.avek.dao.JustificationSystemsDAO;
 import fr.axonic.avek.dao.JerseyMapperProvider;
 import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.JustificationSystemAPI;
@@ -17,7 +17,8 @@ import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.SupportType;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.support.evidence.Evidence;
-import fr.axonic.avek.instance.MockedArgumentationSystem;
+import fr.axonic.avek.instance.JustificationSystemEnum;
+import fr.axonic.avek.instance.JustificationSystemFactory;
 import fr.axonic.validation.exception.VerificationException;
 
 import org.reflections.Reflections;
@@ -35,23 +36,20 @@ import java.util.stream.Collectors;
  */
 @Path("/justification")
 public class JustificationSystemServiceImpl implements JustificationSystemService {
-    private static Map<String, JustificationSystem<ListPatternsBase>> argumentationSystems;
+    private static Map<String, JustificationSystem<ListPatternsBase>> justificationSystems;
 
     private static final Logger LOGGER= LoggerFactory.getLogger(JustificationSystemServiceImpl.class);
 
     static {
-        argumentationSystems=new HashMap<>();
+        justificationSystems =new HashMap<>();
         try {
-            argumentationSystems= ArgumentationSystemsDAO.loadArgumentationSystems();
-
-           if(argumentationSystems.get("AXONIC")==null) {
-               argumentationSystems.put("AXONIC", MockedArgumentationSystem.getAXONICArgumentationSystem());
-               LOGGER.info("AXONIC Argumentation System added");
-           }
-           if(argumentationSystems.get("Jenkins")==null){
-               argumentationSystems.put("Jenkins", MockedArgumentationSystem.getJenkinsArgumentationSystem());
-               LOGGER.info("Jenkins Argumentation System added");
-           }
+            justificationSystems = JustificationSystemsDAO.loadJustificationSystems();
+            for(JustificationSystemEnum justificationSystemEnum : JustificationSystemEnum.values()){
+                if(justificationSystems.get(justificationSystemEnum.name())==null) {
+                    justificationSystems.put(justificationSystemEnum.name(), JustificationSystemFactory.create(justificationSystemEnum));
+                    LOGGER.info(justificationSystemEnum.name()+" Justification System added");
+                }
+            }
         } catch (VerificationException | WrongEvidenceException | IOException e) {
             e.printStackTrace();
         }
@@ -62,9 +60,9 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response registerArgumentationSystem(String name, JustificationSystem justificationSystem) {
-        argumentationSystems.put(name, justificationSystem);
+        justificationSystems.put(name, justificationSystem);
         try {
-            ArgumentationSystemsDAO.saveArgumentationSystem(name, justificationSystem);
+            JustificationSystemsDAO.saveJustificationSystem(name, justificationSystem);
         } catch (IOException e) {
             LOGGER.error(e.toString());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(name).build();
@@ -81,19 +79,19 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response registerPattern(String argumentationSystemId, Pattern pattern) {
-        JustificationSystem<ListPatternsBase> argumentationSystem=argumentationSystems.get(argumentationSystemId);
+        JustificationSystem<ListPatternsBase> argumentationSystem= justificationSystems.get(argumentationSystemId);
         argumentationSystem.getPatternsBase().addPattern(pattern);
         return Response.status(Response.Status.ACCEPTED).entity(pattern.getId()).build();
     }
 
     @Override
     public Response removeArgumentationSystem(String argumentationSystemId) {
-        if(argumentationSystems.remove(argumentationSystemId)==null){
+        if(justificationSystems.remove(argumentationSystemId)==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to remove");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
         }
         try {
-            ArgumentationSystemsDAO.removeArgumentationSystem(argumentationSystemId);
+            JustificationSystemsDAO.removeJustificationSystem(argumentationSystemId);
         } catch (IOException e) {
             LOGGER.error(e.toString());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystemId).build();
@@ -104,7 +102,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response removeStepsInArgumentationSystem(String argumentationSystemId) {
-        JustificationSystemAPI argumentationSystem = argumentationSystems.get(argumentationSystemId);
+        JustificationSystemAPI argumentationSystem = justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to remove");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
@@ -112,7 +110,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
         else {
             argumentationSystem.getJustificationDiagram().getSteps().clear();
             try {
-                ArgumentationSystemsDAO.saveArgumentationSystem(argumentationSystemId,argumentationSystem);
+                JustificationSystemsDAO.saveJustificationSystem(argumentationSystemId,argumentationSystem);
             } catch (IOException e) {
                 LOGGER.error(e.toString());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystemId).build();
@@ -124,7 +122,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response getArgumentationSystems() {
-        Set<String> argumentationSystemsID=argumentationSystems.keySet();
+        Set<String> argumentationSystemsID= justificationSystems.keySet();
         if(argumentationSystemsID.isEmpty()){
             LOGGER.warn("No argumentation systems");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation systems").build();
@@ -136,7 +134,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response getArgumentationSystem(String argumentationSystemId) {
-        JustificationSystemAPI argumentationSystem=argumentationSystems.get(argumentationSystemId);
+        JustificationSystemAPI argumentationSystem= justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to provide");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
@@ -147,7 +145,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response getArgumentationSystemPatterns(String argumentationSystemId) {
-        JustificationSystemAPI argumentationSystem=argumentationSystems.get(argumentationSystemId);
+        JustificationSystemAPI argumentationSystem= justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to provide");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
@@ -158,7 +156,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response getArgumentationSystemPattern(String argumentationSystemId, String pattern) {
-        JustificationSystemAPI argumentationSystem=argumentationSystems.get(argumentationSystemId);
+        JustificationSystemAPI argumentationSystem= justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to provide");
             return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
@@ -172,10 +170,10 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
     public Response constructStep(String argumentationSystem, String pattern, StepToCreate step) {
 
         try {
-            JustificationStep res = argumentationSystems.get(argumentationSystem).constructStep(argumentationSystems.get(argumentationSystem).getPatternsBase().getPattern(pattern),step.getSupports(),step.getConclusion());
+            JustificationStep res = justificationSystems.get(argumentationSystem).constructStep(justificationSystems.get(argumentationSystem).getPatternsBase().getPattern(pattern),step.getSupports(),step.getConclusion());
             LOGGER.info("Step created on "+argumentationSystem+" with pattern "+pattern);
             try {
-                ArgumentationSystemsDAO.saveArgumentationSystem(argumentationSystem,argumentationSystems.get(argumentationSystem));
+                JustificationSystemsDAO.saveJustificationSystem(argumentationSystem, justificationSystems.get(argumentationSystem));
             } catch (IOException e) {
                 LOGGER.error(e.toString());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystem).build();
@@ -211,7 +209,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
 
     @Override
     public Response getArtifactTypesUsable(String argumentationSystem) {
-        List<Pattern> patterns=argumentationSystems.get(argumentationSystem).getPatternsBase().getPatterns();
+        List<Pattern> patterns= justificationSystems.get(argumentationSystem).getPatternsBase().getPatterns();
         Set<Class> humanClasses=new HashSet<>();
         Set<Class> computedClasses=new HashSet<>();
         for(Pattern pattern:patterns){

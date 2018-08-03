@@ -46,7 +46,6 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         this.registeredEvidences = registeredEvidences;
     }
 
-    @Override
     @XmlElement
     @XmlElementWrapper
     public List<Support> getRegisteredEvidences() {
@@ -81,6 +80,13 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         }
         return true;
         }
+
+    @Override
+    public List<Support> getUnusedAssertions() {
+        List<Support> supports=new ArrayList<>(getRegisteredEvidences());
+        supports.removeAll(justificationDiagram.getUsedAssertions());
+        return supports;
+    }
 
     @Override
     public JustificationStep constructStep(Pattern pattern, List<Support> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {

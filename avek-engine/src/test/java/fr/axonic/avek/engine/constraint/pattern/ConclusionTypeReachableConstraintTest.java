@@ -8,11 +8,11 @@ import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.strategy.Rationale;
 import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
-import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
-import fr.axonic.avek.instance.avek.conclusion.GeneralizationConclusion;
-import fr.axonic.avek.instance.avek.evidence.ResultsEvidence;
-import fr.axonic.avek.instance.avek.evidence.Stimulation;
-import fr.axonic.avek.instance.avek.strategy.GeneralizeStrategy;
+import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.instance.conclusion.GeneralizationConclusion;
+import fr.axonic.avek.instance.evidence.ResultsEvidence;
+import fr.axonic.avek.instance.evidence.Stimulation;
+import fr.axonic.avek.instance.strategy.GeneralizeStrategy;
 import org.junit.Test;
 
 import java.util.Arrays;

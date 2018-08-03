@@ -8,13 +8,13 @@ import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.avek.evidence.Stimulation;
-import fr.axonic.avek.instance.avek.evidence.StimulationEvidence;
-import fr.axonic.avek.instance.avek.evidence.Subject;
-import fr.axonic.avek.instance.avek.evidence.SubjectEvidence;
+import fr.axonic.avek.instance.AVEKJustificationSystem;
+import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
+import fr.axonic.avek.instance.evidence.Stimulation;
+import fr.axonic.avek.instance.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.instance.evidence.SubjectEvidence;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.instance.MockedArgumentationSystem;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Before;
@@ -36,8 +36,9 @@ public abstract class PatternConstraintTest {
 
     @Before
     public void setUp() throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
-        pattern= MockedArgumentationSystem.getAXONICArgumentationSystem().getPatternsBase().getPattern("1");
-        argumentationSystem=MockedArgumentationSystem.getAXONICArgumentationSystem();
+
+        argumentationSystem=new AVEKJustificationSystem();
+        pattern= argumentationSystem.getPatternsBase().getPattern("1");
         argumentationSystem.getPatternsBase().setConstraints(new ArrayList<>());
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
         SubjectEvidence subject0 = new SubjectEvidence("Subject 0",new Subject());

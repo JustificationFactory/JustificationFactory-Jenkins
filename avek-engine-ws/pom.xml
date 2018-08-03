@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>fr.axonic.avek</groupId>
-            <artifactId>avek-engine</artifactId>
+            <artifactId>avek-engine-instance</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.axonic</groupId>

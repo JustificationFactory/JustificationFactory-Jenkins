@@ -78,7 +78,7 @@
         </dependency>
         <dependency>
             <groupId>fr.axonic.avek</groupId>
-            <artifactId>avek-engine</artifactId>
+            <artifactId>avek-engine-instance</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.axonic.avek</groupId>
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>fr.axonic.avek</groupId>
             <artifactId>avek-graph</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

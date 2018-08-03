@@ -2,16 +2,12 @@ package fr.axonic.avek.engine.support.conclusion;
 
 import fr.axonic.avek.engine.support.evidence.Element;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.avek.conclusion.EstablishEffectConclusion;
-import fr.axonic.avek.instance.avek.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.avek.conclusion.GeneralizationConclusion;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
-@XmlSeeAlso({ExperimentationConclusion.class, EstablishEffectConclusion.class, GeneralizationConclusion.class})
 public class Conclusion<T extends Element> extends Support<T> implements Cloneable {
 
 	protected List<Restriction> restrictions;

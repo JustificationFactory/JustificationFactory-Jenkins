@@ -8,6 +8,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.MINIMAL_CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type")
 @XmlSeeAlso({HumanStrategy.class, ComputedStrategy.class})
 public abstract class Strategy extends StrategyAPI {
 

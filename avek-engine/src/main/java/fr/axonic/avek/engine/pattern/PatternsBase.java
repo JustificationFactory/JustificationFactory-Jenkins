@@ -29,6 +29,7 @@ public abstract class PatternsBase {
     public PatternsBase(PatternsBaseType patternsBaseType) {
         this.patternsBaseType=patternsBaseType;
     }
+
     public List<String> getPossiblePatterns(List<Support> supportRoles) {
         return getPatterns().stream().filter(pattern -> pattern.applicable(supportRoles)).map(Pattern::getId).collect(Collectors.toList());
     }
