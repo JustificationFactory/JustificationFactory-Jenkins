@@ -5,6 +5,7 @@ import fr.axonic.avek.gui.util.Util;
 import fr.axonic.avek.gui.util.UtilForTests;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -34,6 +35,7 @@ public class TestUploadedFile {
         UtilForTests.createFileArchi();
     }
 
+    @Ignore
     @Test
     public void testUploadedFile() throws IOException {
         File file = new File("./temp/test.txt");
@@ -59,6 +61,7 @@ public class TestUploadedFile {
         assertTrue(f.isFile());
     }
 
+    @Ignore
     @Test
     public void testUploadedFolder() throws IOException {
         UploadedFile uf = new UploadedFile(new File("./temp/toto/"));
@@ -103,6 +106,7 @@ public class TestUploadedFile {
         }
     }
 
+    @Ignore
     @Test
     public void testAlreadyUploaded() throws FileNotFoundException {
         UploadedFile uf1 = new UploadedFile(new File("./temp/test.txt"));

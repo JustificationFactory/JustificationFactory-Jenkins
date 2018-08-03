@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,7 @@ public class TestFileList extends ApplicationTest {
         UtilForTests.deleteFileArchi();
     }
 
+    @Ignore
     @Test
     public void testAddFiles() throws Exception {
         ConcurrentTaskManager ctm = new ConcurrentTaskManager();
