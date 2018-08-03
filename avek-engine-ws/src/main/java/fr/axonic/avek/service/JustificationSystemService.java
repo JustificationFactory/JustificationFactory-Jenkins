@@ -87,8 +87,8 @@ public interface JustificationSystemService {
 
 
     @GET
-    @Path("/type")
+    @Path("/classType")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getTypeContent(@QueryParam("type") String type);
+    Response getTypeContent(@QueryParam("classType") String type);
 
 }

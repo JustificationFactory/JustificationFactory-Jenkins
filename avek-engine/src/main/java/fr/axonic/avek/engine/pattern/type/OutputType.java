@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 public class OutputType<T extends Conclusion> extends SupportType<T>{
 
 	public OutputType() {
-		super(null);
+		super();
 	}
 
 	public OutputType(Class<T> conclusionClass) {
@@ -22,11 +22,11 @@ public class OutputType<T extends Conclusion> extends SupportType<T>{
 	public Conclusion create(String name,Element o) throws StepBuildingException {
 		try {
 			if(name==null){
-				return (Conclusion) getType().getDeclaredConstructor(o.getClass()).newInstance(o);
+				return (Conclusion) getType().getClassType().getDeclaredConstructor(o.getClass()).newInstance(o);
 
 			}
 			else {
-				return (Conclusion) getType().getDeclaredConstructor(String.class,o.getClass()).newInstance(name,o);
+				return (Conclusion) getType().getClassType().getDeclaredConstructor(String.class,o.getClass()).newInstance(name,o);
 
 			}
 
@@ -36,6 +36,6 @@ public class OutputType<T extends Conclusion> extends SupportType<T>{
 	}
 
 	public InputType<T> transformToInput(){
-		return new InputType<T>(getType().getName(),getType());
+		return new InputType<T>(getType().getClassType().getName(),getType());
 	}
 }

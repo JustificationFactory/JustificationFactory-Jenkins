@@ -18,14 +18,14 @@ import static org.junit.Assert.*;
 public class InputTypeTest {
     @Test
     public void testGoodEvidenceCreation() throws WrongEvidenceException, VerificationException {
-        InputType<Evidence> evidenceRoleType= new InputType<Evidence>("stimulation type",Evidence.class);
+        InputType<Evidence> evidenceRoleType= new InputType<Evidence>("stimulation classType",Evidence.class);
         Evidence<Stimulation> evidence=new Evidence<Stimulation>("stimulation", new Stimulation());
         evidenceRoleType.create(evidence);
     }
 
     @Test(expected=WrongEvidenceException.class)
     public void testWrongEvidenceCreation() throws WrongEvidenceException, VerificationException {
-        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation type",StimulationEvidence.class);
+        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation classType",StimulationEvidence.class);
 
         Evidence<Subject> evidence=new Evidence<Subject>("subject", new Subject());
         evidenceRoleType.create(evidence);
@@ -33,7 +33,7 @@ public class InputTypeTest {
 
     @Test
     public void testGoodEvidenceRoleFromEvidenceRoleType() throws WrongEvidenceException, VerificationException {
-        InputType<Evidence> evidenceRoleType= new InputType<Evidence>("stimulation type",Evidence.class);
+        InputType<Evidence> evidenceRoleType= new InputType<Evidence>("stimulation classType",Evidence.class);
 
         Evidence<Stimulation> evidence=new Evidence<Stimulation>("stimulation", new Stimulation());
         Support role=evidenceRoleType.create(evidence);
@@ -41,7 +41,7 @@ public class InputTypeTest {
     }
     @Test
     public void testWrongEvidenceRoleFromEvidenceRoleType() throws WrongEvidenceException, VerificationException {
-        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation type",StimulationEvidence.class);
+        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation classType",StimulationEvidence.class);
 
         Support supportRole =new Evidence("test",new Subject());
         assertFalse(evidenceRoleType.check(supportRole));
@@ -49,13 +49,13 @@ public class InputTypeTest {
 
     @Test
     public void isPrimitiveInputType() throws Exception {
-        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation type",StimulationEvidence.class);
+        InputType<StimulationEvidence> evidenceRoleType= new InputType<>("stimulation classType",StimulationEvidence.class);
         assertTrue(evidenceRoleType.isPrimitiveInputType());
     }
 
     @Test
     public void isNotPrimitiveInputType() throws Exception {
-        InputType<ExperimentationConclusion> evidenceRoleType= new InputType<>("stimulation type",ExperimentationConclusion.class);
+        InputType<ExperimentationConclusion> evidenceRoleType= new InputType<>("stimulation classType",ExperimentationConclusion.class);
         assertFalse(evidenceRoleType.isPrimitiveInputType());
     }
 

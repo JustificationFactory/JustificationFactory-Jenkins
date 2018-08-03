@@ -110,7 +110,7 @@ public class StaticSubjectInformations extends AStructure{
         return "StaticSubjectInformations{" +
                 "gender=" + gender +
                 ", birthday=" + birthday +
-                ", name=" + name +
+                ", nameType=" + name +
                 ", height=" + height +
                 '}';
     }

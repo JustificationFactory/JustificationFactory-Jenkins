@@ -66,7 +66,7 @@ public class SupportArtifact extends AbstractDescribableImpl<SupportArtifact> {
                 return FormValidation.error("Please set a conclusion ID");
             try {
                 Pattern pattern = new ArgumentationFactoryClient(des.getJustificationFactoryURL()).getPattern(argumentationSystemName,patternID);
-                if (pattern.getInputTypes().stream().noneMatch(inputType -> inputType.getType().getName().equals(value)))
+                if (pattern.getInputTypes().stream().noneMatch(inputType -> inputType.getClassType().getNameType().equals(value)))
                     return FormValidation.error("Unknown support ID");
             } catch (ArgumentationFactoryException e) {
                 return FormValidation.error("Please set a valid argumentation system and pattern ID");

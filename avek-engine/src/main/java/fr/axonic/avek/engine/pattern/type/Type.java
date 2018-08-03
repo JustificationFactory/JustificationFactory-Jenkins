@@ -2,24 +2,43 @@ package fr.axonic.avek.engine.pattern.type;
 
 import fr.axonic.avek.engine.kernel.Artifact;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
+@XmlRootElement
 public class Type<T> implements Artifact {
-    protected Class<T> type;
+    protected Class<T> classType;
+    protected String nameType;
 
     public Type() {
     }
 
-    public Type(Class<T> type) {
-        this.type=type;
+    public Type(Class<T> classType) {
+        this.classType = classType;
     }
 
-    public Class<T> getType() {
-        return type;
+    public Type(Class<T> classType, String nameType) {
+        this.classType = classType;
+        this.nameType = nameType;
     }
 
-    public void setType(Class<T> type) {
-        this.type = type;
+    @XmlElement
+    public Class<T> getClassType() {
+        return classType;
+    }
+
+    public void setClassType(Class<T> classType) {
+        this.classType = classType;
+    }
+
+    @XmlElement
+    public String getNameType() {
+        return nameType;
+    }
+
+    public void setNameType(String nameType) {
+        this.nameType = nameType;
     }
 
     @Override
@@ -27,12 +46,20 @@ public class Type<T> implements Artifact {
         if (this == o) return true;
         if (!(o instanceof Type)) return false;
         Type<?> type1 = (Type<?>) o;
-        return Objects.equals(type, type1.type);
+        return Objects.equals(classType, type1.classType) &&
+                Objects.equals(nameType, type1.nameType);
     }
 
     @Override
     public int hashCode() {
+        return Objects.hash(classType, nameType);
+    }
 
-        return Objects.hash(type);
+    @Override
+    public String toString() {
+        return "Type{" +
+                "classType=" + classType +
+                ", nameType='" + nameType + '\'' +
+                '}';
     }
 }

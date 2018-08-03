@@ -86,7 +86,7 @@ public class BoundedParameter extends SensitiveParameter {
                 }
                 else {
                     // RuntimeException because it isn't user fault but a developer problem
-                    throw new RuntimeException("Unknown type for bounded parameter: "+paramValue.getClass()+" for "+paramValue);
+                    throw new RuntimeException("Unknown classType for bounded parameter: "+paramValue.getClass()+" for "+paramValue);
                 }
 
                 // If no exception thrown, input was correct, so removing tooltip
@@ -125,7 +125,7 @@ public class BoundedParameter extends SensitiveParameter {
                 }
                 else {
                     // RuntimeException because it isn't user fault but a developer problem
-                    throw new RuntimeException("Unknown type for bounded parameter: "+paramValue.getClass()+" for "+paramValue);
+                    throw new RuntimeException("Unknown classType for bounded parameter: "+paramValue.getClass()+" for "+paramValue);
                 }
 
                 // If no exception thrown, input was correct, so removing tooltip

@@ -323,7 +323,7 @@ public class Orchestrator implements Observer {
                             LOGGER.error("Unknown error occurred while showing view", e);
                         }
                     } else {
-                        LOGGER.warn("No pattern found with name: " + selectedPatternName);
+                        LOGGER.warn("No pattern found with nameType: " + selectedPatternName);
                     }
                     break;
 
@@ -342,7 +342,7 @@ public class Orchestrator implements Observer {
                 case VIEW_TYPE: break;
 
                 default:
-                    throw new RuntimeException("No rule existing for name: " + entry.getKey());
+                    throw new RuntimeException("No rule existing for nameType: " + entry.getKey());
             }
         }
 

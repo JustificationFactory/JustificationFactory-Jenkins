@@ -1,6 +1,8 @@
 package fr.axonic.avek.gui.view.frame;
 
+import fr.axonic.avek.dao.JustificationSystemsDAO;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.instance.JustificationSystemEnum;
 import fr.axonic.avek.instance.JustificationSystemFactory;
 import fr.axonic.avek.graph.ArgumentationDiagram;
 import fr.axonic.avek.gui.api.GUIAPIImpl;
@@ -51,7 +53,7 @@ public class MainFrame extends BorderPane {
     @FXML
     private void onClickGraphButton(ActionEvent event) {
         try {
-            ArgumentationDiagram.show(JustificationSystemFactory.getAXONICArgumentationSystem().getJustificationDiagram().getSteps());
+            ArgumentationDiagram.show(JustificationSystemFactory.create(JustificationSystemEnum.CLINICAL_STUDIES).getJustificationDiagram().getSteps());
         } catch (VerificationException | WrongEvidenceException e) {
             LOGGER.error("Cannot show graph now");
         }

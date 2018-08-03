@@ -45,7 +45,7 @@ public enum ViewType {
                 LOGGER.error("Content doesn't contains "+componentType);
                 return false;
             } else if(!componentType.isCompatibleObject(content.get(componentType))){
-                LOGGER.error("Component type isn't compatible with "+componentType+" for "+content.get(componentType));
+                LOGGER.error("Component classType isn't compatible with "+componentType+" for "+content.get(componentType));
                 return false;
             }
         }

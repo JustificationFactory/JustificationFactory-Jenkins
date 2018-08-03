@@ -82,6 +82,10 @@
         </dependency>
         <dependency>
             <groupId>fr.axonic.avek</groupId>
+            <artifactId>avek-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.axonic.avek</groupId>
             <artifactId>avek-model</artifactId>
             <version>${project.version}</version>
         </dependency>

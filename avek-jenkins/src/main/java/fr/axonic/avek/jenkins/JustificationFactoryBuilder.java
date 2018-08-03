@@ -134,7 +134,7 @@ public class JustificationFactoryBuilder extends Publisher implements SimpleBuil
     }
 
 
-    // Overridden for better type safety.
+    // Overridden for better classType safety.
     // If your plugin doesn't really define any property on Descriptor,
     // you don't have to do this.
     @Override
@@ -245,7 +245,7 @@ public class JustificationFactoryBuilder extends Publisher implements SimpleBuil
         }
 
         /**
-         * This human readable name is used in the configuration screen.
+         * This human readable nameType is used in the configuration screen.
          */
         public String getDisplayName() {
             return "Trace with Justification Factory";

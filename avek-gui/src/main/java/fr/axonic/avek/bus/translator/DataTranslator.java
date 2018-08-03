@@ -21,7 +21,7 @@ public abstract class DataTranslator<T,S> {
     }
 
     /**
-     * Translate object of type T to object of type S
+     * Translate object of classType T to object of classType S
      * @param t source object
      * @return translated object
      */

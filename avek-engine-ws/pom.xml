@@ -18,6 +18,10 @@
     <dependencies>
         <dependency>
             <groupId>fr.axonic.avek</groupId>
+            <artifactId>avek-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.axonic.avek</groupId>
             <artifactId>avek-engine-instance</artifactId>
         </dependency>
         <dependency>

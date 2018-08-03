@@ -17,8 +17,8 @@ public class JustificationSystemsDAO {
 
     private static final String DIR="data";
 
-    public static Map<String, JustificationSystem<ListPatternsBase>> loadJustificationSystems() throws IOException {
-        Map<String, JustificationSystem<ListPatternsBase>> res=new HashMap<>();
+    public static Map<String, JustificationSystem> loadJustificationSystems() throws IOException {
+        Map<String, JustificationSystem> res=new HashMap<>();
         ObjectMapper mapper=new JerseyMapperProvider().getContext(null);
         File dir = new File(DIR);
         if(!dir.exists()){

@@ -15,6 +15,7 @@ import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.SupportType;
+import fr.axonic.avek.engine.pattern.type.Type;
 import fr.axonic.avek.engine.strategy.HumanStrategy;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.instance.JustificationSystemEnum;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  */
 @Path("/justification")
 public class JustificationSystemServiceImpl implements JustificationSystemService {
-    private static Map<String, JustificationSystem<ListPatternsBase>> justificationSystems;
+    private static Map<String, JustificationSystem> justificationSystems;
 
     private static final Logger LOGGER= LoggerFactory.getLogger(JustificationSystemServiceImpl.class);
 
@@ -67,7 +68,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
             LOGGER.error(e.toString());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(name).build();
         }
-        LOGGER.info(name+" Argumentation System added");
+        LOGGER.info(name+" Justification System added");
         return Response.status(Response.Status.ACCEPTED).entity(name).build();
     }
 
@@ -88,7 +89,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
     public Response removeArgumentationSystem(String argumentationSystemId) {
         if(justificationSystems.remove(argumentationSystemId)==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to remove");
-            return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("No justification system with id "+argumentationSystemId).build();
         }
         try {
             JustificationSystemsDAO.removeJustificationSystem(argumentationSystemId);
@@ -96,7 +97,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
             LOGGER.error(e.toString());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystemId).build();
         }
-        LOGGER.info(argumentationSystemId+" Argumentation System removed");
+        LOGGER.info(argumentationSystemId+" Justification System removed");
         return Response.status(Response.Status.OK).build();
     }
 
@@ -115,7 +116,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
                 LOGGER.error(e.toString());
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(argumentationSystemId).build();
             }
-            LOGGER.info(argumentationSystemId+" Argumentation System justificationDiagram removed");
+            LOGGER.info(argumentationSystemId+" Justification System Justification Diagram removed");
             return Response.status(Response.Status.OK).build();
         }
     }
@@ -125,9 +126,9 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
         Set<String> argumentationSystemsID= justificationSystems.keySet();
         if(argumentationSystemsID.isEmpty()){
             LOGGER.warn("No argumentation systems");
-            return Response.status(Response.Status.NOT_FOUND).entity("No argumentation systems").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("No justification systems").build();
         }
-        LOGGER.info("Argumentation systems provided");
+        LOGGER.info("Justification systems provided");
         return Response.status(Response.Status.OK).entity(argumentationSystemsID).build();
 
     }
@@ -137,9 +138,9 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
         JustificationSystemAPI argumentationSystem= justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to provide");
-            return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("No justification system with id "+argumentationSystemId).build();
         }
-        LOGGER.info(argumentationSystemId+" Argumentation System provided");
+        LOGGER.info(argumentationSystemId+" Justification System provided");
         return Response.status(Response.Status.OK).entity(argumentationSystem).build();
     }
 
@@ -148,9 +149,9 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
         JustificationSystemAPI argumentationSystem= justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to provide");
-            return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("No justification system with id "+argumentationSystemId).build();
         }
-        LOGGER.info(argumentationSystemId+" Argumentation System patterns provided");
+        LOGGER.info(argumentationSystemId+" Justification System patterns provided");
         return Response.status(Response.Status.OK).entity(argumentationSystem.getPatternsBase().getPatterns().stream().map(Pattern::getId).collect(Collectors.toList())).build();
     }
 
@@ -159,9 +160,9 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
         JustificationSystemAPI argumentationSystem= justificationSystems.get(argumentationSystemId);
         if(argumentationSystem==null){
             LOGGER.warn("Unknown "+argumentationSystemId+", impossible to provide");
-            return Response.status(Response.Status.NOT_FOUND).entity("No argumentation system with id "+argumentationSystemId).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("No justification system with id "+argumentationSystemId).build();
         }
-        LOGGER.info("Pattern "+pattern+" for "+argumentationSystemId+" Argumentation System  provided");
+        LOGGER.info("Pattern "+pattern+" for "+argumentationSystemId+" Justification System  provided");
         return Response.status(Response.Status.OK).entity(argumentationSystem.getPatternsBase().getPattern(pattern)).build();
 
     }
@@ -210,8 +211,8 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
     @Override
     public Response getArtifactTypesUsable(String argumentationSystem) {
         List<Pattern> patterns= justificationSystems.get(argumentationSystem).getPatternsBase().getPatterns();
-        Set<Class> humanClasses=new HashSet<>();
-        Set<Class> computedClasses=new HashSet<>();
+        Set<Type> humanClasses=new HashSet<>();
+        Set<Type> computedClasses=new HashSet<>();
         for(Pattern pattern:patterns){
             if(pattern.getStrategy() instanceof HumanStrategy){
                 humanClasses.addAll(pattern.getInputTypes().stream().map(SupportType::getType).collect(Collectors.toList()));
@@ -222,7 +223,7 @@ public class JustificationSystemServiceImpl implements JustificationSystemServic
                 computedClasses.add(pattern.getOutputType().getType());
             }
         }
-        Map<ArtifactType,Set<Class>> res=new EnumMap<>(ArtifactType.class);
+        Map<ArtifactType,Set<Type>> res=new EnumMap<>(ArtifactType.class);
         res.put(ArtifactType.HUMAN_STRATEGY,humanClasses);
         res.put(ArtifactType.COMPUTED_STRATEGY,computedClasses);
         return Response.status(Response.Status.OK).entity(res).build();

@@ -22,20 +22,27 @@ public abstract class SupportType<T extends Support> implements Assertion<Type> 
         this.type = new Type<>(type);
     }
 
+    SupportType(Type type){
+        this.type=type;
+    }
+
     public SupportType() {
     }
 
     @XmlElement
-    public Class getType() {
-        return type.getType();
+    public Type getType() {
+        return type;
     }
 
-    public void setType(Class type) {
-        this.type.setType(type);
+    public void setType(Type type) {
+        this.type=type;
     }
 
     public boolean check(Support support){
-        return type.getType().isInstance(support);
+        if(type.getNameType()!=null && !type.getNameType().equals(support.getName())){
+            return false;
+        }
+        return type.getClassType().isInstance(support);
     }
 
     @Override

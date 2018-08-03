@@ -30,7 +30,7 @@
             </f:entry>
         </table>
         <div align="right">
-            <input type="button" value="Delete Tag" class="repeatable-delete" style="margin-left: 1em;" />
+            <input classType="button" value="Delete Tag" class="repeatable-delete" style="margin-left: 1em;" />
         </div>
     </f:repeatable>
   </f:entry>

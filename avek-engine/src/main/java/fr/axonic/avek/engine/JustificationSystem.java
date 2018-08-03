@@ -146,7 +146,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         List<Support> collected=new ArrayList<>();
         for(InputType inputType:inputTypes){
             for(Support support: registeredEvidences){
-                if(inputType.getType().equals(support.getClass())){
+                if(inputType.getType().getClassType().equals(support.getClass())){
                     if(!collected.contains(support)){
                         collected.add(support);
                         break;
@@ -202,7 +202,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
 
     @Override
     public String toString() {
-        return "ArgumentationSystem{" +
+        return "JustificationSystem{" +
                 "patternsBase=" + patternsBase +
                 ", registeredEvidences=" + registeredEvidences +
                 ", justificationDiagram=" + justificationDiagram +

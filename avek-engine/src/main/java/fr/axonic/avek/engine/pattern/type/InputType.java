@@ -17,7 +17,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 
 
 	public InputType() {
-		super(null);
+		super();
 	}
 
 	public InputType(String name, Class<T> classEvidence){
@@ -25,8 +25,14 @@ public class InputType<T extends Support> extends SupportType<T>{
 		this.name=name;
 
 	}
+
+	public InputType( String name, Type type) {
+		super(type);
+		this.name = name;
+	}
+
 	public Support create(Support evidence) throws WrongEvidenceException {
-		if (evidence.getClass().equals(type.getType())){
+		if (evidence.getClass().equals(type.getClassType())){
 			evidence.setName(name);
 			return  evidence;
 		}
@@ -35,7 +41,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 
 	public Support create(Element artifact) throws WrongEvidenceException {
 		try {
-			Support support= (Support) type.getType().newInstance();
+			Support support= (Support) type.getClassType().newInstance();
 			support.setElement(artifact);
 			support.setName(name);
 			return support;
@@ -48,7 +54,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 	@XmlTransient
 	@JsonIgnore
 	public boolean isPrimitiveInputType(){
-		return Evidence.class.isAssignableFrom(getType());
+		return Evidence.class.isAssignableFrom(getType().getClassType());
 	}
 
 	@XmlElement
