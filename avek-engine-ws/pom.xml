@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>avek-engine-ws</artifactId>
     <packaging>war</packaging>
+
     <properties>
         <jetty.version>9.4.7.v20170914</jetty.version>
         <jetty.http.port>9999</jetty.http.port>
@@ -113,6 +114,7 @@
             <version>0.9.11</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>

@@ -6,11 +6,13 @@ import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.support.Support;
 
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Path("/bus")
 public class JustificationBusServiceImplementation implements JustificationBusService {
 
     private StepBuilder stepBuilder;
@@ -20,8 +22,8 @@ public class JustificationBusServiceImplementation implements JustificationBusSe
     }
 
     @Override
-    public Response transmitSupport(List<Support> supports) {
-        for (Support support : supports) {
+    public Response transmitSupport(TransmittedSupports supports) {
+        for (Support support : supports.getSupports()) {
             try {
                 stepBuilder.acknowledgeSupport(support);
             } catch (StepBuildingException | StrategyException e) {

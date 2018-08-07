@@ -14,11 +14,10 @@ import javax.ws.rs.core.Response;
  */
 public interface JustificationSystemService {
 
-
     @POST
     @Path("/system/{argumentation_system_name}")
     @Consumes(MediaType.APPLICATION_JSON)
-    Response registerArgumentationSystem(@PathParam("argumentation_system_name") String name,JustificationSystem justificationSystem);
+    Response registerArgumentationSystem(@PathParam("argumentation_system_name") String name, JustificationSystem justificationSystem);
 
     @POST
     @Path("/system")
@@ -30,7 +29,6 @@ public interface JustificationSystemService {
     @Consumes(MediaType.APPLICATION_JSON)
     Response registerPattern(@PathParam("argumentation_system_id") String argumentationSystemId, Pattern pattern);
 
-
     @DELETE
     @Path("/{argumentation_system_id}")
     Response removeArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
@@ -38,7 +36,6 @@ public interface JustificationSystemService {
     @DELETE
     @Path("/{argumentation_system_id}/justificationDiagram")
     Response removeStepsInArgumentationSystem(@PathParam("argumentation_system_id") String argumentationSystemId);
-
 
     @GET
     @Path("/systems")
@@ -60,16 +57,13 @@ public interface JustificationSystemService {
     @Produces(MediaType.APPLICATION_JSON)
     Response getArgumentationSystemPattern(@PathParam("argumentation_system_id") String argumentationSystemId, @PathParam("pattern_id") String pattern);
 
-
     @POST
     @Path("/{argumentation_system_id}/{pattern_id}/step")
-    //@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Response constructStep(@PathParam("argumentation_system_id") String argumentationSystem, @PathParam("pattern_id") String pattern, StepToCreate step);
 
     /**
-     *
      * @param artifact a valid ArtifactType
      * @return a response
      * @see ArtifactType
@@ -79,16 +73,13 @@ public interface JustificationSystemService {
     @Produces(MediaType.APPLICATION_JSON)
     Response getArtifactTypes(@PathParam("argumentation_artifact") String artifact);
 
-
     @GET
     @Path("/{argumentation_system_id}/types")
     @Produces(MediaType.APPLICATION_JSON)
     Response getArtifactTypesUsable(@PathParam("argumentation_system_id") String argumentationSystem);
 
-
     @GET
     @Path("/classType")
     @Produces(MediaType.APPLICATION_JSON)
     Response getTypeContent(@QueryParam("classType") String type);
-
 }
