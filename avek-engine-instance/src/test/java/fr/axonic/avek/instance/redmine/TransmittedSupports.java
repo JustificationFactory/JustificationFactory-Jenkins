@@ -1,4 +1,4 @@
-package fr.axonic.avek.bus;
+package fr.axonic.avek.instance.redmine;
 
 import fr.axonic.avek.engine.support.Support;
 
@@ -11,6 +11,14 @@ import java.util.List;
 public class TransmittedSupports {
 
     private List<Support> supports;
+
+    public TransmittedSupports() {
+        // Empty for XML.
+    }
+
+    public TransmittedSupports(List<Support> supports) {
+        this.supports = supports;
+    }
 
     @XmlElement
     @XmlElementWrapper
