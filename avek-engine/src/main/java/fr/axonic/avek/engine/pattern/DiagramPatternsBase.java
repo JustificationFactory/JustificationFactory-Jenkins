@@ -12,7 +12,7 @@ public class DiagramPatternsBase extends PatternsBase {
 
     public DiagramPatternsBase(JustificationPatternDiagram jpd) {
         super(PatternsBaseType.PATTERN_DIAGRAM);
-        this.jpd=jpd;
+        this.jpd = jpd;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class DiagramPatternsBase extends PatternsBase {
 
     @Override
     public void setPatterns(List<Pattern> patterns) {
-        jpd=new JustificationPatternDiagram(patterns);
+        jpd = new JustificationPatternDiagram(patterns);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class DiagramPatternsBase extends PatternsBase {
 
     @Override
     public OutputType getObjective() {
-        return jpd.getSteps().get(jpd.getSteps().size()-1).getOutputType();
+        return jpd.getSteps().get(jpd.getSteps().size() - 1).getOutputType();
     }
 }

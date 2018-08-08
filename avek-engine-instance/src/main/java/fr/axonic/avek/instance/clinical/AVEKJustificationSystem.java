@@ -49,7 +49,7 @@ public class AVEKJustificationSystem extends JustificationSystem<ListPatternsBas
         //TODO : Revoir car ici on a un singleton...
         AXONICProject project=new AXONICProject(Stimulator.AXIS, Pathology.OBESITY);
         Strategy ts = new TreatStrategy(new Rationale<>(project),null);
-        Pattern treat = new Pattern("1","Treat", ts, Arrays.asList(new InputType[] {rtStimulation, rtSubject, rtActor}), conclusionExperimentationType);
+        Pattern treat = new Pattern("1","Treat", ts, Arrays.asList(rtStimulation, rtSubject, rtActor), conclusionExperimentationType);
         try {
             treat.addConstructionConstraint(new ActorTypePatternConstraint(treat,rtActor, Role.INTERMEDIATE_EXPERT));
         } catch (InvalidPatternConstraint invalidPatternConstraint) {
@@ -60,15 +60,14 @@ public class AVEKJustificationSystem extends JustificationSystem<ListPatternsBas
         OutputType<EstablishEffectConclusion> conclusionEffectType = new OutputType<>(EstablishEffectConclusion.class);
         //TODO : Revoir car ici on a un singleton...
         Strategy ts2 = new EstablishEffectStrategy(new Rationale<>(project),null);
-        Pattern establishEffect = new Pattern("2","Establish Effect", ts2, Arrays.asList(new InputType[] {rtExperimentation,rtResult}), conclusionEffectType);
+        Pattern establishEffect = new Pattern("2","Establish Effect", ts2, Arrays.asList(rtExperimentation,rtResult), conclusionEffectType);
         patterns.add(establishEffect);
 
         InputType<EstablishEffectConclusion> rtEstablishedEffect= new InputType<>("effects", EstablishEffectConclusion.class);
         OutputType<GeneralizationConclusion> conclusionGeneralizationType = new OutputType<>(GeneralizationConclusion.class);
         Strategy ts3=new GeneralizeStrategy(new Rationale<>(project),null);
-        Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new InputType[]{rtEstablishedEffect}),conclusionGeneralizationType);
+        Pattern generalize=new Pattern("3", "Generalize", ts3, Collections.singletonList(rtEstablishedEffect),conclusionGeneralizationType);
         patterns.add(generalize);
-
 
         List<ArgumentationSystemConstraint> argumentationSystemConstraints =new ArrayList<>();
         argumentationSystemConstraints.add(new UniquenessConstraint(generalize));
@@ -76,12 +75,10 @@ public class AVEKJustificationSystem extends JustificationSystem<ListPatternsBas
         argumentationSystemConstraints.add(new NoHypothesisConstraint());
         argumentationSystemConstraints.add(new RelatedArgumentationSystemConstraint());
         patterns.add(treat);
+
         return new ListPatternsBase(patterns, argumentationSystemConstraints);
-
-
     }
     private static List<Support> getAXONICBaseEvidences() throws VerificationException, WrongEvidenceException {
-
         WaveformParameter waveformParameter=new WaveformParameter();
         waveformParameter.setAmplitudeValue(1000.1);
         waveformParameter.setDurationValue(300);

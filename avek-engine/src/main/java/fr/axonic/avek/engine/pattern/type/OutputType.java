@@ -8,34 +8,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.lang.reflect.InvocationTargetException;
 
 @XmlRootElement
-public class OutputType<T extends Conclusion> extends SupportType<T>{
+public class OutputType<T extends Conclusion> extends SupportType<T> {
 
-	public OutputType() {
-		super();
-	}
+    private String name;
 
-	public OutputType(Class<T> conclusionClass) {
-		super(conclusionClass);
-	}
-	
+    public OutputType() {
+        super();
+    }
 
-	public Conclusion create(String name,Element o) throws StepBuildingException {
-		try {
-			if(name==null){
-				return (Conclusion) getType().getClassType().getDeclaredConstructor(o.getClass()).newInstance(o);
+    public OutputType(Class<T> conclusionClass) {
+        super(conclusionClass);
+    }
 
-			}
-			else {
-				return (Conclusion) getType().getClassType().getDeclaredConstructor(String.class,o.getClass()).newInstance(name,o);
+    public OutputType(String name, Class<T> conclusionClass) {
+        super(conclusionClass);
+        this.name = name;
+    }
 
-			}
+    public Conclusion create(String name, Element o) throws StepBuildingException {
+        try {
+            if (name == null) {
+                return (Conclusion) getType().getClassType().getDeclaredConstructor(o.getClass()).newInstance(o);
 
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			throw new StepBuildingException("Impossible to create conclusion from "+o,e);
-		}
-	}
+            } else {
+                return (Conclusion) getType().getClassType().getDeclaredConstructor(String.class, o.getClass()).newInstance(name, o);
 
-	public InputType<T> transformToInput(){
-		return new InputType<T>(getType().getClassType().getName(),getType());
-	}
+            }
+
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new StepBuildingException("Impossible to create conclusion from " + o, e);
+        }
+    }
+
+    public InputType<T> transformToInput() {
+        return new InputType<T>(getType().getClassType().getName(), getType());
+    }
 }
