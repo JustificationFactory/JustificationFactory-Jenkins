@@ -24,7 +24,7 @@ import java.util.List;
 @XmlSeeAlso(JustificationSystem.class)
 public interface JustificationSystemAPI<T extends PatternsBase> {
 
-    List<Support> getUnusedAssertions();
+    List<Support> getUnusedAssertions(List<Support> supports);
 
     JustificationStep constructStep(Pattern pattern, List<Support> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException;
 
@@ -33,6 +33,8 @@ public interface JustificationSystemAPI<T extends PatternsBase> {
     T getPatternsBase();
 
     boolean validate();
+
+    boolean isComplete();
 
     void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException;
 

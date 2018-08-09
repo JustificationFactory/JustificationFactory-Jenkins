@@ -41,11 +41,11 @@ import java.util.*;
 public class MockedJustificationSystem<T extends PatternsBase> extends JustificationSystem<T> {
 
     public MockedJustificationSystem(T base) throws VerificationException, WrongEvidenceException {
-        super(base, getAXONICBaseEvidences());
+        super(base);
     }
 
     public MockedJustificationSystem() throws VerificationException, WrongEvidenceException {
-        super((T) getAXONICPatternsBase(),getAXONICBaseEvidences());
+        this((T) getAXONICPatternsBase());
     }
 
     public static ListPatternsBase getAXONICPatternsBase(){
@@ -173,5 +173,9 @@ public class MockedJustificationSystem<T extends PatternsBase> extends Justifica
             Support evResults = rtResults.create(results0);
             justificationSystem.constructStep(justificationSystem.getPatternsBase().getPattern("1"), Arrays.asList(experimentationRole, evResults), effect0);
         }
+    }
+
+    public List<Support> getRegisteredEvidences() throws VerificationException, WrongEvidenceException {
+        return getAXONICBaseEvidences();
     }
 }

@@ -4,6 +4,7 @@ import fr.axonic.avek.engine.diagram.JustificationDiagram;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.kernel.Assertion;
 import fr.axonic.avek.engine.pattern.*;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.constraint.PatternConstraintException;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -30,7 +32,6 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
 
 
     protected T patternsBase;
-    protected List<Support> registeredEvidences = new ArrayList<>();
     protected JustificationDiagram justificationDiagram;
     //@XmlTransient
     private final static Logger LOGGER = LoggerFactory.getLogger(JustificationSystem.class);
@@ -42,17 +43,11 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         justificationDiagram =new JustificationDiagram();
 
     }
-    public JustificationSystem(T patternsBase, List<Support> registeredEvidences) throws VerificationException, WrongEvidenceException {
+    public JustificationSystem(T patternsBase) throws VerificationException, WrongEvidenceException {
         this();
         this.patternsBase = patternsBase;
-        this.registeredEvidences = registeredEvidences;
     }
 
-    @XmlElement
-    @XmlElementWrapper
-    public List<Support> getRegisteredEvidences() {
-        return registeredEvidences;
-    }
 
     @Override
     @XmlElement
@@ -66,15 +61,12 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
     }
 
 
-    private void setRegisteredEvidences(List<Support> registeredEvidences) {
-        this.registeredEvidences = registeredEvidences;
-    }
-
     private void setJustificationDiagram(JustificationDiagram justificationDiagram) {
         this.justificationDiagram=justificationDiagram;
     }
 
     @Override
+    @XmlTransient
     public boolean validate() {
         if(patternsBase instanceof ListPatternsBase){
             return ((ListPatternsBase)patternsBase).getConstraints().stream().allMatch(constraint -> constraint.verify(justificationDiagram.getSteps()));
@@ -84,8 +76,8 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         }
 
     @Override
-    public List<Support> getUnusedAssertions() {
-        List<Support> supports=new ArrayList<>(getRegisteredEvidences());
+    public List<Support> getUnusedAssertions(List<Support> supportsList) {
+        List<Support> supports=new ArrayList<>(supportsList);
         supports.removeAll(justificationDiagram.getUsedAssertions());
         return supports;
     }
@@ -125,9 +117,9 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         InputType<? extends Conclusion> evidenceRoleType=new InputType<>("",step.getConclusion().getClass());
 
         if(autoSupportFillEnable){
-            registeredEvidences.add(step.getConclusion().clone());
-            List<Support> evidencesToAdd=step.getSupports().stream().filter(supportRole -> supportRole.isPrimitiveInputType() && !registeredEvidences.contains(supportRole)).collect(Collectors.toList());
-            registeredEvidences.addAll(evidencesToAdd);
+            //registeredEvidences.add(step.getConclusion().clone());
+            //List<Support> evidencesToAdd=step.getSupports().stream().filter(supportRole -> supportRole.isPrimitiveInputType() && !registeredEvidences.contains(supportRole)).collect(Collectors.toList());
+            //registeredEvidences.addAll(evidencesToAdd);
         }
     }
 
@@ -137,7 +129,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
             LOGGER.info("Missing supports. Trying to autofill");
             List<InputType> inputTypeList=pattern.filterNotFillInput(usefulEvidences);
             LOGGER.info("Found "+inputTypeList+ " to fill");
-            List<Support> autoFillSupports=collectSupports(inputTypeList);
+            List<Support> autoFillSupports=collectSupports(inputTypeList,supports);
             LOGGER.info("Found "+autoFillSupports+ ". Add them to supports");
             usefulEvidences.addAll(autoFillSupports);
         }
@@ -147,13 +139,15 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         return usefulEvidences;
     }
 
-    private List<Support> collectSupports(List<InputType> inputTypes) throws StepBuildingException {
+    private List<Support> collectSupports(List<InputType> inputTypes, List<Support> supports) throws StepBuildingException {
+        List<Assertion> usedSupports=justificationDiagram.getUsedAssertions();
+        usedSupports.addAll(getUnusedAssertions(supports));
         List<Support> collected=new ArrayList<>();
         for(InputType inputType:inputTypes){
-            for(Support support: registeredEvidences){
+            for(Assertion support: usedSupports){
                 if(inputType.getType().getClassType().equals(support.getClass())){
                     if(!collected.contains(support)){
-                        collected.add(support);
+                        collected.add((Support) support);
                         break;
                     }
                 }
@@ -206,10 +200,15 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
     }
 
     @Override
+    @XmlTransient
+    public boolean isComplete(){
+        return justificationDiagram.getSteps().stream().anyMatch(justificationStep -> patternsBase.getObjective().check(justificationStep.getConclusion()));
+    }
+
+    @Override
     public String toString() {
         return "JustificationSystem{" +
                 "patternsBase=" + patternsBase +
-                ", registeredEvidences=" + registeredEvidences +
                 ", justificationDiagram=" + justificationDiagram +
                 '}';
     }
