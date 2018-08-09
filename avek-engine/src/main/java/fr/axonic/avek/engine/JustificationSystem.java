@@ -4,11 +4,14 @@ import fr.axonic.avek.engine.diagram.JustificationDiagram;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.kernel.Artifact;
 import fr.axonic.avek.engine.kernel.Assertion;
 import fr.axonic.avek.engine.pattern.*;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.constraint.PatternConstraintException;
 import fr.axonic.avek.engine.constraint.graph.NoCycleConstraint;
+import fr.axonic.avek.engine.support.evidence.Element;
+import fr.axonic.avek.engine.support.evidence.Evidence;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.pattern.type.InputType;
@@ -93,8 +96,31 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         if(pattern==null){
             throw new StepBuildingException("Need a pattern");
         }
-        if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM && justificationDiagram.getSteps().stream().anyMatch(justificationStep -> justificationStep.getPatternId().equals(pattern.getId()))){
-            throw new StepBuildingException("Pattern already applied. Impossible to re-apply in a patterns base with justification pattern diagram");
+        if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM){
+            boolean patternAlreadyApply=justificationDiagram.getSteps().stream().anyMatch(justificationStep -> justificationStep.getPatternId().equals(pattern.getId()));
+            if(!versioningEnable && patternAlreadyApply) {
+                throw new StepBuildingException("Pattern already applied. Impossible to re-apply in a patterns base with justification pattern diagram");
+            }
+            else if(versioningEnable && patternAlreadyApply){
+                int count=0;
+                Optional<JustificationStep> step=justificationDiagram.getSteps().stream().filter(justificationStep -> justificationStep.getPatternId().equals(pattern.getId())).findFirst();
+                for(Support assertion : step.get().getSupports()){
+                        for (Support evidence : evidences) {
+                            if (Objects.equals(assertion.getName(), evidence.getName()) && evidence.getElement()!=null && assertion.getElement()!=null && !Objects.equals(assertion.getElement().getVersion(), evidence.getElement().getVersion())){
+                                count++;
+                                updateSupport(assertion,evidence.getElement());
+                            }
+                        }
+                }
+                if(count==0){
+                    throw new StepBuildingException("Pattern already applied with these artifacts versions on the assertions. Impossible to re-apply in a patterns base with justification pattern diagram");
+                }
+                else {
+                    return null;
+                }
+            }
+
+
         }
 
         try{
@@ -111,6 +137,10 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         }
 
 
+    }
+
+    private <T extends Element> void updateSupport(Support<T> support, T element){
+        support.setElement(element);
     }
 
     protected void postStepCreated(JustificationStep step) throws CloneNotSupportedException, WrongEvidenceException {
@@ -134,7 +164,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
             usefulEvidences.addAll(autoFillSupports);
         }
         if(versioningEnable){
-            usefulEvidences=usefulEvidences.stream().filter(supportRole -> supportRole.getElement().getVersion()==null || supportRole.getElement().getVersion().equals(conclusion.getElement().getVersion())).collect(Collectors.toList());
+            //usefulEvidences=usefulEvidences.stream().filter(supportRole -> supportRole.getElement()!=null && conclusion.getElement()!=null && ( supportRole.getElement().getVersion()==null || supportRole.getElement().getVersion().equals(conclusion.getElement().getVersion()))).collect(Collectors.toList());
         }
         return usefulEvidences;
     }

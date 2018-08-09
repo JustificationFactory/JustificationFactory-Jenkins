@@ -19,6 +19,7 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
     public RedmineJustificationSystem() throws VerificationException, WrongEvidenceException {
         super(createPatternsBase());
         autoSupportFillEnable = true;
+        versioningEnable=true;
         JustificationPatternDiagram jpd = new JustificationPatternDiagram();
         patternsBase = new DiagramPatternsBase(jpd);
     }

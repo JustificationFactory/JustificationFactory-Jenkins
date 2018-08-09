@@ -14,4 +14,6 @@ public class StimulationEvidence extends Evidence<Stimulation>{
     public StimulationEvidence() {
         super();
     }
+
+
 }
