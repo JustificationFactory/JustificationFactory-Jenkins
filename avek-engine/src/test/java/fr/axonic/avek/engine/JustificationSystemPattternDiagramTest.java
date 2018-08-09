@@ -3,36 +3,36 @@ package fr.axonic.avek.engine;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.DiagramPatternsBase;
 import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.AVEKJustificationSystem;
-import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
+import fr.axonic.avek.instance.MockedJustificationSystem;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
-import fr.axonic.avek.instance.evidence.*;
+import fr.axonic.avek.instance.evidence.Stimulation;
+import fr.axonic.avek.instance.evidence.StimulationEvidence;
+import fr.axonic.avek.instance.evidence.Subject;
+import fr.axonic.avek.instance.evidence.SubjectEvidence;
 import fr.axonic.avek.instance.strategy.TreatStrategy;
 import fr.axonic.validation.exception.VerificationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-/**
- * Created by cduffau on 17/03/17.
- */
-public class JustificationSystemTest {
+public class JustificationSystemPattternDiagramTest {
 
-    private JustificationSystem<ListPatternsBase> argumentationSystem;
+
+    private JustificationSystem<DiagramPatternsBase> argumentationSystem;
 
     @Before
     public void setUp() throws VerificationException, WrongEvidenceException {
-        argumentationSystem= new AVEKJustificationSystem();
+        argumentationSystem= new MockedJustificationSystem<>(MockedJustificationSystem.getAXONICDiagramPattern());
     }
 
     private void createAStep(Role role) throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
@@ -65,34 +65,16 @@ public class JustificationSystemTest {
         assertTrue(argumentationSystem.getJustificationDiagram().getSteps().get(0).getSupports().size()==3);
         assertTrue(argumentationSystem.getJustificationDiagram().getSteps().get(0).getStrategy() instanceof TreatStrategy);
     }
-    @Test
-    public void constructStepWithAutoFill() throws Exception {
-        argumentationSystem.autoSupportFillEnable=true;
-        createAStep(Role.SENIOR_EXPERT);
-        Pattern establishEffect=argumentationSystem.getPatternsBase().getPattern("2");
-        InputType<ResultsEvidence> rtResult = new InputType<>("experimentation", ResultsEvidence.class);
-        ResultsEvidence resultsEvidence=new ResultsEvidence();
-
-        argumentationSystem.constructStep(establishEffect,Arrays.asList(rtResult.create(resultsEvidence)),new EstablishEffectConclusion());
-    }
 
     @Test(expected = StepBuildingException.class)
-    public void constructStepWithWrongActorRole() throws WrongEvidenceException, StrategyException, VerificationException, StepBuildingException {
-        createAStep(Role.TECHNICIAN);
-    }
-    @Test
-    public void validate() throws Exception {
+    public void constructTwoStepFromOnePattern() throws Exception {
         createAStep(Role.SENIOR_EXPERT);
-        assertTrue(argumentationSystem.getPatternsBase().getConstraints().size()>0);
-        assertTrue(argumentationSystem.validate());
+        assertTrue(argumentationSystem.getJustificationDiagram().getSteps().size()==1);
+        assertTrue(argumentationSystem.getJustificationDiagram().getSteps().get(0).getPatternId().equals("1"));
+        assertTrue(argumentationSystem.getJustificationDiagram().getSteps().get(0).getSupports().size()==3);
+        assertTrue(argumentationSystem.getJustificationDiagram().getSteps().get(0).getStrategy() instanceof TreatStrategy);
+        createAStep(Role.SENIOR_EXPERT);
     }
-
-    @Test
-    public void resolveHypothesis() throws Exception {
-        // TODO : create a test
-    }
-
-
 
 
 }

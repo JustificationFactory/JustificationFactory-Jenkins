@@ -28,12 +28,14 @@ import java.util.stream.Collectors;
 @XmlRootElement
 public class JustificationSystem<T extends PatternsBase> implements JustificationSystemAPI<T> {
 
-    protected boolean autoSupportFillEnable =false;
+
     protected T patternsBase;
     protected List<Support> registeredEvidences = new ArrayList<>();
     protected JustificationDiagram justificationDiagram;
     //@XmlTransient
     private final static Logger LOGGER = LoggerFactory.getLogger(JustificationSystem.class);
+
+    protected boolean autoSupportFillEnable =false;
     protected boolean versioningEnable=false;
 
     public JustificationSystem() {
@@ -98,6 +100,9 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         }
         if(pattern==null){
             throw new StepBuildingException("Need a pattern");
+        }
+        if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM && justificationDiagram.getSteps().stream().anyMatch(justificationStep -> justificationStep.getPatternId().equals(pattern.getId()))){
+            throw new StepBuildingException("Pattern already applied. Impossible to re-apply in a patterns base with justification pattern diagram");
         }
 
         try{
