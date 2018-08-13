@@ -18,7 +18,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class RedmineJustificationSystemTest {
 
-    @Ignore
     @Test
     public void shouldReturnST0001Pattern() throws VerificationException, WrongEvidenceException {
         List<Support> givenSupports = Arrays.asList(

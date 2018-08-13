@@ -20,8 +20,8 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
         super(createPatternsBase());
         autoSupportFillEnable = true;
         versioningEnable=true;
-        JustificationPatternDiagram jpd = new JustificationPatternDiagram();
-        patternsBase = new DiagramPatternsBase(jpd);
+        //JustificationPatternDiagram jpd = new JustificationPatternDiagram();
+        //patternsBase = new DiagramPatternsBase(jpd);
     }
 
     private static DiagramPatternsBase createPatternsBase() {
