@@ -17,8 +17,9 @@ import java.util.List;
 public class RedmineJustificationSystem extends JustificationSystem<DiagramPatternsBase> {
 
     public RedmineJustificationSystem() throws VerificationException, WrongEvidenceException {
-        super(createPatternsBase(), new ArrayList<>());
+        super(createPatternsBase());
         autoSupportFillEnable = true;
+        versioningEnable=true;
         JustificationPatternDiagram jpd = new JustificationPatternDiagram();
         patternsBase = new DiagramPatternsBase(jpd);
     }

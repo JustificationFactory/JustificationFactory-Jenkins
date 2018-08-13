@@ -8,11 +8,14 @@ import fr.axonic.avek.engine.constraint.graph.RelatedArgumentationSystemConstrai
 import fr.axonic.avek.engine.constraint.pattern.intra.ActorTypePatternConstraint;
 import fr.axonic.avek.engine.constraint.step.NotCascadingConstraint;
 import fr.axonic.avek.engine.constraint.step.UniquenessConstraint;
+import fr.axonic.avek.engine.diagram.JustificationPatternDiagram;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
+import fr.axonic.avek.engine.pattern.DiagramPatternsBase;
 import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.pattern.Pattern;
+import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.strategy.Actor;
@@ -35,14 +38,37 @@ import fr.axonic.validation.exception.VerificationException;
 
 import java.util.*;
 
-public class AVEKJustificationSystem  extends JustificationSystem<ListPatternsBase> {
+public class MockedJustificationSystem<T extends PatternsBase> extends JustificationSystem<T> {
 
-    public AVEKJustificationSystem() throws VerificationException, WrongEvidenceException {
-        super(getAXONICPatternsBase(),getAXONICBaseEvidences());
+    public MockedJustificationSystem(T base) throws VerificationException, WrongEvidenceException {
+        super(base);
     }
 
-    private static ListPatternsBase getAXONICPatternsBase(){
+    public MockedJustificationSystem() throws VerificationException, WrongEvidenceException {
+        this((T) getAXONICPatternsBase());
+    }
 
+    public static ListPatternsBase getAXONICPatternsBase(){
+
+        List<Pattern> patterns=getPatterns();
+
+
+        List<ArgumentationSystemConstraint> argumentationSystemConstraints =new ArrayList<>();
+        argumentationSystemConstraints.add(new UniquenessConstraint(patterns.get(2)));
+        argumentationSystemConstraints.add(new NotCascadingConstraint(patterns.get(0),patterns.get(2)));
+        argumentationSystemConstraints.add(new NoHypothesisConstraint());
+        argumentationSystemConstraints.add(new RelatedArgumentationSystemConstraint());
+
+        return new ListPatternsBase(patterns, argumentationSystemConstraints);
+
+
+    }
+
+    public static DiagramPatternsBase getAXONICDiagramPattern(){
+        return new DiagramPatternsBase(new JustificationPatternDiagram(getPatterns()));
+    }
+
+    private static List<Pattern> getPatterns(){
         List<Pattern> patterns=new ArrayList<>();
         InputType<StimulationEvidence> rtStimulation = new InputType<>("stimulation", StimulationEvidence.class);
         InputType<SubjectEvidence> rtSubject = new InputType<>("subject", SubjectEvidence.class);
@@ -63,25 +89,19 @@ public class AVEKJustificationSystem  extends JustificationSystem<ListPatternsBa
         //TODO : Revoir car ici on a un singleton...
         Strategy ts2 = new EstablishEffectStrategy(new Rationale<>(project),null);
         Pattern establishEffect = new Pattern("2","Establish Effect", ts2, Arrays.asList(new InputType[] {rtExperimentation,rtResult}), conclusionEffectType);
-        patterns.add(establishEffect);
+
 
         InputType<EstablishEffectConclusion> rtEstablishedEffect= new InputType<>("effects", EstablishEffectConclusion.class);
         OutputType<GeneralizationConclusion> conclusionGeneralizationType = new OutputType<>(GeneralizationConclusion.class);
         Strategy ts3=new GeneralizeStrategy(new Rationale<>(project),null);
         Pattern generalize=new Pattern("3", "Generalize", ts3, Arrays.asList(new InputType[]{rtEstablishedEffect}),conclusionGeneralizationType);
-        patterns.add(generalize);
 
-
-        List<ArgumentationSystemConstraint> argumentationSystemConstraints =new ArrayList<>();
-        argumentationSystemConstraints.add(new UniquenessConstraint(generalize));
-        argumentationSystemConstraints.add(new NotCascadingConstraint(treat,generalize));
-        argumentationSystemConstraints.add(new NoHypothesisConstraint());
-        argumentationSystemConstraints.add(new RelatedArgumentationSystemConstraint());
         patterns.add(treat);
-        return new ListPatternsBase(patterns, argumentationSystemConstraints);
-
-
+        patterns.add(establishEffect);
+        patterns.add(generalize);
+        return patterns;
     }
+
     private static List<Support> getAXONICBaseEvidences() throws VerificationException, WrongEvidenceException {
 
         WaveformParameter waveformParameter=new WaveformParameter();
@@ -153,5 +173,9 @@ public class AVEKJustificationSystem  extends JustificationSystem<ListPatternsBa
             Support evResults = rtResults.create(results0);
             justificationSystem.constructStep(justificationSystem.getPatternsBase().getPattern("1"), Arrays.asList(experimentationRole, evResults), effect0);
         }
+    }
+
+    public List<Support> getRegisteredEvidences() throws VerificationException, WrongEvidenceException {
+        return getAXONICBaseEvidences();
     }
 }

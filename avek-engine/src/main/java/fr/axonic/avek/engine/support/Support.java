@@ -2,7 +2,6 @@ package fr.axonic.avek.engine.support;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import fr.axonic.avek.engine.kernel.Artifact;
 import fr.axonic.avek.engine.kernel.Assertion;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.engine.support.evidence.Element;
@@ -28,11 +27,14 @@ import java.util.UUID;
 public abstract class Support<T extends Element> implements Assertion<T>, Cloneable{
     protected String id, name;
     protected T element;
+    protected List<T> artifacts;
 
     public Support(String name, T element) {
         this.name = name;
         this.element = element;
         this.id= UUID.randomUUID().toString().replace("-", "");
+        this.artifacts =new ArrayList<>();
+        this.artifacts.add(element);
     }
     public Support() {
         this(null,null);
@@ -64,13 +66,16 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
 
     public void setElement(T element) {
         this.element = element;
+        this.artifacts.add(element);
     }
 
     @Override
     public List<T> getArtifacts() {
-        List<T> artifacts=new ArrayList<T>();
-        artifacts.add(element);
         return artifacts;
+    }
+
+    private void setArtifacts(List<T> elements) {
+        this.artifacts = elements;
     }
 
     @XmlElement

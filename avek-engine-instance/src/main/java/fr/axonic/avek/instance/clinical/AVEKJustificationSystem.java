@@ -36,7 +36,7 @@ import java.util.*;
 public class AVEKJustificationSystem extends JustificationSystem<ListPatternsBase> {
 
     public AVEKJustificationSystem() throws VerificationException, WrongEvidenceException {
-        super(getAXONICPatternsBase(),getAXONICBaseEvidences());
+        super(getAXONICPatternsBase());
     }
 
     private static ListPatternsBase getAXONICPatternsBase(){
@@ -78,7 +78,7 @@ public class AVEKJustificationSystem extends JustificationSystem<ListPatternsBas
 
         return new ListPatternsBase(patterns, argumentationSystemConstraints);
     }
-    private static List<Support> getAXONICBaseEvidences() throws VerificationException, WrongEvidenceException {
+    public static List<Support> getAXONICBaseEvidences() throws VerificationException, WrongEvidenceException {
         WaveformParameter waveformParameter=new WaveformParameter();
         waveformParameter.setAmplitudeValue(1000.1);
         waveformParameter.setDurationValue(300);

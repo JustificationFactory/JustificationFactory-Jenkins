@@ -14,7 +14,7 @@ import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.AVEKJustificationSystem;
+import fr.axonic.avek.instance.MockedJustificationSystem;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.evidence.Stimulation;
 import fr.axonic.avek.instance.evidence.StimulationEvidence;
@@ -48,7 +48,7 @@ public class JacksonSerialization {
 
     @Test
     public void testPattern() throws IOException, VerificationException, WrongEvidenceException {
-        Pattern pattern= new AVEKJustificationSystem().getPatternsBase().getPattern("1");
+        Pattern pattern= new MockedJustificationSystem().getPatternsBase().getPattern("1");
         String json = mapper.writeValueAsString(pattern);
         System.out.println(json);
         Pattern p=mapper.readValue(json, Pattern.class);
@@ -57,7 +57,7 @@ public class JacksonSerialization {
 
     @Test
     public void testStep() throws IOException, WrongEvidenceException, VerificationException, StrategyException, StepBuildingException {
-        JustificationSystemAPI argumentationSystem=new AVEKJustificationSystem();
+        JustificationSystemAPI argumentationSystem=new MockedJustificationSystem();
         Pattern pattern= argumentationSystem.getPatternsBase().getPattern("1");
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());
         SubjectEvidence subject0 = new SubjectEvidence("Subject 0",new Subject());
@@ -77,7 +77,7 @@ public class JacksonSerialization {
 
     @Test
     public void testSupports() throws IOException, VerificationException, WrongEvidenceException {
-        List<Support> supports=new AVEKJustificationSystem().getRegisteredEvidences();
+        List<Support> supports=new MockedJustificationSystem().getRegisteredEvidences();
         String json = mapper.writeValueAsString(supports);
         System.out.println(json);
         /**List<SupportRole> roles=mapper.readValue(json, new TypeReference<Set<SupportRole>>() {});

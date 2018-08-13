@@ -8,7 +8,7 @@ import fr.axonic.avek.engine.pattern.ListPatternsBase;
 import fr.axonic.avek.engine.strategy.Actor;
 import fr.axonic.avek.engine.strategy.Role;
 import fr.axonic.avek.engine.support.Support;
-import fr.axonic.avek.instance.AVEKJustificationSystem;
+import fr.axonic.avek.instance.MockedJustificationSystem;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.evidence.Stimulation;
 import fr.axonic.avek.instance.evidence.StimulationEvidence;
@@ -37,7 +37,7 @@ public abstract class PatternConstraintTest {
     @Before
     public void setUp() throws VerificationException, WrongEvidenceException, StrategyException, StepBuildingException {
 
-        argumentationSystem=new AVEKJustificationSystem();
+        argumentationSystem=new MockedJustificationSystem();
         pattern= argumentationSystem.getPatternsBase().getPattern("1");
         argumentationSystem.getPatternsBase().setConstraints(new ArrayList<>());
         StimulationEvidence stimulation0 = new StimulationEvidence("Stimulation 0", new Stimulation());

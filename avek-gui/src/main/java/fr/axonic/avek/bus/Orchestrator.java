@@ -90,7 +90,7 @@ public class Orchestrator implements Observer {
      */
     private void computeNextPattern() {
         // Preparing for following view
-        evidences = engineAPI.getUnusedAssertions();
+        evidences = engineAPI.getUnusedAssertions(evidences);
         patternList.clear();
         patternList.addAll(
                 engineAPI.getPatternsBase().getPossiblePatterns(evidences)
