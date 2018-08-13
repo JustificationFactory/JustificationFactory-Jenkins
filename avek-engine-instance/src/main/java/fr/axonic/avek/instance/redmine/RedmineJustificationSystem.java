@@ -31,37 +31,46 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
         JustificationPatternDiagram jpd = new JustificationPatternDiagram();
 
         // TODO Missing: DE & feasibility
-        InputType<RedmineDocumentEvidence> swamSt0001 = new InputType<>("SWAM_ST_0001", RedmineDocumentEvidence.class);
-        InputType<RedmineDocumentApproval> swamSt0001Approval = new InputType<>("SWAM_ST_0001_APPROVAL", RedmineDocumentApproval.class);
-        OutputType<RedmineConclusion> swamSt0001Validated = new OutputType<>("SWAM_ST_0001_VALIDATED", RedmineConclusion.class);
-        Strategy swamSt0001Strategy = new RedmineStrategy();
-        jpd.addStep(new Pattern("1", "SWAM_ST_0001_VALIDATION", swamSt0001Strategy,
-                Arrays.asList(swamSt0001, swamSt0001Approval), swamSt0001Validated));
-
-        InputType<RedmineConclusion> swamSt0001IsValidated = new InputType<>("SWAM_ST_0002_VALIDATED", RedmineConclusion.class);
-
-        for (int i = 2; i < 14; i++) {
-            jpd.addStep(intermediaryST(i, swamSt0001IsValidated));
-        }
+        InputType<RedmineDocumentEvidence> st0001 = new InputType<>("SWAM_ST_0001", RedmineDocumentEvidence.class);
+        InputType<RedmineDocumentApproval> st0001Approval = new InputType<>("SWAM_ST_0001_APPROVAL", RedmineDocumentApproval.class);
+        OutputType<RedmineConclusion> st0001Validated = new OutputType<>("SWAM_ST_0001 validated", RedmineConclusion.class);
+        Strategy swamSt0001Strategy = new RedmineStrategy("Validate SWAM_ST_0001");
+        jpd.addStep(new Pattern("SWAM_ST_0001_VALIDATION", "Validation of SWAM_ST_0001", swamSt0001Strategy,
+                Arrays.asList(st0001, st0001Approval), st0001Validated));
 
         List<InputType> conclusionInputs = new ArrayList<>();
         for (int i = 2; i < 14; i++) {
-            conclusionInputs.add(new InputType<>("SWAM_ST_000" + i + "_VALIDATION", RedmineConclusion.class));
+            Pattern stXPattern = intermediaryST(i, st0001Validated.transformToInput());
+            conclusionInputs.add(stXPattern.getOutputType().transformToInput());
+            jpd.addStep(stXPattern);
         }
+
         OutputType<RedmineConclusion> stValidated = new OutputType<>("SWAM_ST_VALIDATED", RedmineConclusion.class);
-        Strategy swamStStrategy = new RedmineStrategy();
-        jpd.addStep(new Pattern("14", "SWAM_ST_VALIDATION", swamStStrategy, conclusionInputs, stValidated));
+        Strategy swamStStrategy = new RedmineStrategy("Validate SWAM technical specification");
+        jpd.addStep(new Pattern("SWAM_ST_VALIDATION", "Validation of SWAM technical specification", swamStStrategy, conclusionInputs, stValidated));
 
         return jpd;
     }
 
     private static Pattern intermediaryST(int number, InputType<RedmineConclusion> swamSt0001IsValidated) {
-        InputType<RedmineDocumentEvidence> swamSt = new InputType<>("SWAM_ST_000" + number, RedmineDocumentEvidence.class);
-        InputType<RedmineDocumentApproval> swamStApproval = new InputType<>("SWAM_ST_000" + number + "_APPROVAL", RedmineDocumentApproval.class);
-        OutputType<RedmineConclusion> swamStValidated = new OutputType<>("SWAM_ST_000" + number + "_VALIDATED", RedmineConclusion.class);
-        Strategy swamStStrategy = new RedmineStrategy();
+        String fileName = "SWAM_ST_" + stNumber(number);
 
-        return new Pattern(Integer.toString(number), "SWAM_ST_000" + number + "_VALIDATION", swamStStrategy,
+        InputType<RedmineDocumentEvidence> swamSt = new InputType<>(fileName, RedmineDocumentEvidence.class);
+        InputType<RedmineDocumentApproval> swamStApproval = new InputType<>(fileName + "_APPROVAL", RedmineDocumentApproval.class);
+        OutputType<RedmineConclusion> swamStValidated = new OutputType<>(fileName + " validated", RedmineConclusion.class);
+        Strategy swamStStrategy = new RedmineStrategy("Validate " + fileName);
+
+        return new Pattern(fileName + "_VALIDATION", "Validation of " + fileName, swamStStrategy,
                 Arrays.asList(swamSt0001IsValidated, swamSt, swamStApproval), swamStValidated);
+    }
+
+    private static String stNumber(int number) {
+        StringBuilder strNumber = new StringBuilder(Integer.toString(number));
+
+        while (strNumber.length() < 4) {
+            strNumber.insert(0, "0");
+        }
+
+        return strNumber.toString();
     }
 }

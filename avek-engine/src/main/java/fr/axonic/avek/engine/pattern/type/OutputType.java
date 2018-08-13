@@ -41,6 +41,6 @@ public class OutputType<T extends Conclusion> extends SupportType<T> {
     }
 
     public InputType<T> transformToInput() {
-        return new InputType<T>(getType().getClassType().getName(), getType());
+        return new InputType<>(getType().getClassType().getName(), getType());
     }
 }

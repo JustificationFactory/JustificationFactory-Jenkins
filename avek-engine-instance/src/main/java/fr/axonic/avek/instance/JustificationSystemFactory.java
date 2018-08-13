@@ -12,7 +12,6 @@ import fr.axonic.validation.exception.VerificationException;
  */
 public class JustificationSystemFactory {
 
-
     public static JustificationSystem create(JustificationSystemEnum justificationSystem) throws VerificationException, WrongEvidenceException {
         switch (justificationSystem){
             case JENKINS: return new JenkinsJustificationSystem();
@@ -21,6 +20,4 @@ public class JustificationSystemFactory {
             default: return null;
         }
     }
-
-
 }

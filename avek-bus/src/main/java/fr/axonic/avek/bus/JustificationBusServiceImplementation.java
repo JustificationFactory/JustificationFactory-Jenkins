@@ -1,14 +1,16 @@
 package fr.axonic.avek.bus;
 
-import fr.axonic.avek.dao.JustificationSystemsDAO;
 import fr.axonic.avek.engine.JustificationSystem;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
+import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.support.Support;
+import fr.axonic.avek.instance.JustificationSystemEnum;
+import fr.axonic.avek.instance.JustificationSystemFactory;
+import fr.axonic.validation.exception.VerificationException;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +38,10 @@ public class JustificationBusServiceImplementation implements JustificationBusSe
 
     private static List<JustificationSystem> getJustificationSystems() {
         try {
-            return new ArrayList<>(JustificationSystemsDAO.loadJustificationSystems().values());
-        } catch (IOException e) {
+            List<JustificationSystem> systems = new ArrayList<>();
+            systems.add(JustificationSystemFactory.create(JustificationSystemEnum.REDMINE));
+            return systems;
+        } catch (WrongEvidenceException | VerificationException e) {
             return new ArrayList<>();
         }
     }

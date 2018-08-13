@@ -1,7 +1,5 @@
 package fr.axonic.avek.bus;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.axonic.avek.dao.JerseyMapperProvider;
 import fr.axonic.avek.engine.support.evidence.Document;
 import fr.axonic.avek.instance.redmine.RedmineDocumentApproval;
 import fr.axonic.avek.instance.redmine.RedmineDocumentEvidence;
@@ -12,10 +10,10 @@ import org.junit.Test;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
-
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class JustificationBusServiceImplementationTest extends JerseyTest {
 
@@ -24,7 +22,7 @@ public class JustificationBusServiceImplementationTest extends JerseyTest {
     }
 
     @Test
-    public void shouldAcceptRedmineEvidences() throws JsonProcessingException {
+    public void shouldAcceptRedmineEvidences() {
         TransmittedSupports supports = new TransmittedSupports();
         supports.setSupports(Arrays.asList(
                 new RedmineDocumentEvidence("DOC", new Document("DOC")),

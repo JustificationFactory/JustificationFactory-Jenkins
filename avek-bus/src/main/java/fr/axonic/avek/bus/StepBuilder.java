@@ -46,9 +46,13 @@ public class StepBuilder {
     private void triggerOneSystemStepsBuilding(JustificationSystem justificationSystem) throws StrategyException, StepBuildingException {
         PatternsBase patternsBase = justificationSystem.getPatternsBase();
 
+        LOGGER.info(knownSupports.stream().map(Support::getName).collect(Collectors.toList()).toString());
         List<Pattern> patterns = patternsBase.getPossiblePatterns(knownSupports).stream()
                 .map(patternsBase::getPattern)
                 .collect(Collectors.toList());
+
+        LOGGER.info("{} patterns can be built with the {} known supports", patterns.size(), knownSupports.size());
+        LOGGER.info(patterns.stream().map(Pattern::getName).collect(Collectors.toList()).toString());
 
         for (Pattern pattern : patterns) {
             List<Support> usefulSupports = pattern.filterUsefulEvidences(knownSupports);
@@ -56,6 +60,7 @@ public class StepBuilder {
 
             try {
                 JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, associatedConclusion);
+                LOGGER.info("Step {} has been built", step.getId());
 
                 // TODO What is next with this step?
             } catch (WrongEvidenceException e) {
