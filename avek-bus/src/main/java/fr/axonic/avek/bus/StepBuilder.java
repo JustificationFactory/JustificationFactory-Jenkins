@@ -25,10 +25,16 @@ public class StepBuilder {
 
     private final List<JustificationSystem> justificationSystems;
     private final List<Support> knownSupports;
+    private final List<JustificationStep> builtSteps;
 
     public StepBuilder(List<JustificationSystem> justificationSystems) {
         this.justificationSystems = justificationSystems;
         knownSupports = new ArrayList<>();
+        builtSteps = new ArrayList<>();
+    }
+
+    public List<JustificationStep> getBuiltSteps() {
+        return builtSteps;
     }
 
     public void acknowledgeSupport(Support addedSupport) throws StepBuildingException, StrategyException {
@@ -63,6 +69,7 @@ public class StepBuilder {
                 LOGGER.info("Step {} has been built", step.getId());
 
                 // TODO What is next with this step?
+                builtSteps.add(step);
             } catch (WrongEvidenceException e) {
                 LOGGER.error("Unexpected wrong support", e);
             }

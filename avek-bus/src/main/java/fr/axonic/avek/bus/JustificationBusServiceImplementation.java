@@ -8,6 +8,8 @@ import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.instance.JustificationSystemEnum;
 import fr.axonic.avek.instance.JustificationSystemFactory;
 import fr.axonic.validation.exception.VerificationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Path("/bus")
 public class JustificationBusServiceImplementation implements JustificationBusService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JustificationBusServiceImplementation.class);
 
     private StepBuilder stepBuilder;
 
@@ -29,6 +33,7 @@ public class JustificationBusServiceImplementation implements JustificationBusSe
             try {
                 stepBuilder.acknowledgeSupport(support);
             } catch (StepBuildingException | StrategyException e) {
+                LOGGER.error("Error while transmitting supports", e);
                 return Response.serverError().build();
             }
         }

@@ -7,7 +7,6 @@ import fr.axonic.avek.engine.support.evidence.Document;
 import fr.axonic.avek.instance.JustificationSystemEnum;
 import fr.axonic.avek.instance.JustificationSystemFactory;
 import fr.axonic.validation.exception.VerificationException;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
