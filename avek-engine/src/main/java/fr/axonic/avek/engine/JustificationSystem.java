@@ -87,6 +87,33 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         return supports;
     }
 
+    @XmlTransient
+    @Override
+    public List<Pattern> getApplicablePatterns(List<Support> supports){
+        List<String> patterns=patternsBase.getPossiblePatterns(supports);
+        if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM) {
+            List<String> patternsAlreadyApply = justificationDiagram.getSteps().stream().map(justificationStep -> justificationStep.getPatternId()).collect(Collectors.toList());
+            if(versioningEnable){
+                for(String patternAlreadyApply : patternsAlreadyApply){
+                    Optional<JustificationStep> step=justificationDiagram.getSteps().stream().filter(justificationStep -> justificationStep.getPatternId().equals(patternAlreadyApply)).findFirst();
+                    for(Support assertion : step.get().getSupports()){
+                        for (Support evidence : supports) {
+                            if (assertionEquals(evidence,assertion)){
+                                patterns.remove(patternAlreadyApply);
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                patterns.removeAll(patternsAlreadyApply);
+            }
+
+        }
+        List<Pattern> patternList=patterns.stream().map(patternsBase::getPattern).collect(Collectors.toList());
+        return patternList;
+    }
+
     @Override
     public JustificationStep constructStep(Pattern pattern, List<Support> evidences, Conclusion conclusion) throws StepBuildingException, WrongEvidenceException, StrategyException {
         if(evidences==null || evidences.isEmpty()){
@@ -108,7 +135,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
                 Optional<JustificationStep> step=justificationDiagram.getSteps().stream().filter(justificationStep -> justificationStep.getPatternId().equals(pattern.getId())).findFirst();
                 for(Support assertion : step.get().getSupports()){
                         for (Support evidence : evidences) {
-                            if (Objects.equals(assertion.getName(), evidence.getName()) && evidence.getElement()!=null && assertion.getElement()!=null && !Objects.equals(assertion.getElement().getVersion(), evidence.getElement().getVersion())){
+                            if (assertionEquals(evidence,assertion)){
                                 count++;
                                 updateSupport(assertion,evidence.getElement());
                             }
@@ -118,7 +145,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
                     throw new AlreadyBuildingException("Pattern already applied with these artifacts versions on the assertions. Impossible to re-apply in a patterns base with justification pattern diagram");
                 }
                 else {
-                    return null;
+                    return step.get();
                 }
             }
 
@@ -255,5 +282,18 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
                     return list.get(0);
                 }
         );
+    }
+
+    public static boolean assertionEquals(Support support1, Support support2){
+        if(!Objects.equals(support1.getName(), support2.getName())){
+            return false;
+        }
+        if(support1.getElement()!=null && support2.getElement()!=null){
+            return Objects.equals(support1.getElement().getVersion(), support2.getElement().getVersion());
+        }
+        else{
+            return true;
+        }
+
     }
 }

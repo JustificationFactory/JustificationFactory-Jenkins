@@ -37,7 +37,7 @@ public class StepBuilderTest {
         assertEquals(0, stepBuilder.getBuiltSteps().size());
     }
 
-    @Ignore
+
     @Test
     public void shouldNotBuildWithUnexpectedSupports() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_CTR_0001", "A"));
@@ -46,7 +46,7 @@ public class StepBuilderTest {
         assertEquals(0, stepBuilder.getBuiltSteps().size());
     }
 
-    @Ignore
+
     @Test
     public void shouldNotBuildWithSupportsWhenMissingDependency() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0002", "A"));
@@ -55,13 +55,25 @@ public class StepBuilderTest {
         assertEquals(0, stepBuilder.getBuiltSteps().size());
     }
 
-    @Ignore
+
     @Test
     public void shouldBuildWithAdequateSupports() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
         stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
 
         assertEquals(1, stepBuilder.getBuiltSteps().size());
+        assertNotNull(stepBuilder.getBuiltSteps().get(0));
+    }
+
+    @Test
+    @Ignore
+    public void shouldBuildWithAdequateVersions() throws StrategyException, StepBuildingException {
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
+
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "B"));
+
+        assertEquals(2, stepBuilder.getBuiltSteps().size());
         assertNotNull(stepBuilder.getBuiltSteps().get(0));
     }
 
