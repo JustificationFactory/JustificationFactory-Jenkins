@@ -77,6 +77,18 @@ public class StepBuilderTest {
     }
 
     @Test
+    public void shouldNotBuildAPatternTwice() throws StrategyException, StepBuildingException {
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
+
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
+
+        assertEquals(1, stepBuilder.getBuiltSteps().size());
+        assertNotNull(stepBuilder.getBuiltSteps().get(0));
+    }
+
+    @Test
     @Ignore
     public void shouldBuildWithMoreThanEnoughSupports() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0002", "A"));
