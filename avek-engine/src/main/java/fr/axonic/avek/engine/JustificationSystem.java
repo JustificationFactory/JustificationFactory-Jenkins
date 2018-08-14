@@ -96,12 +96,17 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
             if(versioningEnable){
                 for(String patternAlreadyApply : patternsAlreadyApply){
                     Optional<JustificationStep> step=justificationDiagram.getSteps().stream().filter(justificationStep -> justificationStep.getPatternId().equals(patternAlreadyApply)).findFirst();
+                    List<Support> usefulEvidences= patternsBase.getPattern(patternAlreadyApply).filterUsefulEvidences(supports);
                     for(Support assertion : step.get().getSupports()){
-                        for (Support evidence : supports) {
-                            if (assertionEquals(evidence,assertion)){
-                                patterns.remove(patternAlreadyApply);
+                        for (Support evidence : usefulEvidences) {
+                            if (evidence.equals(assertion)){
+                                usefulEvidences.remove(evidence);
+                                break;
                             }
                         }
+                    }
+                    if(usefulEvidences.isEmpty()){
+                        patterns.remove(patternAlreadyApply);
                     }
                 }
             }
@@ -135,7 +140,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
                 Optional<JustificationStep> step=justificationDiagram.getSteps().stream().filter(justificationStep -> justificationStep.getPatternId().equals(pattern.getId())).findFirst();
                 for(Support assertion : step.get().getSupports()){
                         for (Support evidence : evidences) {
-                            if (assertionEquals(evidence,assertion)){
+                            if (!evidence.equals(assertion) && evidence.equals(assertion,false)){
                                 count++;
                                 updateSupport(assertion,evidence.getElement());
                             }
@@ -284,16 +289,4 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         );
     }
 
-    public static boolean assertionEquals(Support support1, Support support2){
-        if(!Objects.equals(support1.getName(), support2.getName())){
-            return false;
-        }
-        if(support1.getElement()!=null && support2.getElement()!=null){
-            return Objects.equals(support1.getElement().getVersion(), support2.getElement().getVersion());
-        }
-        else{
-            return true;
-        }
-
-    }
 }

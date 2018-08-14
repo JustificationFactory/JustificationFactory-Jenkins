@@ -66,7 +66,6 @@ public class StepBuilderTest {
     }
 
     @Test
-    @Ignore
     public void shouldBuildWithAdequateVersions() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
         stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));

@@ -42,13 +42,18 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
 
     @Override
     public boolean equals(Object o) {
+        return equals(o,true);
+
+    }
+
+    public boolean equals(Object o, boolean checkVersion) {
         if (this == o) return true;
         if (!(o instanceof Evidence)) return false;
 
-        Evidence<?> evidence = (Evidence<?>) o;
+        Support<?> evidence = (Support<?>) o;
 
         if (name != null ? !name.equals(evidence.name) : evidence.name != null) return false;
-        return element != null ? element.equals(evidence.element) : evidence.element == null;
+        return element != null ? element.equals(evidence.element,checkVersion) : evidence.element == null;
 
     }
 
