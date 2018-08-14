@@ -6,7 +6,6 @@ import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.Pattern;
-import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.conclusion.Conclusion;
 import fr.axonic.avek.instance.redmine.RedmineConclusion;
@@ -50,15 +49,13 @@ public class StepBuilder {
     }
 
     private void triggerOneSystemStepsBuilding(JustificationSystem justificationSystem) throws StrategyException, StepBuildingException {
-
-        LOGGER.info(knownSupports.stream().map(Support::getName).collect(Collectors.toList()).toString());
         List<Pattern> patterns = justificationSystem.getApplicablePatterns(knownSupports);
 
         LOGGER.info("{} patterns can be built with the {} known supports", patterns.size(), knownSupports.size());
-        LOGGER.info(patterns.stream().map(Pattern::getName).collect(Collectors.toList()).toString());
 
         for (Pattern pattern : patterns) {
             List<Support> usefulSupports = pattern.filterUsefulEvidences(knownSupports);
+
             Conclusion associatedConclusion = createConclusion(usefulSupports);
 
             try {

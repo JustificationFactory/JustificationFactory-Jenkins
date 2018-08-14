@@ -23,7 +23,6 @@ public class JustificationBusServiceImplementationTest extends JerseyTest {
     }
 
     @Test
-    @Ignore
     public void shouldAcceptRedmineEvidences() {
         TransmittedSupports supports = new TransmittedSupports();
         supports.setSupports(Arrays.asList(
