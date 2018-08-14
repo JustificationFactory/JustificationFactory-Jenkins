@@ -1,6 +1,7 @@
 package fr.axonic.avek.engine;
 
 import fr.axonic.avek.engine.diagram.JustificationDiagram;
+import fr.axonic.avek.engine.exception.AlreadyBuildingException;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
@@ -100,7 +101,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM){
             boolean patternAlreadyApply=justificationDiagram.getSteps().stream().anyMatch(justificationStep -> justificationStep.getPatternId().equals(pattern.getId()));
             if(!versioningEnable && patternAlreadyApply) {
-                throw new StepBuildingException("Pattern already applied. Impossible to re-apply in a patterns base with justification pattern diagram");
+                throw new AlreadyBuildingException("Pattern already applied. Impossible to re-apply in a patterns base with justification pattern diagram");
             }
             else if(versioningEnable && patternAlreadyApply){
                 int count=0;
@@ -114,7 +115,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
                         }
                 }
                 if(count==0){
-                    throw new StepBuildingException("Pattern already applied with these artifacts versions on the assertions. Impossible to re-apply in a patterns base with justification pattern diagram");
+                    throw new AlreadyBuildingException("Pattern already applied with these artifacts versions on the assertions. Impossible to re-apply in a patterns base with justification pattern diagram");
                 }
                 else {
                     return null;
