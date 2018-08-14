@@ -134,7 +134,7 @@ public class JustificationSystemServiceImplTest extends JerseyTest {
 
     @Test
     public void testGetTypeContent() {
-        Response fields=target("/justification/classType").queryParam("classType", DocumentEvidence.class.getName()).request().get();
+        Response fields=target("/justification/type").queryParam("type", DocumentEvidence.class.getName()).request().get();
         assertNotNull(fields);
         assertEquals(fields.getStatusInfo(), Response.Status.OK);
         String system=fields.readEntity(String.class);

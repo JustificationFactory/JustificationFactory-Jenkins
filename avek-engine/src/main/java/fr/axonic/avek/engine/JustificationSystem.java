@@ -79,6 +79,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         }
 
     @Override
+    @XmlTransient
     public List<Support> getUnusedAssertions(List<Support> supportsList) {
         List<Support> supports=new ArrayList<>(supportsList);
         supports.removeAll(justificationDiagram.getUsedAssertions());
