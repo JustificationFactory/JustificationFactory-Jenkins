@@ -21,7 +21,7 @@ public class InputType<T extends Support> extends SupportType<T>{
 	}
 
 	public InputType(String name, Class<T> classEvidence){
-		super(classEvidence);
+		super(new Type<T>(classEvidence,name));
 		this.name=name;
 
 	}

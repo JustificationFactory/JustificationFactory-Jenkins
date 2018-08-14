@@ -21,7 +21,7 @@ public class OutputType<T extends Conclusion> extends SupportType<T> {
     }
 
     public OutputType(String name, Class<T> conclusionClass) {
-        super(conclusionClass);
+        super(new Type<T>(conclusionClass,name));
         this.name = name;
     }
 
