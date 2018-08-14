@@ -1,5 +1,7 @@
 package fr.axonic.avek.bus;
 
+import fr.axonic.avek.engine.support.Support;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,4 +16,8 @@ public interface JustificationBusService {
     @POST
     @Path("/supports")
     Response transmitSupport(TransmittedSupports supports);
+
+    @POST
+    @Path("/support")
+    Response transmitSupport(Support support);
 }

@@ -12,6 +12,13 @@ public class TransmittedSupports {
 
     private List<Support> supports;
 
+    public TransmittedSupports(List<Support> supports) {
+        this.supports = supports;
+    }
+
+    public TransmittedSupports() {
+    }
+
     @XmlElement
     @XmlElementWrapper
     public List<Support> getSupports() {
