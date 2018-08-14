@@ -92,9 +92,8 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 
 	public JustificationStep createStep(List<Support> evidenceList, Conclusion conclusion) throws StepBuildingException {
 		if(applicable(evidenceList)){
-			JustificationStep res= null;
 			Strategy strategy= (Strategy) this.getStrategy();
-			res = new JustificationStep(id,strategy, evidenceList, conclusion);
+			JustificationStep res = new JustificationStep(id,strategy, evidenceList, conclusion);
 
 			if(checkConclusion(res)){
 				return res;

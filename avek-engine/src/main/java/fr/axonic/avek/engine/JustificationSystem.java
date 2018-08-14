@@ -90,7 +90,10 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
     @XmlTransient
     @Override
     public List<Pattern> getApplicablePatterns(List<Support> supports){
-        List<String> patterns=patternsBase.getPossiblePatterns(supports);
+        List<Support> allSupports=new ArrayList<>(getUnusedAssertions(supports));
+        justificationDiagram.getUsedAssertions().forEach(assertion -> allSupports.add((Support) assertion));
+
+        List<String> patterns=patternsBase.getPossiblePatterns(allSupports);
         if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM) {
             List<String> patternsAlreadyApply = justificationDiagram.getSteps().stream().map(justificationStep -> justificationStep.getPatternId()).collect(Collectors.toList());
             if(versioningEnable){

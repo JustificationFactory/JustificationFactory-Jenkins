@@ -23,6 +23,7 @@ public class JustificationStep extends JustificationStepAPI<Support,Conclusion> 
 	public JustificationStep(String patternId, Strategy strategy, List<Support> supportRolelist, Conclusion conclusion) {
 		super(supportRolelist,strategy,conclusion);
 		this.patternId=patternId;
+		this.id= UUID.randomUUID().toString().replace("-", "");
 	}
 
 	@XmlElement
