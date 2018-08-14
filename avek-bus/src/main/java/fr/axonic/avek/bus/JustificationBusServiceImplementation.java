@@ -12,6 +12,8 @@ import fr.axonic.validation.exception.VerificationException;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Path("/bus")
@@ -34,6 +36,11 @@ public class JustificationBusServiceImplementation implements JustificationBusSe
         }
 
         return Response.ok().build();
+    }
+
+    @Override
+    public Response transmitSupport(Support support) {
+        return transmitSupport(new TransmittedSupports(Collections.singletonList(support)));
     }
 
     private static List<JustificationSystem> getJustificationSystems() {
