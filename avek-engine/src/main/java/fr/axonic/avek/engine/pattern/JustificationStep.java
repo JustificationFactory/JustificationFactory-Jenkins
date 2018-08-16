@@ -8,11 +8,13 @@ import fr.axonic.avek.engine.strategy.Strategy;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @XmlRootElement
-public class JustificationStep extends JustificationStepAPI<Support,Conclusion> {
+public class JustificationStep extends JustificationStepAPI<Support,Conclusion> implements Cloneable{
 	private String id;
 	private String patternId;
 
@@ -24,6 +26,16 @@ public class JustificationStep extends JustificationStepAPI<Support,Conclusion> 
 		super(supportRolelist,strategy,conclusion);
 		this.patternId=patternId;
 		this.id= UUID.randomUUID().toString().replace("-", "");
+	}
+
+	private JustificationStep(String id,String patternId, Strategy strategy, List<Support> supportRolelist, Conclusion conclusion) {
+		this(patternId,strategy,supportRolelist,conclusion);
+		this.id= id;
+	}
+
+
+	public JustificationStep(JustificationStep step) throws CloneNotSupportedException {
+		this(step.getId(),step.getPatternId(), (Strategy) step.getStrategy(),new ArrayList<>(step.getSupports()),step.getConclusion().clone());
 	}
 
 	@XmlElement
@@ -64,5 +76,19 @@ public class JustificationStep extends JustificationStepAPI<Support,Conclusion> 
 	@Override
 	public List<JustificationStepAPI> conformsTo() {
 		return null;
+	}
+
+	@Override
+	public JustificationStep clone() throws CloneNotSupportedException {
+		JustificationStep step= (JustificationStep) super.clone();
+		step.supports=new ArrayList<>();
+		for(Support support:supports){
+			step.supports.add(support.clone());
+		}
+		step.conclusion=conclusion.clone();
+		step.id=id;
+		step.patternId=patternId;
+		step.strategy=strategy;
+		return step;
 	}
 }

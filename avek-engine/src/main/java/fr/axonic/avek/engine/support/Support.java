@@ -40,6 +40,12 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
         this(null,null);
     }
 
+    public Support(Support support){
+        this(support.name, (T) support.element);
+        this.artifacts=new ArrayList<>(support.artifacts);
+        this.id=support.id;
+    }
+
     @Override
     public boolean equals(Object o) {
         return equals(o,true);
@@ -106,12 +112,14 @@ public abstract class Support<T extends Element> implements Assertion<T>, Clonea
     public boolean isPrimitiveInputType(){
         return Evidence.class.isAssignableFrom(getClass());
     }
+
     @Override
     public Support clone() throws CloneNotSupportedException {
         Support res= (Support) super.clone();
         res.id = id;
         res.name = name;
         res.element=element;
+        res.artifacts=new ArrayList(artifacts);
         return res;
     }
 

@@ -25,6 +25,11 @@ public class Conclusion<T extends Element> extends Support<T> implements Cloneab
 		this(null,element);
 	}
 
+	public Conclusion(Conclusion conclusion) {
+		super(conclusion);
+		this.restrictions=new ArrayList<>(conclusion.restrictions);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

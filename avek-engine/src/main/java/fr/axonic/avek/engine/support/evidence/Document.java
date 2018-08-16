@@ -20,6 +20,11 @@ public class Document extends Element {
     public Document(){
     }
 
+    public Document(Document element) {
+        super(element);
+        this.url = element.getUrl();
+    }
+
     public String getUrl() {
         return url;
     }

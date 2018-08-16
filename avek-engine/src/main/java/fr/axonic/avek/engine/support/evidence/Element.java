@@ -29,6 +29,10 @@ public abstract class Element extends AStructure implements Artifact {
     public Element() {
     }
 
+    public Element(Element element){
+        this(element.version);
+    }
+
     @XmlElement
     public String getVersion() {
         return version;

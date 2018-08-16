@@ -90,6 +90,23 @@ public class StepBuilderTest {
         assertEquals("B",stepBuilder.getBuiltSteps().get(0).getSupports().get(0).getElement().getVersion());
         assertEquals("B",stepBuilder.getBuiltSteps().get(0).getSupports().get(1).getElement().getVersion());
     }
+
+    @Test
+    public void shouldBuildWithAdequateVersionsTwice() throws StrategyException, StepBuildingException {
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
+
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "B"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "B"));
+
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "C"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "C"));
+
+        assertEquals(1, stepBuilder.getBuiltSteps().size());
+        assertNotNull(stepBuilder.getBuiltSteps().get(0));
+        assertEquals("C",stepBuilder.getBuiltSteps().get(0).getSupports().get(0).getElement().getVersion());
+        assertEquals("C",stepBuilder.getBuiltSteps().get(0).getSupports().get(1).getElement().getVersion());
+    }
     @Test
     public void shouldNotBuildAPatternTwice() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));

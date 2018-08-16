@@ -14,6 +14,10 @@ import fr.axonic.avek.instance.redmine.RedmineDocumentEvidence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,15 +63,16 @@ public class StepBuilder {
             Conclusion associatedConclusion = createConclusion(usefulSupports);
 
             try {
-                JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, associatedConclusion);
+                JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, associatedConclusion).clone();
                 LOGGER.info("Step {} has been built", step.getPatternId());
 
                 // TODO What is next with this step?
                 Optional<JustificationStep> justificationStep = builtSteps.stream().filter(s -> s.getId().equals(step.getId())).findFirst();
 
                 justificationStep.ifPresent(existingStep -> {
-                    existingStep.getSupports().removeAll(step.getSupports());
-                    knownSupports.removeAll(existingStep.getSupports());
+                    List<Support> supports=new ArrayList<>(existingStep.getSupports());
+                    supports.removeAll(step.getSupports());
+                    knownSupports.removeAll(supports);
                     builtSteps.remove(existingStep);
                 });
 
@@ -76,6 +81,8 @@ public class StepBuilder {
                 LOGGER.error("Unexpected wrong support", e);
             } catch (AlreadyBuildingException e) {
                 LOGGER.warn("Already built exception", e);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
             }
         }
 
@@ -96,4 +103,5 @@ public class StepBuilder {
 
         return evidence.map(RedmineConclusion::create).orElse(null);
     }
+
 }
