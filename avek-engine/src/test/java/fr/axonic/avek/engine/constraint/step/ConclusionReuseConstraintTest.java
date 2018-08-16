@@ -5,7 +5,7 @@ import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
 import fr.axonic.avek.instance.conclusion.EstablishedEffect;
 import fr.axonic.avek.instance.evidence.ResultsEvidence;
 import fr.axonic.avek.engine.pattern.type.InputType;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.evidence.Result;
@@ -23,7 +23,7 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
 
     @Test
     public void verifyConclusionReuse() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new ConclusionReuseConstraint(pattern);
+        JustificationSystemConstraint justificationSystemConstraint =new ConclusionReuseConstraint(pattern);
 
         InputType<ExperimentationConclusion> rtExperimentation = new InputType<>("experimentation", ExperimentationConclusion.class);
         InputType<ResultsEvidence> rtResults = new InputType<>("result", ResultsEvidence.class);
@@ -34,18 +34,18 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
         Support evExperimentation0 = rtExperimentation.create(experimentation0);
         Support evResults0 = rtResults.create(results0);
         argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"), Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        assertTrue(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
     public void verifyConclusionNotReuse() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new ConclusionReuseConstraint(pattern);
-        assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        JustificationSystemConstraint justificationSystemConstraint =new ConclusionReuseConstraint(pattern);
+        assertFalse(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
     public void verifyConclusionReuseTwice() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new ConclusionReuseConstraint(pattern);
+        JustificationSystemConstraint justificationSystemConstraint =new ConclusionReuseConstraint(pattern);
 
 
         InputType<ExperimentationConclusion> rtExperimentation = new InputType<>("experimentation", ExperimentationConclusion.class);
@@ -65,7 +65,7 @@ public class ConclusionReuseConstraintTest extends PatternConstraintTest {
 
         argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"),Arrays.asList(new Support[] {evExperimentation0,evResults1}), effect1);
 
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        assertTrue(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
 }

@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.graph;
 
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.InputType;
@@ -24,8 +24,8 @@ public class RelatedJustificationSystemConstraintTest extends PatternConstraintT
 
     @Test
     public void verifyConnexeWithOneStep() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new RelatedArgumentationSystemConstraint();
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        JustificationSystemConstraint justificationSystemConstraint =new RelatedJustificationSystemConstraint();
+        assertTrue(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
@@ -51,8 +51,8 @@ public class RelatedJustificationSystemConstraintTest extends PatternConstraintT
         JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
         JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
         JustificationStep step3=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion2);
-        ArgumentationSystemConstraint argumentationSystemConstraint =new RelatedArgumentationSystemConstraint();
-        assertTrue(argumentationSystemConstraint.verify(Arrays.asList(step1,step2,step3)));
+        JustificationSystemConstraint justificationSystemConstraint =new RelatedJustificationSystemConstraint();
+        assertTrue(justificationSystemConstraint.verify(Arrays.asList(step1,step2,step3)));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class RelatedJustificationSystemConstraintTest extends PatternConstraintT
         JustificationStep step1=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion);
         JustificationStep step2=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2, conclusionRole1), conclusion3);
         JustificationStep step3=new JustificationStep("1",strategy,Arrays.asList(supportRole1, supportRole2), conclusion2);
-        ArgumentationSystemConstraint argumentationSystemConstraint =new RelatedArgumentationSystemConstraint();
-        assertFalse(argumentationSystemConstraint.verify(Arrays.asList(step1,step2,step3)));
+        JustificationSystemConstraint justificationSystemConstraint =new RelatedJustificationSystemConstraint();
+        assertFalse(justificationSystemConstraint.verify(Arrays.asList(step1,step2,step3)));
     }
 }

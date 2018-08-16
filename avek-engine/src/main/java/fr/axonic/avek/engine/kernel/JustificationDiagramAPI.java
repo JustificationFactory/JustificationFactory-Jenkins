@@ -25,7 +25,7 @@ public interface JustificationDiagramAPI<T extends JustificationStepAPI> extends
     default List<Assertion> getUsedAssertions(){
         List<Assertion> assertions=new ArrayList<>();
         for(T step : getSteps()){
-            List<Assertion> supports=step.getSupports();
+            List<Assertion> supports=new ArrayList<>(step.getSupports());
             supports.add(step.getConclusion());
             for(Assertion assertion : supports){
                 if(!assertions.contains(assertion)){

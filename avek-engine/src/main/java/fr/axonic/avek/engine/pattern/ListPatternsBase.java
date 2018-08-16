@@ -1,21 +1,20 @@
 package fr.axonic.avek.engine.pattern;
 
 import fr.axonic.avek.engine.JustificationSystem;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.exception.WrongObjectiveException;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListPatternsBase extends PatternsBase{
     private List<Pattern> patterns;
-    private List<ArgumentationSystemConstraint> constraints;
+    private List<JustificationSystemConstraint> constraints;
     private OutputType objective;
 
-    public ListPatternsBase(List<Pattern> patterns, List<ArgumentationSystemConstraint> constraints) {
+    public ListPatternsBase(List<Pattern> patterns, List<JustificationSystemConstraint> constraints) {
         super(PatternsBaseType.LIST_OF_PATTERNS);
         this.patterns=patterns;
         this.constraints=constraints;
@@ -35,16 +34,16 @@ public class ListPatternsBase extends PatternsBase{
         this.patterns = patterns;
     }
     @XmlTransient
-    public List<ArgumentationSystemConstraint> getConstraints() {
+    public List<JustificationSystemConstraint> getConstraints() {
         return constraints;
     }
 
-    public void setConstraints(List<ArgumentationSystemConstraint> constraints) {
+    public void setConstraints(List<JustificationSystemConstraint> constraints) {
         this.constraints = constraints;
     }
 
-    public void addConstraint(ArgumentationSystemConstraint argumentationSystemConstraint){
-        this.constraints.add(argumentationSystemConstraint);
+    public void addConstraint(JustificationSystemConstraint justificationSystemConstraint){
+        this.constraints.add(justificationSystemConstraint);
     }
     public void addPattern(Pattern pattern){
         this.patterns.add(pattern);

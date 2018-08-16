@@ -1,15 +1,10 @@
 package fr.axonic.avek.engine.pattern;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import fr.axonic.avek.engine.JustificationSystem;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
-import fr.axonic.avek.engine.exception.WrongObjectiveException;
 import fr.axonic.avek.engine.pattern.type.OutputType;
-import fr.axonic.avek.engine.strategy.Strategy;
 import fr.axonic.avek.engine.support.Support;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +26,7 @@ public abstract class PatternsBase {
     }
 
     public List<String> getPossiblePatterns(List<Support> supportRoles) {
-        return getPatterns().stream().filter(pattern -> pattern.applicable(supportRoles)).map(Pattern::getId).collect(Collectors.toList());
+        return getPatterns().stream().filter(pattern -> pattern.applicable(pattern.filterUsefulEvidences(supportRoles))).map(Pattern::getId).collect(Collectors.toList());
     }
 
     @XmlElement

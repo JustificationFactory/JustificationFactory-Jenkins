@@ -66,16 +66,30 @@ public class StepBuilderTest {
     }
 
     @Test
-    public void shouldBuildWithAdequateVersions() throws StrategyException, StepBuildingException {
+    public void shouldBuildWithNotAdequateVersions() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
         stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
 
         stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "B"));
 
-        assertEquals(2, stepBuilder.getBuiltSteps().size()); // TODO Should be 1
+        assertEquals(1, stepBuilder.getBuiltSteps().size());
         assertNotNull(stepBuilder.getBuiltSteps().get(0));
     }
 
+    @Test
+    public void shouldBuildWithAdequateVersions() throws StrategyException, StepBuildingException {
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "A"));
+
+        stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "B"));
+        stepBuilder.acknowledgeSupport(approval("SWAM_ST_0001", "B"));
+
+
+        assertEquals(1, stepBuilder.getBuiltSteps().size());
+        assertNotNull(stepBuilder.getBuiltSteps().get(0));
+        assertEquals("B",stepBuilder.getBuiltSteps().get(0).getSupports().get(0).getElement().getVersion());
+        assertEquals("B",stepBuilder.getBuiltSteps().get(0).getSupports().get(1).getElement().getVersion());
+    }
     @Test
     public void shouldNotBuildAPatternTwice() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0001", "A"));
@@ -89,7 +103,6 @@ public class StepBuilderTest {
     }
 
     @Test
-    @Ignore
     public void shouldBuildWithMoreThanEnoughSupports() throws StrategyException, StepBuildingException {
         stepBuilder.acknowledgeSupport(evidence("SWAM_ST_0002", "A"));
         stepBuilder.acknowledgeSupport(approval("SWAM_ST_0002", "A"));

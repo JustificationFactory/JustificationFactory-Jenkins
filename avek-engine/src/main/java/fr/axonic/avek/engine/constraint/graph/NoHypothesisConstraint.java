@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.pattern.JustificationStep;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by cduffau on 10/03/17.
  */
-public class NoHypothesisConstraint implements ArgumentationSystemConstraint {
+public class NoHypothesisConstraint implements JustificationSystemConstraint {
 
     @Override
     public boolean verify(List<JustificationStep> steps) {

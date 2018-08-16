@@ -1,10 +1,10 @@
 package fr.axonic.avek.instance;
 
 import fr.axonic.avek.engine.JustificationSystem;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.InvalidPatternConstraint;
 import fr.axonic.avek.engine.constraint.graph.NoHypothesisConstraint;
-import fr.axonic.avek.engine.constraint.graph.RelatedArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.graph.RelatedJustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.ActorTypePatternConstraint;
 import fr.axonic.avek.engine.constraint.step.NotCascadingConstraint;
 import fr.axonic.avek.engine.constraint.step.UniquenessConstraint;
@@ -31,8 +31,6 @@ import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.conclusion.GeneralizationConclusion;
 import fr.axonic.avek.instance.evidence.*;
 import fr.axonic.avek.instance.strategy.*;
-import fr.axonic.avek.instance.*;
-import fr.axonic.avek.instance.*;
 import fr.axonic.base.engine.AList;
 import fr.axonic.validation.exception.VerificationException;
 
@@ -53,13 +51,13 @@ public class MockedJustificationSystem<T extends PatternsBase> extends Justifica
         List<Pattern> patterns=getPatterns();
 
 
-        List<ArgumentationSystemConstraint> argumentationSystemConstraints =new ArrayList<>();
-        argumentationSystemConstraints.add(new UniquenessConstraint(patterns.get(2)));
-        argumentationSystemConstraints.add(new NotCascadingConstraint(patterns.get(0),patterns.get(2)));
-        argumentationSystemConstraints.add(new NoHypothesisConstraint());
-        argumentationSystemConstraints.add(new RelatedArgumentationSystemConstraint());
+        List<JustificationSystemConstraint> justificationSystemConstraints =new ArrayList<>();
+        justificationSystemConstraints.add(new UniquenessConstraint(patterns.get(2)));
+        justificationSystemConstraints.add(new NotCascadingConstraint(patterns.get(0),patterns.get(2)));
+        justificationSystemConstraints.add(new NoHypothesisConstraint());
+        justificationSystemConstraints.add(new RelatedJustificationSystemConstraint());
 
-        return new ListPatternsBase(patterns, argumentationSystemConstraints);
+        return new ListPatternsBase(patterns, justificationSystemConstraints);
 
 
     }

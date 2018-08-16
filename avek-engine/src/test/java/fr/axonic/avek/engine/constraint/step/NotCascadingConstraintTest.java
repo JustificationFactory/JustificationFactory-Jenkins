@@ -5,7 +5,7 @@ import fr.axonic.avek.instance.conclusion.EstablishEffectConclusion;
 import fr.axonic.avek.instance.conclusion.EstablishedEffect;
 import fr.axonic.avek.instance.evidence.ResultsEvidence;
 import fr.axonic.avek.engine.pattern.type.InputType;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import fr.axonic.avek.instance.conclusion.ExperimentationConclusion;
 import fr.axonic.avek.instance.evidence.Result;
@@ -23,7 +23,7 @@ public class NotCascadingConstraintTest extends PatternConstraintTest{
 
     @Test
     public void verifyCascading() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPatternsBase().getPattern("2"));
+        JustificationSystemConstraint justificationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPatternsBase().getPattern("2"));
 
 
         InputType<ExperimentationConclusion> rtExperimentation = new InputType<>("experimentation", ExperimentationConclusion.class);
@@ -34,12 +34,12 @@ public class NotCascadingConstraintTest extends PatternConstraintTest{
         Support evExperimentation0 = rtExperimentation.create(experimentation0);
         Support evResults0 = rtResults.create(results0);
         argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"), Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
-        assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        assertFalse(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
     @Test
     public void verifyNotCascading() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPatternsBase().getPattern("3"));
+        JustificationSystemConstraint justificationSystemConstraint =new NotCascadingConstraint(pattern,argumentationSystem.getPatternsBase().getPattern("3"));
 
 
         InputType<ExperimentationConclusion> rtExperimentation = new InputType<>("experimentation", ExperimentationConclusion.class);
@@ -50,7 +50,7 @@ public class NotCascadingConstraintTest extends PatternConstraintTest{
         Support evExperimentation0 = rtExperimentation.create(experimentation0);
         Support evResults0 = rtResults.create(results0);
         argumentationSystem.constructStep(argumentationSystem.getPatternsBase().getPattern("2"), Arrays.asList(new Support[] {evExperimentation0,evResults0}), effect0);
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        assertTrue(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
 }

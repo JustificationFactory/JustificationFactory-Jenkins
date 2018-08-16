@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ApplicablePatternConstraint {
 
-    private Pattern pattern;
+    protected Pattern pattern;
 
     public ApplicablePatternConstraint(Pattern pattern){
         this.pattern=pattern;

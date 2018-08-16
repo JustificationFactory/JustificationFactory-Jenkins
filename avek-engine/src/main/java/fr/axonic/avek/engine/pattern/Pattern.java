@@ -31,7 +31,7 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 	private String name;
 
 	private List<StepConstraint> constructionConstraints;
-	private ApplicablePatternConstraint applicablePatternConstraint=new ApplicablePatternConstraint(this);
+	private List<ApplicablePatternConstraint> applicablePatternConstraints;
 
 	public Pattern(){
 		this(null,null,null,null);
@@ -42,16 +42,20 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 		super(roleTypeList,aStrategy, aConclusion);
 		constructionConstraints=new ArrayList<>();
 		constructionConstraints.add(new StepConstructionConstraint(this));
+		applicablePatternConstraints=new ArrayList<>();
+		applicablePatternConstraints.add(new ApplicablePatternConstraint(this));
 		this.id=id;
 		name = aName;
 	}
+
+
 	public Pattern(String aName, Strategy aStrategy, List<InputType> roleTypeList,
 				   OutputType aConclusionExperimentationType) {
 		this("0",aName,aStrategy,roleTypeList,aConclusionExperimentationType);
 	}
 
-	boolean applicable(List<Support> supports) {
-		return applicablePatternConstraint.verify(supports);
+	public boolean applicable(List<Support> supports) {
+		return applicablePatternConstraints.stream().allMatch(applicablePatternConstraint -> applicablePatternConstraint.verify(supports));
 	}
 	
 	private boolean checkConclusion(JustificationStep step) {
@@ -153,6 +157,11 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 		constructionConstraints.add(stepConstraint);
 	}
 
+	public void addApplicablePatternConstraint(ApplicablePatternConstraint applicablePatternConstraint){
+		applicablePatternConstraints.add(applicablePatternConstraint);
+	}
+
+
 	@Override
 	public String toString() {
 		return "Pattern{" +
@@ -162,7 +171,7 @@ public class Pattern extends JustificationStepAPI<InputType,OutputType> {
 				", inputTypes=" + supports +
 				", outputType=" + conclusion +
 				", constructionConstraints=" + constructionConstraints +
-				", applicablePatternConstraint=" + applicablePatternConstraint +
+				", applicablePatternConstraint=" + applicablePatternConstraints +
 				'}';
 	}
 

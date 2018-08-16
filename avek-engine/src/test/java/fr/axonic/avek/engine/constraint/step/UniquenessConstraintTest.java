@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.step;
 
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.PatternConstraintTest;
 import org.junit.Test;
 
@@ -15,14 +15,14 @@ public class UniquenessConstraintTest extends PatternConstraintTest {
 
     @Test
     public void verifyUnicity() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new UniquenessConstraint(pattern);
-        assertTrue(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        JustificationSystemConstraint justificationSystemConstraint =new UniquenessConstraint(pattern);
+        assertTrue(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
     @Test
     public void verifyNotUnicity() throws Exception {
-        ArgumentationSystemConstraint argumentationSystemConstraint =new UniquenessConstraint(pattern);
+        JustificationSystemConstraint justificationSystemConstraint =new UniquenessConstraint(pattern);
         argumentationSystem.constructStep(pattern, Arrays.asList(evStimulation0,evSubject0,evActor0), experimentation0);
-        assertFalse(argumentationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
+        assertFalse(justificationSystemConstraint.verify(argumentationSystem.getJustificationDiagram().getSteps()));
     }
 
 }

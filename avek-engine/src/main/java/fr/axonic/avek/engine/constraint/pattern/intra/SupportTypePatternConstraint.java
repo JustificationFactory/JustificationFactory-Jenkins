@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.pattern.intra;
 
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.InvalidPatternConstraint;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Created by cduffau on 22/03/17.
  */
-public class SupportTypePatternConstraint<T extends Support> implements ArgumentationSystemConstraint,StepConstraint{
+public class SupportTypePatternConstraint<T extends Support> implements JustificationSystemConstraint,StepConstraint{
 
     protected Pattern pattern;
     protected SupportType<T> supportType;

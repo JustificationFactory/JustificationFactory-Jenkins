@@ -1,10 +1,10 @@
 package fr.axonic.avek.instance.clinical;
 
 import fr.axonic.avek.engine.JustificationSystem;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.InvalidPatternConstraint;
 import fr.axonic.avek.engine.constraint.graph.NoHypothesisConstraint;
-import fr.axonic.avek.engine.constraint.graph.RelatedArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.graph.RelatedJustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.pattern.intra.ActorTypePatternConstraint;
 import fr.axonic.avek.engine.constraint.step.NotCascadingConstraint;
 import fr.axonic.avek.engine.constraint.step.UniquenessConstraint;
@@ -69,14 +69,14 @@ public class AVEKJustificationSystem extends JustificationSystem<ListPatternsBas
         Pattern generalize=new Pattern("3", "Generalize", ts3, Collections.singletonList(rtEstablishedEffect),conclusionGeneralizationType);
         patterns.add(generalize);
 
-        List<ArgumentationSystemConstraint> argumentationSystemConstraints =new ArrayList<>();
-        argumentationSystemConstraints.add(new UniquenessConstraint(generalize));
-        argumentationSystemConstraints.add(new NotCascadingConstraint(treat,generalize));
-        argumentationSystemConstraints.add(new NoHypothesisConstraint());
-        argumentationSystemConstraints.add(new RelatedArgumentationSystemConstraint());
+        List<JustificationSystemConstraint> justificationSystemConstraints =new ArrayList<>();
+        justificationSystemConstraints.add(new UniquenessConstraint(generalize));
+        justificationSystemConstraints.add(new NotCascadingConstraint(treat,generalize));
+        justificationSystemConstraints.add(new NoHypothesisConstraint());
+        justificationSystemConstraints.add(new RelatedJustificationSystemConstraint());
         patterns.add(treat);
 
-        return new ListPatternsBase(patterns, argumentationSystemConstraints);
+        return new ListPatternsBase(patterns, justificationSystemConstraints);
     }
     public static List<Support> getAXONICBaseEvidences() throws VerificationException, WrongEvidenceException {
         WaveformParameter waveformParameter=new WaveformParameter();

@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.graph;
 
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * Created by cduffau on 21/03/17.
  */
-public class RelatedArgumentationSystemConstraint implements ArgumentationSystemConstraint {
+public class RelatedJustificationSystemConstraint implements JustificationSystemConstraint {
     @Override
     public boolean verify(List<JustificationStep> steps) {
         if(steps.size()==1){

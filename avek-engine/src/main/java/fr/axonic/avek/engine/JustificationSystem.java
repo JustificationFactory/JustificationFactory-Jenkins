@@ -1,5 +1,6 @@
 package fr.axonic.avek.engine;
 
+import fr.axonic.avek.engine.constraint.pattern.intra.ReApplicablePatternConstraint;
 import fr.axonic.avek.engine.diagram.JustificationDiagram;
 import fr.axonic.avek.engine.exception.AlreadyBuildingException;
 import fr.axonic.avek.engine.exception.StepBuildingException;
@@ -88,28 +89,22 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         return supports;
     }
 
+
     @XmlTransient
     @Override
     public List<Pattern> getApplicablePatterns(List<Support> supports){
         List<Support> allSupports=new ArrayList<>(getUnusedAssertions(supports));
         justificationDiagram.getUsedAssertions().forEach(assertion -> allSupports.add((Support) assertion));
 
-        List<String> patterns=patternsBase.getPossiblePatterns(allSupports);
+        Set<String> patterns=new HashSet<>(patternsBase.getPossiblePatterns(allSupports));
         if(patternsBase.getPatternsBaseType()==PatternsBaseType.PATTERN_DIAGRAM) {
             List<String> patternsAlreadyApply = justificationDiagram.getSteps().stream().map(justificationStep -> justificationStep.getPatternId()).collect(Collectors.toList());
             if(versioningEnable){
                 for(String patternAlreadyApply : patternsAlreadyApply){
-                    Optional<JustificationStep> step=justificationDiagram.getSteps().stream().filter(justificationStep -> justificationStep.getPatternId().equals(patternAlreadyApply)).findFirst();
-                    List<Support> usefulEvidences= patternsBase.getPattern(patternAlreadyApply).filterUsefulEvidences(supports);
-                    for(Support assertion : step.get().getSupports()){
-                        for (Support evidence : usefulEvidences) {
-                            if (evidence.equals(assertion)){
-                                usefulEvidences.remove(evidence);
-                                break;
-                            }
-                        }
+                    if(new ReApplicablePatternConstraint(patternsBase.getPattern(patternAlreadyApply),justificationDiagram.getSteps()).verify(allSupports)){
+                        patterns.add(patternAlreadyApply);
                     }
-                    if(usefulEvidences.isEmpty()){
+                    else {
                         patterns.remove(patternAlreadyApply);
                     }
                 }
@@ -117,6 +112,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
             else {
                 patterns.removeAll(patternsAlreadyApply);
             }
+            //patterns.addAll(patternsBase.getPossiblePatterns(getUnusedAssertions(supports)));
 
         }
         List<Pattern> patternList=patterns.stream().map(patternsBase::getPattern).collect(Collectors.toList());

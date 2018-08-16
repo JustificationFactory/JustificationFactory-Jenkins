@@ -63,7 +63,11 @@ public class StepBuilder {
                 LOGGER.info("Step {} has been built", step.getId());
 
                 // TODO What is next with this step?
+                Optional<JustificationStep> justifStep=builtSteps.stream().filter(justificationStep -> justificationStep.getId().equals(step.getId())).findFirst();
+                justifStep.ifPresent(builtSteps::remove);
                 builtSteps.add(step);
+
+
             } catch (WrongEvidenceException e) {
                 LOGGER.error("Unexpected wrong support", e);
             }

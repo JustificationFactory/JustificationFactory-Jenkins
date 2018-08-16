@@ -1,7 +1,7 @@
 package fr.axonic.avek.engine.constraint.graph;
 
 import fr.axonic.avek.engine.pattern.JustificationStep;
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.support.evidence.Evidence;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Created by cduffau on 09/03/17.
  */
-public class NoCycleConstraint implements ArgumentationSystemConstraint {
+public class NoCycleConstraint implements JustificationSystemConstraint {
 
     private JustificationStep step;
 

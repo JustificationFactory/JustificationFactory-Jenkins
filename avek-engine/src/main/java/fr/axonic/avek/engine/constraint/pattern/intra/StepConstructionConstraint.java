@@ -1,6 +1,6 @@
 package fr.axonic.avek.engine.constraint.pattern.intra;
 
-import fr.axonic.avek.engine.constraint.ArgumentationSystemConstraint;
+import fr.axonic.avek.engine.constraint.JustificationSystemConstraint;
 import fr.axonic.avek.engine.constraint.StepConstraint;
 import fr.axonic.avek.engine.pattern.Pattern;
 import fr.axonic.avek.engine.pattern.JustificationStep;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Created by cduffau on 21/03/17.
  */
-public class StepConstructionConstraint implements StepConstraint, ArgumentationSystemConstraint{
+public class StepConstructionConstraint implements StepConstraint, JustificationSystemConstraint {
 
     private Pattern pattern;
 
