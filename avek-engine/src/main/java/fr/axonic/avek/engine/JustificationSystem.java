@@ -17,6 +17,7 @@ import fr.axonic.avek.engine.support.evidence.Hypothesis;
 import fr.axonic.avek.engine.support.Support;
 import fr.axonic.avek.engine.pattern.type.InputType;
 import fr.axonic.validation.exception.VerificationException;
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -233,19 +234,6 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         return justificationDiagram;
     }
 
-    /**private static void save(Object object, File file) throws JAXBException, IOException {
-        JAXBContext context = JAXBContext.newInstance(object.getClass());
-        Marshaller m = context.createMarshaller();
-        m.setProperty(MarshallerProperties.MEDIA_TYPE,
-                "application/json");
-        m.setProperty("jaxb.formatted.output", Boolean.TRUE);
-        m.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, Boolean.FALSE);
-        FileOutputStream fos = new FileOutputStream(file);
-        m.marshal(object, fos);
-        fos.close();
-
-
-    }*/
 
     @Override
     public void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException {
@@ -270,6 +258,14 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
     @XmlTransient
     public boolean isComplete(){
         return justificationDiagram.getSteps().stream().anyMatch(justificationStep -> patternsBase.getObjective().check(justificationStep.getConclusion()));
+    }
+
+    @Override
+    @XmlTransient
+    public List<Pair<Pattern, JustificationStep>> matrix() {
+        List<Pair<Pattern,JustificationStep>> matrix=new ArrayList<>();
+        justificationDiagram.getSteps().forEach(justificationStep -> matrix.add(new Pair<>(patternsBase.getPattern(justificationStep.getPatternId()),justificationStep)));
+        return matrix;
     }
 
     @Override

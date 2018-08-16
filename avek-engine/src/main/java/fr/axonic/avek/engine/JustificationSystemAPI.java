@@ -12,6 +12,7 @@ import fr.axonic.avek.engine.pattern.PatternsBase;
 import fr.axonic.avek.engine.pattern.JustificationStep;
 import fr.axonic.avek.engine.pattern.type.OutputType;
 import fr.axonic.avek.engine.support.evidence.Hypothesis;
+import javafx.util.Pair;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -38,6 +39,8 @@ public interface JustificationSystemAPI<T extends PatternsBase> {
     boolean validate();
 
     boolean isComplete();
+
+    List<Pair<Pattern,JustificationStep>> matrix();
 
     void resolveHypothesis(JustificationStep step, Hypothesis hypothesis, Support support) throws WrongEvidenceException, PatternConstraintException;
 
