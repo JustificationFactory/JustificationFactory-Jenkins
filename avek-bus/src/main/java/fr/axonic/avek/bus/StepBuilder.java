@@ -1,6 +1,7 @@
 package fr.axonic.avek.bus;
 
 import fr.axonic.avek.engine.JustificationSystem;
+import fr.axonic.avek.engine.exception.AlreadyBuildingException;
 import fr.axonic.avek.engine.exception.StepBuildingException;
 import fr.axonic.avek.engine.exception.StrategyException;
 import fr.axonic.avek.engine.exception.WrongEvidenceException;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class StepBuilder {
 
@@ -60,16 +60,22 @@ public class StepBuilder {
 
             try {
                 JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, associatedConclusion);
-                LOGGER.info("Step {} has been built", step.getId());
+                LOGGER.info("Step {} has been built", step.getPatternId());
 
                 // TODO What is next with this step?
-                Optional<JustificationStep> justifStep=builtSteps.stream().filter(justificationStep -> justificationStep.getId().equals(step.getId())).findFirst();
-                justifStep.ifPresent(builtSteps::remove);
+                Optional<JustificationStep> justificationStep = builtSteps.stream().filter(s -> s.getId().equals(step.getId())).findFirst();
+
+                justificationStep.ifPresent(existingStep -> {
+                    existingStep.getSupports().removeAll(step.getSupports());
+                    knownSupports.removeAll(existingStep.getSupports());
+                    builtSteps.remove(existingStep);
+                });
+
                 builtSteps.add(step);
-
-
             } catch (WrongEvidenceException e) {
                 LOGGER.error("Unexpected wrong support", e);
+            } catch (AlreadyBuildingException e) {
+                LOGGER.warn("Already built exception", e);
             }
         }
 
