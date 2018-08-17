@@ -59,10 +59,9 @@ public class StepBuilder {
         for (Pattern pattern : patterns) {
             List<Support> usefulSupports = pattern.filterUsefulEvidences(knownSupports);
 
-            Conclusion associatedConclusion = createConclusion(usefulSupports);
 
             try {
-                JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, associatedConclusion).clone();
+                JustificationStep step = justificationSystem.constructStep(pattern, usefulSupports, null).clone();
                 LOGGER.info("Step {} has been built", step.getPatternId());
 
                 // TODO What is next with this step?
@@ -88,19 +87,6 @@ public class StepBuilder {
         if (!patterns.isEmpty()) {
             triggerOneSystemStepsBuilding(justificationSystem);
         }
-    }
-
-    private Conclusion createConclusion(List<Support> usefulSupports) {
-        if (usefulSupports.isEmpty()) {
-            return new RedmineConclusion();
-        }
-
-        Optional<RedmineDocumentEvidence> evidence = usefulSupports.stream()
-                .filter(s -> s instanceof RedmineDocumentEvidence)
-                .map(s -> (RedmineDocumentEvidence) s)
-                .findFirst();
-
-        return evidence.map(RedmineConclusion::create).orElse(null);
     }
 
 }
