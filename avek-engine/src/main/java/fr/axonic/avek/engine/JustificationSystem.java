@@ -214,7 +214,7 @@ public class JustificationSystem<T extends PatternsBase> implements Justificatio
         List<Support> collected=new ArrayList<>();
         for(InputType inputType:inputTypes){
             for(Assertion support: usedSupports){
-                if(inputType.getType().getClassType().equals(support.getClass())){
+                if(inputType.check((Support) support)){
                     if(!collected.contains(support)){
                         collected.add((Support) support);
                         break;

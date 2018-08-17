@@ -132,7 +132,6 @@ public class StepBuilderTest {
     }
 
     @Test
-    @Ignore
     public void shouldBuildEvenStepsWithoutSupport() throws StrategyException, StepBuildingException {
         for (int i = 0; i < 14; i++) {
             stepBuilder.acknowledgeSupport(evidence("SWAM_ST_" + stNumber(i), "A"));

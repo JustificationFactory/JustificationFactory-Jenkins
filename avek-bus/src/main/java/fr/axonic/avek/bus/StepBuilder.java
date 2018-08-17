@@ -57,6 +57,9 @@ public class StepBuilder {
                 patterns.stream().map(Pattern::getName).collect(Collectors.toList()));
 
         for (Pattern pattern : patterns) {
+            if(pattern.getId().equals("SWAM_ST_VALIDATION")){
+                System.out.printf("y");
+            }
             List<Support> usefulSupports = pattern.filterUsefulEvidences(knownSupports);
 
 

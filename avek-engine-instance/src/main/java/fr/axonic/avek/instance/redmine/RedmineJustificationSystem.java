@@ -48,11 +48,11 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
             jpd.addStep(stXPattern);
         }
 
-        /*OutputType<RedmineConclusion> stValidated = new OutputType<>("SWAM_ST_VALIDATED", new Type<>(RedmineConclusion.class,"SWAM_ST_VALIDATED"));
-        Strategy swamStStrategy = new TopLevelRedmineStrategy("Validate SWAM technical specification", "SWAM_ST_VALIDATED");
+        OutputType<RedmineConclusion> stValidated = new OutputType<>("SWAM_ST validated", new Type<>(RedmineConclusion.class,"SWAM_ST validated"));
+        Strategy swamStStrategy = new TopLevelRedmineStrategy("Validate SWAM technical specification", "SWAM_ST validated");
         Pattern pattern=new Pattern("SWAM_ST_VALIDATION", "Validation of SWAM technical specification", swamStStrategy, conclusionInputs, stValidated);
-        pattern.addApplicablePatternConstraint(new SameArtifactVersionApplicablePatternConstraint(pattern));
-        jpd.addStep(pattern);*/
+        //pattern.addApplicablePatternConstraint(new SameArtifactVersionApplicablePatternConstraint(pattern));
+        jpd.addStep(pattern);
 
         return jpd;
     }
