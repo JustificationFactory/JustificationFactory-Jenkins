@@ -131,6 +131,26 @@ public class StepBuilderTest {
         assertNotNull(stepBuilder.getBuiltSteps().get(1));
     }
 
+    @Test
+    @Ignore
+    public void shouldBuildEvenStepsWithoutSupport() throws StrategyException, StepBuildingException {
+        for (int i = 0; i < 14; i++) {
+            stepBuilder.acknowledgeSupport(evidence("SWAM_ST_" + stNumber(i), "A"));
+            stepBuilder.acknowledgeSupport(approval("SWAM_ST_" + stNumber(i), "A"));
+        }
+
+        assertEquals(14, stepBuilder.getBuiltSteps().size());
+    }
+
+    private static String stNumber(int number) {
+        StringBuilder strNumber = new StringBuilder(Integer.toString(number));
+
+        while (strNumber.length() < 4) {
+            strNumber.insert(0, "0");
+        }
+
+        return strNumber.toString();
+    }
 
     private static RedmineDocumentEvidence evidence(String name, String version) {
         Document document = new Document("http://aurl.com/" + name);

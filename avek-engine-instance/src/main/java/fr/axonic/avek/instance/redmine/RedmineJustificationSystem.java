@@ -35,7 +35,7 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
         InputType<RedmineDocumentEvidence> st0001 = new InputType<>("SWAM_ST_0001", new Type<>(RedmineDocumentEvidence.class,"SWAM_ST_0001"));
         InputType<RedmineDocumentApproval> st0001Approval = new InputType<>("SWAM_ST_0001_APPROVAL", new Type<>(RedmineDocumentApproval.class,"SWAM_ST_0001_APPROVAL"));
         OutputType<RedmineConclusion> st0001Validated = new OutputType<>("SWAM_ST_0001 validated", new Type<>(RedmineConclusion.class,"SWAM_ST_0001 validated"));
-        Strategy swamSt0001Strategy = new RedmineStrategy("Validate SWAM_ST_0001");
+        Strategy swamSt0001Strategy = new CommonRedmineStrategy("Validate SWAM_ST_0001");
         Pattern pt=new Pattern("SWAM_ST_0001_VALIDATION", "Validation of SWAM_ST_0001", swamSt0001Strategy,
                 Arrays.asList(st0001, st0001Approval), st0001Validated);
         pt.addApplicablePatternConstraint(new SameArtifactVersionApplicablePatternConstraint(pt));
@@ -48,11 +48,11 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
             jpd.addStep(stXPattern);
         }
 
-        OutputType<RedmineConclusion> stValidated = new OutputType<>("SWAM_ST_VALIDATED", new Type<>(RedmineConclusion.class,"SWAM_ST_VALIDATED"));
-        Strategy swamStStrategy = new RedmineStrategy("Validate SWAM technical specification");
+        /*OutputType<RedmineConclusion> stValidated = new OutputType<>("SWAM_ST_VALIDATED", new Type<>(RedmineConclusion.class,"SWAM_ST_VALIDATED"));
+        Strategy swamStStrategy = new TopLevelRedmineStrategy("Validate SWAM technical specification", "SWAM_ST_VALIDATED");
         Pattern pattern=new Pattern("SWAM_ST_VALIDATION", "Validation of SWAM technical specification", swamStStrategy, conclusionInputs, stValidated);
         pattern.addApplicablePatternConstraint(new SameArtifactVersionApplicablePatternConstraint(pattern));
-        jpd.addStep(pattern);
+        jpd.addStep(pattern);*/
 
         return jpd;
     }
@@ -64,7 +64,7 @@ public class RedmineJustificationSystem extends JustificationSystem<DiagramPatte
         InputType<RedmineDocumentApproval> swamStApproval = new InputType<>(fileName + "_APPROVAL",new Type<>(RedmineDocumentApproval.class,fileName+"_APPROVAL"));
         OutputType<RedmineConclusion> swamStValidated = new OutputType<>(fileName + " validated", new Type<>(RedmineConclusion.class,fileName
                 +" validated"));
-        Strategy swamStStrategy = new RedmineStrategy("Validate " + fileName);
+        Strategy swamStStrategy = new CommonRedmineStrategy("Validate " + fileName);
         Pattern pattern=new Pattern(fileName + "_VALIDATION", "Validation of " + fileName, swamStStrategy,
                 Arrays.asList(swamSt0001IsValidated, swamSt, swamStApproval), swamStValidated);
         pattern.addApplicablePatternConstraint(new SameArtifactVersionApplicablePatternConstraint(pattern));
