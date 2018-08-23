@@ -1,9 +1,0 @@
-.false {
-    -fx-background-color: lightgray;
-    -fx-border-color: gray;
-}
-
-.true {
-    -fx-background-color: green;
-    -fx-border-color: darkgreen;
-}
