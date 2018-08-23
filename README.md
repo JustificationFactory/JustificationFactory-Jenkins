@@ -1,2 +1,2 @@
-# AVEK
-AXONIC Valuable Expert Knowlegde GUI
+# Justification Factory - Jenkins plug-in
+
