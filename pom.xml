@@ -1,163 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>fr.axonic.avek</groupId>
-    <artifactId>avek</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>avek-engine</module>
-        <module>avek-gui</module>
-        <module>avek-model</module>
-        <module>avek-graph</module>
-        <module>avek-engine-ws</module>
-        <module>avek-bus</module>
-        <module>avek-engine-instance</module>
-        <module>avek-dao</module>
-        <!--<module>avek-jenkins</module>-->
-    </modules>
 
-    <properties>
-        <scmUrl>https://github.com/AVEK-project/AVEK.git</scmUrl>
-        <scmConnection>scm:git:ssh://git@github.com:AVEK-project/AVEK.git</scmConnection>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jersey2.version>2.27</jersey2.version>
-        <jaxrs.version>2.1</jaxrs.version>
-        <log4j.version>2.7</log4j.version>
-        <asf.version>4.0.0-sprint5</asf.version>
-    </properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<modelVersion>4.0.0</modelVersion>
 
-    <scm>
-        <url>${scmUrl}</url>
-        <connection>${scmConnection}</connection>
-        <developerConnection>${scmConnection}</developerConnection>
-    </scm>
+<parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>2.33</version>
+    <relativePath/>
+</parent>
+<properties>
+    <jenkins.version>2.60.3</jenkins.version>
+    <java.level>8</java.level>
+</properties>
+<groupId>fr.axonic.avek</groupId>
+<artifactId>avek-jenkins</artifactId>
+<version>1.0-SNAPSHOT</version>
+<packaging>hpi</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-    </dependencies>
+<dependencies>
+    <dependency>
+        <groupId>commons-validator</groupId>
+        <artifactId>commons-validator</artifactId>
+        <version>1.6</version>
+        <exclusions>
+            <exclusion>
+                <groupId>commons-digester</groupId>
+                <artifactId>commons-digester</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>fr.axonic.avek</groupId>
+        <artifactId>avek-engine-instance</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+</dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>fr.axonic.avek</groupId>
-                <artifactId>avek-engine</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.axonic.avek</groupId>
-                <artifactId>avek-engine-instance</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.axonic.avek</groupId>
-                <artifactId>avek-dao</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
-    <build>
 
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <!-- Checkstyle -->
-            <!--<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <configLocation>config/checkstyle-maven.xml</configLocation>
-                            <suppressionsLocation>config/suppressions.xml</suppressionsLocation>
-                            <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
-                            <failsOnError>true</failsOnError>
-                        </configuration>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-            <!-- code coverage -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.7.201606060606</version>
-                <configuration>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    <organization><name>AXONIC</name></organization>
-    <developers>
-        <developer>
-            <name>Nathaël Noguès</name>
-            <email>nogues.nathael@etu.unice.fr</email>
-        </developer>
-    </developers>
-    <contributors>
-        <contributor>
-            <name>Clément Duffau</name>
-            <email>cduffau@axonic.fr</email>
-        </contributor>
-        <contributor>
-            <name>Mireille Blay-Fornarino</name>
-            <email>blay@unice.fr</email>
-        </contributor>
-    </contributors>
 </project>
