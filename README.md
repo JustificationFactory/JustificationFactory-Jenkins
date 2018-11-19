@@ -1,6 +1,9 @@
 # Justification Factory - Jenkins
 Jenkins plug-in for Justification Factory. It exposes a post-build step plugin allowing to interact with justification services throught the Justification Factory Engine. 
 
+## Stakeholders:
+  * Owner: Clément Duffau ([clement.duffau.02@gmail.com](clement.duffau.02@gmail.com))
+
 ## Dependencies needed
 
 You need this set of tools :
